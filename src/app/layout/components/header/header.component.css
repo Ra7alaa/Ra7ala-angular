@@ -1,0 +1,143 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Satisfy", cursive;
+}
+
+.tagline {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.main-nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 30px;
+}
+
+.main-nav li {
+  margin: 0;
+}
+
+.main-nav a {
+  color: #444;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.main-nav a i {
+  margin-right: 6px;
+  font-size: 0.9rem;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: #ffa500;
+}
+
+.main-nav a.active::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #ffa500;
+  left: 0;
+  bottom: -5px;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.search-box {
+  position: relative;
+  margin-right: 15px;
+}
+
+.search-box input {
+  padding: 8px 15px;
+  padding-right: 40px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 0.9rem;
+  width: 180px;
+  transition: background-color 0.3s, width 0.3s;
+}
+
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-box input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 220px;
+}
+
+.search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-login {
+  padding: 8px 20px;
+  background-color: transparent;
+  border: none;
+  color: #444;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.btn-login:hover {
+  color: #ffa500;
+}
+
+.btn-signup {
+  padding: 8px 25px;
+  background-color: #ffcd4a;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-signup:hover {
+  background-color: #ffa500;
+}

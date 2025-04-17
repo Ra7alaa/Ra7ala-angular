@@ -1,0 +1,97 @@
+footer {
+  background-color: white;
+  color: #333;
+  font-family: Arial, sans-serif;
+  padding: 20px 0;
+}
+
+.footer-container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.company-section {
+  text-align: center;
+}
+
+.logo {
+  font-family: "Brush Script MT", cursive;
+  font-size: 48px;
+  color: #ffcc00;
+  margin-bottom: 5px;
+}
+
+.slogan {
+  font-size: 16px;
+  margin: 5px 0;
+  direction: rtl;
+}
+
+.sub-slogan {
+  font-size: 14px;
+  color: #555;
+  direction: rtl;
+}
+
+.services-section h3,
+.contact-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.services-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.services-section li {
+  margin-bottom: 10px;
+}
+
+.contact-section p {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-section i {
+  margin-right: 10px;
+  color: #ff9800;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.social-links a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  background-color: #ffeacf;
+  transition: all 0.3s ease;
+}
+
+/* .social-links a:hover {
+  background-color: #f4a640;
+  color: white;
+} */
+
+
+
+.footer-bottom {
+  border-top: 1px solid #eee;
+  text-align: center;
+  padding-top: 15px;
+  color: #666;
+  font-size: 14px;
+}

@@ -1,0 +1,220 @@
+<div class="trip-details-container" *ngIf="trip">
+  <div class="trip-header">
+    <div class="trip-image">
+      <img [src]="trip.imageUrl" [alt]="trip.title" />
+      <div class="trip-category">{{ trip.category }}</div>
+    </div>
+    <div class="trip-header-content">
+      <h1>{{ trip.title }}</h1>
+      <div class="trip-meta">
+        <div class="meta-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>{{ trip.location }}</span>
+        </div>
+        <div class="meta-item">
+          <i class="fas fa-calendar-alt"></i>
+          <span>{{ trip.duration }} days</span>
+        </div>
+        <div class="meta-item">
+          <i class="fas fa-star"></i>
+          <span>{{ trip.rating }} Rating</span>
+        </div>
+        <div class="meta-item">
+          <i class="fas fa-users"></i>
+          <span>Max {{ trip.maxGroupSize }} People</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trip-content">
+    <div class="trip-main">
+      <div class="section-trip-description">
+        <h2>Trip Overview</h2>
+        <p>{{ trip.description }}</p>
+
+        <div class="trip-gallery">
+          <h3>Trip Photos</h3>
+          <div class="gallery-grid">
+            <!-- Placeholder gallery images -->
+            <div class="gallery-item">
+              <img [src]="trip.imageUrl" alt="Gallery image" />
+            </div>
+            <div class="gallery-item">
+              <img [src]="trip.imageUrl" alt="Gallery image" />
+            </div>
+            <div class="gallery-item">
+              <img [src]="trip.imageUrl" alt="Gallery image" />
+            </div>
+          </div>
+        </div>
+
+        <div class="trip-itinerary">
+          <h3>Itinerary</h3>
+          <div class="itinerary-day">
+            <div class="day-number">Day 1</div>
+            <div class="day-content">
+              <h4>Arrival and Welcome</h4>
+              <p>
+                Arrive at your destination and check into your accommodation.
+                Meet your guide and fellow travelers for a welcome dinner.
+              </p>
+            </div>
+          </div>
+          <div class="itinerary-day">
+            <div class="day-number">Day 2</div>
+            <div class="day-content">
+              <h4>Exploration Day</h4>
+              <p>
+                Explore the main attractions of the area with your expert guide.
+                Enjoy a relaxed lunch at a local restaurant.
+              </p>
+            </div>
+          </div>
+          <div class="itinerary-day">
+            <div class="day-number">Day 3</div>
+            <div class="day-content">
+              <h4>Adventure Activities</h4>
+              <p>
+                Participate in exciting activities specific to the location.
+                Enjoy free time in the afternoon to explore on your own.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trip-reviews">
+          <h3>Reviews</h3>
+          <div class="review">
+            <div class="review-header">
+              <div class="review-author">
+                <img
+                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  alt="Reviewer"
+                />
+                <div>
+                  <h4>John Smith</h4>
+                  <div class="review-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="review-date">April 10, 2025</div>
+            </div>
+            <p>
+              Amazing experience! The guide was knowledgeable and the itinerary
+              was perfectly planned. I highly recommend this trip to anyone
+              looking for an unforgettable adventure.
+            </p>
+          </div>
+          <div class="review">
+            <div class="review-header">
+              <div class="review-author">
+                <img
+                  src="https://randomuser.me/api/portraits/women/44.jpg"
+                  alt="Reviewer"
+                />
+                <div>
+                  <h4>Sarah Johnson</h4>
+                  <div class="review-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="review-date">March 25, 2025</div>
+            </div>
+            <p>
+              Overall a great trip! The accommodations were comfortable and the
+              activities were well organized. Would have liked a bit more free
+              time to explore on my own.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trip-sidebar">
+      <div class="booking-card">
+        <div class="booking-price">
+          <span class="price">${{ trip.price }}</span>
+          <span class="per-person">per person</span>
+        </div>
+
+        <div class="booking-dates">
+          <div class="date-group">
+            <label>Departure:</label>
+            <div class="date-value">
+              {{ trip.departureDate | date : "mediumDate" }}
+            </div>
+          </div>
+          <div class="date-group">
+            <label>Return:</label>
+            <div class="date-value">
+              {{ trip.returnDate | date : "mediumDate" }}
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-form">
+          <div class="form-group">
+            <label for="travelers">Number of Travelers</label>
+            <select id="travelers" class="form-control">
+              <option value="1">1 Person</option>
+              <option value="2">2 People</option>
+              <option value="3">3 People</option>
+              <option value="4">4 People</option>
+              <option value="5">5 People</option>
+            </select>
+          </div>
+
+          <button class="btn-book-now">Book Now</button>
+          <button class="btn-add-wishlist">
+            <i class="far fa-heart"></i> Add to Wishlist
+          </button>
+        </div>
+      </div>
+
+      <div class="tour-guide-card">
+        <h3>Tour Guide</h3>
+        <div class="guide-profile">
+          <img
+            src="https://randomuser.me/api/portraits/men/55.jpg"
+            alt="Tour Guide"
+          />
+          <div class="guide-info">
+            <h4>Michael Rodriguez</h4>
+            <p>Professional guide with 8+ years of experience</p>
+            <div class="guide-rating"><i class="fas fa-star"></i> 4.9</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <h3>Location</h3>
+        <div class="map-placeholder">
+          <i class="fas fa-map-marked-alt"></i>
+          <p>{{ trip.location }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading-container" *ngIf="!trip">
+  <div class="loading-spinner"></div>
+  <p>Loading trip details...</p>
+</div>
+
+<div class="back-button">
+  <a [routerLink]="['/trips']" class="btn-back"
+    ><i class="fas fa-arrow-left"></i> Back to Trips</a
+  >
+</div>

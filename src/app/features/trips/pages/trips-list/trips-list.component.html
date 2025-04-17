@@ -1,0 +1,138 @@
+<div class="trips-container">
+  <div class="trips-header">
+    <h1>Discover Amazing Trips</h1>
+    <p>Explore our collection of handpicked travel experiences</p>
+
+    <div class="filter-container">
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search destinations..."
+          (input)="search($event)"
+        />
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+
+      <div class="category-filters">
+        <button
+          class="category-btn"
+          [class.active]="selectedCategory === ''"
+          (click)="filterByCategory('')"
+        >
+          All
+        </button>
+        <button
+          class="category-btn"
+          [class.active]="selectedCategory === 'Adventure'"
+          (click)="filterByCategory('Adventure')"
+        >
+          Adventure
+        </button>
+        <button
+          class="category-btn"
+          [class.active]="selectedCategory === 'Beach'"
+          (click)="filterByCategory('Beach')"
+        >
+          Beach
+        </button>
+        <button
+          class="category-btn"
+          [class.active]="selectedCategory === 'Urban'"
+          (click)="filterByCategory('Urban')"
+        >
+          Urban
+        </button>
+        <button
+          class="category-btn"
+          [class.active]="selectedCategory === 'Cultural'"
+          (click)="filterByCategory('Cultural')"
+        >
+          Cultural
+        </button>
+        <button
+          class="category-btn"
+          [class.active]="selectedCategory === 'Mountain'"
+          (click)="filterByCategory('Mountain')"
+        >
+          Mountain
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="featured-trips" *ngIf="!searchTerm && !selectedCategory">
+    <h2><i class="fas fa-star"></i> Featured Trips</h2>
+    <div class="trips-grid">
+      <div class="trip-card" *ngFor="let trip of featuredTrips">
+        <div class="trip-image">
+          <img [src]="trip.imageUrl" [alt]="trip.title" />
+          <div class="trip-category">{{ trip.category }}</div>
+          <div class="trip-price">${{ trip.price }}</div>
+        </div>
+        <div class="trip-content">
+          <h3>{{ trip.title }}</h3>
+          <div class="trip-location">
+            <i class="fas fa-map-marker-alt"></i> {{ trip.location }}
+          </div>
+          <div class="trip-meta">
+            <span
+              ><i class="fas fa-calendar"></i> {{ trip.duration }} days</span
+            >
+            <span><i class="fas fa-star"></i> {{ trip.rating }}</span>
+          </div>
+          <p class="trip-description">
+            {{ trip.description | slice : 0 : 120 }}...
+          </p>
+          <a [routerLink]="['/trips', trip.id]" class="btn btn-primary"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="all-trips">
+    <h2 *ngIf="!searchTerm && !selectedCategory">All Trips</h2>
+    <h2 *ngIf="searchTerm">Search Results for "{{ searchTerm }}"</h2>
+    <h2 *ngIf="selectedCategory && !searchTerm">
+      {{ selectedCategory }} Trips
+    </h2>
+
+    <div *ngIf="filteredTrips.length === 0" class="no-results">
+      <i class="fas fa-search fa-3x"></i>
+      <h3>No trips found</h3>
+      <p>Try adjusting your search or explore our other categories</p>
+      <button class="btn btn-primary" (click)="resetFilters()">
+        View All Trips
+      </button>
+    </div>
+
+    <div class="trips-grid" *ngIf="filteredTrips.length > 0">
+      <div class="trip-card" *ngFor="let trip of filteredTrips">
+        <div class="trip-image">
+          <img [src]="trip.imageUrl" [alt]="trip.title" />
+          <div class="trip-category">{{ trip.category }}</div>
+          <div class="trip-price">${{ trip.price }}</div>
+        </div>
+        <div class="trip-content">
+          <h3>{{ trip.title }}</h3>
+          <div class="trip-location">
+            <i class="fas fa-map-marker-alt"></i> {{ trip.location }}
+          </div>
+          <div class="trip-meta">
+            <span
+              ><i class="fas fa-calendar"></i> {{ trip.duration }} days</span
+            >
+            <span><i class="fas fa-star"></i> {{ trip.rating }}</span>
+          </div>
+          <p class="trip-description">
+            {{ trip.description | slice : 0 : 120 }}...
+          </p>
+          <a [routerLink]="['/trips', trip.id]" class="btn btn-primary"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
