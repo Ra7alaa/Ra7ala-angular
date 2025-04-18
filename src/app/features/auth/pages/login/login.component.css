@@ -1,59 +1,192 @@
-.login-container {
+
+.login-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  padding: var(--spacing-xl);
-  background-color: #f8f9fa;
-  direction: rtl;
+  background-color: #fff;
+  font-family: 'Poppins', sans-serif;
 }
 
-.login-card {
-  width: 100%;
-  max-width: 450px;
-}
-
-.title {
-  color: var(--secondary-color);
-  font-weight: bold;
-}
-
-.forgot-password {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color var(--transition-speed-fast) var(--transition-timing);
-}
-
-.forgot-password:hover {
-  color: var(--primary-color-light);
-  text-decoration: underline;
-}
-
-.social-login {
-}
-
-.btn-social {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--border-radius-circle);
-  border: none;
-  color: white;
-  font-size: var(--font-size-md);
+.login-left {
+  /* flex: 1; */
+  width: 590px;
+  /* height: 500; */
+  background-color: #f4f4f4;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+
+.login-image {
+  /* width: 90%; */
+  /* width: 570px; */
+  height: 450px;
+  max-height: 90vh;
+  object-fit: cover;
+  border-radius: 2rem;
+}
+ /* .login-image {
+  width: 570px;
+  height: 793px;
+  position: absolute;
+  top: 121px;
+  left: 204px;
+  object-fit: cover;
+  border-radius: 55px;
+} */
+
+
+.login-right {
+  width: 520px;
+  margin: auto;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+ .logo-text {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(to right, #c9e265, #f9aa61);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+} 
+
+
+
+.login-form {
+  max-width: 400px;
+  margin: auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .input-wrapper {
+    position: relative;
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: #aaa;
+    }
+
+    input {
+      width:400px; /* ← زودنا العرض فقط */
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 1rem;
+     
+      &::placeholder {
+        font-size: 0.75rem; // الحجم المناسب للنص داخل placeholder
+        color: #fff;
+      }
+
+
+      &:focus {
+        outline: none;
+        border-color: #ffbc3b;
+      }
+    }
+    
+  }
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .remember-me {
+    display: flex;
+    font-size: 0.75rem;
+    align-items: center;
+    font-weight: 600;
+
+    input {
+      margin-right: 5px;
+    }
+  }
+
+  .forgot {
+    font-size: 0.75rem;
+    color: #ff9800;
+    text-decoration: underline; 
+    text-underline-offset: 4px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #ffbc3b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
-  transition: transform var(--transition-speed-normal) var(--transition-timing);
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #ff9800;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
 
-.btn-social:hover {
-  transform: translateY(-3px);
-}
+.signup-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
 
-.google {
-  background-color: #ea4335;
-}
+  a {
+    color: #f9aa61;
+    text-decoration: none;
+    font-weight: 500;
 
-.facebook {
-  background-color: #3b5998;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .email-input {
+  width: 554px;
+  height: 72px;
+  border-radius: 10px; /* اختياري حسب الشكل في فيجما */
+  font-size: 16px;
+  padding: 0 20px;
+}
+input[type="checkbox"] {
+    accent-color: #ffbc3b; /* تغيير اللون إلى نفس لون زر الدخول */
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  input[type="checkbox"]:checked {
+    background-color: #ffbc3b; /* تغيير اللون عند التحديد */
+    border-color: #ffbc3b;
+  }
 }

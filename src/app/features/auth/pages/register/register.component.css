@@ -1,56 +1,146 @@
+/* تنسيق صفحة التسجيل */
+.logo-text {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  background: linear-gradient(to right, #c9e265, #f9aa61);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+} 
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+/* تنسيق الحاوية الخاصة بنموذج التسجيل */
 .register-container {
+  flex: 1;
+  padding: 40px;
+  background-color: #fff;
+}
+
+/* تنسيق البطاقة التي تحتوي على النموذج */
+.register-card {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 16px;
+}
+
+/* تنسيق الصورة الجانبية */
+.register-image {
+  flex: 1;
+  background-color: #f8f9fa;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: var(--spacing-xl);
-  background-color: #f8f9fa;
-  direction: rtl;
+  padding: 40px;
 }
 
-.register-card {
-  width: 100%;
-  max-width: 500px;
+/* تنسيق الصورة داخل القسم */
+.register-image img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 20px;
+  object-fit: cover;
 }
 
+/* تنسيق عنوان النموذج */
 .title {
-  color: var(--secondary-color);
+  font-weight: 700;
+  font-size: 100px;
+  color: #ffb400;
+}
+
+/* ↓↓↓ تصغير حجم placeholder بشكل أكبر ↓↓↓ */
+input::placeholder {
+  font-size: 0.75rem;  /* تقليل الحجم إلى أصغر */
+  color: #999;
+}
+
+/* تصغير حجم placeholder الأبيض */
+input::placeholder.white {
+  color: #fff;
+}
+
+/* تغيير شكل الحقول (inputs) */
+.form-control {
+  border-radius: 10px; /* جعل الزوايا دائرية */
+  padding: 10px 15px; /* تعديل المسافة الداخلية */
+  border: 1px solid #ccc; /* إضافة حدود رفيعة */
+  transition: all 0.3s ease; /* إضافة تأثير عند التركيز */
+}
+
+/* إضافة تأثير عند التركيز على الحقول */
+.form-control:focus {
+  border-color: #ffb400; /* تغيير لون الحدود عند التركيز */
+  box-shadow: 0 0 10px rgba(255, 180, 0, 0.5); /* إضافة تأثير ظل عند التركيز */
+}
+
+/* تغيير شكل الحقول عند وجود خطأ */
+.is-invalid {
+  border-color: #e74c3c; /* تغيير الحدود للون الأحمر عند الخطأ */
+}
+
+/* تنسيق الرسالة الخاصة بالخطأ */
+.invalid-feedback {
+  font-size: 0.875rem;
+  color: #e74c3c;
+}
+
+/* تنسيق الرابط الخاص بتسجيل الدخول */
+.text-center a {
+  font-size: 0.9rem;
+  color: #ffb400;
+  text-decoration: none;
   font-weight: bold;
 }
 
-.terms-link {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color var(--transition-speed-fast) var(--transition-timing);
+.text-center a:hover {
+  text-decoration: underline;  /* إضافة التسطير عند التمرير */
+  color: #e68900;  /* تغيير اللون عند التمرير */
 }
 
-.terms-link:hover {
-  color: var(--primary-color-light);
-  text-decoration: underline;
-}
-
-.btn-social {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--border-radius-circle);
+/* تنسيق زر التسجيل */
+.btn-warning {
+  background-color: #ffb400;
   border: none;
+  padding: 10px;
+  font-weight: bold;
   color: white;
-  font-size: var(--font-size-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform var(--transition-speed-normal) var(--transition-timing);
+  border-radius: 10px;
+  transition: all 0.3s ease;
 }
 
-.btn-social:hover {
-  transform: translateY(-3px);
+.btn-warning:hover {
+  background-color: #e68900; /* تغيير اللون عند التمرير */
 }
 
-.google {
-  background-color: #ea4335;
+/* تنسيق النص أسفل الزر */
+.text-center {
+  font-size: 0.9rem;
 }
 
-.facebook {
-  background-color: #3b5998;
+.text-center a {
+  font-size: 0.9rem;
+  color: #ffb400;
+}
+/* تنسيق الأيقونة داخل الحقول */
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 14px;
+}
+
+/* padding علشان تسيب مساحة للأيقونة */
+.input-wrapper input {
+  padding-left: 35px !important;
 }
