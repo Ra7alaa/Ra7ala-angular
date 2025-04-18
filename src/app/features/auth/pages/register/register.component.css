@@ -1,0 +1,56 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--spacing-xl);
+  background-color: #f8f9fa;
+  direction: rtl;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 500px;
+}
+
+.title {
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
+.terms-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-speed-fast) var(--transition-timing);
+}
+
+.terms-link:hover {
+  color: var(--primary-color-light);
+  text-decoration: underline;
+}
+
+.btn-social {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-circle);
+  border: none;
+  color: white;
+  font-size: var(--font-size-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform var(--transition-speed-normal) var(--transition-timing);
+}
+
+.btn-social:hover {
+  transform: translateY(-3px);
+}
+
+.google {
+  background-color: #ea4335;
+}
+
+.facebook {
+  background-color: #3b5998;
+}

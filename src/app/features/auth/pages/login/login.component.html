@@ -1,0 +1,118 @@
+<div class="login-container">
+  <div class="login-card card shadow">
+    <div class="card-body p-4">
+      <h2 class="title text-center mb-2">Login</h2>
+      <p class="subtitle text-center text-muted mb-4">
+        Welcome back, login to enjoy our amazing trips
+      </p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                loginForm.get('email')?.invalid &&
+                (loginForm.get('email')?.dirty ||
+                  loginForm.get('email')?.touched)
+            }"
+          />
+          <div
+            *ngIf="
+              loginForm.get('email')?.invalid &&
+              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="loginForm.get('email')?.errors?.['required']"
+              >Email is required</span
+            >
+            <span *ngIf="loginForm.get('email')?.errors?.['email']"
+              >Please enter a valid email</span
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                loginForm.get('password')?.invalid &&
+                (loginForm.get('password')?.dirty ||
+                  loginForm.get('password')?.touched)
+            }"
+          />
+          <div
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="loginForm.get('password')?.errors?.['required']"
+              >Password is required</span
+            >
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']"
+              >Password must be at least 6 characters</span
+            >
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="form-check">
+            <input type="checkbox" id="remember" class="form-check-input" />
+            <label for="remember" class="form-check-label">Remember me</label>
+          </div>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 py-2 mb-3"
+          [disabled]="loginForm.invalid || isSubmitting"
+        >
+          <span
+            *ngIf="isSubmitting"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          <span *ngIf="!isSubmitting">Login</span>
+        </button>
+      </form>
+
+      <div class="social-login text-center pt-3 border-top mb-3">
+        <p class="text-muted mb-3">Or login with</p>
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn-social google">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="btn-social facebook">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="register-link text-center">
+        Don't have an account?
+        <a routerLink="/auth/register" class="text-primary fw-medium"
+          >Register now</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

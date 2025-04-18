@@ -1,0 +1,15 @@
+<div class="search-container">
+  <div class="search-box">
+    <i class="fa fa-search search-icon"></i>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="ابحث عن رحلات..."
+      (keyup.enter)="onSearch()"
+    />
+    <button class="clear-btn" *ngIf="searchTerm" (click)="clearSearch()">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  <button class="search-btn" (click)="onSearch()">بحث</button>
+</div>

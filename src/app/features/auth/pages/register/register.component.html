@@ -1,0 +1,186 @@
+<div class="register-container">
+  <div class="register-card card shadow">
+    <div class="card-body p-4">
+      <h2 class="title text-center mb-2">Create new account</h2>
+      <p class="subtitle text-center text-muted mb-4">
+        Join us and enjoy our amazing trips
+      </p>
+
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="register-form"
+      >
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('name')?.invalid &&
+                (registerForm.get('name')?.dirty ||
+                  registerForm.get('name')?.touched)
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('name')?.invalid &&
+              (registerForm.get('name')?.dirty ||
+                registerForm.get('name')?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.get('name')?.errors?.['required']"
+              >Name is required</span
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('email')?.invalid &&
+                (registerForm.get('email')?.dirty ||
+                  registerForm.get('email')?.touched)
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('email')?.invalid &&
+              (registerForm.get('email')?.dirty ||
+                registerForm.get('email')?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.get('email')?.errors?.['required']"
+              >Email is required</span
+            >
+            <span *ngIf="registerForm.get('email')?.errors?.['email']"
+              >Please enter a valid email</span
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('password')?.invalid &&
+                (registerForm.get('password')?.dirty ||
+                  registerForm.get('password')?.touched)
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('password')?.invalid &&
+              (registerForm.get('password')?.dirty ||
+                registerForm.get('password')?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <span *ngIf="registerForm.get('password')?.errors?.['required']"
+              >Password is required</span
+            >
+            <span *ngIf="registerForm.get('password')?.errors?.['minlength']"
+              >Password must be at least 6 characters</span
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                registerForm.get('confirmPassword')?.invalid &&
+                (registerForm.get('confirmPassword')?.dirty ||
+                  registerForm.get('confirmPassword')?.touched)
+            }"
+          />
+          <div
+            *ngIf="
+              registerForm.get('confirmPassword')?.invalid &&
+              (registerForm.get('confirmPassword')?.dirty ||
+                registerForm.get('confirmPassword')?.touched)
+            "
+            class="invalid-feedback"
+          >
+            <span
+              *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+              >Confirm password is required</span
+            >
+            <span
+              *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']"
+              >Passwords do not match</span
+            >
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="form-check">
+            <input type="checkbox" id="terms" class="form-check-input" />
+            <label for="terms" class="form-check-label"
+              >I agree to the
+              <a href="#" class="terms-link">Terms and Conditions</a></label
+            >
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 py-2 mb-3"
+          [disabled]="registerForm.invalid || isSubmitting"
+        >
+          <span
+            *ngIf="isSubmitting"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          <span *ngIf="!isSubmitting">Register</span>
+        </button>
+      </form>
+
+      <div class="social-register text-center pt-3 border-top mb-3">
+        <p class="text-muted mb-3">Or register with</p>
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn-social google">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="btn-social facebook">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="login-link text-center">
+        Already have an account?
+        <a routerLink="/auth/login" class="text-primary fw-medium">Login</a>
+      </div>
+    </div>
+  </div>
+</div>

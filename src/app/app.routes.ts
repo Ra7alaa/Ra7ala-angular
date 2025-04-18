@@ -9,7 +9,7 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./features/trips/trips.module').then((m) => m.TripsModule),
+          import('./features/home/home.module').then((m) => m.HomeModule),
       },
       {
         path: 'trips',
@@ -18,11 +18,11 @@ export const routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'auth',
-  //   loadChildren: () =>
-  //     import('./features/auth/auth.module').then((m) => m.AuthModule),
-  // },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./features/auth/auth.module').then((m) => m.AuthModule),
+  },
   {
     path: '**',
     redirectTo: '',

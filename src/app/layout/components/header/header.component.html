@@ -1,20 +1,42 @@
-<header class="app-header">
-  <div class="auth-buttons">
-    <button class="btn-login">Log In</button>
-    <button class="btn-signup">Sign Up</button>
-  </div>
+<header class="header">
+  <div class="container">
+    <nav class="navbar">
+      <!-- Logo -->
+      <a class="navbar-brand" routerLink="/">
+        <h1 class="logo">Ra7ala</h1>
+      </a>
 
-  <nav class="main-nav">
-    <ul>
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Destinations</a></li>
-      <li><a href="#">Packages</a></li>
-      <li><a href="#">Contact Us</a></li>
-    </ul>
-  </nav>
+      <!-- Navigation Links -->
+      <div class="nav-links">
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Home</a
+        >
+        <a routerLink="/about" routerLinkActive="active">About</a>
+        <a routerLink="/destinations" routerLinkActive="active">Destinations</a>
+        <a routerLink="/packages" routerLinkActive="active">Packages</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact Us</a>
+      </div>
 
-  <div class="logo">
-    <h1>Ra7ala</h1>
+      <!-- Auth Buttons -->
+      <div class="auth-buttons">
+        <ng-container *ngIf="!currentUser; else loggedInUser">
+          <a routerLink="/auth/login" class="btn-login">Log In</a>
+          <a routerLink="/auth/register" class="btn-signup">Sign Up</a>
+        </ng-container>
+        <ng-template #loggedInUser>
+          <div class="user-info">
+            <span class="welcome-text"
+              >Welcome, {{ currentUser?.name || "Guest" }}</span
+            >
+            <button class="btn-logout" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </nav>
   </div>
 </header>
