@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color:  var(--background-color);
+  
 }
 
 .content-container {
@@ -13,4 +15,5 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  
 }

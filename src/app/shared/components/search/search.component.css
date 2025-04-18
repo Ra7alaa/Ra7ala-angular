@@ -1,83 +1,180 @@
 .search-container {
-  display: flex;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  direction: rtl;
-}
-
-.search-box {
   position: relative;
+}
+
+.search-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+
+}
+
+.search-form-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-group {
   flex: 1;
+  min-width: 140px;
 }
 
-.search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;
-  font-size: 16px;
-}
-
-input {
+/* PrimeNG Float Label styling */
+:host ::ng-deep .p-float-label {
   width: 100%;
-  padding: 12px 40px 12px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px 0 0 4px;
-  font-size: 16px;
+}
+
+:host ::ng-deep .p-float-label input,
+:host ::ng-deep .p-float-label select {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  padding: 12px 10px;
+}
+
+:host ::ng-deep .p-float-label input:focus,
+:host ::ng-deep .p-float-label select:focus {
+  border-color: #0099ff;
+  box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
+}
+
+:host ::ng-deep .p-float-label label {
+  color: #666;
+  font-size: 13px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
   outline: none;
-  transition: border-color 0.3s;
+  border-color: #0099ff;
+  box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.1);
 }
 
-input:focus {
-  border-color: #ff9800;
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.clear-btn {
+.input-group .form-control {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.swap-btn {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #0099ff;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Actions section styling */
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.promo-btn {
+  color: #000;
   background: none;
   border: none;
-  color: #aaa;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 16px;
   padding: 0;
+  display: flex;
+  align-items: center;
 }
 
-.clear-btn:hover {
-  color: #666;
+.promo-btn i {
+  margin-right: 5px;
+}
+
+.promo-input {
+  width: 200px;
 }
 
 .search-btn {
-  padding: 0 20px;
-  background-color: #ff9800;
-  color: white;
+  background-color: #f2ef9c;
+  color: #333;
   border: none;
-  border-radius: 0 4px 4px 0;
-  font-size: 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
 }
 
 .search-btn:hover {
-  background-color: #ffcc00;
+  background-color: #e9e68c;
 }
 
-@media (max-width: 576px) {
-  .search-container {
+.search-btn i {
+  margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-form-wrapper {
     flex-direction: column;
+    gap: 15px;
   }
 
-  input {
-    border-radius: 4px;
-    margin-bottom: 10px;
+  .form-group {
+    width: 100%;
   }
 
-  .search-btn {
-    border-radius: 4px;
-    padding: 10px;
+  .action-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
   }
 }

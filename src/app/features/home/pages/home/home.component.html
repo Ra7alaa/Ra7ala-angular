@@ -2,20 +2,20 @@
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1>Explore the Best Destinations with Ra7ala</h1>
+      <h1 dir="ltr">Book Your Rahala bus Now!</h1>
       <p>
-        Comfortable trips with everything you need for an exceptional travel
-        experience
+        Book your bus with your credit card in less than 2 minutes
       </p>
-      <div class="search-box">
-        <input
-          type="text"
-          placeholder="Search for your favorite destination..."
-        />
-        <button class="search-button">Search</button>
+
+      <!-- Replace simple search with advanced search component -->
+      <div class="container search-box">
+        <app-search (search)="handleSearch($event)"></app-search>
       </div>
     </div>
   </section>
+
+  <img src="assets/images/home2.svg" style="margin-top: 128px;" width="100%" alt="">
+  
 
   <!-- Featured Destinations -->
   <section class="featured-section">

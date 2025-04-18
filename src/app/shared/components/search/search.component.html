@@ -1,15 +1,72 @@
-<div class="search-container">
-  <div class="search-box">
-    <i class="fa fa-search search-icon"></i>
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      placeholder="ابحث عن رحلات..."
-      (keyup.enter)="onSearch()"
-    />
-    <button class="clear-btn" *ngIf="searchTerm" (click)="clearSearch()">
-      <i class="fa fa-times"></i>
-    </button>
+<div class="search-container" dir="ltr">
+  <h2 class="search-title">Where are you Travel?</h2>
+
+  <div class="search-form-wrapper">
+    <!-- From-To Section with Float Label -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="fromTo" [(ngModel)]="fromToValue" />
+        <label for="fromTo">From - To</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Trip Type Section with Float Label -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <select
+          pInputText
+          id="tripType"
+          [(ngModel)]="tripType"
+          class="form-select"
+        >
+          <option value="return">Return</option>
+          <option value="oneway">One Way</option>
+          <option value="multicity">Multi City</option>
+        </select>
+        <!-- <label for="tripType">Trip</label> -->
+      </p-floatlabel>
+    </div>
+
+    <!-- Date Section with Float Label -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="dateRange" [(ngModel)]="dateRange" />
+        <label for="dateRange">Depart - Return</label>
+      </p-floatlabel>
+    </div>
+
+    <!-- Passengers Section with Float Label -->
+    <div class="form-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="passengersInfo" [(ngModel)]="passengersInfo" />
+        <label for="passengersInfo">Passenger - Class</label>
+      </p-floatlabel>
+    </div>
   </div>
-  <button class="search-btn" (click)="onSearch()">بحث</button>
+
+  <!-- Promo code and actions section -->
+  <div class="actions-row">
+    <div class="action-buttons">
+      
+
+      <button
+        class="promo-btn"
+        *ngIf="!showPromoCode"
+        (click)="togglePromoCode()"
+      >
+        <i class="bi bi-plus-lg me-1"></i> Add Promo Code
+      </button>
+
+      <button class="search-btn" (click)="onSearch()">
+        <i class="bi bi-send-fill me-1"></i> Show results
+      </button>
+
+      <div class="promo-input" *ngIf="showPromoCode">
+        <p-floatlabel variant="on">
+          <input pInputText id="promoCode" [(ngModel)]="promoCode" />
+          <label for="promoCode">Promo Code</label>
+        </p-floatlabel>
+      </div>
+    </div>
+  </div>
 </div>
