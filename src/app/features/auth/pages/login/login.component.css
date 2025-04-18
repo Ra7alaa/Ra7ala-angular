@@ -18,24 +18,13 @@
 
 
 .login-image {
-  /* width: 90%; */
-  /* width: 570px; */
+
   height: 450px;
   max-height: 90vh;
   object-fit: cover;
   border-radius: 2rem;
 }
- /* .login-image {
-  width: 570px;
-  height: 793px;
-  position: absolute;
-  top: 121px;
-  left: 204px;
-  object-fit: cover;
-  border-radius: 55px;
-} */
-
-
+ 
 .login-right {
   width: 520px;
   margin: auto;
@@ -54,8 +43,6 @@
   -webkit-text-fill-color: transparent;
   margin-bottom: 2rem;
 } 
-
-
 
 .login-form {
   max-width: 400px;
@@ -84,14 +71,14 @@
     }
 
     input {
-      width:400px; /* ← زودنا العرض فقط */
+      width:400px; 
       padding: 0.75rem 0.75rem 0.75rem 2.5rem;
       border: 1px solid #ddd;
       border-radius: 12px;
       font-size: 1rem;
      
       &::placeholder {
-        font-size: 0.75rem; // الحجم المناسب للنص داخل placeholder
+        font-size: 0.75rem; 
         color: #fff;
       }
 
@@ -173,12 +160,12 @@
   .email-input {
   width: 554px;
   height: 72px;
-  border-radius: 10px; /* اختياري حسب الشكل في فيجما */
+  border-radius: 10px; 
   font-size: 16px;
   padding: 0 20px;
 }
 input[type="checkbox"] {
-    accent-color: #ffbc3b; /* تغيير اللون إلى نفس لون زر الدخول */
+    accent-color: #ffbc3b; 
     width: 18px;
     height: 18px;
     border-radius: 4px;
@@ -186,7 +173,6 @@ input[type="checkbox"] {
   }
 
   input[type="checkbox"]:checked {
-    background-color: #ffbc3b; /* تغيير اللون عند التحديد */
-    border-color: #ffbc3b;
+    background-color: #ffbc3b; 
   }
 }

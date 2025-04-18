@@ -14,21 +14,20 @@
   flex-direction: row;
 }
 
-/* تنسيق الحاوية الخاصة بنموذج التسجيل */
+
 .register-container {
   flex: 1;
   padding: 40px;
   background-color: #fff;
 }
 
-/* تنسيق البطاقة التي تحتوي على النموذج */
+
 .register-card {
   max-width: 400px;
   width: 100%;
   border-radius: 16px;
 }
 
-/* تنسيق الصورة الجانبية */
 .register-image {
   flex: 1;
   background-color: #f8f9fa;
@@ -38,7 +37,7 @@
   padding: 40px;
 }
 
-/* تنسيق الصورة داخل القسم */
+
 .register-image img {
   max-width: 100%;
   max-height: 90vh;
@@ -46,50 +45,50 @@
   object-fit: cover;
 }
 
-/* تنسيق عنوان النموذج */
+
 .title {
   font-weight: 700;
   font-size: 100px;
   color: #ffb400;
 }
 
-/* ↓↓↓ تصغير حجم placeholder بشكل أكبر ↓↓↓ */
+
 input::placeholder {
-  font-size: 0.75rem;  /* تقليل الحجم إلى أصغر */
+  font-size: 0.75rem;  
   color: #999;
 }
 
-/* تصغير حجم placeholder الأبيض */
+
 input::placeholder.white {
   color: #fff;
 }
 
-/* تغيير شكل الحقول (inputs) */
+
 .form-control {
-  border-radius: 10px; /* جعل الزوايا دائرية */
-  padding: 10px 15px; /* تعديل المسافة الداخلية */
-  border: 1px solid #ccc; /* إضافة حدود رفيعة */
-  transition: all 0.3s ease; /* إضافة تأثير عند التركيز */
+  border-radius: 10px; 
+  padding: 10px 15px; 
+  border: 1px solid #ccc; 
+  transition: all 0.3s ease; 
 }
 
-/* إضافة تأثير عند التركيز على الحقول */
+
 .form-control:focus {
-  border-color: #ffb400; /* تغيير لون الحدود عند التركيز */
-  box-shadow: 0 0 10px rgba(255, 180, 0, 0.5); /* إضافة تأثير ظل عند التركيز */
+  border-color: #ffb400; 
+  box-shadow: 0 0 10px rgba(255, 180, 0, 0.5); 
 }
 
-/* تغيير شكل الحقول عند وجود خطأ */
+
 .is-invalid {
-  border-color: #e74c3c; /* تغيير الحدود للون الأحمر عند الخطأ */
+  border-color: #e74c3c; 
 }
 
-/* تنسيق الرسالة الخاصة بالخطأ */
+
 .invalid-feedback {
   font-size: 0.875rem;
   color: #e74c3c;
 }
 
-/* تنسيق الرابط الخاص بتسجيل الدخول */
+
 .text-center a {
   font-size: 0.9rem;
   color: #ffb400;
@@ -98,11 +97,11 @@ input::placeholder.white {
 }
 
 .text-center a:hover {
-  text-decoration: underline;  /* إضافة التسطير عند التمرير */
-  color: #e68900;  /* تغيير اللون عند التمرير */
+  text-decoration: underline;  
+  color: #e68900;  
 }
 
-/* تنسيق زر التسجيل */
+
 .btn-warning {
   background-color: #ffb400;
   border: none;
@@ -114,10 +113,10 @@ input::placeholder.white {
 }
 
 .btn-warning:hover {
-  background-color: #e68900; /* تغيير اللون عند التمرير */
+  background-color: #e68900; 
 }
 
-/* تنسيق النص أسفل الزر */
+
 .text-center {
   font-size: 0.9rem;
 }
@@ -126,7 +125,7 @@ input::placeholder.white {
   font-size: 0.9rem;
   color: #ffb400;
 }
-/* تنسيق الأيقونة داخل الحقول */
+
 .input-wrapper {
   position: relative;
 }
@@ -140,7 +139,7 @@ input::placeholder.white {
   font-size: 14px;
 }
 
-/* padding علشان تسيب مساحة للأيقونة */
+
 .input-wrapper input {
   padding-left: 35px !important;
 }
