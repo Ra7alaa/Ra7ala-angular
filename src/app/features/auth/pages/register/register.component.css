@@ -1,4 +1,4 @@
-/* تنسيق صفحة التسجيل */
+
 .logo-text {
   text-align: center;
   font-size: 2.5rem;
@@ -8,19 +8,18 @@
   -webkit-text-fill-color: transparent;
   margin-bottom: 2rem;
 } 
+
 .register-page {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
 }
 
-
 .register-container {
   flex: 1;
   padding: 40px;
   background-color: #fff;
 }
-
 
 .register-card {
   max-width: 400px;
@@ -37,7 +36,6 @@
   padding: 40px;
 }
 
-
 .register-image img {
   max-width: 100%;
   max-height: 90vh;
@@ -45,24 +43,20 @@
   object-fit: cover;
 }
 
-
 .title {
   font-weight: 700;
   font-size: 100px;
   color: #ffb400;
 }
 
-
 input::placeholder {
   font-size: 0.75rem;  
   color: #999;
 }
 
-
 input::placeholder.white {
   color: #fff;
 }
-
 
 .form-control {
   border-radius: 10px; 
@@ -71,23 +65,19 @@ input::placeholder.white {
   transition: all 0.3s ease; 
 }
 
-
 .form-control:focus {
   border-color: #ffb400; 
   box-shadow: 0 0 10px rgba(255, 180, 0, 0.5); 
 }
 
-
 .is-invalid {
   border-color: #e74c3c; 
 }
-
 
 .invalid-feedback {
   font-size: 0.875rem;
   color: #e74c3c;
 }
-
 
 .text-center a {
   font-size: 0.9rem;
@@ -100,7 +90,6 @@ input::placeholder.white {
   text-decoration: underline;  
   color: #e68900;  
 }
-
 
 .btn-warning {
   background-color: #ffb400;
@@ -115,7 +104,6 @@ input::placeholder.white {
 .btn-warning:hover {
   background-color: #e68900; 
 }
-
 
 .text-center {
   font-size: 0.9rem;
@@ -139,7 +127,98 @@ input::placeholder.white {
   font-size: 14px;
 }
 
-
 .input-wrapper input {
   padding-left: 35px !important;
+}
+
+@media (max-width: 768px) {
+  .register-page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .register-image {
+    order: -1;
+    width: 100%;
+    padding: 0;
+    height: 200px;
+  }
+
+  .register-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+
+  .register-container {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .form-control {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .text-center a {
+    font-size: 1rem;
+  }
+
+  .btn-warning {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+  }
+
+  .text-center {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-control {
+    padding: 8px 10px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .text-center a {
+    font-size: 0.8rem;
+  }
+
+  .btn-warning {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .register-image {
+    height: 150px;
+  }
+}
+
+@media (max-width: 320px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+  }
+
+  .btn-warning {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .register-image {
+    height: 120px;
+  }
 }

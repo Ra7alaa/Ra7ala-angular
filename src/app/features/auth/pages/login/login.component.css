@@ -1,4 +1,3 @@
-
 .login-wrapper {
   display: flex;
   min-height: 100vh;
@@ -18,13 +17,24 @@
 
 
 .login-image {
-
+  /* width: 90%; */
+  /* width: 570px; */
   height: 450px;
   max-height: 90vh;
   object-fit: cover;
   border-radius: 2rem;
 }
- 
+ /* .login-image {
+  width: 570px;
+  height: 793px;
+  position: absolute;
+  top: 121px;
+  left: 204px;
+  object-fit: cover;
+  border-radius: 55px;
+} */
+
+
 .login-right {
   width: 520px;
   margin: auto;
@@ -43,6 +53,8 @@
   -webkit-text-fill-color: transparent;
   margin-bottom: 2rem;
 } 
+
+
 
 .login-form {
   max-width: 400px;
@@ -71,14 +83,14 @@
     }
 
     input {
-      width:400px; 
+      width:400px; /* ← زودنا العرض فقط */
       padding: 0.75rem 0.75rem 0.75rem 2.5rem;
       border: 1px solid #ddd;
       border-radius: 12px;
       font-size: 1rem;
      
       &::placeholder {
-        font-size: 0.75rem; 
+        font-size: 0.75rem; // الحجم المناسب للنص داخل placeholder
         color: #fff;
       }
 
@@ -165,7 +177,7 @@
   padding: 0 20px;
 }
 input[type="checkbox"] {
-    accent-color: #ffbc3b; 
+    accent-color: #ffbc3b;
     width: 18px;
     height: 18px;
     border-radius: 4px;
@@ -174,5 +186,147 @@ input[type="checkbox"] {
 
   input[type="checkbox"]:checked {
     background-color: #ffbc3b; 
+    border-color: #ffbc3b;
+  }
+}
+
+
+
+
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .login-left,
+  .login-right {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .login-image {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+  }
+
+  .login-form {
+    max-width: 100%;
+  }
+
+  .form-group .input-wrapper input,
+  .email-input {
+    width: 100% !important;
+  }
+
+  .btn-login {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+    padding: 1rem; 
+  }
+
+
+  .login-left, .login-right {
+    width: 100%; 
+    padding: 1rem; 
+  }
+
+
+  .login-image {
+    width: 100%; 
+    height: auto;
+    border-radius: 1rem;
+  }
+
+
+  .login-form {
+    max-width: 100%;
+  }
+
+
+  .form-group .input-wrapper input,
+  .email-input {
+    width: 100% !important; 
+  }
+
+  .btn-login {
+    width: 100%; 
+  }
+
+
+  .logo-text {
+    font-size: 2rem; 
+  }
+}
+
+
+@media (max-width: 480px) {
+  .login-wrapper {
+    flex-direction: column;
+    padding: 0.5rem; 
+  }
+
+
+  .login-left, .login-right {
+    width: 100%; 
+    padding: 0.5rem;
+  }
+
+  .login-image {
+    width: 100%;
+    height: 200px; 
+    object-fit: cover; 
+  }
+
+  .login-form {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .form-group .input-wrapper input {
+    font-size: 0.9rem; 
+  }
+
+  .btn-login {
+    width: 100%; 
+    padding: 12px; 
+    font-size: 0.9rem; 
+  }
+
+  
+  .logo-text {
+    font-size: 1.5rem; 
+  }
+
+
+  .signup-link {
+    margin-top: 1rem; 
+    font-size: 0.85rem;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .login-wrapper {
+    padding: 0.3rem; 
+  }
+
+  .login-image {
+    height: 150px; 
+  }
+
+  .btn-login {
+    font-size: 0.8rem; 
+    padding: 10px;
+  }
+
+ 
+  .logo-text {
+    font-size: 1.2rem; 
   }
 }
