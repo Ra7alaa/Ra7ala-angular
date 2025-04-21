@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { VerifyCodeComponent } from './pages/verify-code/verify-code.component';
+import { NewPasswordComponent } from './pages/new-password/new-password.component';
 
 const routes: Routes = [
   {
@@ -14,15 +15,22 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+  },
+  {
+    path: 'verify-code',
+    component: VerifyCodeComponent,
+  },
+  {
+    path: 'new-password',
+    component: NewPasswordComponent,
+  },
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule.forChild(routes),
-    LoginComponent,
-    RegisterComponent,
-  ],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
 export class AuthModule {}

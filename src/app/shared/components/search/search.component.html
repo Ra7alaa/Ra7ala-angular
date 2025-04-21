@@ -2,53 +2,76 @@
   <h2 class="search-title">Where are you Travel?</h2>
 
   <div class="search-form-wrapper">
-    <!-- From-To Section with Float Label -->
-    <div class="form-group">
-      <p-floatlabel variant="on">
-        <input pInputText id="fromTo" [(ngModel)]="fromToValue" />
-        <label for="fromTo">From - To</label>
-      </p-floatlabel>
-    </div>
+    <div class="row g-3">
+      <!-- From-To Section with Float Label -->
+      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="fromTo"
+              [(ngModel)]="fromToValue"
+              class="w-100"
+            />
+            <label for="fromTo">From - To</label>
+          </p-floatlabel>
+        </div>
+      </div>
 
-    <!-- Trip Type Section with Float Label -->
-    <div class="form-group">
-      <p-floatlabel variant="on">
-        <select
-          pInputText
-          id="tripType"
-          [(ngModel)]="tripType"
-          class="form-select"
-        >
-          <option value="return">Return</option>
-          <option value="oneway">One Way</option>
-          <option value="multicity">Multi City</option>
-        </select>
-        <!-- <label for="tripType">Trip</label> -->
-      </p-floatlabel>
-    </div>
+      <!-- Trip Type Section with Float Label -->
+      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <p-floatlabel variant="on">
+            <select
+              pInputText
+              id="tripType"
+              [(ngModel)]="tripType"
+              class="form-select w-100"
+            >
+              <option value="return">Return</option>
+              <option value="oneway">One Way</option>
+              <option value="multicity">Multi City</option>
+            </select>
+            <!-- <label for="tripType">Trip</label> -->
+          </p-floatlabel>
+        </div>
+      </div>
 
-    <!-- Date Section with Float Label -->
-    <div class="form-group">
-      <p-floatlabel variant="on">
-        <input pInputText id="dateRange" [(ngModel)]="dateRange" />
-        <label for="dateRange">Depart - Return</label>
-      </p-floatlabel>
-    </div>
+      <!-- Date Section with Float Label -->
+      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="dateRange"
+              [(ngModel)]="dateRange"
+              class="w-100"
+            />
+            <label for="dateRange">Depart - Return</label>
+          </p-floatlabel>
+        </div>
+      </div>
 
-    <!-- Passengers Section with Float Label -->
-    <div class="form-group">
-      <p-floatlabel variant="on">
-        <input pInputText id="passengersInfo" [(ngModel)]="passengersInfo" />
-        <label for="passengersInfo">Passenger - Class</label>
-      </p-floatlabel>
+      <!-- Passengers Section with Float Label -->
+      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="passengersInfo"
+              [(ngModel)]="passengersInfo"
+              class="w-100"
+            />
+            <label for="passengersInfo">Passenger - Class</label>
+          </p-floatlabel>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Promo code and actions section -->
   <div class="actions-row">
-    <div class="action-buttons">
-      
-
+    <div class="d-flex flex-wrap justify-content-center gap-2">
       <button
         class="promo-btn"
         *ngIf="!showPromoCode"
@@ -61,9 +84,14 @@
         <i class="bi bi-send-fill me-1"></i> Show results
       </button>
 
-      <div class="promo-input" *ngIf="showPromoCode">
+      <div class="promo-input w-100 mt-2" *ngIf="showPromoCode">
         <p-floatlabel variant="on">
-          <input pInputText id="promoCode" [(ngModel)]="promoCode" />
+          <input
+            pInputText
+            id="promoCode"
+            [(ngModel)]="promoCode"
+            class="w-100"
+          />
           <label for="promoCode">Promo Code</label>
         </p-floatlabel>
       </div>

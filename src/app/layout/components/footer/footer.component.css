@@ -16,7 +16,7 @@
   font-family: "Satisfy", cursive;
 }
 
-/* نحافظ على تنسيق أيقونات التواصل الاجتماعي */
+/* تنسيق أيقونات التواصل الاجتماعي باستخدام لون primary-color من variables.css */
 .social-icon {
   display: inline-flex;
   justify-content: center;
@@ -34,4 +34,66 @@
   transform: translateY(-3px);
   background-color: var(--primary-color-light);
   box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+}
+
+/* تنسيق للأسهم للتأكد من استخدام لون primary-color */
+.arrow-icon {
+  color: var(--primary-color);
+}
+
+/* تنسيق لأيقونات الاتصال لتستخدم لون primary-color */
+.fas.fa-phone,
+.fas.fa-envelope,
+.fas.fa-map-marker-alt {
+  color: var(--primary-color) !important;
+}
+
+/* تنسيق روابط الخدمات */
+.list-unstyled a {
+  transition: color 0.3s ease;
+}
+
+.list-unstyled a:hover {
+  color: var(--primary-color) !important;
+}
+
+/* إضافة أيقونات السهم لروابط الخدمات */
+.list-unstyled a::before {
+  content: "→";
+  color: var(--primary-color);
+  margin-right: 5px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateX(-5px);
+  display: inline-block;
+}
+
+.list-unstyled a:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Center footer content on small screens */
+@media (max-width: 576px) {
+  .footer-content {
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+/* Additional styles for ensuring Services and Contact are properly aligned */
+@media (max-width: 767.98px) {
+  .footer-content h3 {
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .footer-content {
+    padding: 0 10px;
+  }
 }

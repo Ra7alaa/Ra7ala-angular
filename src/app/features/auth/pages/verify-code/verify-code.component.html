@@ -1,0 +1,76 @@
+<div class="verify-code-wrapper">
+  <div class="verify-code-left">
+    <img
+      src="assets/images/bus.svg"
+      alt="Verify Code Image"
+      class="verify-code-image"
+    />
+  </div>
+  <div class="verify-code-right">
+    <h1 class="logo-text">Ra7ala</h1>
+
+    <h2 class="title">Verify Code</h2>
+    <p class="subtitle">
+      Please enter the verification code sent to your email.
+    </p>
+
+    <form
+      [formGroup]="verifyCodeForm"
+      (ngSubmit)="onSubmit()"
+      class="verify-code-form"
+    >
+      <div class="form-group">
+        <div class="verification-code-container">
+          <input
+            type="text"
+            formControlName="digit1"
+            maxlength="1"
+            class="code-input"
+            (keyup)="onKeyUp($event, 1)"
+            #digit1
+          />
+          <input
+            type="text"
+            formControlName="digit2"
+            maxlength="1"
+            class="code-input"
+            (keyup)="onKeyUp($event, 2)"
+            #digit2
+          />
+          <input
+            type="text"
+            formControlName="digit3"
+            maxlength="1"
+            class="code-input"
+            (keyup)="onKeyUp($event, 3)"
+            #digit3
+          />
+          <input
+            type="text"
+            formControlName="digit4"
+            maxlength="1"
+            class="code-input"
+            (keyup)="onKeyUp($event, 4)"
+            #digit4
+          />
+        </div>
+        <div class="invalid-feedback" *ngIf="isCodeInvalid">
+          Please enter a valid verification code
+        </div>
+      </div>
+
+      <p class="resend-link">
+        Didn't receive code?
+        <a href="javascript:void(0)" (click)="resendCode()">Resend code</a>
+      </p>
+
+      <button
+        type="submit"
+        class="btn-verify"
+        [disabled]="!isCodeComplete() || isSubmitting"
+      >
+        Verify
+      </button>
+    </form>
+  </div>
+</div>

@@ -2,8 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color:  var(--background-color);
-  
+  background-color: var(--background-color);
 }
 
 .content-container {
@@ -13,7 +12,6 @@
 
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 20px 0; /* Keep top and bottom padding, remove left and right */
   overflow-y: auto;
-  
 }

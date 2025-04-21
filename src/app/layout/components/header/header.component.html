@@ -1,41 +1,97 @@
 <header class="header">
   <div class="container">
-    <nav class="navbar">
+    <nav class="navbar navbar-expand-lg align-items-center">
       <!-- Logo -->
       <a class="navbar-brand" routerLink="/">
         <h1 class="logo">Ra7ala</h1>
       </a>
 
-      <!-- Navigation Links -->
-      <div class="nav-links">
-        <a
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          >Home</a
-        >
-        <a routerLink="/about" routerLinkActive="active">About</a>
-        <a routerLink="/destinations" routerLinkActive="active">Destinations</a>
-        <a routerLink="/packages" routerLinkActive="active">Packages</a>
-        <a routerLink="/contact" routerLinkActive="active">Contact Us</a>
-      </div>
+      <!-- Mobile Toggle Button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        (click)="toggleMobileMenu()"
+        aria-controls="navbarLinks"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-      <!-- Auth Buttons -->
-      <div class="auth-buttons">
-        <ng-container *ngIf="!currentUser; else loggedInUser">
-          <a routerLink="/auth/login" class="btn-login">Log In</a>
-          <a routerLink="/auth/register" class="btn-signup">Sign Up</a>
-        </ng-container>
-        <ng-template #loggedInUser>
-          <div class="user-info">
-            <span class="welcome-text"
-              >Welcome, {{ currentUser?.name || "Guest" }}</span
+      <!-- Collapsible Navigation Content -->
+      <div
+        class="collapse navbar-collapse"
+        id="navbarLinks"
+        [ngClass]="{ show: isMobileMenuOpen }"
+      >
+        <!-- Navigation Links -->
+        <div class="nav-links navbar-nav me-auto">
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link"
+            (click)="closeMobileMenuIfOpen()"
+            >Home</a
+          >
+          <a
+            routerLink="/about"
+            routerLinkActive="active"
+            class="nav-link"
+            (click)="closeMobileMenuIfOpen()"
+            >About</a
+          >
+          <a
+            routerLink="/destinations"
+            routerLinkActive="active"
+            class="nav-link"
+            (click)="closeMobileMenuIfOpen()"
+            >Destinations</a
+          >
+          <a
+            routerLink="/packages"
+            routerLinkActive="active"
+            class="nav-link"
+            (click)="closeMobileMenuIfOpen()"
+            >Packages</a
+          >
+          <a
+            routerLink="/contact"
+            routerLinkActive="active"
+            class="nav-link"
+            (click)="closeMobileMenuIfOpen()"
+            >Contact Us</a
+          >
+        </div>
+
+        <!-- Auth Buttons -->
+        <div class="auth-buttons">
+          <ng-container *ngIf="!currentUser; else loggedInUser">
+            <a
+              routerLink="/auth/login"
+              class="btn-login"
+              (click)="closeMobileMenuIfOpen()"
+              >Log In</a
             >
-            <button class="btn-logout" (click)="logout()">
-              <i class="bi bi-box-arrow-right"></i> Logout
-            </button>
-          </div>
-        </ng-template>
+            <a
+              routerLink="/auth/register"
+              class="btn-signup"
+              (click)="closeMobileMenuIfOpen()"
+              >Sign Up</a
+            >
+          </ng-container>
+          <ng-template #loggedInUser>
+            <div class="user-info d-flex align-items-center">
+              <span class="welcome-text d-none d-sm-inline"
+                >Welcome, {{ currentUser?.name || "Guest" }}</span
+              >
+              <button class="btn-logout" (click)="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="d-none d-sm-inline">Logout</span>
+              </button>
+            </div>
+          </ng-template>
+        </div>
       </div>
     </nav>
   </div>

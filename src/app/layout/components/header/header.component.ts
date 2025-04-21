@@ -13,6 +13,7 @@ import { User } from '../../../features/auth/models/user.model';
 })
 export class HeaderComponent implements OnInit {
   currentUser: User | null = null;
+  isMobileMenuOpen = false;
 
   constructor(private authService: AuthService) {}
 
@@ -23,7 +24,18 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenuIfOpen(): void {
+    if (this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+    }
+  }
+
   logout(): void {
     this.authService.logout();
+    this.closeMobileMenuIfOpen();
   }
 }

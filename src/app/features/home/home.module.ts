@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
+import { SharedModule } from '../../shared/shared.module';
+import { CommonTripsComponent } from './components/common-trips/common-trips.component';
 
 const routes: Routes = [
   {
@@ -11,8 +13,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes), HomeComponent],
-  exports: [HomeComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    SharedModule,
+    HomeComponent,
+    CommonTripsComponent,
+  ],
 })
 export class HomeModule {}

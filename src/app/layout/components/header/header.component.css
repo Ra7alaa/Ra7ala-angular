@@ -26,6 +26,10 @@
   font-family: "Satisfy", cursive;
 }
 
+.navbar-brand {
+  padding-left: 15px; /* Add spacing before the logo */
+}
+
 /* Navigation links */
 .nav-links {
   display: flex;
@@ -123,26 +127,105 @@
 
 /* Responsive styles */
 @media (max-width: 992px) {
+  /* Override row direction for the navbar */
   .navbar {
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Make logo left aligned */
+  .navbar-brand {
+    margin: 0 !important;
+    text-align: left;
+    padding-left: 15px; /* Maintain spacing on small screens */
+  }
+
+  /* Right-align toggle button */
+  .navbar-toggler {
+    margin-left: auto;
+    margin-right: 15px; /* Add spacing after the menu icon */
+    border: none; /* Remove border by default */
+    transition: border 0.3s ease;
+  }
+
+  .navbar-toggler:focus {
+    border: 1px solid var(--primary-color); /* Add border only when focused */
+    box-shadow: none; /* Remove default focus shadow if any */
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 152, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+  /* Make nav links take full width and align text in the center */
+  .navbar-collapse {
+    width: 100%;
+    margin-top: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    animation: slideDown 0.3s ease;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     gap: 15px;
+    width: 100%;
+    padding-bottom: 10px;
+  }
+
+  .nav-links a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  .nav-links a:hover {
+    background-color: rgba(255, 152, 0, 0.1);
   }
 }
 
 @media (max-width: 576px) {
   .auth-buttons {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 10px;
+    width: 100%;
+    margin-top: 10px;
   }
 
-  .btn-signup {
-    width: 100%;
+  .btn-signup,
+  .btn-login {
     text-align: center;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .logo {
+    font-size: 1.6rem;
+    padding-left: 10px;
   }
 }

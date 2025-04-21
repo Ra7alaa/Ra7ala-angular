@@ -14,25 +14,37 @@
   margin-bottom: 15px;
   display: flex;
   align-items: flex-start;
-
 }
 
 .search-form-wrapper {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  gap: 15px;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .form-group {
   flex: 1;
   min-width: 140px;
+  padding: 0 7px;
+}
+
+/* Ensure the row takes full width */
+.search-form-wrapper .row {
+  width: 100%;
+  margin: 0;
+}
+
+/* Make columns have even spacing */
+.search-form-wrapper .col-12 {
+  padding: 0 7px;
 }
 
 /* PrimeNG Float Label styling */
 :host ::ng-deep .p-float-label {
   width: 100%;
+  margin-bottom: 10px;
 }
 
 :host ::ng-deep .p-float-label input,
@@ -44,6 +56,7 @@
   font-size: 14px;
   color: #333;
   padding: 12px 10px;
+  height: 48px; /* ضمان نفس الارتفاع لجميع الحقول */
 }
 
 :host ::ng-deep .p-float-label input:focus,
@@ -163,18 +176,54 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .search-container {
+    padding: 15px 20px;
+  }
+
+  .search-title {
+    margin-bottom: 10px;
+  }
+
   .search-form-wrapper {
     flex-direction: column;
-    gap: 15px;
+    margin-bottom: 10px;
   }
 
   .form-group {
     width: 100%;
+    padding: 2px 0;
+    margin-bottom: 2px;
+  }
+
+  /* تقليل المسافة بين الصفوف */
+  .search-form-wrapper .row {
+    row-gap: 5px;
+  }
+
+  .search-form-wrapper .row .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 2px 0;
+  }
+
+  /* تقليل المسافة بين عناصر floatlabel */
+  :host ::ng-deep .p-float-label {
+    margin-bottom: 5px;
+  }
+
+  :host ::ng-deep .p-float-label input,
+  :host ::ng-deep .p-float-label select {
+    height: 40px;
+    padding: 8px 10px;
+  }
+
+  .actions-row {
+    margin-top: 5px;
   }
 
   .action-buttons {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 8px;
   }
 }

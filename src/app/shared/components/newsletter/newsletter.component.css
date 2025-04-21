@@ -1,0 +1,103 @@
+.newsletter-container {
+  background-color: #f8f0a6;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  margin: 50px auto;
+  max-width: 800px;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-container::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.newsletter-container h2 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.newsletter-container p {
+  font-size: 16px;
+  color: #555;
+  max-width: 500px;
+  margin: 0 auto 25px;
+}
+
+.newsletter-form {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.email-input {
+  flex: 1;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.submit-btn {
+  background-color: #ff8000;
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #e67300;
+}
+
+/* Add travel-themed decorative elements */
+.newsletter-container::after {
+  content: "";
+  background-image: url("/assets/images/travel-pattern.svg");
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .newsletter-container {
+    padding: 30px 20px;
+  }
+
+  .newsletter-container h2 {
+    font-size: 24px;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .email-input {
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .submit-btn {
+    border-radius: 8px;
+    padding: 10px;
+  }
+}

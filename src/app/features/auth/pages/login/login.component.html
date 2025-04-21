@@ -10,7 +10,27 @@
         <label>Email Address</label>
         <div class="input-wrapper">
           <i class="fa fa-envelope icon"></i>
-          <input type="email" class="form-control email-input" placeholder="Enter your Email" />
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control email-input"
+            placeholder="Enter your Email"
+            [ngClass]="{
+              'is-invalid':
+                loginForm.get('email')?.invalid &&
+                (loginForm.get('email')?.dirty ||
+                  loginForm.get('email')?.touched)
+            }"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              loginForm.get('email')?.invalid &&
+              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+            "
+          >
+            Please enter a valid email address
+          </div>
         </div>
       </div>
 
@@ -22,7 +42,23 @@
             type="password"
             formControlName="password"
             placeholder="Password"
+            [ngClass]="{
+              'is-invalid':
+                loginForm.get('password')?.invalid &&
+                (loginForm.get('password')?.dirty ||
+                  loginForm.get('password')?.touched)
+            }"
           />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+          >
+            Password must be at least 6 characters
+          </div>
         </div>
       </div>
 
@@ -31,10 +67,20 @@
           <input type="checkbox" id="remember" />
           <label for="remember">Remember Me</label>
         </div>
-        <a href="#" class="forgot">Forget Password?</a>
+        <a routerLink="/auth/forgot-password" class="forgot"
+          >Forgot Password?</a
+        >
       </div>
 
-      <button type="submit" class="btn-login" [disabled]="loginForm.invalid || isSubmitting">
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loginForm.invalid || isSubmitting"
+      >
         Log In
       </button>
 
