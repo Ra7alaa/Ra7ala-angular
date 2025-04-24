@@ -1,4 +1,8 @@
-
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* منع التمرير */
+}
 .logo-text {
   text-align: center;
   font-size: 2.5rem;
@@ -13,6 +17,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: row;
+  
 }
 
 .register-container {
