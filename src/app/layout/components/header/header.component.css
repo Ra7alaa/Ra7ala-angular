@@ -110,6 +110,24 @@
   font-weight: 500;
 }
 
+/* Dashboard button */
+.btn-dashboard {
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: var(--font-size-sm);
+  transition: background-color var(--transition-speed-fast)
+    var(--transition-timing);
+}
+
+.btn-dashboard:hover {
+  background-color: var(--primary-color-light);
+  color: white;
+  text-decoration: none;
+}
+
 .btn-logout {
   background-color: #f44336;
   color: white;

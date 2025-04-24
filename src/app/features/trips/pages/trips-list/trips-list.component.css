@@ -46,7 +46,7 @@
 
 .search-box input:focus {
   outline: none;
-  border-color: #2a6dc9;
+  border-color: var(--primary-color);
 }
 
 .search-btn {
@@ -56,7 +56,7 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #2a6dc9;
+  color: var(--primary-color);
   font-size: 1.1rem;
   cursor: pointer;
 }
@@ -84,7 +84,7 @@
 }
 
 .category-btn.active {
-  background-color: #2a6dc9;
+  background-color: var(--primary-color);
   color: white;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .featured-trips h2 i {
-  color: #ffd700;
+  color: var(--primary-color);
   margin-right: 10px;
 }
 
@@ -141,7 +141,7 @@
   position: absolute;
   top: 15px;
   left: 15px;
-  background-color: rgba(42, 109, 201, 0.9);
+  background-color: rgba(255, 152, 0, 0.9);
   color: white;
   padding: 5px 10px;
   border-radius: 20px;
@@ -154,7 +154,7 @@
   bottom: 15px;
   right: 15px;
   background-color: rgba(255, 255, 255, 0.9);
-  color: #2a6dc9;
+  color: var(--primary-color);
   padding: 8px 15px;
   border-radius: 30px;
   font-size: 1.1rem;
@@ -178,7 +178,7 @@
 }
 
 .trip-location i {
-  color: #2a6dc9;
+  color: var(--primary-color);
   margin-right: 5px;
 }
 
@@ -197,7 +197,7 @@
 
 .trip-meta i {
   margin-right: 5px;
-  color: #2a6dc9;
+  color: var(--primary-color);
 }
 
 .trip-description {
@@ -208,7 +208,7 @@
 }
 
 .btn-primary {
-  background-color: #2a6dc9;
+  background-color: var(--primary-color);
   color: white;
   padding: 10px 20px;
   border-radius: 30px;
@@ -219,7 +219,7 @@
 }
 
 .btn-primary:hover {
-  background-color: #1e5aa8;
+  background-color: var(--primary-color-light);
 }
 
 .no-results {
@@ -241,6 +241,44 @@
 
 .no-results p {
   margin-bottom: 20px;
+}
+
+/* Pagination styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.pagination .page-item .page-link {
+  color: var(--secondary-color);
+  background-color: white;
+  border-color: #dee2e6;
+  transition: all 0.3s ease;
+  margin: 0 3px;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.pagination .page-item .page-link:hover {
+  color: var(--primary-color);
+  background-color: rgba(255, 152, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(255, 152, 0, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: white;
+  border-color: #dee2e6;
 }
 
 @media (max-width: 768px) {

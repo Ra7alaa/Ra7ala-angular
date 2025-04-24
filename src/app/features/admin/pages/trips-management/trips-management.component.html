@@ -1,0 +1,507 @@
+<!-- Trips Management Content -->
+<div>
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2">Trips Management</h1>
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addTripModal"
+    >
+      <i class="bi bi-plus-circle me-2"></i>Add New Trip
+    </button>
+  </div>
+
+  <!-- Search and filter -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control border-start-0"
+          placeholder="Search trips..."
+        />
+      </div>
+    </div>
+    <div class="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
+      <div class="d-flex gap-2">
+        <select class="form-select">
+          <option selected>All Status</option>
+          <option>Upcoming</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+          <option>Cancelled</option>
+        </select>
+        <button class="btn btn-outline-secondary">
+          <i class="bi bi-funnel me-2"></i>Filter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trips Table -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Route</th>
+              <th>Departure Time</th>
+              <th>Arrival Time</th>
+              <th>Bus</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#TRP-1234</td>
+              <td>Cairo - Alexandria</td>
+              <td>Apr 24, 2025 07:30 AM</td>
+              <td>Apr 24, 2025 10:15 AM</td>
+              <td>Bus-101 (VIP)</td>
+              <td>250 EGP</td>
+              <td><span class="badge bg-primary">Upcoming</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editTripModal"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>#TRP-1235</td>
+              <td>Cairo - Luxor</td>
+              <td>Apr 23, 2025 10:00 PM</td>
+              <td>Apr 24, 2025 07:20 AM</td>
+              <td>Bus-102 (Standard)</td>
+              <td>400 EGP</td>
+              <td><span class="badge bg-success">In Progress</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editTripModal"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>#TRP-1236</td>
+              <td>Alexandria - Luxor</td>
+              <td>Apr 22, 2025 08:00 AM</td>
+              <td>Apr 22, 2025 06:45 PM</td>
+              <td>Bus-103 (VIP)</td>
+              <td>500 EGP</td>
+              <td><span class="badge bg-secondary">Completed</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editTripModal"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>#TRP-1237</td>
+              <td>Cairo - Alexandria</td>
+              <td>Apr 21, 2025 04:30 PM</td>
+              <td>Apr 21, 2025 07:15 PM</td>
+              <td>Bus-104 (Standard)</td>
+              <td>200 EGP</td>
+              <td><span class="badge bg-danger">Cancelled</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editTripModal"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
+          >Previous</a
+        >
+      </li>
+      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Add Trip Modal -->
+<div
+  class="modal fade"
+  id="addTripModal"
+  tabindex="-1"
+  aria-labelledby="addTripModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTripModalLabel">Add New Trip</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="tripRoute" class="form-label">Route</label>
+              <select id="tripRoute" class="form-select">
+                <option selected disabled>Select route</option>
+                <option>Cairo - Alexandria</option>
+                <option>Cairo - Luxor</option>
+                <option>Alexandria - Luxor</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="departureStation" class="form-label"
+                >Departure Station</label
+              >
+              <select id="departureStation" class="form-select">
+                <option selected disabled>Select departure station</option>
+                <option>Cairo Central Station</option>
+                <option>Alexandria Main Station</option>
+                <option>Luxor Bus Terminal</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="arrivalStation" class="form-label"
+                >Arrival Station</label
+              >
+              <select id="arrivalStation" class="form-select">
+                <option selected disabled>Select arrival station</option>
+                <option>Cairo Central Station</option>
+                <option>Alexandria Main Station</option>
+                <option>Luxor Bus Terminal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="departureDate" class="form-label"
+                >Departure Date</label
+              >
+              <input type="date" class="form-control" id="departureDate" />
+            </div>
+            <div class="col-md-6">
+              <label for="departureTime" class="form-label"
+                >Departure Time</label
+              >
+              <input type="time" class="form-control" id="departureTime" />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="arrivalDate" class="form-label">Arrival Date</label>
+              <input type="date" class="form-control" id="arrivalDate" />
+            </div>
+            <div class="col-md-6">
+              <label for="arrivalTime" class="form-label">Arrival Time</label>
+              <input type="time" class="form-control" id="arrivalTime" />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="tripBus" class="form-label">Bus</label>
+              <select id="tripBus" class="form-select">
+                <option selected disabled>Select bus</option>
+                <option>Bus-101 (VIP - 45 seats)</option>
+                <option>Bus-102 (Standard - 50 seats)</option>
+                <option>Bus-103 (VIP - 45 seats)</option>
+                <option>Bus-104 (Standard - 50 seats)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="tripPrice" class="form-label">Price (EGP)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="tripPrice"
+                placeholder="Enter price"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="tripStatus" class="form-label">Status</label>
+              <select id="tripStatus" class="form-select">
+                <option selected>Upcoming</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="availableSeats" class="form-label"
+                >Available Seats</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="availableSeats"
+                placeholder="Number of available seats"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="tripNotes" class="form-label">Notes</label>
+            <textarea
+              class="form-control"
+              id="tripNotes"
+              rows="3"
+              placeholder="Any special notes or instructions"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary">Save Trip</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Trip Modal -->
+<div
+  class="modal fade"
+  id="editTripModal"
+  tabindex="-1"
+  aria-labelledby="editTripModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTripModalLabel">Edit Trip #TRP-1235</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="editTripRoute" class="form-label">Route</label>
+              <select id="editTripRoute" class="form-select">
+                <option>Cairo - Alexandria</option>
+                <option selected>Cairo - Luxor</option>
+                <option>Alexandria - Luxor</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editDepartureStation" class="form-label"
+                >Departure Station</label
+              >
+              <select id="editDepartureStation" class="form-select">
+                <option selected>Cairo Central Station</option>
+                <option>Alexandria Main Station</option>
+                <option>Luxor Bus Terminal</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editArrivalStation" class="form-label"
+                >Arrival Station</label
+              >
+              <select id="editArrivalStation" class="form-select">
+                <option>Cairo Central Station</option>
+                <option>Alexandria Main Station</option>
+                <option selected>Luxor Bus Terminal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editDepartureDate" class="form-label"
+                >Departure Date</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="editDepartureDate"
+                value="2025-04-23"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="editDepartureTime" class="form-label"
+                >Departure Time</label
+              >
+              <input
+                type="time"
+                class="form-control"
+                id="editDepartureTime"
+                value="22:00"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editArrivalDate" class="form-label"
+                >Arrival Date</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="editArrivalDate"
+                value="2025-04-24"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="editArrivalTime" class="form-label"
+                >Arrival Time</label
+              >
+              <input
+                type="time"
+                class="form-control"
+                id="editArrivalTime"
+                value="07:20"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editTripBus" class="form-label">Bus</label>
+              <select id="editTripBus" class="form-select">
+                <option>Bus-101 (VIP - 45 seats)</option>
+                <option selected>Bus-102 (Standard - 50 seats)</option>
+                <option>Bus-103 (VIP - 45 seats)</option>
+                <option>Bus-104 (Standard - 50 seats)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editTripPrice" class="form-label">Price (EGP)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="editTripPrice"
+                value="400"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editTripStatus" class="form-label">Status</label>
+              <select id="editTripStatus" class="form-select">
+                <option>Upcoming</option>
+                <option selected>In Progress</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editAvailableSeats" class="form-label"
+                >Available Seats</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="editAvailableSeats"
+                value="15"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="editTripNotes" class="form-label">Notes</label>
+            <textarea class="form-control" id="editTripNotes" rows="3">
+Night trip with free WiFi and snacks service.</textarea
+            >
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary">Update Trip</button>
+      </div>
+    </div>
+  </div>
+</div>

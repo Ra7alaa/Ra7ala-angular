@@ -1,0 +1,114 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Station Details</h1>
+    <button class="btn btn-outline-secondary" (click)="navigateToList()">
+      <i class="bi bi-arrow-left"></i> Back to Stations
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading station details...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error && !loading" class="alert alert-danger" role="alert">
+    {{ error }}
+    <button
+      class="btn btn-sm btn-outline-danger ms-2"
+      (click)="loadStationDetails()"
+    >
+      Retry
+    </button>
+  </div>
+
+  <!-- Station details -->
+  <div *ngIf="station && !loading && !error" class="card">
+    <div
+      class="card-header d-flex justify-content-between align-items-center bg-white"
+    >
+      <h5 class="mb-0">{{ station.name }}</h5>
+      <div class="btn-group">
+        <button
+          class="btn btn-outline-primary"
+          (click)="navigateToEdit()"
+          *ngIf="canEditStation()"
+        >
+          <i class="bi bi-pencil"></i> Edit
+        </button>
+        <button
+          class="btn btn-outline-danger"
+          (click)="deleteStation()"
+          *ngIf="canDeleteStation()"
+        >
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h6 class="fw-bold mb-3">Basic Information</h6>
+          <dl class="row">
+            <dt class="col-sm-4">Station ID</dt>
+            <dd class="col-sm-8">{{ station.id }}</dd>
+
+            <dt class="col-sm-4">Name</dt>
+            <dd class="col-sm-8">{{ station.name }}</dd>
+
+            <dt class="col-sm-4">City</dt>
+            <dd class="col-sm-8">{{ station.cityName }}</dd>
+
+            <!-- Ownership field removed -->
+
+            <dt *ngIf="station.companyName" class="col-sm-4">Company Name</dt>
+            <dd *ngIf="station.companyName" class="col-sm-8">
+              {{ station.companyName }}
+            </dd>
+
+            <dt *ngIf="station.companyId" class="col-sm-4">Company ID</dt>
+            <dd *ngIf="station.companyId" class="col-sm-8">
+              {{ station.companyId }}
+            </dd>
+          </dl>
+        </div>
+        <div class="col-md-6">
+          <h6 class="fw-bold mb-3">Location Information</h6>
+          <dl class="row">
+            <dt class="col-sm-4">Latitude</dt>
+            <dd class="col-sm-8">{{ station.latitude }}</dd>
+
+            <dt class="col-sm-4">Longitude</dt>
+            <dd class="col-sm-8">{{ station.longitude }}</dd>
+          </dl>
+
+          <div class="mt-3">
+            <h6 class="fw-bold mb-2">Map Preview</h6>
+            <div class="map-container">
+              <div
+                id="station-map"
+                style="height: 300px; border-radius: 8px; overflow: hidden"
+              ></div>
+
+              <!-- مؤشر تحميل الخريطة -->
+              <div class="map-loading" *ngIf="!mapLoaded">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading map...</span>
+                </div>
+                <p class="mt-2 small text-muted">Loading map...</p>
+              </div>
+            </div>
+            <p class="text-muted small mt-2">
+              <i class="bi bi-info-circle"></i>
+              Location coordinates: {{ station.latitude }},
+              {{ station.longitude }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
