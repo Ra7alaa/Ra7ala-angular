@@ -24,10 +24,12 @@ export class StationsManagementComponent implements OnInit {
   filterSystemOwned: boolean | null = null;
   searchTerm: string = '';
 
+
   // Pagination
   currentPage: number = 1;
   pageSize: number = 20; // Fixed page size at 20
   totalItems: number = 0;
+
 
   constructor(
     private stationsService: StationsService,
@@ -47,11 +49,15 @@ export class StationsManagementComponent implements OnInit {
     this.stationsService.getAllStations().subscribe({
       next: (stations) => {
         this.stations = stations;
+
         this.totalItems = stations.length;
         this.loading = false;
 
         // Check if current page is valid after data is loaded
         this.validateCurrentPage();
+
+        this.loading = false;
+
       },
       error: (err) => {
         this.error = 'Failed to load stations: ' + err.message;
@@ -59,6 +65,7 @@ export class StationsManagementComponent implements OnInit {
       },
     });
   }
+
 
   // Validate that current page is within valid range
   validateCurrentPage(): void {
@@ -73,6 +80,11 @@ export class StationsManagementComponent implements OnInit {
   // Filter stations based on search term and system owned filter
   get filteredStations(): Station[] {
     const filtered = this.stations.filter((station) => {
+
+  // Filter stations based on search term and system owned filter
+  get filteredStations(): Station[] {
+    return this.stations.filter((station) => {
+
       // Apply system ownership filter if set
       if (
         this.filterSystemOwned !== null &&
@@ -94,6 +106,7 @@ export class StationsManagementComponent implements OnInit {
 
       return true;
     });
+
 
     this.totalItems = filtered.length;
 
@@ -172,6 +185,7 @@ export class StationsManagementComponent implements OnInit {
         }
       }, 0);
     }
+
   }
 
   // Check if current user can create stations
@@ -294,7 +308,9 @@ export class StationsManagementComponent implements OnInit {
   // Filter by system owned status
   filterByOwnership(isSystemOwned: boolean | null): void {
     this.filterSystemOwned = isSystemOwned;
+
     this.currentPage = 1; // Reset to first page when filtering
+
   }
 
   // Reset all filters
@@ -302,5 +318,6 @@ export class StationsManagementComponent implements OnInit {
     this.filterSystemOwned = null;
     this.searchTerm = '';
     this.currentPage = 1; // Reset to first page when clearing filters
+
   }
 }
