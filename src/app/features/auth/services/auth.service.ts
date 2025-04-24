@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
-
-interface User {
-  id?: number;
-  name?: string;
-  email: string;
-  token?: string;
-}
+import { User, UserRole } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,12 +18,16 @@ export class AuthService {
       name: 'أحمد محمد',
       email: 'ahmed@example.com',
       token: 'token_123',
+      role: UserRole.SystemOwner,
     },
     {
       id: 2,
       name: 'مريم أحمد',
       email: 'mariam@example.com',
       token: 'token_456',
+      role: UserRole.CompanyAdmin,
+      companyId: 5,
+      companyName: 'شركة السفر الشرقية',
     },
   ];
 
@@ -72,6 +70,7 @@ export class AuthService {
       name,
       email,
       token: `token_${Date.now()}`,
+      role: UserRole.Customer, // Default role
     };
 
     // In a real app, you would send this to an API
