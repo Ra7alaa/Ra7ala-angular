@@ -16,6 +16,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/trips/trips.module').then((m) => m.TripsModule),
       },
+      {
+        path: 'about',
+        loadChildren: () =>
+          import('./features/about/about.module').then((m) => m.AboutModule),
+      },
     ],
   },
   {
