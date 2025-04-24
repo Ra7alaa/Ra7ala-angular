@@ -36,7 +36,8 @@
   background: linear-gradient(to right, #c9e265, #f9aa61);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* بدل 2rem */
+  margin-top: -6rem; /* ترفعها فوق */
 }
 
 .title {
@@ -44,6 +45,7 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 1rem;
+  margin-top: 1.5rem; /*تنزلها تحت  */
   text-align: center;
 }
 
@@ -173,16 +175,33 @@
   .logo-text {
     font-size: 2rem;
   }
+/* 
+  ✅ أضف ده لتخلي الـ inputs تحت بعض */
+  /* .verification-code-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  } */
+
+  .code-input {
+    width: 60px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
 }
+
 
 @media (max-width: 480px) {
   .verify-code-wrapper {
+    flex-direction: column;
     padding: 0.5rem;
   }
 
   .verification-code-container {
     display: flex;
     justify-content: center;
+    flex-direction: column; /* 👈 يخليهم تحت بعض */
+    align-items: center;     /* 👈 يخليهم في النص */
     gap: 15px;
     margin-bottom: 1rem;
   }
