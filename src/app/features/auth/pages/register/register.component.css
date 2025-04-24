@@ -191,6 +191,7 @@ input::placeholder.white {
   }
 }
 
+
 @media (max-width: 768px) {
   .register-page {
     flex-direction: column;
