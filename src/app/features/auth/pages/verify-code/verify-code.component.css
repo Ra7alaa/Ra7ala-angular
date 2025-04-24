@@ -37,15 +37,15 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1.5rem; /* بدل 2rem */
-  margin-top: -6rem; /* ترفعها فوق */
+  margin-top: -1rem; /* ترفعها فوق */
 }
 
 .title {
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 500;   /* بدل 600 */
   color: #333;
   margin-bottom: 1rem;
-  margin-top: 1.5rem; /*تنزلها تحت  */
+  margin-top: 1.5rem; /*تنزلها تحت */
   text-align: center;
 }
 
@@ -122,6 +122,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 5rem; /* يمكنك تعديل هذه القيمة حسب الحاجة */
 }
 
 .btn-verify:hover {
@@ -154,6 +155,8 @@
 
   .verify-code-left,
   .verify-code-right {
+    position: relative; /* أضف هذا */
+    padding-top: 2rem;  /* أضف هذا إذا لزم الأمر لزيادة المسافة بين العنوان والصورة */
     width: 100%;
     padding: 1rem;
   }
@@ -173,6 +176,7 @@
   }
 
   .logo-text {
+    margin-top: 0rem;  /* تغيير margin-top عشان تضمن إنها ما تطلع فوق */
     font-size: 2rem;
   }
 /* 
