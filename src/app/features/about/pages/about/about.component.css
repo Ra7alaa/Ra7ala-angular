@@ -1,0 +1,127 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.about-header {
+  margin-bottom: 1rem;
+}
+
+.about-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.about-header p {
+  font-size: 1.2rem;
+  color: #383737;
+  max-width: 800px;
+}
+
+.about-content {
+  display: flex;
+    flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+}
+
+.image-section {
+  flex: 1;
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yellow-circle {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background-color: #fff7e3;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.bus-image {
+  position: relative;
+  z-index: 2;
+  max-width: 60%;
+  height: auto;
+}
+
+.places-badge {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  background-color: #fff7e3;
+  color: #ff6b00;
+  padding: 0.75rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  z-index: 3;
+}
+
+.places-badge span:first-child {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.places-badge span:last-child {
+  font-size: 0.9rem;
+}
+
+.text-section {
+  flex: 1;
+}
+
+.text-section p {
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 992px) {
+  .about-content {
+    flex-direction: column;
+  }
+
+  .image-section {
+    min-height: 300px;
+  }
+
+  .yellow-circle {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 3rem 1.5rem;
+  }
+
+  .about-header h1 {
+    font-size: 2rem;
+  }
+
+  .about-header p {
+    font-size: 1.1rem;
+  }
+
+  .text-section p {
+    font-size: 1rem;
+  }
+}

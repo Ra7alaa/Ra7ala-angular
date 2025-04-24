@@ -1,4 +1,8 @@
-
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* منع التمرير */
+}
 .logo-text {
   text-align: center;
   font-size: 2.5rem;
@@ -13,6 +17,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: row;
+  
 }
 
 .register-container {
@@ -37,12 +42,10 @@
 }
 
 .register-image img {
-  /* max-width: 100%;
-  max-height: 90vh; */
   height: 450px;
   max-height: 90vh;
-  border-radius: 20px;
   object-fit: cover;
+  border-radius: 2rem;
 }
 
 .title {
@@ -140,10 +143,17 @@ input::placeholder.white {
   }
 
   .register-image {
-    order: -1;
+    /* order: -1;
     width: 100%;
     padding: 0;
-    height: 200px;
+    height: 200px; */
+    flex: 1;
+    max-width: 590px; /* زي ما في login */
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
   }
 
   .register-image img {
@@ -154,8 +164,12 @@ input::placeholder.white {
   }
 
   .register-container {
-    width: 100%;
-    padding: 1rem;
+    /* width: 100%;
+    padding: 1rem; */
+    flex: 1;
+  max-width: 590px;
+  padding: 40px;
+  background-color: #fff;
   }
 
   .title {
@@ -182,45 +196,51 @@ input::placeholder.white {
   }
 }
 
-@media (max-width: 480px) {
-  .form-control {
-    padding: 8px 10px;
-  }
 
-  .title {
-    font-size: 1.8rem;
-  }
-
-  .text-center a {
-    font-size: 0.8rem;
-  }
-
-  .btn-warning {
-    width: 100%;
-    padding: 12px;
-    font-size: 0.9rem;
+@media (max-width: 768px) {
+  .register-page {
+    flex-direction: column;
+    align-items: center;
   }
 
   .register-image {
-    height: 150px;
+    order: -1; /* عشان تيجي فوق */
+    width: 100%;
+    max-width: none;
+    padding: 1rem;
+    height: 250px;
+  }
+
+  .register-image img {
+    width: 100%;
+    /* height: 100%; */
+    height: 200px; /* تقليص الارتفاع على الشاشات الأصغر */
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+  .register-container {
+    width: 100%;
+    max-width: none;
+    padding: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .register-image {
+    height: 200px;
+  }
+
+  .register-image img {
+    width: 100%;
+    
+     height: 200px; 
+    object-fit: cover;
+    border-radius: 1rem; 
   }
 }
 
 @media (max-width: 320px) {
-  .title {
-    font-size: 1.5rem;
-  }
-
-  .form-control {
-    font-size: 0.9rem;
-  }
-
-  .btn-warning {
-    padding: 10px;
-    font-size: 0.85rem;
-  }
-
   .register-image {
-    height: 120px;
+    height: 150px;
   }
 }

@@ -36,14 +36,16 @@
   background: linear-gradient(to right, #c9e265, #f9aa61);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* بدل 2rem */
+  margin-top: -1rem; /* ترفعها فوق */
 }
 
 .title {
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 500;   /* بدل 600 */
   color: #333;
   margin-bottom: 1rem;
+  margin-top: 1.5rem; /*تنزلها تحت */
   text-align: center;
 }
 
@@ -120,6 +122,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 5rem; /* يمكنك تعديل هذه القيمة حسب الحاجة */
 }
 
 .btn-verify:hover {
@@ -152,6 +155,8 @@
 
   .verify-code-left,
   .verify-code-right {
+    position: relative; /* أضف هذا */
+    padding-top: 2rem;  /* أضف هذا إذا لزم الأمر لزيادة المسافة بين العنوان والصورة */
     width: 100%;
     padding: 1rem;
   }
@@ -171,18 +176,36 @@
   }
 
   .logo-text {
+    margin-top: 0rem;  /* تغيير margin-top عشان تضمن إنها ما تطلع فوق */
     font-size: 2rem;
+  }
+/* 
+  ✅ أضف ده لتخلي الـ inputs تحت بعض */
+  /* .verification-code-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  } */
+
+  .code-input {
+    width: 60px;
+    height: 45px;
+    font-size: 1.3rem;
   }
 }
 
+
 @media (max-width: 480px) {
   .verify-code-wrapper {
+    flex-direction: column;
     padding: 0.5rem;
   }
 
   .verification-code-container {
     display: flex;
     justify-content: center;
+    flex-direction: column; /* 👈 يخليهم تحت بعض */
+    align-items: center;     /* 👈 يخليهم في النص */
     gap: 15px;
     margin-bottom: 1rem;
   }
