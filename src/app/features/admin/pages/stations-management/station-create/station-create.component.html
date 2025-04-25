@@ -112,7 +112,7 @@
 
         <!-- Company Information notice for company admins -->
         <div
-          *ngIf="currentUser?.role === 'COMPANY_ADMIN'"
+          *ngIf="currentUser?.userType === UserRole.Admin"
           class="alert alert-info mb-4"
         >
           <i class="bi bi-info-circle-fill me-2"></i>
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Company Information for company admins (read-only) -->
-        <div *ngIf="currentUser?.role === 'COMPANY_ADMIN'" class="mb-3">
+        <div *ngIf="currentUser?.userType === UserRole.Admin" class="mb-3">
           <div class="card bg-light">
             <div class="card-body">
               <h5 class="card-title">Company Information</h5>

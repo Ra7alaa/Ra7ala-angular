@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './trips-list.component.html',
   styleUrls: ['./trips-list.component.css'],
   imports: [CommonModule, RouterModule],
+  standalone: true,
 })
 export class TripsListComponent implements OnInit {
   allTrips: Trip[] = [];

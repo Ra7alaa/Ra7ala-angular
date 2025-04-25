@@ -27,6 +27,9 @@ export class StationCreateComponent implements OnInit {
   isSystemOwned = true;
   currentUser: User | null = null;
 
+  // Expose UserRole enum to the template
+  UserRole = UserRole;
+
   // Flag to know if user can create system-owned stations
   canCreateSystemStations = false;
 
@@ -52,10 +55,11 @@ export class StationCreateComponent implements OnInit {
 
     // Check if user has permission to create system stations
     this.canCreateSystemStations =
-      this.currentUser?.role === UserRole.SystemOwner;
+      this.currentUser?.userType === UserRole.SystemOwner ||
+      this.currentUser?.userType === UserRole.SuperAdmin;
 
     // If user is a company admin, set default values for company stations
-    if (this.currentUser?.role === UserRole.CompanyAdmin) {
+    if (this.currentUser?.userType === UserRole.Admin) {
       this.isSystemOwned = false;
       this.stationForm.get('isSystemOwned')?.setValue(false);
       this.stationForm.get('isSystemOwned')?.disable(); // Disable the field
@@ -78,7 +82,7 @@ export class StationCreateComponent implements OnInit {
         if (isSystemOwned) {
           this.stationForm.get('companyId')?.setValue(0);
           this.stationForm.get('companyName')?.setValue('');
-        } else if (this.currentUser?.role === UserRole.CompanyAdmin) {
+        } else if (this.currentUser?.userType === UserRole.Admin) {
           // For company admin, set their company ID and name
           this.stationForm
             .get('companyId')
@@ -111,7 +115,7 @@ export class StationCreateComponent implements OnInit {
     const stationData: StationCreateRequest = formValue;
 
     // For company admins, ensure station is assigned to their company
-    if (this.currentUser?.role === UserRole.CompanyAdmin) {
+    if (this.currentUser?.userType === UserRole.Admin) {
       stationData.isSystemOwned = false;
       stationData.companyId = this.currentUser.companyId;
     } else {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
-import { User } from '../../../features/auth/models/user.model';
+import { User, UserRole } from '../../../features/auth/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +22,14 @@ export class HeaderComponent implements OnInit {
     this.authService.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });
+  }
+
+  isAdminUser(): boolean {
+    return (
+      this.currentUser?.userType === UserRole.Admin ||
+      this.currentUser?.userType === UserRole.SuperAdmin ||
+      this.currentUser?.userType === UserRole.SystemOwner
+    );
   }
 
   toggleMobileMenu(): void {

@@ -7,29 +7,30 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label>Email Address</label>
+        <label>Email or Username</label>
         <div class="input-wrapper">
           <i class="fa fa-envelope icon"></i>
           <input
-            type="email"
-            formControlName="email"
+            type="text"
+            formControlName="emailOrUsername"
             class="form-control email-input"
-            placeholder="Enter your Email"
+            placeholder="Enter your Email or Username"
             [ngClass]="{
               'is-invalid':
-                loginForm.get('email')?.invalid &&
-                (loginForm.get('email')?.dirty ||
-                  loginForm.get('email')?.touched)
+                loginForm.get('emailOrUsername')?.invalid &&
+                (loginForm.get('emailOrUsername')?.dirty ||
+                  loginForm.get('emailOrUsername')?.touched)
             }"
           />
           <div
             class="invalid-feedback"
             *ngIf="
-              loginForm.get('email')?.invalid &&
-              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+              loginForm.get('emailOrUsername')?.invalid &&
+              (loginForm.get('emailOrUsername')?.dirty ||
+                loginForm.get('emailOrUsername')?.touched)
             "
           >
-            Please enter a valid email address
+            Please enter your email or username
           </div>
         </div>
       </div>
@@ -39,7 +40,7 @@
         <div class="input-wrapper">
           <i class="fa fa-lock icon"></i>
           <input
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             formControlName="password"
             placeholder="Password"
             [ngClass]="{
@@ -49,6 +50,12 @@
                   loginForm.get('password')?.touched)
             }"
           />
+          <span class="password-toggle" (click)="togglePasswordVisibility()">
+            <i
+              class="fa"
+              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+            ></i>
+          </span>
           <div
             class="invalid-feedback"
             *ngIf="
@@ -57,7 +64,7 @@
                 loginForm.get('password')?.touched)
             "
           >
-            Password must be at least 6 characters
+            Password is required
           </div>
         </div>
       </div>
@@ -67,7 +74,9 @@
           <input type="checkbox" id="remember" />
           <label for="remember">Remember Me</label>
         </div>
-        <a routerLink="/auth/forgot-password" class="forgot">Forgot Password?</a>
+        <a routerLink="/auth/forgot-password" class="forgot"
+          >Forgot Password?</a
+        >
       </div>
 
       <div *ngIf="errorMessage" class="alert alert-danger">
@@ -79,7 +88,10 @@
         class="btn-login"
         [disabled]="loginForm.invalid || isSubmitting"
       >
-        Log In
+        <span *ngIf="!isSubmitting">Log In</span>
+        <span *ngIf="isSubmitting">
+          <i class="fa fa-spinner fa-spin"></i> Logging in...
+        </span>
       </button>
 
       <p class="signup-link">
