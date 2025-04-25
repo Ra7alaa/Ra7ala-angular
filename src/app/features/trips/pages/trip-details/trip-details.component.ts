@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './trip-details.component.html',
   styleUrls: ['./trip-details.component.css'],
   imports: [CommonModule, RouterModule],
-  
+  standalone: true,
 })
 export class TripDetailsComponent implements OnInit {
   trip: Trip | undefined;

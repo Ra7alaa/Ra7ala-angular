@@ -20,6 +20,9 @@ export class StationsManagementComponent implements OnInit {
   error: string | null = null;
   currentUser: User | null = null;
 
+  // Expose UserRole enum to the template
+  UserRole = UserRole;
+
   // Filtering
   filterSystemOwned: boolean | null = null;
   searchTerm: string = '';
@@ -175,17 +178,20 @@ export class StationsManagementComponent implements OnInit {
     }
   }
 
-  // Check if current user can create stations
+  // Check if current user can create station
   canCreateStation(): boolean {
     if (!this.currentUser) return false;
 
-    // System owners can create any station
-    if (this.currentUser.role === UserRole.SystemOwner) {
+    // System Owners and SuperAdmins can create any station
+    if (
+      this.currentUser.userType === UserRole.SystemOwner ||
+      this.currentUser.userType === UserRole.SuperAdmin
+    ) {
       return true;
     }
 
-    // Company admins can only create stations for their company
-    if (this.currentUser.role === UserRole.CompanyAdmin) {
+    // Admins can only create stations for their company
+    if (this.currentUser.userType === UserRole.Admin) {
       return true; // They can create, but in the creation form we'll restrict to company stations
     }
 
@@ -196,13 +202,16 @@ export class StationsManagementComponent implements OnInit {
   canEditStation(station: Station): boolean {
     if (!this.currentUser) return false;
 
-    // System owners can edit any station
-    if (this.currentUser.role === UserRole.SystemOwner) {
+    // System Owners and SuperAdmins can edit any station
+    if (
+      this.currentUser.userType === UserRole.SystemOwner ||
+      this.currentUser.userType === UserRole.SuperAdmin
+    ) {
       return true;
     }
 
-    // Company admins can only edit their own company's stations
-    if (this.currentUser.role === UserRole.CompanyAdmin) {
+    // Admins can only edit their own company's stations
+    if (this.currentUser.userType === UserRole.Admin) {
       // Can't edit system stations
       if (station.isSystemOwned) {
         return false;
@@ -219,13 +228,16 @@ export class StationsManagementComponent implements OnInit {
   canDeleteStation(station: Station): boolean {
     if (!this.currentUser) return false;
 
-    // System owners can delete any station
-    if (this.currentUser.role === UserRole.SystemOwner) {
+    // System Owners and SuperAdmins can delete any station
+    if (
+      this.currentUser.userType === UserRole.SystemOwner ||
+      this.currentUser.userType === UserRole.SuperAdmin
+    ) {
       return true;
     }
 
-    // Company admins can only delete their own company's stations
-    if (this.currentUser.role === UserRole.CompanyAdmin) {
+    // Admins can only delete their own company's stations
+    if (this.currentUser.userType === UserRole.Admin) {
       // Can't delete system stations
       if (station.isSystemOwned) {
         return false;

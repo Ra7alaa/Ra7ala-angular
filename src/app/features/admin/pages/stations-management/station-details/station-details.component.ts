@@ -22,6 +22,9 @@ export class StationDetailsComponent implements OnInit {
   currentUser: User | null = null;
   mapLoaded = false;
 
+  // Expose UserRole enum to the template
+  UserRole = UserRole;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -109,13 +112,16 @@ export class StationDetailsComponent implements OnInit {
   canEditStation(): boolean {
     if (!this.currentUser || !this.station) return false;
 
-    // System owners can edit any station
-    if (this.currentUser.role === UserRole.SystemOwner) {
+    // Owners and SuperAdmins can edit any station
+    if (
+      this.currentUser.userType === UserRole.SystemOwner ||
+      this.currentUser.userType === UserRole.SuperAdmin
+    ) {
       return true;
     }
 
-    // Company admins can only edit their own company's stations
-    if (this.currentUser.role === UserRole.CompanyAdmin) {
+    // Admins can only edit their own company's stations
+    if (this.currentUser.userType === UserRole.Admin) {
       // Can't edit system stations
       if (this.station.isSystemOwned) {
         return false;
@@ -132,13 +138,16 @@ export class StationDetailsComponent implements OnInit {
   canDeleteStation(): boolean {
     if (!this.currentUser || !this.station) return false;
 
-    // System owners can delete any station
-    if (this.currentUser.role === UserRole.SystemOwner) {
+    // Owners and SuperAdmins can delete any station
+    if (
+      this.currentUser.userType === UserRole.SystemOwner ||
+      this.currentUser.userType === UserRole.SuperAdmin
+    ) {
       return true;
     }
 
-    // Company admins can only delete their own company's stations
-    if (this.currentUser.role === UserRole.CompanyAdmin) {
+    // Admins can only delete their own company's stations
+    if (this.currentUser.userType === UserRole.Admin) {
       // Can't delete system stations
       if (this.station.isSystemOwned) {
         return false;

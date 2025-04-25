@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { PassengerRegisterRequest } from '../../models/user.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -29,10 +31,15 @@ export class RegisterComponent implements OnInit {
   ) {
     this.registerForm = this.formBuilder.group(
       {
-        name: ['', [Validators.required]],
+        fullName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
+        username: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
+        phoneNumber: [''],
+        profilePictureUrl: [''],
+        address: [''],
+        dateOfBirth: [''],
       },
       {
         validators: this.passwordMatchValidator,
@@ -63,15 +70,23 @@ export class RegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    const name = this.registerForm.get('name')?.value;
-    const email = this.registerForm.get('email')?.value;
-    const password = this.registerForm.get('password')?.value;
+    const registerData: PassengerRegisterRequest = {
+      email: this.registerForm.get('email')?.value,
+      username: this.registerForm.get('username')?.value,
+      password: this.registerForm.get('password')?.value,
+      fullName: this.registerForm.get('fullName')?.value,
+      phoneNumber: this.registerForm.get('phoneNumber')?.value || undefined,
+      profilePictureUrl:
+        this.registerForm.get('profilePictureUrl')?.value || undefined,
+      address: this.registerForm.get('address')?.value || undefined,
+      dateOfBirth: this.registerForm.get('dateOfBirth')?.value || undefined,
+    };
 
-    this.authService.register(name, email, password).subscribe({
+    this.authService.registerPassenger(registerData).subscribe({
       next: () => {
         this.router.navigate(['/']);
       },
-      error: (error) => {
+      error: (error: Error | HttpErrorResponse) => {
         this.errorMessage = error.message || 'حدث خطأ أثناء التسجيل';
         this.isSubmitting = false;
       },

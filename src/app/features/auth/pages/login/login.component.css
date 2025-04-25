@@ -177,95 +177,90 @@
     transition: all 0.3s ease;
   }
 
- /* إخفاء الـ checkbox الافتراضي */
-input[type="checkbox"] {
-  display: none;
-}
+  /* إخفاء الـ checkbox الافتراضي */
+  input[type="checkbox"] {
+    display: none;
+  }
 
-/* تخصيص الـ checkbox باستخدام label */
-input[type="checkbox"] + label {
-  position: relative;
-  padding-left: 30px; /* مسافة إضافية لعرض الـ checkbox */
-  cursor: pointer;
-  font-size: 1rem;
-}
+  /* تخصيص الـ checkbox باستخدام label */
+  input[type="checkbox"] + label {
+    position: relative;
+    padding-left: 30px; /* مسافة إضافية لعرض الـ checkbox */
+    cursor: pointer;
+    font-size: 1rem;
+  }
 
-/* تخصيص شكل الـ checkbox باستخدام ::before */
-input[type="checkbox"] + label::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #ddd;
-  background-color: #fff;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
+  /* تخصيص شكل الـ checkbox باستخدام ::before */
+  input[type="checkbox"] + label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
 
-/* إخفاء الـ checkbox الافتراضي */
-input[type="checkbox"] {
-  display: none;
-}
+  /* إخفاء الـ checkbox الافتراضي */
+  input[type="checkbox"] {
+    display: none;
+  }
 
-/* تخصيص الـ checkbox باستخدام label */
-input[type="checkbox"] + label {
-  position: relative;
-  padding-left: 30px; /* مسافة إضافية لعرض الـ checkbox */
-  cursor: pointer;
-  font-size: 1rem;
-  display: inline-block;
-  line-height: 18px;
-}
+  /* تخصيص الـ checkbox باستخدام label */
+  input[type="checkbox"] + label {
+    position: relative;
+    padding-left: 30px; /* مسافة إضافية لعرض الـ checkbox */
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-block;
+    line-height: 18px;
+  }
 
-/* تخصيص شكل الـ checkbox باستخدام ::before */
-input[type="checkbox"] + label::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #ddd;
-  background-color: #fff;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
+  /* تخصيص شكل الـ checkbox باستخدام ::before */
+  input[type="checkbox"] + label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
 
-/* تغيير اللون عند التحديد */
-input[type="checkbox"]:checked + label::before {
-  background-color: #ffbc3b; /* اللون الأصفر عند التحديد */
-  border-color: #ffbc3b;
-}
+  /* تغيير اللون عند التحديد */
+  input[type="checkbox"]:checked + label::before {
+    background-color: #ffbc3b; /* اللون الأصفر عند التحديد */
+    border-color: #ffbc3b;
+  }
 
-/* إضافة علامة التحديد (✔) داخل الـ checkbox عند التحديد */
-input[type="checkbox"]:checked + label::after {
-  content: "\2713"; /* رمز التحديد */
-  position: absolute;
-  left: 3px;
-  top: -1px;
-  color: white;
-  font-size: 16px;
-}
+  /* إضافة علامة التحديد (✔) داخل الـ checkbox عند التحديد */
+  input[type="checkbox"]:checked + label::after {
+    content: "\2713"; /* رمز التحديد */
+    position: absolute;
+    left: 3px;
+    top: -1px;
+    color: white;
+    font-size: 16px;
+  }
 
-/* تأثير التمرير فوق الـ checkbox */
-input[type="checkbox"]:hover + label::before {
-  background-color: #fff7e1;  /* لون فاتح عند التمرير فوقه */
-  border-color: #ffbc3b;
-}
+  /* تأثير التمرير فوق الـ checkbox */
+  input[type="checkbox"]:hover + label::before {
+    background-color: #fff7e1; /* لون فاتح عند التمرير فوقه */
+    border-color: #ffbc3b;
+  }
 
-
-  
-
-
-
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
+  .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .signup-link {
@@ -417,4 +412,27 @@ input[type="checkbox"]:hover + label::before {
   .logo-text {
     font-size: 1.2rem;
   }
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.3s;
+}
+
+.password-toggle:hover {
+  color: #ffbc3b;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #f5c6cb;
 }

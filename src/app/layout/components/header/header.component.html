@@ -83,9 +83,10 @@
           <ng-template #loggedInUser>
             <div class="user-info d-flex align-items-center">
               <span class="welcome-text d-none d-sm-inline"
-                >Welcome, {{ currentUser?.name || "Guest" }}</span
+                >Welcome, {{ currentUser?.fullName || "Guest" }}</span
               >
               <a
+                *ngIf="isAdminUser()"
                 routerLink="/admin/dashboard"
                 class="btn-dashboard"
                 (click)="closeMobileMenuIfOpen()"
