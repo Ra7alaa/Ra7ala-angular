@@ -8,7 +8,8 @@ import {
   User,
   AuthResponse,
   LoginRequest,
-  PassengerRegisterRequest
+  PassengerRegisterRequest,
+  UserRole
 } from '../models/user.model';
 
 @Injectable({
@@ -32,13 +33,29 @@ export class AuthService {
     }
   }
 
+  hasRole(roles: UserRole | UserRole[]): boolean {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) return false;
+
+    if (Array.isArray(roles)) {
+      return roles.some(role => currentUser.userType === role);
+    }
+    
+    return currentUser.userType === roles;
+  }
+
+  // Helper method to check if user is admin or higher
+  isAdminOrHigher(): boolean {
+    return this.hasRole([UserRole.Admin, UserRole.SuperAdmin, UserRole.SystemOwner]);
+  }
+
   login(credentials: LoginRequest): Observable<User> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
         map(response => {
           const user: User = {
             id: response.id,
-            name: response.fullName,
+            fullName: response.fullName,
             email: response.email,
             token: response.token
           };

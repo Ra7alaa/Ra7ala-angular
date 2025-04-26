@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { PassengerRegisterRequest } from '../../models/user.model';
 
 @Component({
@@ -92,14 +93,18 @@ export class RegisterComponent {
       next: () => {
         this.router.navigate(['/auth/login']);
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         if (error.status === 400) {
-          this.errorMessage = error.error?.message || 'Invalid registration data';
+          this.errorMessage = error.error?.message || 'Invalid registration data. Please check your input.';
         } else {
-          this.errorMessage = 'An error occurred during registration';
+          this.errorMessage = 'An error occurred during registration. Please try again.';
         }
+        this.isSubmitting = false;
+      },
+      complete: () => {
         this.isSubmitting = false;
       }
     });
   }
 }
+
