@@ -29,9 +29,14 @@ export class RegisterComponent implements OnInit {
   ) {
     this.registerForm = this.formBuilder.group(
       {
-        name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
+        username: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.minLength(6)]],
+        fullName: ['', [Validators.required]],
+        profilePictureUrl: [''],
+        address: ['', [Validators.required]],
+        dateOfBirth: ['', [Validators.required]],
+        phoneNumber: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{10,14}$/)]],
         confirmPassword: ['', [Validators.required]],
       },
       {
@@ -63,16 +68,14 @@ export class RegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    const name = this.registerForm.get('name')?.value;
-    const email = this.registerForm.get('email')?.value;
-    const password = this.registerForm.get('password')?.value;
-
-    this.authService.register(name, email, password).subscribe({
+    const formData = this.registerForm.value;
+    
+    this.authService.registerPassenger(formData).subscribe({
       next: () => {
         this.router.navigate(['/']);
       },
       error: (error) => {
-        this.errorMessage = error.message || 'حدث خطأ أثناء التسجيل';
+        this.errorMessage = error.message || 'An error occurred during registration';
         this.isSubmitting = false;
       },
     });

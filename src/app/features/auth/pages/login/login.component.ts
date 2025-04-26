@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
       next: () => {
         this.router.navigate(['/']);
       },
-      error: (error) => {
+      error: (error: { message: string; }) => {
         this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الدخول';
         this.isSubmitting = false;
       },

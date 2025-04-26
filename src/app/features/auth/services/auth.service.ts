@@ -1,88 +1,111 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { delay, tap, catchError } from 'rxjs/operators';
 
 interface User {
-  id?: number;
+  id?: string;
   name?: string;
   email: string;
   token?: string;
+}
+
+interface AuthResponse {
+  token: string;
+  id: string;
+  email: string;
+  username: string;
+  fullName: string;
+  userType: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private apiUrl = 'https://localhost:7111/api/Auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  // Demo users for testing without backend
-  private users: User[] = [
-    {
-      id: 1,
-      name: 'أحمد محمد',
-      email: 'ahmed@example.com',
-      token: 'token_123',
-    },
-    {
-      id: 2,
-      name: 'مريم أحمد',
-      email: 'mariam@example.com',
-      token: 'token_456',
-    },
-  ];
-
-  constructor(private router: Router) {
-    // Check if user is stored in localStorage on init
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       this.currentUserSubject.next(JSON.parse(storedUser));
     }
   }
 
-  login(email: string, password: string): Observable<User> {
-    // Mock API call
-    const user = this.users.find((u) => u.email === email);
-
-    if (user) {
-      return of(user).pipe(
-        delay(1000), // Simulate network delay
-        tap((user) => {
+  register(name: string, email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, { name, email, password })
+      .pipe(
+        tap(response => {
+          const user: User = {
+            id: response.id,
+            name: response.fullName,
+            email: response.email,
+            token: response.token
+          };
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSubject.next(user);
+        }),
+        catchError(error => {
+          console.error('Registration error:', error);
+          if (error.status === 0) {
+            return throwError(() => new Error('Unable to connect to the server. Please make sure the backend is running.'));
+          }
+          return throwError(() => error);
         })
       );
-    }
-
-    return throwError(() => new Error('بريد إلكتروني أو كلمة مرور غير صحيحة'));
   }
 
-  register(name: string, email: string, password: string): Observable<User> {
-    // Check if user already exists
-    const userExists = this.users.some((u) => u.email === email);
-
-    if (userExists) {
-      return throwError(() => new Error('البريد الإلكتروني مستخدم بالفعل'));
-    }
-
-    // Create new user
-    const newUser: User = {
-      id: this.users.length + 1,
-      name,
-      email,
-      token: `token_${Date.now()}`,
-    };
-
-    // In a real app, you would send this to an API
-    return of(newUser).pipe(
-      delay(1000), // Simulate network delay
-      tap((user) => {
-        this.users.push(user); // Add to demo users
+  registerPassenger(user: {
+    email: string;
+    username: string;
+    password: string;
+    fullName: string;
+    profilePictureUrl: string;
+    address: string;
+    dateOfBirth: string;
+    phoneNumber: string;
+  }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>('https://localhost:7111/api/Auth/register/passenger', user).pipe(
+      tap(response => {
+        const user: User = {
+          id: response.id,
+          name: response.fullName,
+          email: response.email,
+          token: response.token
+        };
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
       })
     );
+  }
+
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
+      .pipe(
+        tap(response => {
+          const user: User = {
+            id: response.id,
+            name: response.fullName,
+            email: response.email,
+            token: response.token
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+        }),
+        catchError(error => {
+          console.error('Login error:', error);
+          if (error.status === 0) {
+            return throwError(() => new Error('Unable to connect to the server. Please make sure the backend is running.'));
+          }
+          return throwError(() => error);
+        })
+      );
   }
 
   logout(): void {

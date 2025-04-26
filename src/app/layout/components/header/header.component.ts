@@ -20,7 +20,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     // Subscribe to changes in the authentication state
     this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
+      if (user) {
+        this.currentUser = { ...user, id: Number(user.id) };
+      } else {
+        this.currentUser = null;
+      }
     });
   }
 
