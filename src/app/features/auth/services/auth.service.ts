@@ -84,6 +84,20 @@ export class AuthService {
       );
   }
 
+// from chat دالة للتحقق من الكود (بس مافيش ال2 اند بوينت دول اصلا )
+verifyCode(email: string, code: string): Observable<any> {
+  return this.http
+    .post<any>(`${this.apiUrl}/verify-code`, { email, code })
+    .pipe(catchError(this.handleError)); // استدعاء دالة التعامل مع الأخطاء
+}
+
+resendCode(email: string): Observable<any> {
+  return this.http
+    .post<any>(`${this.apiUrl}/resend-code`, { email })
+    .pipe(catchError(this.handleError)); // استدعاء دالة التعامل مع الأخطاء
+}
+
+
   // Create a company (for SystemOwner)
   createCompany(companyData: CompanyCreateRequest): Observable<Company> {
     return this.http
