@@ -1,67 +1,123 @@
-<div class="register-page d-flex">
+<div class="register-page">
   <!-- Left: Registration Form -->
-  <div class="register-container d-flex flex-column justify-content-center align-items-center">
+  <div class="register-container">
     <div class="register-card card shadow">
-      <div class="card-body p-4">
-    
+      <div class="card-body">
         <h1 class="logo-text">Ra7ala</h1>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-          <!-- Name -->
+          <!-- Full Name -->
           <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input
-              type="text"
-              id="name"
-              formControlName="name"
-              class="form-control"
-              placeholder="Enter your name"
-              [ngClass]="{
-                'is-invalid':
-                  registerForm.get('name')?.invalid &&
-                  (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)
-              }"
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                registerForm.get('name')?.invalid &&
-                (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)
-              "
-            >
-              Name is required
+            <label for="fullName" class="form-label">Full Name</label>
+            <div class="input-wrapper">
+              <i class="fa fa-user icon"></i>
+              <input
+                type="text"
+                id="fullName"
+                formControlName="fullName"
+                class="form-control"
+                placeholder="Enter your full name"
+                [ngClass]="{ 'is-invalid': registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched) }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)">
+              Full name is required
             </div>
           </div>
 
-       <!-- Email -->
-<div class="mb-3">
-  <label for="email" class="form-label">Email Address</label>
-  <div class="input-wrapper">
-    <i class="fa fa-envelope icon"></i>
-    <input
-      type="email"
-      id="email"
-      formControlName="email"
-      class="form-control"
-      placeholder="Enter your email"
-      [ngClass]="{
-        'is-invalid':
-          registerForm.get('email')?.invalid &&
-          (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)
-      }"
-    />
-  </div>
-  <div
-    class="invalid-feedback"
-    *ngIf="
-      registerForm.get('email')?.invalid &&
-      (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)
-    "
-  >
-    Email is required or invalid
-  </div>
-</div>
+          <!-- Username -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <div class="input-wrapper">
+              <i class="fa fa-at icon"></i>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                class="form-control"
+                placeholder="Choose a username"
+                [ngClass]="{ 'is-invalid': registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched) }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)">
+              Username is required
+            </div>
+          </div>
 
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <div class="input-wrapper">
+              <i class="fa fa-envelope icon"></i>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                placeholder="Enter your email"
+                [ngClass]="{ 'is-invalid': registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched) }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <div class="input-wrapper">
+              <i class="fa fa-phone icon"></i>
+              <input
+                type="tel"
+                id="phoneNumber"
+                formControlName="phoneNumber"
+                class="form-control"
+                placeholder="+201234567890"
+                [ngClass]="{ 'is-invalid': registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched) }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)">
+              Please enter a valid phone number
+            </div>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="mb-3">
+            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+            <div class="input-wrapper">
+              <i class="fa fa-calendar icon"></i>
+              <input
+                type="date"
+                id="dateOfBirth"
+                formControlName="dateOfBirth"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': registerForm.get('dateOfBirth')?.invalid && (registerForm.get('dateOfBirth')?.dirty || registerForm.get('dateOfBirth')?.touched) }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="registerForm.get('dateOfBirth')?.invalid && (registerForm.get('dateOfBirth')?.dirty || registerForm.get('dateOfBirth')?.touched)">
+              Date of birth is required
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <div class="input-wrapper">
+              <i class="fa fa-map-marker icon"></i>
+              <input
+                type="text"
+                id="address"
+                formControlName="address"
+                class="form-control"
+                placeholder="Enter your address"
+                [ngClass]="{ 'is-invalid': registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched) }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)">
+              Address is required
+            </div>
+          </div>
 
           <!-- Password -->
           <div class="mb-3">
@@ -74,24 +130,14 @@
                 formControlName="password"
                 class="form-control"
                 placeholder="Enter your password"
-                [ngClass]="{
-                  'is-invalid':
-                    registerForm.get('password')?.invalid &&
-                    (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)
-                }"
+                [ngClass]="{ 'is-invalid': registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched) }"
               />
             </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                registerForm.get('password')?.invalid &&
-                (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)
-              "
-            >
+            <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
               Password must be at least 6 characters
             </div>
           </div>
-          
+
           <!-- Confirm Password -->
           <div class="mb-4">
             <label for="confirmPassword" class="form-label">Confirm Password</label>
@@ -103,24 +149,20 @@
                 formControlName="confirmPassword"
                 class="form-control"
                 placeholder="Confirm your password"
-                [ngClass]="{
-                  'is-invalid':
-                    registerForm.get('confirmPassword')?.invalid &&
-                    (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)
-                }"
+                [ngClass]="{ 'is-invalid': registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched) }"
               />
             </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                registerForm.get('confirmPassword')?.invalid &&
-                (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)
-              "
-            >
+            <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
               Passwords do not match
             </div>
           </div>
 
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Submit Button -->
           <button
             type="submit"
             class="btn btn-warning w-100 text-white fw-bold"
@@ -131,8 +173,7 @@
         </form>
 
         <div class="text-center mt-3">
-          Have Account?
-          <a routerLink="/auth/login" class="text-warning">Login</a>
+          Have an account? <a routerLink="/auth/login" class="text-warning">Login</a>
         </div>
       </div>
     </div>

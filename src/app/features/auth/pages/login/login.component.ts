@@ -80,36 +80,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       },
       error: (error) => {
-        console.timeEnd('Login request');
-        console.error('Login failed:', error);
-
-        if (error instanceof HttpErrorResponse) {
-          // Handle HTTP errors specifically
-          if (error.status === 401) {
-            this.errorMessage = 'Invalid username or password';
-            console.error('Authentication error: Invalid credentials provided');
-          } else if (error.status === 400) {
-            this.errorMessage =
-              'Invalid data provided. Please check your input.';
-            console.error('Bad request error:', error.error);
-          } else if (error.status === 0) {
-            this.errorMessage =
-              'Cannot connect to server. Please check your internet connection.';
-            console.error('Network error: Unable to connect to server');
-          } else {
-            this.errorMessage =
-              error.error?.message ||
-              error.error?.title ||
-              error.message ||
-              'An error occurred during login';
-            console.error(`Server error (${error.status}):`, error.error);
-          }
-        } else {
-          this.errorMessage =
-            error.message || 'An unexpected error occurred. Please try again.';
-          console.error('Unexpected error during login:', error);
-        }
-
+        this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الدخول';
         this.isSubmitting = false;
       },
       complete: () => {
