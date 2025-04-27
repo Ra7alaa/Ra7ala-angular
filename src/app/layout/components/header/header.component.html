@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" [ngClass]="{ 'dark-theme': currentTheme === 'dark' }">
   <div class="container">
     <nav class="navbar navbar-expand-lg align-items-center">
       <!-- Logo -->
@@ -22,45 +22,48 @@
       <div
         class="collapse navbar-collapse"
         id="navbarLinks"
-        [ngClass]="{ show: isMobileMenuOpen }"
+        [ngClass]="{ show: isMobileMenuOpen, 'rtl-menu': currentLanguage.rtl }"
       >
         <!-- Navigation Links -->
-        <div class="nav-links navbar-nav me-auto">
+        <div
+          class="nav-links navbar-nav me-auto"
+          [ngClass]="{ 'ms-auto me-0': currentLanguage.rtl }"
+        >
           <a
             routerLink="/"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
             class="nav-link"
             (click)="closeMobileMenuIfOpen()"
-            >Home</a
+            >{{ "navigation.home" | translate }}</a
           >
           <a
             routerLink="/about"
             routerLinkActive="active"
             class="nav-link"
             (click)="closeMobileMenuIfOpen()"
-            >About</a
+            >{{ "navigation.about" | translate }}</a
           >
           <a
             routerLink="/destinations"
             routerLinkActive="active"
             class="nav-link"
             (click)="closeMobileMenuIfOpen()"
-            >Destinations</a
+            >{{ "navigation.destinations" | translate }}</a
           >
           <a
             routerLink="/packages"
             routerLinkActive="active"
             class="nav-link"
             (click)="closeMobileMenuIfOpen()"
-            >Packages</a
+            >{{ "navigation.packages" | translate }}</a
           >
           <a
             routerLink="/contact"
             routerLinkActive="active"
             class="nav-link"
             (click)="closeMobileMenuIfOpen()"
-            >Contact Us</a
+            >{{ "navigation.contact_us" | translate }}</a
           >
         </div>
 
@@ -71,33 +74,37 @@
               routerLink="/auth/login"
               class="btn-login"
               (click)="closeMobileMenuIfOpen()"
-              >Log In</a
+              >{{ "auth.login" | translate }}</a
             >
             <a
               routerLink="/auth/register"
               class="btn-signup"
               (click)="closeMobileMenuIfOpen()"
-              >Sign Up</a
+              >{{ "auth.signup" | translate }}</a
             >
           </ng-container>
           <ng-template #loggedInUser>
             <div class="user-info d-flex align-items-center">
-              <span class="welcome-text d-none d-sm-inline"
-                >Welcome, {{ currentUser?.fullName || "Guest" }}</span
-              >
               <a
-                *ngIf="isAdminUser()"
-                routerLink="/admin/dashboard"
-                class="btn-dashboard"
+                routerLink="/profile"
+                class="user-avatar me-2"
                 (click)="closeMobileMenuIfOpen()"
               >
-                <i class="bi bi-speedometer2 me-1"></i>
-                <span class="d-none d-sm-inline">Dashboard</span>
+                <div class="avatar-circle">
+                  <!-- Default avatar icon if no profile image -->
+                  <i class="bi bi-person-circle"></i>
+                </div>
               </a>
-              <button class="btn-logout" (click)="logout()">
-                <i class="bi bi-box-arrow-right"></i>
-                <span class="d-none d-sm-inline">Logout</span>
-              </button>
+              <a
+                routerLink="/settings"
+                class="btn-settings"
+                (click)="closeMobileMenuIfOpen()"
+              >
+                <i class="bi bi-gear me-1"></i>
+                <span class="d-none d-sm-inline">{{
+                  "user_menu.settings" | translate
+                }}</span>
+              </a>
             </div>
           </ng-template>
         </div>

@@ -1,0 +1,51 @@
+<div
+  class="container py-4"
+  [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'"
+  [ngClass]="{ 'dark-theme': isDarkTheme() }"
+>
+  <h1 class="mb-4 fw-bold text-primary">{{ "settings.title" | translate }}</h1>
+
+  <div class="row g-4">
+    <!-- Language Settings Section -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3 text-primary">
+            {{ "theme_language.language" | translate }}
+          </h2>
+          <app-language-settings></app-language-settings>
+        </div>
+      </div>
+    </div>
+
+    <!-- Theme Settings Section -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3 text-primary">
+            {{ "theme_language.theme" | translate }}
+          </h2>
+          <app-theme-settings></app-theme-settings>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Section -->
+    <div class="col-md-12 mt-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title h5 mb-3 text-primary">
+            {{ "user_menu.logout" | translate }}
+          </h2>
+          <p class="text-muted mb-4">
+            {{ "settings.logout_description" | translate }}
+          </p>
+          <button class="btn logout-btn" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-2"></i
+            >{{ "user_menu.logout" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

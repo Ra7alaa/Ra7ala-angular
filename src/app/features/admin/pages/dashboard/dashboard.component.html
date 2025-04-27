@@ -1,16 +1,22 @@
-<div class="dashboard-content">
+<div class="dashboard-content admin-dashboard">
   <!-- Dashboard Header -->
   <div
-    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom px-3"
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom px-3 admin-dashboard-header"
   >
-    <h1 class="h2">Dashboard</h1>
+    <h1 class="h2">{{ "admin.dashboard_title" | translate }}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group me-2">
+      <div
+        class="btn-group"
+        [ngClass]="{
+          'me-2': !currentLanguage.rtl,
+          'ms-2': currentLanguage.rtl
+        }"
+      >
         <button type="button" class="btn btn-sm btn-outline-secondary">
-          Share
+          {{ "admin.dashboard.share" | translate }}
         </button>
         <button type="button" class="btn btn-sm btn-outline-secondary">
-          Export
+          {{ "admin.dashboard.export" | translate }}
         </button>
       </div>
     </div>
@@ -19,88 +25,120 @@
   <!-- Dashboard stats -->
   <div class="row mt-4 px-3">
     <div class="col-md-3 mb-4">
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm stat-card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h6 class="text-muted fw-normal mt-0">Total Trips</h6>
-              <h3 class="mt-2 mb-0">42</h3>
+              <h6 class="text-muted fw-normal mt-0 stat-label">
+                {{ "admin.trips.title" | translate }}
+              </h6>
+              <h3 class="mt-2 mb-0 stat-value">42</h3>
             </div>
-            <div class="icon-box bg-light-primary">
+            <div class="icon-box bg-light-primary icon-container">
               <i class="bi bi-bus-front text-primary"></i>
             </div>
           </div>
           <p class="text-muted mt-3 mb-0">
-            <span class="text-success me-1"
-              ><i class="bi bi-arrow-up-short"></i> 5.27%</span
+            <span
+              class="text-success stat-change positive"
+              [ngClass]="{
+                'me-1': !currentLanguage.rtl,
+                'ms-1': currentLanguage.rtl
+              }"
             >
-            since last month
+              <i class="bi bi-arrow-up-short"></i> 5.27%
+            </span>
+            {{ "admin.dashboard.since_last_month" | translate }}
           </p>
         </div>
       </div>
     </div>
 
     <div class="col-md-3 mb-4">
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm stat-card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h6 class="text-muted fw-normal mt-0">Active Routes</h6>
-              <h3 class="mt-2 mb-0">18</h3>
+              <h6 class="text-muted fw-normal mt-0 stat-label">
+                {{ "admin.routes.active_routes" | translate }}
+              </h6>
+              <h3 class="mt-2 mb-0 stat-value">18</h3>
             </div>
-            <div class="icon-box bg-light-primary">
+            <div class="icon-box bg-light-primary icon-container">
               <i class="bi bi-map text-primary"></i>
             </div>
           </div>
           <p class="text-muted mt-3 mb-0">
-            <span class="text-success me-1"
-              ><i class="bi bi-arrow-up-short"></i> 3.12%</span
+            <span
+              class="text-success stat-change positive"
+              [ngClass]="{
+                'me-1': !currentLanguage.rtl,
+                'ms-1': currentLanguage.rtl
+              }"
             >
-            since last month
+              <i class="bi bi-arrow-up-short"></i> 3.12%
+            </span>
+            {{ "admin.dashboard.since_last_month" | translate }}
           </p>
         </div>
       </div>
     </div>
 
     <div class="col-md-3 mb-4">
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm stat-card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h6 class="text-muted fw-normal mt-0">Total Stations</h6>
-              <h3 class="mt-2 mb-0">24</h3>
+              <h6 class="text-muted fw-normal mt-0 stat-label">
+                {{ "admin.stations.title" | translate }}
+              </h6>
+              <h3 class="mt-2 mb-0 stat-value">24</h3>
             </div>
-            <div class="icon-box bg-light-primary">
+            <div class="icon-box bg-light-primary icon-container">
               <i class="bi bi-geo-alt-fill text-primary"></i>
             </div>
           </div>
           <p class="text-muted mt-3 mb-0">
-            <span class="text-danger me-1"
-              ><i class="bi bi-arrow-down-short"></i> 0.82%</span
+            <span
+              class="text-danger stat-change negative"
+              [ngClass]="{
+                'me-1': !currentLanguage.rtl,
+                'ms-1': currentLanguage.rtl
+              }"
             >
-            since last month
+              <i class="bi bi-arrow-down-short"></i> 0.82%
+            </span>
+            {{ "admin.dashboard.since_last_month" | translate }}
           </p>
         </div>
       </div>
     </div>
 
     <div class="col-md-3 mb-4">
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm stat-card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h6 class="text-muted fw-normal mt-0">Total Revenue</h6>
-              <h3 class="mt-2 mb-0">$12,865</h3>
+              <h6 class="text-muted fw-normal mt-0 stat-label">
+                {{ "admin.dashboard.total_revenue" | translate }}
+              </h6>
+              <h3 class="mt-2 mb-0 stat-value">$12,865</h3>
             </div>
-            <div class="icon-box bg-light-primary">
+            <div class="icon-box bg-light-primary icon-container">
               <i class="bi bi-currency-dollar text-primary"></i>
             </div>
           </div>
           <p class="text-muted mt-3 mb-0">
-            <span class="text-success me-1"
-              ><i class="bi bi-arrow-up-short"></i> 8.34%</span
+            <span
+              class="text-success stat-change positive"
+              [ngClass]="{
+                'me-1': !currentLanguage.rtl,
+                'ms-1': currentLanguage.rtl
+              }"
             >
-            since last month
+              <i class="bi bi-arrow-up-short"></i> 8.34%
+            </span>
+            {{ "admin.dashboard.since_last_month" | translate }}
           </p>
         </div>
       </div>
@@ -110,100 +148,121 @@
   <!-- Recent Trips -->
   <div class="row mt-3 px-3">
     <div class="col-lg-8">
-      <div class="card border-0 shadow-sm mb-4">
+      <div class="card border-0 shadow-sm mb-4 admin-table">
         <div
-          class="card-header bg-white d-flex justify-content-between align-items-center"
+          class="card-header bg-white d-flex justify-content-between align-items-center section-header"
         >
-          <h5 class="mb-0">Recent Trips</h5>
-          <button class="btn btn-primary btn-sm">View All</button>
+          <h5 class="mb-0">{{ "admin.dashboard.recent_trips" | translate }}</h5>
+          <button class="btn btn-primary btn-sm view-all-link">
+            {{ "admin.dashboard.view_all" | translate }}
+          </button>
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-hover">
+            <table
+              class="table table-hover"
+              [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'"
+            >
               <thead>
                 <tr>
-                  <th>Trip ID</th>
-                  <th>Route</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>{{ "admin.trips.trip_id" | translate }}</th>
+                  <th>{{ "admin.routes.title" | translate }}</th>
+                  <th>{{ "admin.trips.date" | translate }}</th>
+                  <th>{{ "admin.trips.status" | translate }}</th>
+                  <th>{{ "admin.trips.actions" | translate }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>#TRP-1234</td>
-                  <td>Cairo - Alexandria</td>
+                  <td>{{ "admin.dashboard.cairo_alexandria" | translate }}</td>
                   <td>23 Apr, 2025</td>
                   <td>
-                    <span class="badge bg-success">Completed</span>
+                    <span class="badge bg-success status-badge completed">{{
+                      "admin.dashboard.completed" | translate
+                    }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-outline-secondary me-1">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-primary me-1">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
+                    <div class="action-buttons-container">
+                      <button class="action-btn view">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button class="action-btn edit">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="action-btn delete">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
                   <td>#TRP-1235</td>
-                  <td>Cairo - Luxor</td>
+                  <td>{{ "admin.dashboard.cairo_luxor" | translate }}</td>
                   <td>22 Apr, 2025</td>
                   <td>
-                    <span class="badge bg-primary">In Progress</span>
+                    <span class="badge bg-primary status-badge in-progress">{{
+                      "admin.dashboard.in_progress" | translate
+                    }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-outline-secondary me-1">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-primary me-1">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
+                    <div class="action-buttons-container">
+                      <button class="action-btn view">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button class="action-btn edit">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="action-btn delete">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
                   <td>#TRP-1236</td>
-                  <td>Alexandria - Luxor</td>
+                  <td>{{ "admin.dashboard.alexandria_luxor" | translate }}</td>
                   <td>21 Apr, 2025</td>
                   <td>
-                    <span class="badge bg-danger">Cancelled</span>
+                    <span class="badge bg-danger status-badge cancelled">{{
+                      "admin.dashboard.cancelled" | translate
+                    }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-outline-secondary me-1">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-primary me-1">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
+                    <div class="action-buttons-container">
+                      <button class="action-btn view">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button class="action-btn edit">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="action-btn delete">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
                   <td>#TRP-1237</td>
-                  <td>Cairo - Alexandria</td>
+                  <td>{{ "admin.dashboard.cairo_alexandria" | translate }}</td>
                   <td>20 Apr, 2025</td>
                   <td>
-                    <span class="badge bg-success">Completed</span>
+                    <span class="badge bg-success status-badge completed">{{
+                      "admin.dashboard.completed" | translate
+                    }}</span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-outline-secondary me-1">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-primary me-1">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
+                    <div class="action-buttons-container">
+                      <button class="action-btn view">
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button class="action-btn edit">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button class="action-btn delete">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -214,20 +273,24 @@
     </div>
 
     <div class="col-lg-4">
-      <div class="card border-0 shadow-sm mb-4">
+      <div class="card border-0 shadow-sm mb-4 chart-container">
         <div class="card-header bg-white">
-          <h5 class="mb-0">Route Distribution</h5>
+          <h5 class="mb-0 chart-title">
+            {{ "admin.dashboard.route_distribution" | translate }}
+          </h5>
         </div>
         <div class="card-body">
           <div class="chart-container">
             <p class="text-center py-5">
               <i class="bi bi-pie-chart fs-1 text-primary"></i><br />
-              <span class="text-muted">Chart Placeholder</span>
+              <span class="text-muted">{{
+                "admin.dashboard.chart_placeholder" | translate
+              }}</span>
             </p>
           </div>
           <div class="mt-3">
             <div class="d-flex justify-content-between mb-2">
-              <span>Cairo - Alexandria</span>
+              <span>{{ "admin.dashboard.cairo_alexandria" | translate }}</span>
               <span>45%</span>
             </div>
             <div class="progress mb-3" style="height: 6px">
@@ -239,7 +302,7 @@
             </div>
 
             <div class="d-flex justify-content-between mb-2">
-              <span>Cairo - Luxor</span>
+              <span>{{ "admin.dashboard.cairo_luxor" | translate }}</span>
               <span>30%</span>
             </div>
             <div class="progress mb-3" style="height: 6px">
@@ -251,7 +314,7 @@
             </div>
 
             <div class="d-flex justify-content-between mb-2">
-              <span>Alexandria - Luxor</span>
+              <span>{{ "admin.dashboard.alexandria_luxor" | translate }}</span>
               <span>25%</span>
             </div>
             <div class="progress mb-3" style="height: 6px">

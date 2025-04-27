@@ -1,7 +1,18 @@
-<div class="admin-sidebar">
+<div
+  class="admin-sidebar"
+  [ngClass]="{
+    hidden: isHidden,
+    'dark-theme': isDarkTheme()
+  }"
+>
   <div class="sidebar-header">
-    <h5 class="text-center fw-bold">Ra7ala Admin</h5>
+    <div class="d-flex align-items-center justify-content-between">
+      <h5 class="fw-bold mb-0">
+        {{ "admin.sidebar.title" | translate }}
+      </h5>
+    </div>
   </div>
+
   <ul class="nav flex-column">
     <li class="nav-item">
       <a
@@ -9,20 +20,38 @@
         routerLink="/admin/dashboard"
         routerLinkActive="active"
       >
-        <i class="bi bi-speedometer2 me-2"></i>
-        Dashboard
+        <i
+          class="bi bi-speedometer2"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.dashboard" | translate }}</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="/admin/trips" routerLinkActive="active">
-        <i class="bi bi-bus-front me-2"></i>
-        Trips Management
+        <i
+          class="bi bi-bus-front"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.trips" | translate }}</span>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="/admin/routes" routerLinkActive="active">
-        <i class="bi bi-map me-2"></i>
-        Routes Management
+        <i
+          class="bi bi-map"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.routes" | translate }}</span>
       </a>
     </li>
     <li class="nav-item">
@@ -31,14 +60,32 @@
         routerLink="/admin/stations"
         routerLinkActive="active"
       >
-        <i class="bi bi-geo-alt-fill me-2"></i>
-        Stations Management
+        <i
+          class="bi bi-geo-alt-fill"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.stations" | translate }}</span>
       </a>
     </li>
-    <li class="nav-item mt-3">
-      <a class="nav-link text-danger" routerLink="/">
-        <i class="bi bi-box-arrow-left me-2"></i>
-        Exit to Website
+
+    <!-- Settings for themes and languages -->
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/admin/settings"
+        routerLinkActive="active"
+      >
+        <i
+          class="bi bi-gear"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.settings" | translate }}</span>
       </a>
     </li>
   </ul>

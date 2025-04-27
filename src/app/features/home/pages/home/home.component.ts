@@ -4,24 +4,72 @@ import { Trip } from '../../../trips/models/trip.model';
 import { TripsService } from '../../../trips/services/trips.service';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { CommonTripsComponent } from '../../components/common-trips/common-trips.component';
-import { SharedModule } from "../../../../shared/shared.module";
-import { NewsletterComponent } from "../../../../shared/components/newsletter/newsletter.component";
+import { SharedModule } from '../../../../shared/shared.module';
+import { NewsletterComponent } from '../../../../shared/components/newsletter/newsletter.component';
+import {
+  ThemeService,
+  ThemeOption,
+} from '../../../../core/themes/theme.service';
+import {
+  LanguageService,
+  Language,
+} from '../../../../core/localization/language.service';
+import {
+  TranslationService,
+  TranslationDictionary,
+} from '../../../../core/localization/translation.service';
+import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule, SearchComponent, CommonTripsComponent, SharedModule, NewsletterComponent],
+  imports: [
+    CommonModule,
+    SearchComponent,
+    CommonTripsComponent,
+    SharedModule,
+    NewsletterComponent,
+    TranslatePipe,
+  ],
 })
 export class HomeComponent implements OnInit {
   commonTrips: Trip[] = [];
+  currentLanguage: Language;
+  currentTheme: ThemeOption;
+  translations: TranslationDictionary = {};
 
-  constructor(private tripsService: TripsService) {}
+  constructor(
+    private tripsService: TripsService,
+    private themeService: ThemeService,
+    private languageService: LanguageService,
+    private translationService: TranslationService
+  ) {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.currentTheme = this.themeService.getCurrentTheme();
+  }
 
   ngOnInit(): void {
     // Load common trips
     this.loadCommonTrips();
+
+    // الاشتراك في تغييرات اللغة
+    this.languageService.language$.subscribe((language: Language) => {
+      this.currentLanguage = language;
+    });
+
+    // الاشتراك في تغييرات السمة
+    this.themeService.theme$.subscribe((theme: ThemeOption) => {
+      this.currentTheme = theme;
+    });
+
+    // الاشتراك في تغييرات الترجمة
+    this.translationService.translations$.subscribe(
+      (translations: TranslationDictionary) => {
+        this.translations = translations;
+      }
+    );
   }
 
   loadCommonTrips(): void {

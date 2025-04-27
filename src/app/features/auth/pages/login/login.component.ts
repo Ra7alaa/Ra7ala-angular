@@ -10,12 +10,15 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserRole } from '../../models/user.model';
+import { TranslationService } from '../../../../core/localization/translation.service';
+import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, TranslatePipe],
   standalone: true,
 })
 export class LoginComponent implements OnInit {
@@ -27,7 +30,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    public translationService: TranslationService
   ) {
     this.loginForm = this.formBuilder.group({
       emailOrUsername: ['', [Validators.required]],
@@ -77,7 +81,27 @@ export class LoginComponent implements OnInit {
       next: (user) => {
         console.timeEnd('Login request');
         console.log('Login successful, user:', user);
-        this.router.navigate(['/']);
+
+        // Redirect based on user role
+        if (user.userType === UserRole.Passenger) {
+          // For passengers, redirect to home page
+          this.router.navigate(['/']);
+        } else if (
+          user.userType === UserRole.Admin ||
+          user.userType === UserRole.SuperAdmin ||
+          user.userType === UserRole.SystemOwner
+        ) {
+          // For admin roles, redirect to admin dashboard
+          this.router.navigate(['/admin/dashboard']);
+        } else if (user.userType === UserRole.Driver) {
+          // For drivers, redirect to driver dashboard if it exists, or home otherwise
+          this.router.navigate(['/']);
+        } else {
+          // Default fallback
+          this.router.navigate(['/']);
+        }
+
+        this.isSubmitting = false;
       },
       error: (error) => {
         console.timeEnd('Login request');
@@ -113,9 +137,12 @@ export class LoginComponent implements OnInit {
         this.isSubmitting = false;
       },
       complete: () => {
-        this.isSubmitting = false;
         console.log('Login request completed');
       },
     });
+  }
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
   }
 }

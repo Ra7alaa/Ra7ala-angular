@@ -1,17 +1,20 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0">Station Details</h1>
+    <h1 class="mb-0">{{ "admin.stations.details.title" | translate }}</h1>
     <button class="btn btn-outline-secondary" (click)="navigateToList()">
-      <i class="bi bi-arrow-left"></i> Back to Stations
+      <i class="bi bi-arrow-left"></i>
+      {{ "admin.stations.details.back" | translate }}
     </button>
   </div>
 
   <!-- Loading state -->
   <div *ngIf="loading" class="text-center py-5">
     <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">{{
+        "admin.stations.loading" | translate
+      }}</span>
     </div>
-    <p class="mt-2">Loading station details...</p>
+    <p class="mt-2">{{ "admin.stations.loading" | translate }}</p>
   </div>
 
   <!-- Error state -->
@@ -21,7 +24,7 @@
       class="btn btn-sm btn-outline-danger ms-2"
       (click)="loadStationDetails()"
     >
-      Retry
+      {{ "admin.stations.retry" | translate }}
     </button>
   </div>
 
@@ -37,56 +40,101 @@
           (click)="navigateToEdit()"
           *ngIf="canEditStation()"
         >
-          <i class="bi bi-pencil"></i> Edit
+          <i class="bi bi-pencil"></i>
+          {{ "admin.stations.details.edit" | translate }}
         </button>
         <button
           class="btn btn-outline-danger"
           (click)="deleteStation()"
           *ngIf="canDeleteStation()"
         >
-          <i class="bi bi-trash"></i> Delete
+          <i class="bi bi-trash"></i>
+          {{ "admin.stations.details.delete" | translate }}
         </button>
       </div>
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <h6 class="fw-bold mb-3">Basic Information</h6>
+          <h6 class="fw-bold mb-3">
+            {{ "admin.stations.details.info" | translate }}
+          </h6>
           <dl class="row">
-            <dt class="col-sm-4">Station ID</dt>
+            <dt class="col-sm-4">
+              {{ "admin.stations.details.id" | translate }}
+            </dt>
             <dd class="col-sm-8">{{ station.id }}</dd>
 
-            <dt class="col-sm-4">Name</dt>
+            <dt class="col-sm-4">
+              {{ "admin.stations.details.name" | translate }}
+            </dt>
             <dd class="col-sm-8">{{ station.name }}</dd>
 
-            <dt class="col-sm-4">City</dt>
+            <dt class="col-sm-4">
+              {{ "admin.stations.details.city" | translate }}
+            </dt>
             <dd class="col-sm-8">{{ station.cityName }}</dd>
 
-            <!-- Ownership field removed -->
+            <dt class="col-sm-4">
+              {{ "admin.stations.details.ownership" | translate }}
+            </dt>
+            <dd class="col-sm-8">
+              <span
+                [class.badge]="true"
+                [class.bg-primary]="station.isSystemOwned"
+                [class.bg-success]="!station.isSystemOwned"
+              >
+                {{
+                  station.isSystemOwned
+                    ? ("admin.stations.details.system" | translate)
+                    : station.companyName
+                }}
+              </span>
+            </dd>
 
-            <dt *ngIf="station.companyName" class="col-sm-4">Company Name</dt>
-            <dd *ngIf="station.companyName" class="col-sm-8">
+            <dt
+              *ngIf="!station.isSystemOwned && station.companyName"
+              class="col-sm-4"
+            >
+              {{ "admin.stations.details.company" | translate }}
+            </dt>
+            <dd
+              *ngIf="!station.isSystemOwned && station.companyName"
+              class="col-sm-8"
+            >
               {{ station.companyName }}
             </dd>
 
-            <dt *ngIf="station.companyId" class="col-sm-4">Company ID</dt>
-            <dd *ngIf="station.companyId" class="col-sm-8">
-              {{ station.companyId }}
+            <dt class="col-sm-4">
+              {{ "admin.stations.details.status" | translate }}
+            </dt>
+            <dd class="col-sm-8">
+              <span [class.badge]="true" [class.bg-success]="true">
+                {{ "admin.stations.details.active" | translate }}
+              </span>
             </dd>
           </dl>
         </div>
         <div class="col-md-6">
-          <h6 class="fw-bold mb-3">Location Information</h6>
+          <h6 class="fw-bold mb-3">
+            {{ "admin.stations.location" | translate }}
+          </h6>
           <dl class="row">
-            <dt class="col-sm-4">Latitude</dt>
+            <dt class="col-sm-4">
+              {{ "admin.stations.latitude" | translate }}
+            </dt>
             <dd class="col-sm-8">{{ station.latitude }}</dd>
 
-            <dt class="col-sm-4">Longitude</dt>
+            <dt class="col-sm-4">
+              {{ "admin.stations.longitude" | translate }}
+            </dt>
             <dd class="col-sm-8">{{ station.longitude }}</dd>
           </dl>
 
           <div class="mt-3">
-            <h6 class="fw-bold mb-2">Map Preview</h6>
+            <h6 class="fw-bold mb-2">
+              {{ "admin.stations.location" | translate }}
+            </h6>
             <div class="map-container">
               <div
                 id="station-map"
@@ -96,15 +144,19 @@
               <!-- مؤشر تحميل الخريطة -->
               <div class="map-loading" *ngIf="!mapLoaded">
                 <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading map...</span>
+                  <span class="visually-hidden">{{
+                    "admin.stations.loading" | translate
+                  }}</span>
                 </div>
-                <p class="mt-2 small text-muted">Loading map...</p>
+                <p class="mt-2 small text-muted">
+                  {{ "admin.stations.loading" | translate }}
+                </p>
               </div>
             </div>
             <p class="text-muted small mt-2">
               <i class="bi bi-info-circle"></i>
-              Location coordinates: {{ station.latitude }},
-              {{ station.longitude }}
+              {{ "admin.stations.location" | translate }}:
+              {{ station.latitude }}, {{ station.longitude }}
             </p>
           </div>
         </div>

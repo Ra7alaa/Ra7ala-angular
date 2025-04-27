@@ -6,13 +6,15 @@ import { Station } from '../../../models/station.model';
 import { AuthService } from '../../../../auth/services/auth.service';
 import { User, UserRole } from '../../../../auth/models/user.model';
 import { MapService } from '../../../../../shared/services/map.service';
+import { TranslatePipe } from '../../../../../features/settings/pipes/translate.pipe';
+import { TranslationService } from '../../../../../core/localization/translation.service';
 
 @Component({
   selector: 'app-station-details',
   templateUrl: './station-details.component.html',
   styleUrls: ['./station-details.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
 })
 export class StationDetailsComponent implements OnInit {
   stationId!: number;
@@ -30,7 +32,8 @@ export class StationDetailsComponent implements OnInit {
     private router: Router,
     private stationsService: StationsService,
     private authService: AuthService,
-    private mapService: MapService
+    private mapService: MapService,
+    private translateService: TranslationService
   ) {}
 
   ngOnInit(): void {
@@ -102,7 +105,12 @@ export class StationDetailsComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.error = 'Failed to load station details: ' + err.message;
+        this.error =
+          this.translateService.translate(
+            'admin.stations.details.delete_error'
+          ) +
+          ': ' +
+          err.message;
         this.loading = false;
       },
     });
@@ -162,7 +170,9 @@ export class StationDetailsComponent implements OnInit {
 
   navigateToEdit(): void {
     if (!this.canEditStation()) {
-      alert('You do not have permission to edit this station.');
+      alert(
+        this.translateService.translate('admin.stations.no_permission_edit')
+      );
       return;
     }
     this.router.navigate(['/admin/stations', this.stationId, 'edit']);
@@ -174,11 +184,17 @@ export class StationDetailsComponent implements OnInit {
 
   deleteStation(): void {
     if (!this.canDeleteStation()) {
-      alert('You do not have permission to delete this station.');
+      alert(
+        this.translateService.translate('admin.stations.no_permission_delete')
+      );
       return;
     }
 
-    if (confirm('Are you sure you want to delete this station?')) {
+    if (
+      confirm(
+        this.translateService.translate('admin.stations.details.confirm_delete')
+      )
+    ) {
       this.loading = true;
       this.stationsService.deleteStation(this.stationId).subscribe({
         next: () => {
@@ -186,7 +202,12 @@ export class StationDetailsComponent implements OnInit {
           this.router.navigate(['/admin/stations']);
         },
         error: (err) => {
-          this.error = 'Failed to delete station: ' + err.message;
+          this.error =
+            this.translateService.translate(
+              'admin.stations.details.delete_error'
+            ) +
+            ': ' +
+            err.message;
           this.loading = false;
         },
       });

@@ -1,16 +1,84 @@
-<div class="admin-layout">
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-3 col-lg-2 d-md-block sidebar-container">
-        <div class="position-sticky pt-3">
-          <app-admin-sidebar></app-admin-sidebar>
-        </div>
-      </div>
+<div
+  class="admin-layout"
+  [ngClass]="{ 'dark-theme': isDarkTheme() }"
+  [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'"
+>
+  <div class="admin-wrapper container-fluid g-0">
+    <!-- Sidebar (removing collapse functionality) -->
+    <app-admin-sidebar
+      [isHidden]="isSidebarHidden"
+      class="d-block"
+    ></app-admin-sidebar>
 
-      <!-- Main content area -->
-      <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-        <!-- Admin content from child routes will be rendered here -->
+    <!-- Main content area (removing classes related to sidebar collapse) -->
+    <div class="main-content" [class.sidebar-hidden]="isSidebarHidden">
+      <!-- Admin header - simplified to have title and profile only -->
+      <header class="admin-header">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <!-- Title on the left (removed toggle button) -->
+          <div class="d-flex align-items-center">
+            <h1 class="admin-title">
+              {{ "admin.dashboard_title" | translate }}
+            </h1>
+          </div>
+
+          <!-- Profile dropdown on the right -->
+          <div class="admin-profile">
+            <div class="dropdown">
+              <button
+                class="btn btn-sm profile-dropdown"
+                type="button"
+                id="userMenuDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="assets/images/avatar-placeholder.png"
+                  alt="User avatar"
+                  class="avatar-img"
+                />
+                <span
+                  class="ms-2 d-none d-md-inline-block"
+                  [class.ms-2]="!currentLanguage.rtl"
+                  [class.me-2]="currentLanguage.rtl"
+                  >Admin</span
+                >
+                <i
+                  class="bi bi-chevron-down ms-1"
+                  [class.ms-1]="!currentLanguage.rtl"
+                  [class.me-1]="currentLanguage.rtl"
+                ></i>
+              </button>
+              <ul
+                class="dropdown-menu"
+                [class.dropdown-menu-end]="!currentLanguage.rtl"
+                [class.dropdown-menu-start]="currentLanguage.rtl"
+                aria-labelledby="userMenuDropdown"
+              >
+                <li>
+                  <a class="dropdown-item" href="#">{{
+                    "admin.header.profile" | translate
+                  }}</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">{{
+                    "admin.header.settings" | translate
+                  }}</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item text-danger" href="#">{{
+                    "admin.header.logout" | translate
+                  }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Admin content -->
+      <div class="admin-content">
         <router-outlet></router-outlet>
       </div>
     </div>

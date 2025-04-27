@@ -1,13 +1,14 @@
-*{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .about-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .about-header {
@@ -16,19 +17,21 @@
 
 .about-header h1 {
   font-size: 2.5rem;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 1rem;
+  transition: color 0.3s ease;
 }
 
 .about-header p {
   font-size: 1.2rem;
-  color: #383737;
+  color: var(--text-color-secondary);
   max-width: 800px;
+  transition: color 0.3s ease;
 }
 
 .about-content {
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
   gap: 4rem;
   align-items: center;
 }
@@ -49,6 +52,7 @@
   background-color: #fff7e3;
   border-radius: 50%;
   z-index: 1;
+  transition: background-color 0.3s ease;
 }
 
 .bus-image {
@@ -56,6 +60,7 @@
   z-index: 2;
   max-width: 60%;
   height: auto;
+  transition: filter 0.3s ease;
 }
 
 .places-badge {
@@ -63,7 +68,7 @@
   top: 10%;
   right: 10%;
   background-color: #fff7e3;
-  color: #ff6b00;
+  color: var(--primary-color);
   padding: 0.75rem;
   border-radius: 12px;
   display: flex;
@@ -71,6 +76,8 @@
   align-items: center;
   border: 1px solid rgba(255, 107, 0, 0.2);
   z-index: 3;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .places-badge span:first-child {
@@ -87,10 +94,47 @@
 }
 
 .text-section p {
-  color: #555;
+  color: var(--text-color-secondary);
   line-height: 1.8;
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+/* Dark theme styles */
+.dark-theme .about-header h1 {
+  color: var(--text-color);
+}
+
+.dark-theme .about-header p,
+.dark-theme .text-section p {
+  color: var(--text-color-secondary);
+}
+
+.dark-theme .yellow-circle {
+  background-color: rgba(255, 140, 0, 0.15);
+}
+
+.dark-theme .places-badge {
+  background-color: var(--surface-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color-dark);
+}
+
+.dark-theme .bus-image {
+  filter: brightness(0.9);
+}
+
+/* RTL Support */
+[dir="rtl"] .places-badge {
+  right: auto;
+  left: 10%;
+}
+
+@media (min-width: 992px) {
+  .about-content {
+    flex-direction: row;
+  }
 }
 
 @media (max-width: 992px) {

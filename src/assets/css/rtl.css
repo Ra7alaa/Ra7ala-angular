@@ -1,0 +1,233 @@
+/* RTL (Right-to-Left) Styles for Arabic Language Support */
+
+:root.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Flip margins and paddings */
+.rtl .ml-1,
+.rtl .ms-1 {
+  margin-right: 0.25rem !important;
+  margin-left: 0 !important;
+}
+.rtl .ml-2,
+.rtl .ms-2 {
+  margin-right: 0.5rem !important;
+  margin-left: 0 !important;
+}
+.rtl .ml-3,
+.rtl .ms-3 {
+  margin-right: 1rem !important;
+  margin-left: 0 !important;
+}
+.rtl .ml-4,
+.rtl .ms-4 {
+  margin-right: 1.5rem !important;
+  margin-left: 0 !important;
+}
+.rtl .ml-5,
+.rtl .ms-5 {
+  margin-right: 3rem !important;
+  margin-left: 0 !important;
+}
+
+.rtl .mr-1,
+.rtl .me-1 {
+  margin-left: 0.25rem !important;
+  margin-right: 0 !important;
+}
+.rtl .mr-2,
+.rtl .me-2 {
+  margin-left: 0.5rem !important;
+  margin-right: 0 !important;
+}
+.rtl .mr-3,
+.rtl .me-3 {
+  margin-left: 1rem !important;
+  margin-right: 0 !important;
+}
+.rtl .mr-4,
+.rtl .me-4 {
+  margin-left: 1.5rem !important;
+  margin-right: 0 !important;
+}
+.rtl .mr-5,
+.rtl .me-5 {
+  margin-left: 3rem !important;
+  margin-right: 0 !important;
+}
+
+.rtl .pl-1,
+.rtl .ps-1 {
+  padding-right: 0.25rem !important;
+  padding-left: 0 !important;
+}
+.rtl .pl-2,
+.rtl .ps-2 {
+  padding-right: 0.5rem !important;
+  padding-left: 0 !important;
+}
+.rtl .pl-3,
+.rtl .ps-3 {
+  padding-right: 1rem !important;
+  padding-left: 0 !important;
+}
+.rtl .pl-4,
+.rtl .ps-4 {
+  padding-right: 1.5rem !important;
+  padding-left: 0 !important;
+}
+.rtl .pl-5,
+.rtl .ps-5 {
+  padding-right: 3rem !important;
+  padding-left: 0 !important;
+}
+
+.rtl .pr-1,
+.rtl .pe-1 {
+  padding-left: 0.25rem !important;
+  padding-right: 0 !important;
+}
+.rtl .pr-2,
+.rtl .pe-2 {
+  padding-left: 0.5rem !important;
+  padding-right: 0 !important;
+}
+.rtl .pr-3,
+.rtl .pe-3 {
+  padding-left: 1rem !important;
+  padding-right: 0 !important;
+}
+.rtl .pr-4,
+.rtl .pe-4 {
+  padding-left: 1.5rem !important;
+  padding-right: 0 !important;
+}
+.rtl .pr-5,
+.rtl .pe-5 {
+  padding-left: 3rem !important;
+  padding-right: 0 !important;
+}
+
+/* Text align overrides */
+.rtl .text-start {
+  text-align: right !important;
+}
+.rtl .text-end {
+  text-align: left !important;
+}
+
+/* Float overrides */
+.rtl .float-start {
+  float: right !important;
+}
+.rtl .float-end {
+  float: left !important;
+}
+
+/* Flex direction overrides */
+.rtl .flex-row {
+  flex-direction: row-reverse !important;
+}
+.rtl .justify-content-start {
+  justify-content: flex-end !important;
+}
+.rtl .justify-content-end {
+  justify-content: flex-start !important;
+}
+
+/* Border radius adjustments */
+.rtl .rounded-start {
+  border-radius: 0 !important;
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+}
+
+.rtl .rounded-end {
+  border-radius: 0 !important;
+  border-top-left-radius: 0.25rem !important;
+  border-bottom-left-radius: 0.25rem !important;
+}
+
+/* Navigation and menu adjustments */
+.rtl .dropdown-menu {
+  text-align: right;
+}
+
+.rtl .dropdown-menu-start {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.rtl .dropdown-menu-end {
+  left: 0 !important;
+  right: auto !important;
+}
+
+/* Form control adjustments */
+.rtl .form-check {
+  padding-right: 1.5rem;
+  padding-left: 0;
+}
+
+.rtl .form-check-input {
+  float: right;
+  margin-right: -1.5rem;
+  margin-left: 0;
+}
+
+/* Custom arrows and carets */
+.rtl .caret-right:before {
+  content: "\f104" !important; /* FontAwesome left arrow */
+}
+
+.rtl .caret-left:before {
+  content: "\f105" !important; /* FontAwesome right arrow */
+}
+
+/* Adjust input group addons */
+.rtl
+  .input-group
+  > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
+    .valid-feedback
+  ):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-right: -1px;
+  margin-left: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.rtl
+  .input-group:not(.has-validation)
+  > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu),
+.rtl
+  .input-group:not(.has-validation)
+  > .dropdown-toggle:nth-last-child(n + 3) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+/* List groups */
+.rtl .list-group {
+  padding-right: 0;
+}
+
+/* PrimeNG specific RTL overrides */
+.rtl .p-dropdown .p-dropdown-trigger {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rtl .p-dropdown .p-dropdown-label {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

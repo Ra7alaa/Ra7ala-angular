@@ -12,13 +12,21 @@ import { StationsService } from '../../../services/stations.service';
 import { StationCreateRequest } from '../../../models/station.model';
 import { AuthService } from '../../../../auth/services/auth.service';
 import { User, UserRole } from '../../../../auth/models/user.model';
+import { TranslatePipe } from '../../../../../features/settings/pipes/translate.pipe';
+import { TranslationService } from '../../../../../core/localization/translation.service';
 
 @Component({
   selector: 'app-station-create',
   templateUrl: './station-create.component.html',
   styleUrls: ['./station-create.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslatePipe,
+  ],
 })
 export class StationCreateComponent implements OnInit {
   stationForm: FormGroup;
@@ -37,7 +45,8 @@ export class StationCreateComponent implements OnInit {
     private fb: FormBuilder,
     private stationsService: StationsService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslationService
   ) {
     this.stationForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -132,7 +141,12 @@ export class StationCreateComponent implements OnInit {
         this.router.navigate(['/admin/stations']);
       },
       error: (err) => {
-        this.error = 'Failed to create station: ' + err.message;
+        this.error =
+          this.translateService.translate(
+            'admin.stations.create_station.error'
+          ) +
+          ': ' +
+          err.message;
         this.loading = false;
       },
     });

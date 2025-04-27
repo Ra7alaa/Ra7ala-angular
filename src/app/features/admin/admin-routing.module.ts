@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
+import { SettingsComponent } from '../settings/pages/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
             (m) => m.StationsModule
           ),
       },
+      { path: 'settings', component: SettingsComponent },
     ],
   },
 ];
