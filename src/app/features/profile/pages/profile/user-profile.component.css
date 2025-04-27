@@ -107,6 +107,21 @@
   }
 }
 
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.alert i {
+  margin-right: 8px;
+}
+
+.alert .btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+}
+
 /* Avatar image styling */
 .img-thumbnail {
   border: 3px solid var(--primary-color-light);
@@ -171,4 +186,126 @@ input[type="date"] {
 .card-header p {
   font-size: 1rem;
   margin-bottom: 0;
+}
+
+/* Loading container styling */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Profile card styling */
+.profile-card {
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Avatar upload styling */
+.avatar-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bs-primary);
+  padding: 3px;
+}
+
+.upload-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--bs-primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-overlay:hover {
+  transform: scale(1.1);
+}
+
+.upload-button {
+  color: white;
+  cursor: pointer;
+  margin: 0;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* Dark theme adjustments */
+.dark-theme {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+.dark-theme .form-control {
+  background-color: var(--dark-input-bg);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dark-theme .form-control:focus {
+  background-color: var(--dark-input-bg-focus);
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* RTL support for avatar upload */
+[dir="rtl"] .upload-overlay {
+  right: auto;
+  left: 0;
+}
+
+[dir="rtl"] .btn i {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Spinner animation */
+.spin {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.65;
 }

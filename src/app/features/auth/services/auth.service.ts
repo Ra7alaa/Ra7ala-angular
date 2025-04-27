@@ -21,16 +21,61 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private router: Router, private http: HttpClient) {
+    this.loadStoredUser();
+    console.log('AuthService initialized with API URL:', this.apiUrl);
+  }
+
+  private loadStoredUser(): void {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
         const user = JSON.parse(storedUser);
-        this.currentUserSubject.next(user);
+        if (user && user.token) {
+          this.currentUserSubject.next(user);
+          this.refreshUserData();
+        } else {
+          this.clearUserData();
+        }
       } catch (error) {
         console.error('Failed to parse stored user data:', error);
-        localStorage.removeItem('user');
+        this.clearUserData();
       }
     }
+  }
+
+  private refreshUserData(): void {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser?.id) return;
+
+    console.log('Refreshing user data for ID:', currentUser.id);
+    this.http.get<User>(`${this.apiUrl}/profile`).subscribe({
+      next: (updatedUser) => {
+        console.log('Received updated user data:', updatedUser);
+        const userData = {
+          ...currentUser,
+          ...updatedUser,
+          token: currentUser.token
+        };
+        this.updateStoredUser(userData);
+      },
+      error: (error) => {
+        console.error('Failed to refresh user data:', error);
+        if (error.status === 401) {
+          this.clearUserData();
+        }
+      }
+    });
+  }
+
+  private clearUserData(): void {
+    localStorage.removeItem('user');
+    this.currentUserSubject.next(null);
+  }
+
+  private updateStoredUser(user: User): void {
+    console.log('Updating stored user data:', user);
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
   hasRole(roles: UserRole | UserRole[]): boolean {
@@ -38,7 +83,6 @@ export class AuthService {
     if (!currentUser) return false;
 
     if (!currentUser.userType) {
-      // Try to determine role from isXXX properties
       if (currentUser.isSystemOwner)
         return Array.isArray(roles)
           ? roles.includes(UserRole.SystemOwner)
@@ -70,7 +114,6 @@ export class AuthService {
     return currentUser.userType === roles;
   }
 
-  // Helper method to check if user is admin or higher
   isAdminOrHigher(): boolean {
     return this.hasRole([
       UserRole.Admin,
@@ -80,11 +123,14 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<User> {
+    console.log('Login attempt with credentials:', { emailOrUsername: credentials.emailOrUsername, password: '****' });
+    console.log('Sending request to:', `${this.apiUrl}/login`);
+    
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
+        tap(response => console.log('Received auth response:', { ...response, token: '****' })),
         map((response) => {
-          // Create a complete user object with role flags
           const user: User = {
             id: response.id,
             fullName: response.fullName,
@@ -96,19 +142,21 @@ export class AuthService {
             companyName: response.companyName,
             profilePictureUrl: response.profilePictureUrl,
             phoneNumber: response.phoneNumber,
-            // Add role flags
             isSystemOwner: response.userType === UserRole.SystemOwner,
             isSuperAdmin: response.userType === UserRole.SuperAdmin,
             isCompanyAdmin: response.userType === UserRole.Admin,
             isDriver: response.userType === UserRole.Driver,
             isPassenger: response.userType === UserRole.Passenger,
           };
-
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSubject.next(user);
+          
+          console.log('Mapped user object:', { ...user, token: '****' });
+          this.updateStoredUser(user);
           return user;
         }),
-        catchError((error) => throwError(() => error))
+        catchError(error => {
+          console.error('Login error:', error);
+          return throwError(() => new Error(error.error?.message || 'حدث خطأ أثناء تسجيل الدخول'));
+        })
       );
   }
 
@@ -119,36 +167,58 @@ export class AuthService {
   }
 
   updateProfile(userData: Partial<User>): Observable<User> {
+    console.log('Updating profile with data:', userData);
     const currentUser = this.getCurrentUser();
-    if (!currentUser || !currentUser.id) {
+    if (!currentUser?.id) {
       return throwError(() => new Error('User not authenticated'));
     }
 
     return this.http
-      .put<User>(`${this.apiUrl}/profile/${currentUser.id}`, userData)
+      .put<User>(`${this.apiUrl}/profile`, userData)
       .pipe(
         tap((updatedUser) => {
-          // Merge the updated user data with current user data
-          const newUserData = { ...currentUser, ...updatedUser };
+          console.log('Received updated user data:', updatedUser);
+          const newUserData = {
+            ...currentUser,
+            ...updatedUser,
+            token: currentUser.token
+          };
+          this.updateStoredUser(newUserData);
+        })
+      );
+  }
 
-          // Update localStorage
-          localStorage.setItem('user', JSON.stringify(newUserData));
+  uploadProfilePicture(file: File): Observable<User> {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser?.id) {
+      return throwError(() => new Error('User not authenticated'));
+    }
 
-          // Update the BehaviorSubject
-          this.currentUserSubject.next(newUserData);
-        }),
-        catchError((error) => throwError(() => error))
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+
+    return this.http
+      .post<User>(`${this.apiUrl}/profile/upload-picture`, formData)
+      .pipe(
+        tap((updatedUser) => {
+          const newUserData = {
+            ...currentUser,
+            ...updatedUser,
+            token: currentUser.token
+          };
+          this.updateStoredUser(newUserData);
+        })
       );
   }
 
   logout(): void {
-    localStorage.removeItem('user');
-    this.currentUserSubject.next(null);
+    this.clearUserData();
     this.router.navigate(['/auth/login']);
   }
 
   isLoggedIn(): boolean {
-    return !!this.currentUserSubject.value;
+    const currentUser = this.getCurrentUser();
+    return !!(currentUser && currentUser.token);
   }
 
   getCurrentUser(): User | null {

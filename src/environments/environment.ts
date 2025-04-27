@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://localhost:7111', // Development API URL based on the Swagger UI
   apiTimeout: 30000, // 30 seconds timeout for API calls
   useErrorInterceptor: true,

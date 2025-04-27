@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: TripDetailsComponent,
-    canActivate: [authGuard()], // Using authGuard as a function that returns CanActivateFn
+    canActivate: [authGuard],
   },
 ];
 

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/pages/main-layout/main-layout.component';
-import { adminGuard, passengerOnlyGuard } from './core/guards/auth.guard';
+import { adminGuard, authGuard, passengerOnlyGuard } from './core/guards/auth.guard';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
 
 export const routes: Routes = [
@@ -39,6 +39,7 @@ export const routes: Routes = [
           import('./features/profile/profile.module').then(
             (m) => m.ProfileModule
           ),
+        canActivate: [passengerOnlyGuard],
       },
     ],
   },

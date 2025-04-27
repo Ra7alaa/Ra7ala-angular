@@ -10,6 +10,9 @@
   flex: 1;
 }
 
+
+
+
 .main-content {
   flex: 1;
   padding: 20px 0; /* Keep top and bottom padding, remove left and right */
