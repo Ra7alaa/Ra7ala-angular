@@ -91,8 +91,18 @@
                 (click)="closeMobileMenuIfOpen()"
               >
                 <div class="avatar-circle">
-                  <!-- Default avatar icon if no profile image -->
-                  <i class="bi bi-person-circle"></i>
+                  <!-- Show user profile image if available, otherwise show default avatar -->
+                  <img
+                    *ngIf="currentUser?.profilePictureUrl"
+                    [src]="currentUser?.profilePictureUrl"
+                    alt="User Profile"
+                    onerror="this.src='assets/images/default-avatar.svg'"
+                  />
+                  <img
+                    *ngIf="!currentUser?.profilePictureUrl"
+                    src="assets/images/default-avatar.svg"
+                    alt="Default Avatar"
+                  />
                 </div>
               </a>
               <a

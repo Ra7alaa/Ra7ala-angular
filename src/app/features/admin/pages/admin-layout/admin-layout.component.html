@@ -12,67 +12,14 @@
 
     <!-- Main content area (removing classes related to sidebar collapse) -->
     <div class="main-content" [class.sidebar-hidden]="isSidebarHidden">
-      <!-- Admin header - simplified to have title and profile only -->
+      <!-- Admin header - with profile section -->
       <header class="admin-header">
         <div class="d-flex justify-content-between align-items-center w-100">
-          <!-- Title on the left (removed toggle button) -->
+          <!-- Title on the left -->
           <div class="d-flex align-items-center">
             <h1 class="admin-title">
               {{ "admin.dashboard_title" | translate }}
             </h1>
-          </div>
-
-          <!-- Profile dropdown on the right -->
-          <div class="admin-profile">
-            <div class="dropdown">
-              <button
-                class="btn btn-sm profile-dropdown"
-                type="button"
-                id="userMenuDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="assets/images/avatar-placeholder.png"
-                  alt="User avatar"
-                  class="avatar-img"
-                />
-                <span
-                  class="ms-2 d-none d-md-inline-block"
-                  [class.ms-2]="!currentLanguage.rtl"
-                  [class.me-2]="currentLanguage.rtl"
-                  >Admin</span
-                >
-                <i
-                  class="bi bi-chevron-down ms-1"
-                  [class.ms-1]="!currentLanguage.rtl"
-                  [class.me-1]="currentLanguage.rtl"
-                ></i>
-              </button>
-              <ul
-                class="dropdown-menu"
-                [class.dropdown-menu-end]="!currentLanguage.rtl"
-                [class.dropdown-menu-start]="currentLanguage.rtl"
-                aria-labelledby="userMenuDropdown"
-              >
-                <li>
-                  <a class="dropdown-item" href="#">{{
-                    "admin.header.profile" | translate
-                  }}</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">{{
-                    "admin.header.settings" | translate
-                  }}</a>
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item text-danger" href="#">{{
-                    "admin.header.logout" | translate
-                  }}</a>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </header>
