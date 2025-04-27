@@ -29,6 +29,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   currentTheme!: ThemeOption;
   private subscriptions: Subscription[] = [];
   isNetworkError = false;
+  private pendingImage: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -148,19 +149,38 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.submitError = null;
     this.isNetworkError = false;
 
-    const updatedProfile = {
-      ...this.profileForm.value,
+    const saveProfile = () => {
+      const updatedProfile = {
+        ...this.profileForm.value,
+      };
+
+      this.authService.updateProfile(updatedProfile).subscribe({
+        next: (user) => {
+          this.isSubmitting = false;
+          this.submitSuccess = true;
+          this.currentUser = user;
+          this.updateFormWithUserData(user);
+        },
+        error: (error: Error | HttpErrorResponse) => this.handleError(error),
+      });
     };
 
-    this.authService.updateProfile(updatedProfile).subscribe({
-      next: (user) => {
-        this.isSubmitting = false;
-        this.submitSuccess = true;
-        this.currentUser = user;
-        this.updateFormWithUserData(user);
-      },
-      error: (error: Error | HttpErrorResponse) => this.handleError(error),
-    });
+    // If there's a pending image, upload it first
+    if (this.pendingImage) {
+      this.authService.uploadProfilePicture(this.pendingImage).subscribe({
+        next: (response) => {
+          this.profileForm.patchValue({
+            profilePictureUrl: response.profilePictureUrl
+          });
+          saveProfile();
+        },
+        error: (error) => {
+          this.handleError(error);
+        }
+      });
+    } else {
+      saveProfile();
+    }
   }
 
   uploadImage(event: Event): void {
