@@ -2,7 +2,7 @@
   class="home-container"
   [ngClass]="{
     'dark-theme': currentTheme === 'dark',
-    rtl: currentLanguage?.rtl
+    rtl: currentLanguage.rtl
   }"
 >
   <!-- Hero Section -->
@@ -121,8 +121,36 @@
   <!-- Common Trips Section - Using the new component -->
   <app-common-trips [trips]="commonTrips"></app-common-trips>
 
-  <!-- Newsletter Section -->
-  <app-newsletter></app-newsletter>
+  <div class="company-creation-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+          <h2 class="mb-4">{{ "auth.create_company.title" | translate }}</h2>
+          <p class="mb-4">{{ "home.company_section.description" | translate }}</p>
+          <div class="features-grid mb-4">
+            <div class="feature-item">
+              <i class="bi bi-graph-up text-primary fs-3"></i>
+              <h4>{{ "home.company_section.features.growth.title" | translate }}</h4>
+              <p>{{ "home.company_section.features.growth.description" | translate }}</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-gear text-primary fs-3"></i>
+              <h4>{{ "home.company_section.features.management.title" | translate }}</h4>
+              <p>{{ "home.company_section.features.management.description" | translate }}</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-shield-check text-primary fs-3"></i>
+              <h4>{{ "home.company_section.features.security.title" | translate }}</h4>
+              <p>{{ "home.company_section.features.security.description" | translate }}</p>
+            </div>
+          </div>
+          <a routerLink="/auth/register-company" class="btn btn-primary btn-lg">
+            <i class="bi bi-building-add me-2"></i>{{ "auth.create_company.submit" | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <img src="assets/images/home4.svg" class="img-fluid w-100" alt="" />
 </div>

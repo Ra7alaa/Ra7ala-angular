@@ -1,0 +1,203 @@
+<div class="register-page" appRtl>
+  <div class="register-container">
+    <div class="register-card card shadow">
+      <div class="card-body">
+        <h1 class="logo-text">{{ "auth.logo_text" | translate }}</h1>
+        <h2 class="text-center mb-4">{{ "auth.create_company.title" | translate }}</h2>
+
+        <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="register-form">
+          <!-- Company Information Section -->
+          <div class="section-title mb-3 text-start">{{ "auth.create_company.company_info" | translate }}</div>
+          
+          <!-- Company Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">{{ "auth.create_company.name" | translate }} *</label>
+            <div class="input-wrapper">
+              <i class="bi bi-building icon"></i>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+                [placeholder]="'auth.create_company.name_placeholder' | translate"
+                [ngClass]="{ 'is-invalid': companyForm.get('name')?.invalid && companyForm.get('name')?.touched }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched">
+              {{ "auth.create_company.name_required" | translate }}
+            </div>
+          </div>
+
+          <!-- Company Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">{{ "auth.create_company.description" | translate }}</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              class="form-control"
+              [placeholder]="'auth.create_company.description_placeholder' | translate"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Company Logo -->
+          <div class="mb-3">
+            <label for="logo" class="form-label">{{ "auth.create_company.logo" | translate }}</label>
+            <div class="input-wrapper">
+              <input
+                type="file"
+                id="logo"
+                class="form-control"
+                accept="image/*"
+                (change)="onLogoChange($event)"
+              />
+            </div>
+          </div>
+
+          <!-- Company Address -->
+          <div class="mb-3">
+            <label for="address" class="form-label">{{ "auth.create_company.address" | translate }}</label>
+            <div class="input-wrapper">
+              <i class="bi bi-geo-alt icon"></i>
+              <input
+                type="text"
+                id="address"
+                formControlName="address"
+                class="form-control"
+                [placeholder]="'auth.create_company.address_placeholder' | translate"
+              />
+            </div>
+          </div>
+
+          <div class="row" [class.flex-row-reverse]="currentLanguage.rtl">
+            <!-- Company Phone -->
+            <div class="col-md-6 mb-3">
+              <label for="phoneNumber" class="form-label">{{ "auth.create_company.phone" | translate }}</label>
+              <div class="input-wrapper">
+                <i class="bi bi-telephone icon"></i>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  formControlName="phoneNumber"
+                  class="form-control"
+                  placeholder="+201234567890"
+                  [ngClass]="{ 'is-invalid': companyForm.get('phoneNumber')?.invalid && companyForm.get('phoneNumber')?.touched }"
+                />
+              </div>
+              <div class="invalid-feedback" *ngIf="companyForm.get('phoneNumber')?.invalid && companyForm.get('phoneNumber')?.touched">
+                {{ "auth.create_company.phone_invalid" | translate }}
+              </div>
+            </div>
+
+            <!-- Company Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">{{ "auth.create_company.email" | translate }}</label>
+              <div class="input-wrapper">
+                <i class="bi bi-envelope icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="form-control"
+                  [placeholder]="'auth.create_company.email_placeholder' | translate"
+                  [ngClass]="{ 'is-invalid': companyForm.get('email')?.invalid && companyForm.get('email')?.touched }"
+                />
+              </div>
+              <div class="invalid-feedback" *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched">
+                {{ "auth.create_company.email_invalid" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Super Admin Information Section -->
+          <div class="section-title mb-3 text-start">{{ "auth.create_company.admin_info" | translate }}</div>
+
+          <!-- Super Admin Name -->
+          <div class="mb-3">
+            <label for="superAdminName" class="form-label">{{ "auth.create_company.admin_name" | translate }} *</label>
+            <div class="input-wrapper">
+              <i class="bi bi-person icon"></i>
+              <input
+                type="text"
+                id="superAdminName"
+                formControlName="superAdminName"
+                class="form-control"
+                [placeholder]="'auth.create_company.admin_name_placeholder' | translate"
+                [ngClass]="{ 'is-invalid': companyForm.get('superAdminName')?.invalid && companyForm.get('superAdminName')?.touched }"
+              />
+            </div>
+            <div class="invalid-feedback" *ngIf="companyForm.get('superAdminName')?.invalid && companyForm.get('superAdminName')?.touched">
+              {{ "auth.create_company.admin_name_required" | translate }}
+            </div>
+          </div>
+
+          <div class="row" [class.flex-row-reverse]="currentLanguage.rtl">
+            <!-- Super Admin Email -->
+            <div class="col-md-6 mb-3">
+              <label for="superAdminEmail" class="form-label">{{ "auth.create_company.admin_email" | translate }} *</label>
+              <div class="input-wrapper">
+                <i class="bi bi-envelope icon"></i>
+                <input
+                  type="email"
+                  id="superAdminEmail"
+                  formControlName="superAdminEmail"
+                  class="form-control"
+                  [placeholder]="'auth.create_company.admin_email_placeholder' | translate"
+                  [ngClass]="{ 'is-invalid': companyForm.get('superAdminEmail')?.invalid && companyForm.get('superAdminEmail')?.touched }"
+                />
+              </div>
+              <div class="invalid-feedback" *ngIf="companyForm.get('superAdminEmail')?.invalid && companyForm.get('superAdminEmail')?.touched">
+                {{ "auth.create_company.admin_email_invalid" | translate }}
+              </div>
+            </div>
+
+            <!-- Super Admin Phone -->
+            <div class="col-md-6 mb-3">
+              <label for="superAdminPhone" class="form-label">{{ "auth.create_company.admin_phone" | translate }} *</label>
+              <div class="input-wrapper">
+                <i class="bi bi-telephone icon"></i>
+                <input
+                  type="tel"
+                  id="superAdminPhone"
+                  formControlName="superAdminPhone"
+                  class="form-control"
+                  placeholder="+201234567890"
+                  [ngClass]="{ 'is-invalid': companyForm.get('superAdminPhone')?.invalid && companyForm.get('superAdminPhone')?.touched }"
+                />
+              </div>
+              <div class="invalid-feedback" *ngIf="companyForm.get('superAdminPhone')?.invalid && companyForm.get('superAdminPhone')?.touched">
+                {{ "auth.create_company.admin_phone_invalid" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger" [class.text-end]="currentLanguage.rtl">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="btn btn-primary w-100 mt-4"
+            [disabled]="companyForm.invalid || isSubmitting"
+          >
+            <span *ngIf="isSubmitting" [class.me-2]="!currentLanguage.rtl" [class.ms-2]="currentLanguage.rtl">
+              <i class="bi bi-arrow-repeat spinner"></i>
+              {{ "auth.create_company.creating" | translate }}
+            </span>
+            <span *ngIf="!isSubmitting">
+              <i class="bi bi-building-add" [class.me-2]="!currentLanguage.rtl" [class.ms-2]="currentLanguage.rtl"></i>
+              {{ "auth.create_company.submit" | translate }}
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Image -->
+  <div class="register-image" [class.order-first]="currentLanguage.rtl">
+    <img src="assets/images/bus.svg" [alt]="'auth.create_company.image_alt' | translate" />
+  </div>
+</div>

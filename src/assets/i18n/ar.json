@@ -20,7 +20,39 @@
     "enter_email_or_username": "أدخل البريد الإلكتروني أو اسم المستخدم",
     "email_username_required": "يرجى إدخال البريد الإلكتروني أو اسم المستخدم",
     "password_required": "كلمة المرور مطلوبة",
-    "login_image_alt": "صورة تسجيل الدخول"
+    "login_image_alt": "صورة تسجيل الدخول",
+    "create_company": {
+      "title": "إنشاء شركة النقل الخاصة بك",
+      "company_info": "معلومات الشركة",
+      "name": "اسم الشركة",
+      "name_placeholder": "أدخل اسم الشركة",
+      "name_required": "اسم الشركة مطلوب",
+      "description": "الوصف",
+      "description_placeholder": "أدخل وصف الشركة",
+      "logo": "شعار الشركة",
+      "address": "العنوان",
+      "address_placeholder": "أدخل عنوان الشركة",
+      "phone": "رقم الهاتف",
+      "phone_invalid": "يرجى إدخال رقم هاتف صحيح",
+      "email": "البريد الإلكتروني",
+      "email_placeholder": "company@example.com",
+      "email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+      "website": "الموقع الإلكتروني",
+      "website_placeholder": "https://www.example.com",
+      "admin_info": "معلومات المسؤول الرئيسي",
+      "admin_name": "الاسم الكامل",
+      "admin_name_placeholder": "أدخل اسم المسؤول الرئيسي",
+      "admin_name_required": "اسم المسؤول الرئيسي مطلوب",
+      "admin_email": "البريد الإلكتروني",
+      "admin_email_placeholder": "admin@example.com",
+      "admin_email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+      "admin_phone": "رقم الهاتف",
+      "admin_phone_invalid": "يرجى إدخال رقم هاتف صحيح",
+      "creating": "جاري الإنشاء...",
+      "submit": "إنشاء الشركة",
+      "have_account": "لديك حساب بالفعل؟",
+      "login": "تسجيل الدخول"
+    }
   },
   "user_menu": {
     "profile": "الملف الشخصي",
@@ -115,6 +147,23 @@
     "tags": {
       "topBus": "أفضل حافلة",
       "topPlaces": "أفضل الأماكن"
+    },
+    "company_section": {
+      "description": "انضم إلى منصتنا وابدأ في إدارة أعمال النقل الخاصة بك بكفاءة. أنشئ ملف شركتك واحصل على أدوات إدارية قوية.",
+      "features": {
+        "growth": {
+          "title": "نمو الأعمال",
+          "description": "وسّع نطاق وصولك ونمِّ قاعدة عملائك"
+        },
+        "management": {
+          "title": "إدارة سهلة",
+          "description": "أدوات فعالة لإدارة المسارات والحجوزات"
+        },
+        "security": {
+          "title": "منصة آمنة",
+          "description": "بيانات عملك آمنة معنا"
+        }
+      }
     }
   },
   "admin": {

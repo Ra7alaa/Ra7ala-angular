@@ -155,7 +155,65 @@
   left: 0;
 }
 
-/* Responsive adjustments */
+/* Company Creation Section */
+.company-creation-section {
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+.dark-theme .company-creation-section {
+  background-color: #2a2a2a;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.feature-item {
+  padding: 1.5rem;
+  text-align: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.dark-theme .feature-item {
+  background-color: #333;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+}
+
+.feature-item i {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.feature-item h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.dark-theme .feature-item h4 {
+  color: #fff;
+}
+
+.feature-item p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.dark-theme .feature-item p {
+  color: #aaa;
+}
+
 @media (max-width: 768px) {
   .search-box {
     position: absolute;
@@ -189,6 +247,11 @@
   .yellow-circle {
     width: 280px;
     height: 280px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 

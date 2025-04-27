@@ -5,7 +5,6 @@ import { TripsService } from '../../../trips/services/trips.service';
 import { SearchComponent } from '../../../../shared/components/search/search.component';
 import { CommonTripsComponent } from '../../components/common-trips/common-trips.component';
 import { SharedModule } from '../../../../shared/shared.module';
-import { NewsletterComponent } from '../../../../shared/components/newsletter/newsletter.component';
 import {
   ThemeService,
   ThemeOption,
@@ -19,6 +18,8 @@ import {
   TranslationDictionary,
 } from '../../../../core/localization/translation.service';
 import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -30,8 +31,9 @@ import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
     SearchComponent,
     CommonTripsComponent,
     SharedModule,
-    NewsletterComponent,
     TranslatePipe,
+    RouterModule,
+    FormsModule
   ],
 })
 export class HomeComponent implements OnInit {

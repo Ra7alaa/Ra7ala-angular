@@ -20,7 +20,39 @@
     "enter_email_or_username": "Enter your Email or Username",
     "email_username_required": "Please enter your email or username",
     "password_required": "Password is required",
-    "login_image_alt": "Login Image"
+    "login_image_alt": "Login Image",
+    "create_company": {
+      "title": "Create Your Transportation Company",
+      "company_info": "Company Information",
+      "name": "Company Name",
+      "name_placeholder": "Enter company name",
+      "name_required": "Company name is required",
+      "description": "Description",
+      "description_placeholder": "Enter company description",
+      "logo": "Company Logo",
+      "address": "Address",
+      "address_placeholder": "Enter company address",
+      "phone": "Phone Number",
+      "phone_invalid": "Please enter a valid phone number",
+      "email": "Email",
+      "email_placeholder": "company@example.com",
+      "email_invalid": "Please enter a valid email address",
+      "website": "Website",
+      "website_placeholder": "https://www.example.com",
+      "admin_info": "Super Admin Information",
+      "admin_name": "Full Name",
+      "admin_name_placeholder": "Enter super admin name",
+      "admin_name_required": "Super admin name is required",
+      "admin_email": "Email",
+      "admin_email_placeholder": "admin@example.com",
+      "admin_email_invalid": "Please enter a valid email address",
+      "admin_phone": "Phone Number",
+      "admin_phone_invalid": "Please enter a valid phone number",
+      "creating": "Creating...",
+      "submit": "Create Company",
+      "have_account": "Already have an account?",
+      "login": "Login"
+    }
   },
   "user_menu": {
     "profile": "Profile",
@@ -115,6 +147,23 @@
     "tags": {
       "topBus": "Top Bus",
       "topPlaces": "Top Places"
+    },
+    "company_section": {
+      "description": "Join our platform and start managing your transportation business efficiently. Create your company profile and get access to powerful management tools.",
+      "features": {
+        "growth": {
+          "title": "Business Growth",
+          "description": "Expand your reach and grow your customer base"
+        },
+        "management": {
+          "title": "Easy Management",
+          "description": "Efficient tools to manage routes and bookings"
+        },
+        "security": {
+          "title": "Secure Platform",
+          "description": "Your business data is safe with us"
+        }
+      }
     }
   },
   "admin": {

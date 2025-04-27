@@ -52,49 +52,28 @@
         </div>
       </div>
 
-      <!-- Passengers Section with Float Label -->
+   
+
+
       <div class="col-12 col-sm-12 col-md-6 col-lg-3">
         <div class="form-group">
-          <p-floatlabel variant="on">
-            <input
-              pInputText
-              id="passengersInfo"
-              [(ngModel)]="passengersInfo"
-              class="w-100"
-            />
-            <label for="passengersInfo">Passenger - Class</label>
-          </p-floatlabel>
+   
+          <button class="search-btn" (click)="onSearch()">
+            <i class="bi bi-send-fill me-1"></i> Show results
+          </button>
         </div>
       </div>
+  
+
     </div>
   </div>
 
   <!-- Promo code and actions section -->
   <div class="actions-row">
     <div class="d-flex flex-wrap justify-content-center gap-2">
-      <button
-        class="promo-btn"
-        *ngIf="!showPromoCode"
-        (click)="togglePromoCode()"
-      >
-        <i class="bi bi-plus-lg me-1"></i> Add Promo Code
-      </button>
+      
 
-      <button class="search-btn" (click)="onSearch()">
-        <i class="bi bi-send-fill me-1"></i> Show results
-      </button>
 
-      <div class="promo-input w-100 mt-2" *ngIf="showPromoCode">
-        <p-floatlabel variant="on">
-          <input
-            pInputText
-            id="promoCode"
-            [(ngModel)]="promoCode"
-            class="w-100"
-          />
-          <label for="promoCode">Promo Code</label>
-        </p-floatlabel>
-      </div>
     </div>
   </div>
 </div>
