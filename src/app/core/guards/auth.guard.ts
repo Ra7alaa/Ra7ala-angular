@@ -14,9 +14,12 @@ export function authGuard(allowedRoles?: UserRole | UserRole[]): CanActivateFn {
     const router = inject(Router);
 
     if (!authService.isLoggedIn()) {
-      // Not logged in, redirect to login page
+      // Not logged in, redirect to login page with an error message
       router.navigate(['/auth/login'], {
-        queryParams: { returnUrl: router.url },
+        queryParams: {
+          returnUrl: router.url,
+          authError: 'unauthorized',
+        },
       });
       return false;
     }
@@ -30,14 +33,8 @@ export function authGuard(allowedRoles?: UserRole | UserRole[]): CanActivateFn {
     const hasRole = authService.hasRole(allowedRoles);
 
     if (!hasRole) {
-      // User doesn't have required role, redirect to appropriate page
-      if (authService.getCurrentUser()?.userType === UserRole.Passenger) {
-        router.navigate(['/']); // Redirect passengers to home page
-      } else if (authService.isAdminOrHigher()) {
-        router.navigate(['/admin/dashboard']); // Redirect admins to admin dashboard
-      } else {
-        router.navigate(['/']); // Default redirect
-      }
+      // User doesn't have required role, redirect to the 403 error page
+      router.navigate(['/error/403']);
       return false;
     }
 
@@ -85,7 +82,6 @@ export const guestOnlyGuard: CanActivateFn = () => {
     const currentUser = authService.getCurrentUser();
 
     if (
-      currentUser?.isSystemOwner ||
       currentUser?.isSuperAdmin ||
       currentUser?.isCompanyAdmin
     ) {
@@ -99,5 +95,28 @@ export const guestOnlyGuard: CanActivateFn = () => {
     return false;
   }
 
+  return true;
+};
+
+/**
+ * Passenger only guard that redirects admin users to the admin dashboard
+ * This ensures admin users can't access passenger pages
+ */
+export const passengerOnlyGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const currentUser = authService.getCurrentUser();
+
+  // If the user is an admin, super admin or system owner, redirect to admin dashboard
+  if (
+    currentUser?.isSystemOwner ||
+    currentUser?.isSuperAdmin ||
+    currentUser?.isCompanyAdmin
+  ) {
+    router.navigate(['/admin/dashboard']);
+    return false;
+  }
+
+  // Allow access for passengers or not logged in users
   return true;
 };

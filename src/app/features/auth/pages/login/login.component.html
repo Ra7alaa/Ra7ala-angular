@@ -1,20 +1,24 @@
 <div class="login-wrapper">
   <div class="login-left">
-    <img src="assets/images/bus.svg" alt="Login Image" class="login-image" />
+    <img
+      src="assets/images/bus.svg"
+      alt="{{ 'auth.login_image_alt' | translate }}"
+      class="login-image"
+    />
   </div>
   <div class="login-right">
     <h1 class="logo-text">Ra7ala</h1>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label>Email or Username</label>
+        <label>{{ "auth.email_or_username" | translate }}</label>
         <div class="input-wrapper">
           <i class="fa fa-envelope icon"></i>
           <input
             type="text"
             formControlName="emailOrUsername"
             class="form-control email-input"
-            placeholder="Enter your Email or Username"
+            placeholder="{{ 'auth.enter_email_or_username' | translate }}"
             [ngClass]="{
               'is-invalid':
                 loginForm.get('emailOrUsername')?.invalid &&
@@ -30,19 +34,19 @@
                 loginForm.get('emailOrUsername')?.touched)
             "
           >
-            Please enter your email or username
+            {{ "auth.email_username_required" | translate }}
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Password</label>
+        <label>{{ "auth.password" | translate }}</label>
         <div class="input-wrapper">
           <i class="fa fa-lock icon"></i>
           <input
             [type]="showPassword ? 'text' : 'password'"
             formControlName="password"
-            placeholder="Password"
+            placeholder="{{ 'auth.password' | translate }}"
             [ngClass]="{
               'is-invalid':
                 loginForm.get('password')?.invalid &&
@@ -64,7 +68,7 @@
                 loginForm.get('password')?.touched)
             "
           >
-            Password is required
+            {{ "auth.password_required" | translate }}
           </div>
         </div>
       </div>
@@ -72,11 +76,11 @@
       <div class="form-options">
         <div class="remember-me">
           <input type="checkbox" id="remember" />
-          <label for="remember">Remember Me</label>
+          <label for="remember">{{ "auth.remember_me" | translate }}</label>
         </div>
-        <a routerLink="/auth/forgot-password" class="forgot"
-          >Forgot Password?</a
-        >
+        <a routerLink="/auth/forgot-password" class="forgot">
+          {{ "auth.forgot_password" | translate }}
+        </a>
       </div>
 
       <div *ngIf="errorMessage" class="alert alert-danger">
@@ -88,14 +92,18 @@
         class="btn-login"
         [disabled]="loginForm.invalid || isSubmitting"
       >
-        <span *ngIf="!isSubmitting">Log In</span>
+        <span *ngIf="!isSubmitting">{{ "auth.login" | translate }}</span>
         <span *ngIf="isSubmitting">
-          <i class="fa fa-spinner fa-spin"></i> Logging in...
+          <i class="fa fa-spinner fa-spin"></i>
+          {{ "auth.logging_in" | translate }}
         </span>
       </button>
 
       <p class="signup-link">
-        Not member yet? <a routerLink="/auth/register">Create an account</a>
+        {{ "auth.not_member_yet" | translate }}
+        <a routerLink="/auth/register">{{
+          "auth.create_account" | translate
+        }}</a>
       </p>
     </form>
   </div>

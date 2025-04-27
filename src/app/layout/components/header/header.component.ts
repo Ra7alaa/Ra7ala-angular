@@ -3,19 +3,40 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { User, UserRole } from '../../../features/auth/models/user.model';
+import {
+  LanguageService,
+  Language,
+} from '../../../core/localization/language.service';
+import { ThemeService, ThemeOption } from '../../../core/themes/theme.service';
+import {
+  TranslationService,
+  TranslationDictionary,
+} from '../../../core/localization/translation.service';
+import { TranslatePipe } from '../../../features/settings/pipes/translate.pipe';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
   currentUser: User | null = null;
   isMobileMenuOpen = false;
+  currentLanguage: Language;
+  currentTheme: ThemeOption;
+  translations: TranslationDictionary = {};
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private languageService: LanguageService,
+    private themeService: ThemeService,
+    private translationService: TranslationService
+  ) {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.currentTheme = this.themeService.getCurrentTheme();
+  }
 
   ngOnInit(): void {
     // Subscribe to changes in the authentication state
@@ -25,6 +46,21 @@ export class HeaderComponent implements OnInit {
       } else {
         this.currentUser = null;
       }
+    });
+
+    // Subscribe to language changes
+    this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+    });
+
+    // Subscribe to theme changes
+    this.themeService.theme$.subscribe((theme) => {
+      this.currentTheme = theme;
+    });
+
+    // Subscribe to translations
+    this.translationService.translations$.subscribe((translations) => {
+      this.translations = translations;
     });
   }
 
@@ -46,8 +82,5 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.closeMobileMenuIfOpen();
-  }
+
 }

@@ -1,9 +1,15 @@
-<div class="home-container">
+<div
+  class="home-container"
+  [ngClass]="{
+    'dark-theme': currentTheme === 'dark',
+    rtl: currentLanguage?.rtl
+  }"
+>
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1 dir="ltr">Book Your Ra7ala Bus Now!</h1>
-      <p>Book your bus with your credit card in less than 2 minutes</p>
+      <h1>{{ "home.hero.title" | translate }}</h1>
+      <p>{{ "home.hero.subtitle" | translate }}</p>
 
       <!-- Replace simple search with advanced search component -->
       <div class="container search-box">
@@ -12,104 +18,101 @@
     </div>
   </section>
 
-  <!-- Temporary Admin Links Section -->
-  <!-- <section class="admin-links-section">
-    <div class="container">
-      <h2 class="admin-links-title">Admin Access Links</h2>
-      <div class="admin-links">
-        <a routerLink="/admin/dashboard" class="admin-link">
-          <i class="bi bi-speedometer2"></i>
-          Dashboard
-        </a>
-        <a routerLink="/admin/stations" class="admin-link">
-          <i class="bi bi-geo-alt-fill"></i>
-          Stations Management
-        </a>
-        <a routerLink="/admin/trips" class="admin-link">
-          <i class="bi bi-bus-front"></i>
-          Trips Management
-        </a>
-        <a routerLink="/admin/routes" class="admin-link">
-          <i class="bi bi-map"></i>
-          Routes Management
-        </a>
-      </div>
-    </div>
-  </section> -->
-
-  <img src="assets/images/home2.svg" class="home2" alt="" />
+  <img src="assets/images/home2.svg" class="home2 img-fluid" alt="" />
 
   <!-- Plan Your Trip Section -->
-  <section class="plan-trip-section">
+  <section class="plan-trip-section py-5">
     <div class="container">
-      <h2 class="plan-trip-title">Plan Your Trip With Us</h2>
+      <h2 class="plan-trip-title text-center mb-5">
+        {{ "home.planTrip.title" | translate }}
+      </h2>
 
-      <div class="trip-planning-container">
-        <div class="trip-planning-steps">
-          <div class="trip-step">
-            <div class="step-icon">
-              <img
-                src="assets/images/high-quality 2.svg"
-                alt="Choose Destination"
-              />
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="trip-planning-steps">
+            <div class="trip-step d-flex align-items-start mb-4">
+              <div class="step-icon me-3">
+                <img
+                  src="assets/images/high-quality 2.svg"
+                  alt="Choose Destination"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="step-content">
+                <h3 class="h5">
+                  {{ "home.planTrip.step1.title" | translate }}
+                </h3>
+                <p class="text-muted">
+                  {{ "home.planTrip.step1.description" | translate }}
+                </p>
+              </div>
             </div>
-            <div class="step-content">
-              <h3>Choose your destination</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-            </div>
-          </div>
 
-          <div class="trip-step">
-            <div class="step-icon">
-              <img
-                src="assets/images/high-quality 3.svg"
-                alt="Determine Timing"
-              />
+            <div class="trip-step d-flex align-items-start mb-4">
+              <div class="step-icon me-3">
+                <img
+                  src="assets/images/high-quality 3.svg"
+                  alt="Determine Timing"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="step-content">
+                <h3 class="h5">
+                  {{ "home.planTrip.step2.title" | translate }}
+                </h3>
+                <p class="text-muted">
+                  {{ "home.planTrip.step2.description" | translate }}
+                </p>
+              </div>
             </div>
-            <div class="step-content">
-              <h3>Determine the timing of your trip</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-            </div>
-          </div>
 
-          <div class="trip-step">
-            <div class="step-icon">
-              <img src="assets/images/high-quality 4.svg" alt="Book Trip" />
-            </div>
-            <div class="step-content">
-              <h3>Book and enjoy your trip</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <div class="trip-step d-flex align-items-start">
+              <div class="step-icon me-3">
+                <img
+                  src="assets/images/high-quality 4.svg"
+                  alt="Book Trip"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="step-content">
+                <h3 class="h5">
+                  {{ "home.planTrip.step3.title" | translate }}
+                </h3>
+                <p class="text-muted">
+                  {{ "home.planTrip.step3.description" | translate }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="trip-image-container">
-          <div class="yellow-circle"></div>
-          <img
-            src="assets/images/homeBus.svg"
-            alt="Bus Image"
-            class="bus-image"
-          />
-
-          <div class="tag top-bus">
+        <div class="col-lg-6 position-relative">
+          <div class="trip-image-container">
+            <div class="yellow-circle"></div>
             <img
-              src="assets/images/topBus.svg"
-              alt="Top Bus"
-              class="tag-icon"
+              src="assets/images/homeBus.svg"
+              alt="Bus Image"
+              class="bus-image img-fluid"
             />
-            <span>Top Bus</span>
-          </div>
 
-          <div class="tag top-places">
-            <img
-              src="assets/images/topPlace.svg"
-              alt="Top Places"
-              class="tag-icon"
-            />
-            <span>Top Places</span>
-          </div>
+            <div class="tag top-bus">
+              <img
+                src="assets/images/topBus.svg"
+                alt="Top Bus"
+                class="tag-icon"
+              />
+              <span>{{ "home.tags.topBus" | translate }}</span>
+            </div>
 
-          <div class="location-pin"></div>
+            <div class="tag top-places">
+              <img
+                src="assets/images/topPlace.svg"
+                alt="Top Places"
+                class="tag-icon"
+              />
+              <span>{{ "home.tags.topPlaces" | translate }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -121,9 +124,5 @@
   <!-- Newsletter Section -->
   <app-newsletter></app-newsletter>
 
-  <img
-    src="assets/images/home4.svg"
-    style="background-size: cover; width: 100%"
-    alt=""
-  />
+  <img src="assets/images/home4.svg" class="img-fluid w-100" alt="" />
 </div>

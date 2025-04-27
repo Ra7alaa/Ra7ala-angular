@@ -1,0 +1,174 @@
+/* Profile component custom styles */
+.card {
+  border-radius: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark theme support */
+.dark-theme.card {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+}
+
+.dark-theme .card-header {
+  background-color: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .text-muted {
+  color: var(--text-color-secondary) !important;
+}
+
+.dark-theme .form-control,
+.dark-theme .form-select {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .form-control:focus,
+.dark-theme .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(255, 140, 0, 0.25);
+}
+
+.dark-theme .btn-outline-secondary {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .btn-outline-secondary:hover {
+  background-color: var(--surface-color-hover);
+  color: var(--primary-color);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(255, 140, 0, 0.25);
+}
+
+/* RTL support for the profile page */
+[dir="rtl"] .me-1 {
+  margin-right: 0 !important;
+  margin-left: 0.25rem !important;
+}
+
+[dir="rtl"] .me-2 {
+  margin-right: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+[dir="rtl"] .ms-1 {
+  margin-left: 0 !important;
+  margin-right: 0.25rem !important;
+}
+
+[dir="rtl"] .ms-2 {
+  margin-left: 0 !important;
+  margin-right: 0.5rem !important;
+}
+
+[dir="rtl"] .btn-close {
+  margin-right: auto;
+  margin-left: initial;
+}
+
+[dir="rtl"] .position-absolute.bottom-0.end-0 {
+  left: 0;
+  right: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .container {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
+/* Custom animation for alerts */
+.alert {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Avatar image styling */
+.img-thumbnail {
+  border: 3px solid var(--primary-color-light);
+  padding: 0.25rem;
+  transition: border-color 0.3s ease;
+}
+
+.dark-theme .img-thumbnail {
+  background-color: var(--surface-color-hover);
+  border-color: var(--primary-color-dark);
+}
+
+/* لتحسين مظهر الصفحة الظاهرة في الصورة */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.dark-theme .form-label {
+  color: var(--text-color);
+}
+
+/* زيادة المساحة الداخلية للمدخلات */
+input.form-control,
+textarea.form-control {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+/* تصميم أزرار الحفظ والإلغاء */
+.btn-primary {
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+}
+
+.btn-outline-secondary {
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+}
+
+/* تحسين شكل حقل التاريخ */
+input[type="date"] {
+  position: relative;
+  padding-right: 36px;
+}
+
+/* تحسين الفواصل بين الحقول */
+.mb-3 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* تحسين عنوان الصفحة */
+.card-header h4 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-header p {
+  font-size: 1rem;
+  margin-bottom: 0;
+}

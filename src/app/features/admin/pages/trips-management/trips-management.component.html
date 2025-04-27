@@ -3,13 +3,14 @@
   <div
     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
   >
-    <h1 class="h2">Trips Management</h1>
+    <h1 class="h2">{{ "admin.trips.title" | translate }}</h1>
     <button
       class="btn btn-primary"
       data-bs-toggle="modal"
       data-bs-target="#addTripModal"
     >
-      <i class="bi bi-plus-circle me-2"></i>Add New Trip
+      <i class="bi bi-plus-circle me-2"></i
+      >{{ "admin.trips.add_trip" | translate }}
     </button>
   </div>
 
@@ -23,21 +24,22 @@
         <input
           type="text"
           class="form-control border-start-0"
-          placeholder="Search trips..."
+          placeholder="{{ 'admin.trips.search_placeholder' | translate }}"
         />
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
       <div class="d-flex gap-2">
         <select class="form-select">
-          <option selected>All Status</option>
-          <option>Upcoming</option>
-          <option>In Progress</option>
-          <option>Completed</option>
-          <option>Cancelled</option>
+          <option selected>{{ "admin.trips.all_status" | translate }}</option>
+          <option>{{ "admin.trips.upcoming" | translate }}</option>
+          <option>{{ "admin.trips.in_progress" | translate }}</option>
+          <option>{{ "admin.trips.completed" | translate }}</option>
+          <option>{{ "admin.trips.cancelled" | translate }}</option>
         </select>
         <button class="btn btn-outline-secondary">
-          <i class="bi bi-funnel me-2"></i>Filter
+          <i class="bi bi-funnel me-2"></i
+          >{{ "admin.trips.filter" | translate }}
         </button>
       </div>
     </div>
@@ -50,14 +52,14 @@
         <table class="table table-hover align-middle">
           <thead>
             <tr>
-              <th>Trip ID</th>
-              <th>Route</th>
-              <th>Departure Time</th>
-              <th>Arrival Time</th>
-              <th>Bus</th>
-              <th>Price</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>{{ "admin.trips.trip_id" | translate }}</th>
+              <th>{{ "admin.trips.route" | translate }}</th>
+              <th>{{ "admin.trips.departure_time" | translate }}</th>
+              <th>{{ "admin.trips.arrival_time" | translate }}</th>
+              <th>{{ "admin.trips.bus" | translate }}</th>
+              <th>{{ "admin.trips.price" | translate }}</th>
+              <th>{{ "admin.trips.status" | translate }}</th>
+              <th>{{ "admin.trips.actions" | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +70,11 @@
               <td>Apr 24, 2025 10:15 AM</td>
               <td>Bus-101 (VIP)</td>
               <td>250 EGP</td>
-              <td><span class="badge bg-primary">Upcoming</span></td>
+              <td>
+                <span class="badge bg-primary">{{
+                  "admin.trips.upcoming" | translate
+                }}</span>
+              </td>
               <td>
                 <div class="d-flex gap-1">
                   <button class="btn btn-sm btn-outline-secondary">
@@ -94,7 +100,11 @@
               <td>Apr 24, 2025 07:20 AM</td>
               <td>Bus-102 (Standard)</td>
               <td>400 EGP</td>
-              <td><span class="badge bg-success">In Progress</span></td>
+              <td>
+                <span class="badge bg-success">{{
+                  "admin.trips.in_progress" | translate
+                }}</span>
+              </td>
               <td>
                 <div class="d-flex gap-1">
                   <button class="btn btn-sm btn-outline-secondary">
@@ -120,7 +130,11 @@
               <td>Apr 22, 2025 06:45 PM</td>
               <td>Bus-103 (VIP)</td>
               <td>500 EGP</td>
-              <td><span class="badge bg-secondary">Completed</span></td>
+              <td>
+                <span class="badge bg-secondary">{{
+                  "admin.trips.completed" | translate
+                }}</span>
+              </td>
               <td>
                 <div class="d-flex gap-1">
                   <button class="btn btn-sm btn-outline-secondary">
@@ -146,7 +160,11 @@
               <td>Apr 21, 2025 07:15 PM</td>
               <td>Bus-104 (Standard)</td>
               <td>200 EGP</td>
-              <td><span class="badge bg-danger">Cancelled</span></td>
+              <td>
+                <span class="badge bg-danger">{{
+                  "admin.trips.cancelled" | translate
+                }}</span>
+              </td>
               <td>
                 <div class="d-flex gap-1">
                   <button class="btn btn-sm btn-outline-secondary">
@@ -175,15 +193,15 @@
   <nav aria-label="Page navigation" class="mt-4">
     <ul class="pagination justify-content-center">
       <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-          >Previous</a
-        >
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{
+          "admin.trips.previous" | translate
+        }}</a>
       </li>
       <li class="page-item active"><a class="page-link" href="#">1</a></li>
       <li class="page-item"><a class="page-link" href="#">2</a></li>
       <li class="page-item"><a class="page-link" href="#">3</a></li>
       <li class="page-item">
-        <a class="page-link" href="#">Next</a>
+        <a class="page-link" href="#">{{ "admin.trips.next" | translate }}</a>
       </li>
     </ul>
   </nav>
@@ -200,7 +218,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addTripModalLabel">Add New Trip</h5>
+        <h5 class="modal-title" id="addTripModalLabel">
+          {{ "admin.trips.add_trip" | translate }}
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -212,9 +232,13 @@
         <form>
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="tripRoute" class="form-label">Route</label>
+              <label for="tripRoute" class="form-label">{{
+                "admin.trips.route" | translate
+              }}</label>
               <select id="tripRoute" class="form-select">
-                <option selected disabled>Select route</option>
+                <option selected disabled>
+                  {{ "admin.trips.select_route" | translate }}
+                </option>
                 <option>Cairo - Alexandria</option>
                 <option>Cairo - Luxor</option>
                 <option>Alexandria - Luxor</option>
@@ -224,22 +248,26 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="departureStation" class="form-label"
-                >Departure Station</label
-              >
+              <label for="departureStation" class="form-label">{{
+                "admin.trips.departure_station" | translate
+              }}</label>
               <select id="departureStation" class="form-select">
-                <option selected disabled>Select departure station</option>
+                <option selected disabled>
+                  {{ "admin.trips.select_departure" | translate }}
+                </option>
                 <option>Cairo Central Station</option>
                 <option>Alexandria Main Station</option>
                 <option>Luxor Bus Terminal</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label for="arrivalStation" class="form-label"
-                >Arrival Station</label
-              >
+              <label for="arrivalStation" class="form-label">{{
+                "admin.trips.arrival_station" | translate
+              }}</label>
               <select id="arrivalStation" class="form-select">
-                <option selected disabled>Select arrival station</option>
+                <option selected disabled>
+                  {{ "admin.trips.select_arrival" | translate }}
+                </option>
                 <option>Cairo Central Station</option>
                 <option>Alexandria Main Station</option>
                 <option>Luxor Bus Terminal</option>
@@ -249,35 +277,43 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="departureDate" class="form-label"
-                >Departure Date</label
-              >
+              <label for="departureDate" class="form-label">{{
+                "admin.trips.departure_date" | translate
+              }}</label>
               <input type="date" class="form-control" id="departureDate" />
             </div>
             <div class="col-md-6">
-              <label for="departureTime" class="form-label"
-                >Departure Time</label
-              >
+              <label for="departureTime" class="form-label">{{
+                "admin.trips.departure_time" | translate
+              }}</label>
               <input type="time" class="form-control" id="departureTime" />
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="arrivalDate" class="form-label">Arrival Date</label>
+              <label for="arrivalDate" class="form-label">{{
+                "admin.trips.arrival_date" | translate
+              }}</label>
               <input type="date" class="form-control" id="arrivalDate" />
             </div>
             <div class="col-md-6">
-              <label for="arrivalTime" class="form-label">Arrival Time</label>
+              <label for="arrivalTime" class="form-label">{{
+                "admin.trips.arrival_time" | translate
+              }}</label>
               <input type="time" class="form-control" id="arrivalTime" />
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="tripBus" class="form-label">Bus</label>
+              <label for="tripBus" class="form-label">{{
+                "admin.trips.bus" | translate
+              }}</label>
               <select id="tripBus" class="form-select">
-                <option selected disabled>Select bus</option>
+                <option selected disabled>
+                  {{ "admin.trips.select_bus" | translate }}
+                </option>
                 <option>Bus-101 (VIP - 45 seats)</option>
                 <option>Bus-102 (Standard - 50 seats)</option>
                 <option>Bus-103 (VIP - 45 seats)</option>
@@ -285,55 +321,65 @@
               </select>
             </div>
             <div class="col-md-6">
-              <label for="tripPrice" class="form-label">Price (EGP)</label>
+              <label for="tripPrice" class="form-label"
+                >{{ "admin.trips.price" | translate }} (EGP)</label
+              >
               <input
                 type="number"
                 class="form-control"
                 id="tripPrice"
-                placeholder="Enter price"
+                placeholder="{{ 'admin.trips.price_placeholder' | translate }}"
               />
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="tripStatus" class="form-label">Status</label>
+              <label for="tripStatus" class="form-label">{{
+                "admin.trips.status" | translate
+              }}</label>
               <select id="tripStatus" class="form-select">
-                <option selected>Upcoming</option>
-                <option>In Progress</option>
-                <option>Completed</option>
-                <option>Cancelled</option>
+                <option selected>
+                  {{ "admin.trips.upcoming" | translate }}
+                </option>
+                <option>{{ "admin.trips.in_progress" | translate }}</option>
+                <option>{{ "admin.trips.completed" | translate }}</option>
+                <option>{{ "admin.trips.cancelled" | translate }}</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label for="availableSeats" class="form-label"
-                >Available Seats</label
-              >
+              <label for="availableSeats" class="form-label">{{
+                "admin.trips.available_seats" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
                 id="availableSeats"
-                placeholder="Number of available seats"
+                placeholder="{{ 'admin.trips.seats_placeholder' | translate }}"
               />
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="tripNotes" class="form-label">Notes</label>
+            <label for="tripNotes" class="form-label">{{
+              "admin.trips.notes" | translate
+            }}</label>
             <textarea
               class="form-control"
               id="tripNotes"
               rows="3"
-              placeholder="Any special notes or instructions"
+              placeholder="{{ 'admin.trips.notes_placeholder' | translate }}"
             ></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
+          {{ "admin.trips.cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-primary">Save Trip</button>
+        <button type="button" class="btn btn-primary">
+          {{ "admin.trips.save" | translate }}
+        </button>
       </div>
     </div>
   </div>
@@ -350,7 +396,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editTripModalLabel">Edit Trip #TRP-1235</h5>
+        <h5 class="modal-title" id="editTripModalLabel">
+          {{ "admin.trips.edit_trip" | translate }} #TRP-1235
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -362,7 +410,9 @@
         <form>
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="editTripRoute" class="form-label">Route</label>
+              <label for="editTripRoute" class="form-label">{{
+                "admin.trips.route" | translate
+              }}</label>
               <select id="editTripRoute" class="form-select">
                 <option>Cairo - Alexandria</option>
                 <option selected>Cairo - Luxor</option>
@@ -373,9 +423,9 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="editDepartureStation" class="form-label"
-                >Departure Station</label
-              >
+              <label for="editDepartureStation" class="form-label">{{
+                "admin.trips.departure_station" | translate
+              }}</label>
               <select id="editDepartureStation" class="form-select">
                 <option selected>Cairo Central Station</option>
                 <option>Alexandria Main Station</option>
@@ -383,9 +433,9 @@
               </select>
             </div>
             <div class="col-md-6">
-              <label for="editArrivalStation" class="form-label"
-                >Arrival Station</label
-              >
+              <label for="editArrivalStation" class="form-label">{{
+                "admin.trips.arrival_station" | translate
+              }}</label>
               <select id="editArrivalStation" class="form-select">
                 <option>Cairo Central Station</option>
                 <option>Alexandria Main Station</option>
@@ -396,9 +446,9 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="editDepartureDate" class="form-label"
-                >Departure Date</label
-              >
+              <label for="editDepartureDate" class="form-label">{{
+                "admin.trips.departure_date" | translate
+              }}</label>
               <input
                 type="date"
                 class="form-control"
@@ -407,9 +457,9 @@
               />
             </div>
             <div class="col-md-6">
-              <label for="editDepartureTime" class="form-label"
-                >Departure Time</label
-              >
+              <label for="editDepartureTime" class="form-label">{{
+                "admin.trips.departure_time" | translate
+              }}</label>
               <input
                 type="time"
                 class="form-control"
@@ -421,9 +471,9 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="editArrivalDate" class="form-label"
-                >Arrival Date</label
-              >
+              <label for="editArrivalDate" class="form-label">{{
+                "admin.trips.arrival_date" | translate
+              }}</label>
               <input
                 type="date"
                 class="form-control"
@@ -432,9 +482,9 @@
               />
             </div>
             <div class="col-md-6">
-              <label for="editArrivalTime" class="form-label"
-                >Arrival Time</label
-              >
+              <label for="editArrivalTime" class="form-label">{{
+                "admin.trips.arrival_time" | translate
+              }}</label>
               <input
                 type="time"
                 class="form-control"
@@ -446,7 +496,9 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="editTripBus" class="form-label">Bus</label>
+              <label for="editTripBus" class="form-label">{{
+                "admin.trips.bus" | translate
+              }}</label>
               <select id="editTripBus" class="form-select">
                 <option>Bus-101 (VIP - 45 seats)</option>
                 <option selected>Bus-102 (Standard - 50 seats)</option>
@@ -455,7 +507,9 @@
               </select>
             </div>
             <div class="col-md-6">
-              <label for="editTripPrice" class="form-label">Price (EGP)</label>
+              <label for="editTripPrice" class="form-label"
+                >{{ "admin.trips.price" | translate }} (EGP)</label
+              >
               <input
                 type="number"
                 class="form-control"
@@ -467,18 +521,22 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="editTripStatus" class="form-label">Status</label>
+              <label for="editTripStatus" class="form-label">{{
+                "admin.trips.status" | translate
+              }}</label>
               <select id="editTripStatus" class="form-select">
-                <option>Upcoming</option>
-                <option selected>In Progress</option>
-                <option>Completed</option>
-                <option>Cancelled</option>
+                <option>{{ "admin.trips.upcoming" | translate }}</option>
+                <option selected>
+                  {{ "admin.trips.in_progress" | translate }}
+                </option>
+                <option>{{ "admin.trips.completed" | translate }}</option>
+                <option>{{ "admin.trips.cancelled" | translate }}</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label for="editAvailableSeats" class="form-label"
-                >Available Seats</label
-              >
+              <label for="editAvailableSeats" class="form-label">{{
+                "admin.trips.available_seats" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
@@ -489,7 +547,9 @@
           </div>
 
           <div class="mb-3">
-            <label for="editTripNotes" class="form-label">Notes</label>
+            <label for="editTripNotes" class="form-label">{{
+              "admin.trips.notes" | translate
+            }}</label>
             <textarea class="form-control" id="editTripNotes" rows="3">
 Night trip with free WiFi and snacks service.</textarea
             >
@@ -498,9 +558,11 @@ Night trip with free WiFi and snacks service.</textarea
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
+          {{ "admin.trips.cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-primary">Update Trip</button>
+        <button type="button" class="btn btn-primary">
+          {{ "admin.trips.update" | translate }}
+        </button>
       </div>
     </div>
   </div>

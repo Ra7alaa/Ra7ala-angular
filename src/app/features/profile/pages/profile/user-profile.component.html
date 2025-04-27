@@ -1,0 +1,199 @@
+<div class="container py-5" [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'">
+  <div class="row">
+    <div class="col-lg-4 mb-4">
+      <!-- Profile Card -->
+      <div
+        class="card border-0 shadow"
+        [ngClass]="{ 'dark-theme': isDarkTheme() }"
+      >
+        <div class="card-body text-center">
+          <div class="position-relative d-inline-block mb-3">
+            <img
+              [src]="
+                profileForm.get('profilePictureUrl')?.value ||
+                'assets/images/user-avatar.png'
+              "
+              alt="{{ 'profile.profile_picture' | translate }}"
+              class="rounded-circle img-thumbnail"
+              style="width: 150px; height: 150px; object-fit: cover"
+              onerror="this.src='https://via.placeholder.com/150'"
+            />
+            <button
+              type="button"
+              class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle p-2"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+          </div>
+          <h5 class="fw-bold">
+            {{ profileForm.get("fullName")?.value || "User Name" }}
+          </h5>
+          <p class="text-muted">
+            {{ profileForm.get("email")?.value || "user@example.com" }}
+          </p>
+
+          <div class="d-flex justify-content-center mt-3">
+            <button type="button" class="btn btn-outline-secondary mx-1">
+              <i class="bi bi-camera me-1"></i>
+              {{ "profile.change_photo" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <!-- Profile Information -->
+      <div
+        class="card border-0 shadow mb-4"
+        [ngClass]="{ 'dark-theme': isDarkTheme() }"
+      >
+        <div class="card-header bg-transparent border-0 pt-4">
+          <h4 class="fw-bold mb-0">
+            {{ "profile.profile_title" | translate }}
+          </h4>
+          <p class="text-muted">
+            {{ "profile.profile_description" | translate }}
+          </p>
+        </div>
+        <div class="card-body">
+          <!-- Alert Messages -->
+          <div
+            class="alert alert-success alert-dismissible fade show"
+            *ngIf="submitSuccess"
+          >
+            <i class="bi bi-check-circle-fill me-1"></i>
+            {{ "profile.profile_updated" | translate }}
+            <button
+              type="button"
+              class="btn-close"
+              (click)="submitSuccess = false"
+            ></button>
+          </div>
+
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            *ngIf="submitError"
+          >
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+            {{ submitError }}
+            <button
+              type="button"
+              class="btn-close"
+              (click)="submitError = null"
+            ></button>
+          </div>
+
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="fullName" class="form-label fw-medium">{{
+                  "profile.full_name" | translate
+                }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fullName"
+                  formControlName="fullName"
+                  [class.is-invalid]="
+                    profileForm.get('fullName')?.invalid &&
+                    profileForm.get('fullName')?.touched
+                  "
+                />
+                <div class="invalid-feedback">
+                  {{ "profile.full_name_required" | translate }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label fw-medium">{{
+                  "profile.email" | translate
+                }}</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  [class.is-invalid]="
+                    profileForm.get('email')?.invalid &&
+                    profileForm.get('email')?.touched
+                  "
+                />
+                <div class="invalid-feedback">
+                  {{ "profile.email_required" | translate }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="phoneNumber" class="form-label fw-medium">{{
+                  "profile.phone" | translate
+                }}</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phoneNumber"
+                  formControlName="phoneNumber"
+                  [class.is-invalid]="
+                    profileForm.get('phoneNumber')?.invalid &&
+                    profileForm.get('phoneNumber')?.touched
+                  "
+                />
+                <div class="invalid-feedback">
+                  {{ "profile.phone_format" | translate }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="dateOfBirth" class="form-label fw-medium">{{
+                  "profile.birth_date" | translate
+                }}</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="dateOfBirth"
+                  formControlName="dateOfBirth"
+                />
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="address" class="form-label fw-medium">{{
+                  "profile.address" | translate
+                }}</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  formControlName="address"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+
+            <div
+              class="d-flex gap-2 mt-4"
+              [ngClass]="{ 'justify-content-end': currentLanguage.rtl }"
+            >
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="profileForm.invalid || isSubmitting"
+              >
+                <span
+                  class="spinner-border spinner-border-sm me-1"
+                  *ngIf="isSubmitting"
+                ></span>
+                {{ "profile.save" | translate }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                [disabled]="isSubmitting"
+              >
+                {{ "profile.cancel" | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

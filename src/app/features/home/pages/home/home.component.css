@@ -1,27 +1,14 @@
 /* General Styles */
 .home-container {
   font-family: "Tajawal", Arial, sans-serif;
-  margin: 0;
-  padding: 0;
   color: #333;
-  overflow-x: hidden; /* منع الظهور الأفقي */
+  overflow-x: hidden;
 }
 
-.section-title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: #ff9800;
-  position: relative;
-}
-
-.section-title::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 4px;
-  background-color: #ffcc00;
-  margin: 10px auto;
+/* التبديل بين الوضع المظلم والفاتح */
+.home-container.dark-theme {
+  color: #f8f9fa;
+  background-color: #121212;
 }
 
 /* Hero Section */
@@ -31,30 +18,19 @@
   background-size: cover;
   background-position: center;
   height: 80vh;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
   position: relative;
-  /* overflow: hidden; */
-}
-
-.hero-content {
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .hero-content h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
   font-weight: bold;
+  color: #fff;
 }
 
 .hero-content p {
@@ -77,458 +53,24 @@
   width: 100%;
 }
 
-@media (max-width: 768px) {
-  .search-box {
-    position: absolute;
-    bottom: -180px;
-  }
-  .home2 {
-    padding-top: 200px;
-  }
-}
-
-/* Featured Destinations */
-.featured-section {
-  padding: 5rem 2rem;
-  padding-top: 8rem; /* Increased top padding to create space after search container */
-  background-color: #f9f9f9;
-  direction: rtl;
-}
-
-.destinations-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.destination-card {
-  width: 300px;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-}
-
-.destination-card:hover {
-  transform: translateY(-10px);
-}
-
-.destination-image {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-}
-
-.destination-info {
-  padding: 1.5rem;
-}
-
-.destination-info h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.destination-info p {
-  color: #666;
-  margin-bottom: 1rem;
-}
-
-.view-details {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #ff9800;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.view-details:hover {
-  background-color: #ffcc00;
-}
-
-/* Popular Trips */
-.popular-section {
-  padding: 5rem 2rem;
-  direction: rtl;
-}
-
-.trips-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.trip-card {
-  width: 350px;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-}
-
-.trip-card:hover {
-  transform: translateY(-10px);
-}
-
-.trip-image {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-}
-
-.trip-info {
-  padding: 1.5rem;
-}
-
-.trip-info h3 {
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.trip-details {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.trip-details i {
-  color: #ff9800;
-  margin-left: 5px;
-}
-
-.trip-info p {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
-.book-now {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #ff9800;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-.book-now:hover {
-  background-color: #ffcc00;
-}
-
-/* Services Section */
-.services-section {
-  padding: 5rem 2rem;
-  background-color: #f9f9f9;
-  direction: rtl;
-}
-
-.services-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.service-item {
-  width: 250px;
-  text-align: center;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-}
-
-.service-item:hover {
-  transform: translateY(-10px);
-}
-
-.service-icon {
-  width: 80px;
-  height: 80px;
-  background-color: #ff9800;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-}
-
-.service-icon i {
-  font-size: 2rem;
-}
-
-.service-item h3 {
-  margin: 0 0 1rem;
-  color: #333;
-}
-
-.service-item p {
-  color: #666;
-}
-
-/* Testimonials */
-.testimonials-section {
-  padding: 5rem 2rem;
-  direction: rtl;
-}
-
-.testimonials-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.testimonial-card {
-  display: flex;
-  width: 500px;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-}
-
-.testimonial-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-left: 1.5rem;
-}
-
-.testimonial-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.testimonial-content {
-  flex: 1;
-}
-
-.testimonial-content p {
-  font-style: italic;
-  color: #666;
-  margin-bottom: 1rem;
-}
-
-.testimonial-content h4 {
-  margin: 0 0 0.5rem;
-  color: #333;
-}
-
-.rating {
-  color: #ffcc00;
-}
-
-/* Newsletter */
-.newsletter-section {
-  padding: 5rem 2rem;
-  background-color: #ff9800;
-  color: white;
-  text-align: center;
-  direction: rtl;
-}
-
-.newsletter-container {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.newsletter-container h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.newsletter-container p {
-  margin-bottom: 2rem;
-}
-
-.newsletter-form {
-  display: flex;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.newsletter-form input {
-  flex: 1;
-  padding: 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 4px 0 0 4px;
-}
-
-.subscribe-button {
-  padding: 15px 30px;
-  background-color: #333;
-  color: white;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-.subscribe-button:hover {
-  background-color: #555;
-}
-
-/* Common Trips Section */
-.common-trips-section {
-  padding: 3rem 0;
-}
-
-.common-trips-section h2 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 2.5rem;
-  position: relative;
-}
-
-.trip-card {
-  transition: transform 0.3s ease;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.trip-card:hover {
-  transform: translateY(-10px);
-}
-
-.trip-card img {
-  height: 240px;
-  object-fit: cover;
-}
-
-.card-price {
-  color: #ff9800;
-  font-weight: bold;
-}
-
-.card-location {
-  color: #333;
-  font-weight: 500;
-}
-
-.pagination-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 1.5rem;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ddd;
-}
-
-.dot.active {
-  background-color: #ff9800;
-  width: 24px;
-  border-radius: 5px;
-}
-
 /* Plan Your Trip Section */
 .plan-trip-section {
-  padding: 80px 0;
   background-color: #ffffff;
   position: relative;
   overflow: hidden;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
+.home-container.dark-theme .plan-trip-section {
+  background-color: #232323;
 }
 
 .plan-trip-title {
-  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 50px;
   color: #252525;
-  text-align: left;
 }
 
-.trip-planning-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.trip-planning-steps {
-  width: 50%;
-}
-
-.trip-step {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 40px;
-}
-
-.step-icon {
-  width: 60px;
-  height: 60px;
-  background-color: #fff7e3;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20px;
-  flex-shrink: 0;
-}
-
-.step-icon img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-}
-
-.step-content {
-  flex: 1;
-}
-
-.trip-step h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.trip-step p {
-  color: #777;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.trip-image-container {
-  width: 45%;
-  position: relative;
-  height: 400px;
+.home-container.dark-theme .plan-trip-title {
+  color: #ffffff;
 }
 
 .yellow-circle {
@@ -541,6 +83,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+}
+
+.home-container.dark-theme .yellow-circle {
+  background-color: #3c3824;
 }
 
 .bus-image {
@@ -571,6 +117,11 @@
   margin-right: 5px;
 }
 
+.rtl .tag-icon {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
 .top-bus {
   background-color: #fff7e3;
   color: #ff6b00;
@@ -587,107 +138,41 @@
   border: 1px solid rgba(255, 107, 0, 0.2);
 }
 
-.location-pin {
-  position: absolute;
-  width: 30px;
-  height: 40px;
-  background-color: #ff6b00;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  top: 5%;
-  right: 10%;
-  z-index: 0;
+.home-container.dark-theme .top-bus,
+.home-container.dark-theme .top-places {
+  background-color: #3c3824;
+  color: #ff9d4d;
 }
 
-.location-pin:after {
-  content: "";
-  width: 15px;
-  height: 15px;
-  background-color: #ffffff;
-  position: absolute;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* دعم اللغات RTL */
+.rtl .top-bus {
+  left: auto;
+  right: 0;
 }
 
-/* Admin Links Section */
-.admin-links-section {
-  margin: 30px 0;
-  padding: 20px 0;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-}
-
-.admin-links-title {
-  color: var(--secondary-color);
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.admin-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.admin-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.admin-link:hover {
-  background-color: var(--primary-color-light);
-  text-decoration: none;
-  color: white;
-}
-
-.admin-link i {
-  font-size: 18px;
+.rtl .top-places {
+  right: auto;
+  left: 0;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .admin-links {
-    flex-direction: column;
-    align-items: center;
+  .search-box {
+    position: absolute;
+    bottom: -180px;
+  }
+  .home2 {
+    padding-top: 200px;
   }
 
-  .admin-link {
-    width: 80%;
-    justify-content: center;
-  }
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 992px) {
-  .trip-planning-container {
-    flex-direction: column;
+  .hero-content h1 {
+    font-size: 2rem;
   }
 
-  .trip-planning-steps {
-    width: 100%;
-    margin-bottom: 50px;
+  .hero-content p {
+    font-size: 1rem;
   }
 
-  .trip-image-container {
-    width: 100%;
-    max-width: 450px;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 768px) {
   .trip-step {
     flex-direction: column;
   }
@@ -707,64 +192,10 @@
   }
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2rem;
-  }
-
-  .hero-content p {
-    font-size: 1rem;
-  }
-
-  .search-box {
-    flex-direction: column;
-  }
-
-  .search-box input {
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-
-  .search-button {
-    border-radius: 4px;
-  }
-
-  .testimonial-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .testimonial-image {
-    margin: 0 0 1rem;
-  }
-
-  .newsletter-form {
-    flex-direction: column;
-  }
-
-  .newsletter-form input {
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-
-  .subscribe-button {
-    border-radius: 4px;
-  }
-
-  .trip-card img {
-    height: 200px;
-  }
-}
-
-@media (max-width: 576px) {
-  .common-trips-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .trip-card {
-    margin-bottom: 1rem;
+@media (max-width: 992px) {
+  .trip-image-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
   }
 }

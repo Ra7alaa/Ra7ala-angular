@@ -1,79 +1,212 @@
 .admin-layout {
-  font-family: "Tajawal", Arial, sans-serif;
-  background-color: #f9fafb;
   min-height: 100vh;
+  background-color: var(--background-color);
+  transition: background-color 0.3s, color 0.3s;
+  color: var(--text-color);
 }
 
-.sidebar-container {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  padding: 0;
-  height: 100vh;
-  background-color: #f8f9fa;
-  border-right: 2px solid var(--primary-color);
-  overflow-y: auto;
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
 }
 
-.position-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-}
-
+/* Main Content using Bootstrap Grid */
 .main-content {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  width: calc(100% - 250px); /* Fixed sidebar width of 250px */
+  margin-left: 250px; /* Match the sidebar width */
+  transition: all 0.3s ease;
+  overflow-x: hidden;
+  flex-grow: 1;
 }
 
-/* Adding primary color elements */
-.main-content h1,
-.main-content h2,
-.main-content h3,
-.main-content .page-title {
+.main-content.expanded {
+  width: calc(100% - 70px);
+  margin-left: 70px;
+}
+
+/* RTL Support for main content - keep margin on the left side for RTL too */
+[dir="rtl"] .main-content {
+  margin-left: 250px !important;
+  margin-right: 0 !important;
+  width: calc(100% - 250px);
+}
+
+[dir="rtl"] .main-content.expanded {
+  margin-left: 70px !important;
+  margin-right: 0 !important;
+  width: calc(100% - 70px);
+}
+
+/* Admin Header - updated for simplified layout */
+.admin-header {
+  padding: 1rem 1.5rem;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.admin-header .d-flex {
+  gap: 20px; /* Add some base gap between elements */
+}
+
+.admin-title {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  color: var(--text-color);
+}
+
+.toggle-sidebar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.25rem;
+  padding: 0.25rem 0.5rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.toggle-sidebar-btn:hover {
   color: var(--primary-color);
 }
 
-.admin-layout .btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+/* Admin profile at the extreme right */
+.admin-profile {
+  margin-left: auto; /* Push to the extreme right */
 }
 
-.admin-layout .btn-primary:hover {
-  background-color: var(--primary-color-light);
-  border-color: var(--primary-color-light);
+[dir="rtl"] .admin-profile {
+  margin-left: 0; /* Reset for RTL */
+  margin-right: auto; /* Push to the extreme left in RTL */
 }
 
-.admin-layout .btn-outline-primary {
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+/* User profile dropdown */
+.profile-dropdown {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  transition: all 0.2s;
 }
 
-.admin-layout .btn-outline-primary:hover {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  color: white;
+.profile-dropdown:hover {
+  background-color: var(--surface-color-hover);
 }
 
-.admin-layout .text-primary {
-  color: var(--primary-color) !important;
+.avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-@media (max-width: 767.98px) {
-  .sidebar-container {
-    position: static;
-    height: auto;
-    padding: 1rem;
-  }
+.dropdown-menu {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
 
-  .position-sticky {
-    position: static;
-    height: auto;
-  }
+.dropdown-item {
+  color: var(--text-color);
+  transition: all 0.2s;
+}
 
+.dropdown-item:hover {
+  background-color: var(--surface-color-hover);
+}
+
+.dropdown-divider {
+  border-top-color: var(--border-color);
+}
+
+/* Admin Content Area */
+.admin-content {
+  padding: 1rem 1.5rem 2rem;
+}
+
+/* Dark Theme Specific Styles */
+.dark-theme .admin-header {
+  background-color: var(--surface-color);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-theme .dropdown-menu {
+  background-color: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .dropdown-item:hover {
+  background-color: var(--surface-color-hover);
+}
+
+/* RTL Support - Important for proper localization */
+[dir="rtl"] .toggle-sidebar-btn {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* Bootstrap RTL overrides */
+[dir="rtl"] .ms-1,
+[dir="rtl"] .ms-2 {
+  margin-left: 0 !important;
+  margin-right: 0.25rem !important;
+}
+
+[dir="rtl"] .ms-2 {
+  margin-right: 0.5rem !important;
+}
+
+[dir="rtl"] .me-2,
+[dir="rtl"] .me-3 {
+  margin-right: 0 !important;
+}
+
+[dir="rtl"] .me-2 {
+  margin-left: 0.5rem !important;
+}
+
+[dir="rtl"] .me-3 {
+  margin-left: 1rem !important;
+}
+
+/* Fully collapsed sidebar - content takes full width */
+.main-content.sidebar-hidden {
+  margin-left: 0;
+  width: 100%;
+}
+
+[dir="rtl"] .main-content.sidebar-hidden {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100%;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
   .main-content {
-    padding-top: 1rem;
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+
+  [dir="rtl"] .main-content {
+    margin-left: 70px !important;
+    margin-right: 0 !important;
+    width: calc(100% - 70px);
+  }
+
+  .main-content.expanded {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  [dir="rtl"] .main-content.expanded {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
   }
 }

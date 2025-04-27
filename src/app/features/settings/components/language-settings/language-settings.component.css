@@ -1,0 +1,74 @@
+.language-settings {
+  width: 100%;
+}
+
+/* Custom list-group styling with primary color */
+.list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list-group-item {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius) !important;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  border-color: var(--primary-color);
+  transform: translateX(5px);
+}
+
+.list-group-item.active {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.list-group-item.active i {
+  color: white !important;
+}
+
+.list-group-item input {
+  margin-right: 0.5rem;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Badge styling */
+.badge {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* RTL support */
+[dir="rtl"] .list-group-item:hover {
+  transform: translateX(-5px);
+}
+
+[dir="rtl"] .me-2 {
+  margin-right: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+[dir="rtl"] .ms-2 {
+  margin-left: 0 !important;
+  margin-right: 0.5rem !important;
+}
+
+/* Globe icons styling */
+.fa-globe-americas,
+.fa-globe-asia {
+  width: 1.5rem;
+  text-align: center;
+}

@@ -1,0 +1,29 @@
+<div class="theme-settings">
+  <div class="list-group">
+    <label
+      *ngFor="let theme of themes"
+      class="list-group-item list-group-item-action d-flex align-items-center"
+      [class.active]="currentTheme === theme.value"
+    >
+      <input
+        type="radio"
+        name="theme"
+        [value]="theme.value"
+        [checked]="currentTheme === theme.value"
+        (change)="onThemeChange(theme.value)"
+        class="form-check-input me-2"
+      />
+      <span class="ms-2">
+        <i
+          class="me-2"
+          [ngClass]="{
+            'fa fa-sun': theme.value === 'light',
+            'fa fa-moon': theme.value === 'dark',
+            'fa fa-desktop': theme.value === 'system'
+          }"
+        ></i>
+        {{ theme.label | translate }}
+      </span>
+    </label>
+  </div>
+</div>

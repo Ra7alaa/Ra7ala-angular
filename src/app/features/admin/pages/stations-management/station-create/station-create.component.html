@@ -1,8 +1,11 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0">Create New Station</h1>
+    <h1 class="mb-0">
+      {{ "admin.stations.create_station.title" | translate }}
+    </h1>
     <button class="btn btn-outline-secondary" (click)="cancel()">
-      <i class="bi bi-arrow-left"></i> Back to Stations
+      <i class="bi bi-arrow-left"></i>
+      {{ "admin.stations.details.back" | translate }}
     </button>
   </div>
 
@@ -16,7 +19,9 @@
 
         <!-- Station Name -->
         <div class="mb-3">
-          <label for="name" class="form-label">Station Name *</label>
+          <label for="name" class="form-label"
+            >{{ "admin.stations.create_station.name" | translate }} *</label
+          >
           <input
             type="text"
             class="form-control"
@@ -27,12 +32,16 @@
               stationForm.get('name')?.touched
             "
           />
-          <div class="invalid-feedback">Station name is required</div>
+          <div class="invalid-feedback">
+            {{ "admin.stations.create_station.name_required" | translate }}
+          </div>
         </div>
 
         <!-- City Name -->
         <div class="mb-3">
-          <label for="cityName" class="form-label">City Name *</label>
+          <label for="cityName" class="form-label"
+            >{{ "admin.stations.create_station.city" | translate }} *</label
+          >
           <input
             type="text"
             class="form-control"
@@ -43,13 +52,17 @@
               stationForm.get('cityName')?.touched
             "
           />
-          <div class="invalid-feedback">City name is required</div>
+          <div class="invalid-feedback">
+            {{ "admin.stations.create_station.city_required" | translate }}
+          </div>
         </div>
 
         <!-- Location (Latitude & Longitude) -->
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="latitude" class="form-label">Latitude *</label>
+            <label for="latitude" class="form-label"
+              >{{ "admin.stations.latitude" | translate }} *</label
+            >
             <input
               type="number"
               class="form-control"
@@ -61,10 +74,14 @@
                 stationForm.get('latitude')?.touched
               "
             />
-            <div class="invalid-feedback">Valid latitude is required</div>
+            <div class="invalid-feedback">
+              {{ "admin.stations.valid_latitude_required" | translate }}
+            </div>
           </div>
           <div class="col-md-6">
-            <label for="longitude" class="form-label">Longitude *</label>
+            <label for="longitude" class="form-label"
+              >{{ "admin.stations.longitude" | translate }} *</label
+            >
             <input
               type="number"
               class="form-control"
@@ -76,13 +93,20 @@
                 stationForm.get('longitude')?.touched
               "
             />
-            <div class="invalid-feedback">Valid longitude is required</div>
+            <div class="invalid-feedback">
+              {{ "admin.stations.valid_longitude_required" | translate }}
+            </div>
           </div>
         </div>
 
         <!-- Ownership - Only visible to system owners -->
         <div class="mb-4" *ngIf="canCreateSystemStations">
-          <label class="form-label d-block">Ownership *</label>
+          <label class="form-label d-block"
+            >{{
+              "admin.stations.create_station.ownership" | translate
+            }}
+            *</label
+          >
           <div class="btn-group" role="group">
             <input
               type="radio"
@@ -93,7 +117,7 @@
               formControlName="isSystemOwned"
             />
             <label class="btn btn-outline-primary" for="systemOwned">
-              System Owned
+              {{ "admin.stations.create_station.system_owned" | translate }}
             </label>
 
             <input
@@ -105,7 +129,7 @@
               formControlName="isSystemOwned"
             />
             <label class="btn btn-outline-primary" for="companyOwned">
-              Company Owned
+              {{ "admin.stations.create_station.company_owned" | translate }}
             </label>
           </div>
         </div>
@@ -116,7 +140,7 @@
           class="alert alert-info mb-4"
         >
           <i class="bi bi-info-circle-fill me-2"></i>
-          This station will be created for your company:
+          {{ "admin.stations.company_info_notice" | translate }}
           <strong>{{ currentUser?.companyName }}</strong>
         </div>
 
@@ -124,12 +148,14 @@
         <div *ngIf="currentUser?.userType === UserRole.Admin" class="mb-3">
           <div class="card bg-light">
             <div class="card-body">
-              <h5 class="card-title">Company Information</h5>
+              <h5 class="card-title">
+                {{ "admin.stations.company_info" | translate }}
+              </h5>
 
               <div class="mb-3">
-                <label for="companyNameReadOnly" class="form-label"
-                  >Company Name</label
-                >
+                <label for="companyNameReadOnly" class="form-label">{{
+                  "admin.stations.create_station.company" | translate
+                }}</label>
                 <input
                   type="text"
                   class="form-control"
@@ -138,7 +164,7 @@
                   readonly
                 />
                 <small class="form-text text-muted">
-                  The company cannot be changed when creating a new station.
+                  {{ "admin.stations.company_cannot_change" | translate }}
                 </small>
               </div>
             </div>
@@ -149,11 +175,16 @@
         <div *ngIf="!isSystemOwned && canCreateSystemStations" class="mb-3">
           <div class="card bg-light">
             <div class="card-body">
-              <h5 class="card-title">Company Information</h5>
+              <h5 class="card-title">
+                {{ "admin.stations.company_info" | translate }}
+              </h5>
 
               <div class="mb-3">
                 <label for="companyName" class="form-label"
-                  >Company Name *</label
+                  >{{
+                    "admin.stations.create_station.company" | translate
+                  }}
+                  *</label
                 >
                 <input
                   type="text"
@@ -166,11 +197,17 @@
                     stationForm.get('companyName')?.touched
                   "
                 />
-                <div class="invalid-feedback">Company name is required</div>
+                <div class="invalid-feedback">
+                  {{
+                    "admin.stations.create_station.company_required" | translate
+                  }}
+                </div>
               </div>
 
               <div class="mb-3">
-                <label for="companyId" class="form-label">Company ID</label>
+                <label for="companyId" class="form-label">{{
+                  "admin.stations.company_id" | translate
+                }}</label>
                 <input
                   type="number"
                   class="form-control"
@@ -178,8 +215,7 @@
                   formControlName="companyId"
                 />
                 <small class="form-text text-muted">
-                  Optional. Provide company ID if known, otherwise it will be
-                  assigned by the system.
+                  {{ "admin.stations.optional_company_id" | translate }}
                 </small>
               </div>
             </div>
@@ -194,7 +230,7 @@
             (click)="cancel()"
             [disabled]="loading"
           >
-            Cancel
+            {{ "admin.stations.create_station.cancel" | translate }}
           </button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
             <span
@@ -202,7 +238,7 @@
               class="spinner-border spinner-border-sm me-2"
               role="status"
             ></span>
-            Create Station
+            {{ "admin.stations.create_station.save" | translate }}
           </button>
         </div>
       </form>

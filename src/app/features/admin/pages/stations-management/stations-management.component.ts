@@ -6,13 +6,15 @@ import { StationsService } from '../../services/stations.service';
 import { Station } from '../../models/station.model';
 import { AuthService } from '../../../auth/services/auth.service';
 import { User, UserRole } from '../../../auth/models/user.model';
+import { TranslatePipe } from '../../../../features/settings/pipes/translate.pipe';
+import { TranslationService } from '../../../../core/localization/translation.service';
 
 @Component({
   selector: 'app-stations-management',
   templateUrl: './stations-management.component.html',
   styleUrls: ['./stations-management.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslatePipe],
 })
 export class StationsManagementComponent implements OnInit {
   stations: Station[] = [];
@@ -35,7 +37,8 @@ export class StationsManagementComponent implements OnInit {
   constructor(
     private stationsService: StationsService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslationService
   ) {}
 
   ngOnInit(): void {
@@ -259,7 +262,9 @@ export class StationsManagementComponent implements OnInit {
   navigateToEdit(id: number): void {
     const station = this.stations.find((s) => s.id === id);
     if (station && !this.canEditStation(station)) {
-      alert('You do not have permission to edit this station.');
+      alert(
+        this.translateService.translate('admin.stations.no_permission_edit')
+      );
       return;
     }
 
@@ -269,7 +274,9 @@ export class StationsManagementComponent implements OnInit {
   // Navigate to create new station
   navigateToCreate(): void {
     if (!this.canCreateStation()) {
-      alert('You do not have permission to create a new station.');
+      alert(
+        this.translateService.translate('admin.stations.no_permission_create')
+      );
       return;
     }
 
@@ -280,16 +287,20 @@ export class StationsManagementComponent implements OnInit {
   deleteStation(id: number): void {
     const station = this.stations.find((s) => s.id === id);
     if (!station) {
-      alert('Station not found.');
+      alert(this.translateService.translate('admin.stations.not_found'));
       return;
     }
 
     if (!this.canDeleteStation(station)) {
-      alert('You do not have permission to delete this station.');
+      alert(
+        this.translateService.translate('admin.stations.no_permission_delete')
+      );
       return;
     }
 
-    if (confirm('Are you sure you want to delete this station?')) {
+    if (
+      confirm(this.translateService.translate('admin.stations.confirm_delete'))
+    ) {
       this.loading = true;
       this.stationsService.deleteStation(id).subscribe({
         next: () => {
@@ -297,7 +308,10 @@ export class StationsManagementComponent implements OnInit {
           this.loading = false;
         },
         error: (err) => {
-          this.error = 'Failed to delete station: ' + err.message;
+          this.error =
+            this.translateService.translate('admin.stations.delete_error') +
+            ': ' +
+            err.message;
           this.loading = false;
         },
       });

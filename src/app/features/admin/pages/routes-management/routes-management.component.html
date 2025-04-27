@@ -4,13 +4,14 @@
     <div
       class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
     >
-      <h1 class="h2">Routes Management</h1>
+      <h1 class="h2">{{ "admin.routes.title" | translate }}</h1>
       <button
         class="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#addRouteModal"
       >
-        <i class="bi bi-plus-circle me-2"></i>Add New Route
+        <i class="bi bi-plus-circle me-2"></i
+        >{{ "admin.routes.add_route" | translate }}
       </button>
     </div>
 
@@ -24,19 +25,22 @@
           <input
             type="text"
             class="form-control border-start-0"
-            placeholder="Search routes..."
+            placeholder="{{ 'admin.routes.search_placeholder' | translate }}"
           />
         </div>
       </div>
       <div class="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
         <div class="d-flex gap-2">
           <select class="form-select">
-            <option selected>All Routes</option>
-            <option>Active</option>
-            <option>Inactive</option>
+            <option selected>
+              {{ "admin.routes.all_routes" | translate }}
+            </option>
+            <option>{{ "admin.routes.active" | translate }}</option>
+            <option>{{ "admin.routes.inactive" | translate }}</option>
           </select>
           <button class="btn btn-outline-secondary">
-            <i class="bi bi-funnel me-2"></i>Filter
+            <i class="bi bi-funnel me-2"></i
+            >{{ "admin.routes.filter" | translate }}
           </button>
         </div>
       </div>
@@ -49,13 +53,13 @@
           <table class="table table-hover align-middle">
             <thead>
               <tr>
-                <th>Route ID</th>
-                <th>Source City</th>
-                <th>Destination City</th>
-                <th>Distance (km)</th>
-                <th>Duration</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>{{ "admin.routes.route_id" | translate }}</th>
+                <th>{{ "admin.routes.from" | translate }}</th>
+                <th>{{ "admin.routes.to" | translate }}</th>
+                <th>{{ "admin.routes.distance" | translate }} (km)</th>
+                <th>{{ "admin.routes.duration" | translate }}</th>
+                <th>{{ "admin.routes.status" | translate }}</th>
+                <th>{{ "admin.routes.actions" | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -65,7 +69,11 @@
                 <td>Alexandria</td>
                 <td>221</td>
                 <td>2h 45m</td>
-                <td><span class="badge bg-success">Active</span></td>
+                <td>
+                  <span class="badge bg-success">{{
+                    "admin.routes.active" | translate
+                  }}</span>
+                </td>
                 <td>
                   <div class="d-flex gap-1">
                     <button
@@ -87,7 +95,11 @@
                 <td>Luxor</td>
                 <td>671</td>
                 <td>9h 20m</td>
-                <td><span class="badge bg-success">Active</span></td>
+                <td>
+                  <span class="badge bg-success">{{
+                    "admin.routes.active" | translate
+                  }}</span>
+                </td>
                 <td>
                   <div class="d-flex gap-1">
                     <button
@@ -109,7 +121,11 @@
                 <td>Luxor</td>
                 <td>790</td>
                 <td>10h 45m</td>
-                <td><span class="badge bg-secondary">Inactive</span></td>
+                <td>
+                  <span class="badge bg-secondary">{{
+                    "admin.routes.inactive" | translate
+                  }}</span>
+                </td>
                 <td>
                   <div class="d-flex gap-1">
                     <button
@@ -135,9 +151,9 @@
     <nav aria-label="Page navigation" class="mt-4">
       <ul class="pagination justify-content-center">
         <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-            >Previous</a
-          >
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{
+            "admin.routes.previous" | translate
+          }}</a>
         </li>
         <li class="page-item active">
           <a class="page-link" href="#">1</a>
@@ -145,7 +161,9 @@
         <li class="page-item"><a class="page-link" href="#">2</a></li>
         <li class="page-item"><a class="page-link" href="#">3</a></li>
         <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+          <a class="page-link" href="#">{{
+            "admin.routes.next" | translate
+          }}</a>
         </li>
       </ul>
     </nav>
@@ -163,7 +181,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addRouteModalLabel">Add New Route</h5>
+        <h5 class="modal-title" id="addRouteModalLabel">
+          {{ "admin.routes.add_route" | translate }}
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -174,9 +194,13 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="sourceCity" class="form-label">Source City</label>
+            <label for="sourceCity" class="form-label">{{
+              "admin.routes.source_city" | translate
+            }}</label>
             <select id="sourceCity" class="form-select">
-              <option selected disabled>Select source city</option>
+              <option selected disabled>
+                {{ "admin.routes.select_source" | translate }}
+              </option>
               <option>Cairo</option>
               <option>Alexandria</option>
               <option>Luxor</option>
@@ -185,11 +209,13 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="destinationCity" class="form-label"
-              >Destination City</label
-            >
+            <label for="destinationCity" class="form-label">{{
+              "admin.routes.destination_city" | translate
+            }}</label>
             <select id="destinationCity" class="form-select">
-              <option selected disabled>Select destination city</option>
+              <option selected disabled>
+                {{ "admin.routes.select_destination" | translate }}
+              </option>
               <option>Cairo</option>
               <option>Alexandria</option>
               <option>Luxor</option>
@@ -198,35 +224,41 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="routeDistance" class="form-label">Distance (km)</label>
+            <label for="routeDistance" class="form-label">{{
+              "admin.routes.distance_km" | translate
+            }}</label>
             <input
               type="number"
               class="form-control"
               id="routeDistance"
-              placeholder="Enter distance in kilometers"
+              placeholder="{{
+                'admin.routes.distance_placeholder' | translate
+              }}"
             />
           </div>
           <div class="row mb-3">
             <div class="col-6">
-              <label for="durationHours" class="form-label"
-                >Duration (Hours)</label
-              >
+              <label for="durationHours" class="form-label">{{
+                "admin.routes.duration_hours" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
                 id="durationHours"
-                placeholder="Hours"
+                placeholder="{{ 'admin.routes.hours_placeholder' | translate }}"
               />
             </div>
             <div class="col-6">
-              <label for="durationMinutes" class="form-label"
-                >Duration (Minutes)</label
-              >
+              <label for="durationMinutes" class="form-label">{{
+                "admin.routes.duration_minutes" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
                 id="durationMinutes"
-                placeholder="Minutes"
+                placeholder="{{
+                  'admin.routes.minutes_placeholder' | translate
+                }}"
                 max="59"
               />
             </div>
@@ -238,15 +270,19 @@
               id="routeStatus"
               checked
             />
-            <label class="form-check-label" for="routeStatus">Active</label>
+            <label class="form-check-label" for="routeStatus">{{
+              "admin.routes.route_status" | translate
+            }}</label>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
+          {{ "admin.routes.cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-primary">Save Route</button>
+        <button type="button" class="btn btn-primary">
+          {{ "admin.routes.save" | translate }}
+        </button>
       </div>
     </div>
   </div>
@@ -263,7 +299,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editRouteModalLabel">Edit Route</h5>
+        <h5 class="modal-title" id="editRouteModalLabel">
+          {{ "admin.routes.edit_route" | translate }}
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -274,7 +312,9 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="editSourceCity" class="form-label">Source City</label>
+            <label for="editSourceCity" class="form-label">{{
+              "admin.routes.source_city" | translate
+            }}</label>
             <select id="editSourceCity" class="form-select">
               <option>Cairo</option>
               <option>Alexandria</option>
@@ -284,9 +324,9 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="editDestinationCity" class="form-label"
-              >Destination City</label
-            >
+            <label for="editDestinationCity" class="form-label">{{
+              "admin.routes.destination_city" | translate
+            }}</label>
             <select id="editDestinationCity" class="form-select">
               <option>Cairo</option>
               <option selected>Alexandria</option>
@@ -296,9 +336,9 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="editRouteDistance" class="form-label"
-              >Distance (km)</label
-            >
+            <label for="editRouteDistance" class="form-label">{{
+              "admin.routes.distance_km" | translate
+            }}</label>
             <input
               type="number"
               class="form-control"
@@ -308,9 +348,9 @@
           </div>
           <div class="row mb-3">
             <div class="col-6">
-              <label for="editDurationHours" class="form-label"
-                >Duration (Hours)</label
-              >
+              <label for="editDurationHours" class="form-label">{{
+                "admin.routes.duration_hours" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
@@ -319,9 +359,9 @@
               />
             </div>
             <div class="col-6">
-              <label for="editDurationMinutes" class="form-label"
-                >Duration (Minutes)</label
-              >
+              <label for="editDurationMinutes" class="form-label">{{
+                "admin.routes.duration_minutes" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
@@ -337,15 +377,19 @@
               type="checkbox"
               id="editRouteStatus"
             />
-            <label class="form-check-label" for="editRouteStatus">Active</label>
+            <label class="form-check-label" for="editRouteStatus">{{
+              "admin.routes.route_status" | translate
+            }}</label>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
+          {{ "admin.routes.cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-primary">Update Route</button>
+        <button type="button" class="btn btn-primary">
+          {{ "admin.routes.update" | translate }}
+        </button>
       </div>
     </div>
   </div>

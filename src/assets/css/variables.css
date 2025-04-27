@@ -1,56 +1,192 @@
+/* Global CSS Variables */
+
 :root {
-  /* Colors */
-  --primary-color: #ff9800;
-  --primary-color-light: #ffcc00;
-  --secondary-color: #333333;
-  --text-color: #555555;
-  --text-color-light: #888888;
+  /* Brand colors */
+  --primary-color: #ff8c00;
+  --primary-color-light: #ffa030;
+  --primary-color-dark: #e27900;
+
+  /* Base colors for light theme (default) */
   --background-color: #ffffff;
-  --border-color: #eeeeee;
+  --surface-color: #f8f9fa;
+  --surface-color-hover: #e9ecef;
+  --border-color: #dee2e6;
+
+  --text-color: #212529;
+  --text-color-secondary: #6c757d;
+  --text-color-disabled: #adb5bd;
+
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --card-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 
   /* Spacing */
-  --spacing-xs: 5px;
-  --spacing-sm: 8px;
-  --spacing-md: 10px;
-  --spacing-lg: 15px;
-  --spacing-xl: 20px;
-  --spacing-xxl: 30px;
-
-  /* Default padding and margin */
-  --def-padding: 20px;
-  --def-margin: 20px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
 
   /* Border radius */
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
-  --border-radius-circle: 50%;
+  --border-radius-sm: 0.2rem;
+  --border-radius: 0.4rem;
+  --border-radius-lg: 0.6rem;
+  --border-radius-xl: 1rem;
 
-  /* Font families */
-  --main-font-family: "Arial", sans-serif;
-  --accent-font-family: "Brush Script MT", cursive;
+  /* Typography */
+  --font-family-base: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-family-arabic: "Tajawal", "Cairo", sans-serif;
 
-  /* Font sizes */
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 24px;
-  --font-size-xxl: 32px;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
 
-  /* Line heights */
-  --line-height-normal: 1.5;
-  --line-height-loose: 1.8;
-  --line-height-tight: 1.2;
-
-  /* Box shadows */
-  --box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --box-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --box-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
-
-  /* Transitions */
-  --transition-speed-fast: 0.2s;
-  --transition-speed-normal: 0.3s;
-  --transition-speed-slow: 0.5s;
+  /* Animation */
+  --transition-speed: 0.3s;
   --transition-timing: ease-in-out;
+
+  /* Z-index layers */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+}
+
+/* RTL specific base variables */
+:root.rtl {
+  --font-family-base: var(--font-family-arabic);
+}
+
+/* Apply variables to body */
+body {
+  font-family: var(--font-family-base);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  transition: background-color var(--transition-speed) var(--transition-timing);
+}
+
+/* Base styling for common elements */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-color);
+  margin-top: 0;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-speed) var(--transition-timing);
+}
+
+a:hover {
+  color: var(--primary-color-dark);
+  text-decoration: underline;
+}
+
+button,
+.btn {
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+input,
+select,
+textarea {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  transition: border-color var(--transition-speed) var(--transition-timing);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(255, 140, 0, 0.25);
+}
+
+/* Utility classes */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+.text-secondary {
+  color: var(--text-color-secondary) !important;
+}
+.text-success {
+  color: var(--success-color) !important;
+}
+.text-error,
+.text-danger {
+  color: var(--error-color) !important;
+}
+.text-warning {
+  color: var(--warning-color) !important;
+}
+.text-info {
+  color: var(--info-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+.bg-light {
+  background-color: var(--surface-color) !important;
+}
+.bg-dark {
+  background-color: var(--text-color) !important;
+  color: var(--background-color) !important;
+}
+
+/* Card styling */
+.card {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow var(--transition-speed) var(--transition-timing);
+}
+
+.card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}
+
+.btn-outline-primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
 }

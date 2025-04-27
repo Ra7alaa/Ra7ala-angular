@@ -4,40 +4,68 @@
   --primary-color-light: #ffcc00;
 }
 
-/* Sidebar Styles */
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
+/* RTL specific adjustments for dashboard */
+[dir="rtl"] .admin-dashboard .stat-card .stat-change,
+[dir="rtl"] .admin-dashboard .stat-card .text-muted span {
+  direction: ltr;
+  display: inline-block;
+}
+
+/* Action buttons container */
+.action-buttons-container {
+  display: flex;
+  gap: 5px;
+}
+
+[dir="rtl"] .action-buttons-container {
+  flex-direction: row-reverse;
+}
+
+/* Action buttons in tables */
+.action-btn {
+  background-color: transparent;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
-  height: 100vh;
-  background-color: #f8f9fa;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin-right: 5px;
+  color: #6c757d;
+  border: none;
+  transition: all 0.2s;
 }
 
-.sidebar .nav-link {
-  font-weight: 500;
-  color: var(--secondary-color);
-  padding: 0.75rem 1rem;
-  border-radius: 0.25rem;
-  margin-bottom: 0.2rem;
+[dir="rtl"] .action-btn {
+  margin-right: 0;
+  margin-left: 5px;
 }
 
-.sidebar .nav-link:hover {
+.action-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.action-btn.view:hover {
+  color: #495057;
+}
+
+.action-btn.edit:hover {
   color: var(--primary-color);
-  background-color: rgba(255, 152, 0, 0.1);
 }
 
-.sidebar .nav-link.active {
-  color: var(--primary-color);
-  background-color: rgba(255, 152, 0, 0.15);
+.action-btn.delete:hover {
+  color: #dc3545;
 }
 
-.sidebar-header {
-  padding: 1rem;
-  color: var(--primary-color);
+/* Fix for tables in RTL mode */
+[dir="rtl"] table.table {
+  text-align: right;
+}
+
+[dir="rtl"] .table th,
+[dir="rtl"] .table td {
+  text-align: right;
 }
 
 /* Icon Box Styles */
@@ -59,25 +87,33 @@
   color: var(--primary-color) !important;
 }
 
-/* Button Styles */
-.btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+/* Status badges in tables */
+.admin-dashboard .badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.75rem;
 }
 
-.btn-primary:hover {
-  background-color: var(--primary-color-light);
-  border-color: var(--primary-color-light);
+.admin-dashboard .badge.bg-success,
+.admin-dashboard .badge.completed {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #fff;
+  border: 1px solid rgba(40, 167, 69, 0.3);
 }
 
-.btn-outline-primary {
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+.admin-dashboard .badge.bg-primary,
+.admin-dashboard .badge.in-progress {
+  background-color: rgba(255, 152, 0, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 152, 0, 0.3);
 }
 
-.btn-outline-primary:hover {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+.admin-dashboard .badge.bg-danger,
+.admin-dashboard .badge.cancelled {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #fff;
+  border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
 /* Progress Bar Styles */
@@ -85,11 +121,67 @@
   background-color: var(--primary-color) !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 767.98px) {
-  .sidebar {
-    position: static;
-    height: auto;
-    padding-bottom: 1rem;
-  }
+/* Enhanced Table Styles - Light Mode */
+.table-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.admin-dashboard .table {
+  background-color: transparent;
+  color: #333;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.admin-dashboard .table thead {
+  background-color: #f8f9fa;
+}
+
+.admin-dashboard .table th {
+  padding: 15px 16px;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
+}
+
+.admin-dashboard .table td {
+  padding: 15px 16px;
+  vertical-align: middle;
+  border-top: none;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.admin-dashboard .table tr {
+  background-color: #ffffff;
+  transition: background-color 0.2s;
+}
+
+.admin-dashboard .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.admin-dashboard .table tr:hover {
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.admin-dashboard .table tr:last-child td {
+  border-bottom: none;
+}
+
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
 }

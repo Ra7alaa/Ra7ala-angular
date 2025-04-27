@@ -1,0 +1,37 @@
+<div class="language-settings">
+  <div class="list-group">
+    <label
+      *ngFor="let language of languages"
+      class="list-group-item list-group-item-action d-flex align-items-center"
+      [class.active]="currentLanguage.code === language.code"
+    >
+      <input
+        type="radio"
+        name="language"
+        [value]="language.code"
+        [checked]="currentLanguage.code === language.code"
+        (change)="onLanguageChange(language.code)"
+        class="form-check-input me-2"
+      />
+      <span class="ms-2">
+      <i
+          class="me-2"
+          [ngClass]="{
+            'fa fa-globe-americas': language.code === 'en',
+            'fa fa-globe-asia': language.code === 'ar'
+          }"
+        ></i>
+        <span>{{
+          "theme_language." + (language.code === "en" ? "english" : "arabic")
+            | translate
+        }}</span>
+        <span
+          *ngIf="language.rtl"
+          class="badge ms-2"
+          style="background-color: var(--primary-color)"
+          >RTL</span
+        >
+      </span>
+    </label>
+  </div>
+</div>
