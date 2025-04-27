@@ -12,6 +12,8 @@ import {
 } from '../../../../core/themes/theme.service';
 import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../auth/services/auth.service';
+import { User } from '../../../auth/models/user.model';
 
 @Component({
   selector: 'app-admin-layout',
@@ -23,12 +25,15 @@ import { Subscription } from 'rxjs';
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   currentLanguage!: Language;
   currentTheme!: ThemeOption;
+  currentUser: User | null = null;
   isSidebarHidden = false; // Keep only the hidden state, remove collapse
+  isMobileMenuOpen = false; // Added for mobile menu support
   private subscriptions: Subscription[] = [];
 
   constructor(
     public languageService: LanguageService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    public authService: AuthService
   ) {
     // Initialize with current settings
     this.currentLanguage = this.languageService.getCurrentLanguage();
@@ -47,6 +52,13 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.themeService.theme$.subscribe((theme) => {
         this.currentTheme = theme;
+      })
+    );
+
+    // Subscribe to authentication state changes
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe((user) => {
+        this.currentUser = user;
       })
     );
   }
@@ -69,5 +81,17 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   // Show sidebar
   showSidebar(): void {
     this.isSidebarHidden = false;
+  }
+
+  // Close mobile menu if it's open - added from header component
+  closeMobileMenuIfOpen(): void {
+    if (this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+    }
+  }
+
+  // Toggle mobile menu - added from header component
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 }

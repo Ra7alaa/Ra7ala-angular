@@ -1,4 +1,4 @@
-<div class="container py-5" [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'">
+<div class="container py-5" [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'" appRtl>
   <div class="row">
     <div class="col-lg-4 mb-4">
       <!-- Profile Card -->
@@ -13,10 +13,10 @@
                 profileForm.get('profilePictureUrl')?.value ||
                 'assets/images/default-avatar.svg'
               "
-              alt="{{ 'profile.profile_picture' | translate }}"
+              alt="{{ 'admin.profile.profile_picture' | translate }}"
               class="rounded-circle img-thumbnail"
               style="width: 150px; height: 150px; object-fit: cover"
-              onerror="this.src='assets/images/default-avatar.svg'"
+              onerror="this.src='assets/images/default-avatar.png'"
             />
             <button
               type="button"
@@ -26,17 +26,45 @@
             </button>
           </div>
           <h5 class="fw-bold">
-            {{ profileForm.get("fullName")?.value || "User Name" }}
+            {{ profileForm.get("fullName")?.value || "Admin Name" }}
           </h5>
-          <p class="text-muted">
-            {{ profileForm.get("email")?.value || "user@example.com" }}
+          <p class="text-muted mb-0">
+            {{ profileForm.get("email")?.value || "admin@example.com" }}
           </p>
+          <p class="badge bg-primary mt-2" *ngIf="currentUser?.userType">
+            {{ currentUser?.userType }}
+          </p>
+          <p
+            class="text-muted mt-2"
+            *ngIf="profileForm.get('companyName')?.value"
+          >
+            {{ profileForm.get("companyName")?.value }}
+          </p>
+        </div>
+      </div>
 
-          <div class="d-flex justify-content-center mt-3">
-            <button type="button" class="btn btn-outline-secondary mx-1">
-              <i class="bi bi-camera me-1"></i>
-              {{ "profile.change_photo" | translate }}
-            </button>
+      <!-- Admin Stats -->
+      <div
+        class="card border-0 shadow mt-4"
+        [ngClass]="{ 'dark-theme': isDarkTheme() }"
+      >
+        <div class="card-header bg-transparent border-0 pt-4">
+          <h4 class="fw-bold mb-0">
+            {{ "admin.profile.admin_stats" | translate }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-3">
+            <span>{{ "admin.profile.managed_routes" | translate }}</span>
+            <span class="badge bg-info rounded-pill">24</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>{{ "admin.profile.active_trips" | translate }}</span>
+            <span class="badge bg-success rounded-pill">12</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>{{ "admin.profile.managed_stations" | translate }}</span>
+            <span class="badge bg-primary rounded-pill">8</span>
           </div>
         </div>
       </div>
@@ -50,10 +78,10 @@
       >
         <div class="card-header bg-transparent border-0 pt-4">
           <h4 class="fw-bold mb-0">
-            {{ "profile.profile_title" | translate }}
+            {{ "admin.profile.profile_title" | translate }}
           </h4>
           <p class="text-muted">
-            {{ "profile.profile_description" | translate }}
+            {{ "admin.profile.profile_description" | translate }}
           </p>
         </div>
         <div class="card-body">
@@ -63,7 +91,7 @@
             *ngIf="submitSuccess"
           >
             <i class="bi bi-check-circle-fill me-1"></i>
-            {{ "profile.profile_updated" | translate }}
+            {{ "admin.profile.profile_updated" | translate }}
             <button
               type="button"
               class="btn-close"
@@ -88,7 +116,7 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="fullName" class="form-label fw-medium">{{
-                  "profile.full_name" | translate
+                  "admin.profile.full_name" | translate
                 }}</label>
                 <input
                   type="text"
@@ -101,13 +129,32 @@
                   "
                 />
                 <div class="invalid-feedback">
-                  {{ "profile.full_name_required" | translate }}
+                  {{ "admin.profile.full_name_required" | translate }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="username" class="form-label fw-medium">{{
+                  "admin.profile.username" | translate
+                }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  formControlName="username"
+                  [class.is-invalid]="
+                    profileForm.get('username')?.invalid &&
+                    profileForm.get('username')?.touched
+                  "
+                />
+                <div class="invalid-feedback">
+                  {{ "admin.profile.username_required" | translate }}
                 </div>
               </div>
 
               <div class="col-md-6 mb-3">
                 <label for="email" class="form-label fw-medium">{{
-                  "profile.email" | translate
+                  "admin.profile.email" | translate
                 }}</label>
                 <input
                   type="email"
@@ -120,13 +167,13 @@
                   "
                 />
                 <div class="invalid-feedback">
-                  {{ "profile.email_required" | translate }}
+                  {{ "admin.profile.email_required" | translate }}
                 </div>
               </div>
 
               <div class="col-md-6 mb-3">
                 <label for="phoneNumber" class="form-label fw-medium">{{
-                  "profile.phone" | translate
+                  "admin.profile.phone" | translate
                 }}</label>
                 <input
                   type="tel"
@@ -139,25 +186,41 @@
                   "
                 />
                 <div class="invalid-feedback">
-                  {{ "profile.phone_format" | translate }}
+                  {{ "admin.profile.phone_format" | translate }}
                 </div>
               </div>
 
               <div class="col-md-6 mb-3">
-                <label for="dateOfBirth" class="form-label fw-medium">{{
-                  "profile.birth_date" | translate
+                <label for="companyName" class="form-label fw-medium">{{
+                  "admin.profile.company_name" | translate
                 }}</label>
                 <input
-                  type="date"
+                  type="text"
                   class="form-control"
-                  id="dateOfBirth"
-                  formControlName="dateOfBirth"
+                  id="companyName"
+                  formControlName="companyName"
+                  readonly
+                />
+                <small class="form-text text-muted">
+                  {{ "admin.profile.company_name_readonly" | translate }}
+                </small>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="profilePictureUrl" class="form-label fw-medium">{{
+                  "admin.profile.profile_picture_url" | translate
+                }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="profilePictureUrl"
+                  formControlName="profilePictureUrl"
                 />
               </div>
 
               <div class="col-12 mb-3">
                 <label for="address" class="form-label fw-medium">{{
-                  "profile.address" | translate
+                  "admin.profile.address" | translate
                 }}</label>
                 <textarea
                   class="form-control"
@@ -168,10 +231,7 @@
               </div>
             </div>
 
-            <div
-              class="d-flex gap-2 mt-4"
-              [ngClass]="{ 'justify-content-end': currentLanguage.rtl }"
-            >
+            <div class="d-flex gap-2 mt-4">
               <button
                 type="submit"
                 class="btn btn-primary"
@@ -181,17 +241,44 @@
                   class="spinner-border spinner-border-sm me-1"
                   *ngIf="isSubmitting"
                 ></span>
-                {{ "profile.save" | translate }}
+                {{ "admin.profile.save" | translate }}
               </button>
               <button
                 type="button"
                 class="btn btn-outline-secondary"
                 [disabled]="isSubmitting"
               >
-                {{ "profile.cancel" | translate }}
+                {{ "admin.profile.cancel" | translate }}
               </button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <!-- Security Settings -->
+      <div
+        class="card border-0 shadow"
+        [ngClass]="{ 'dark-theme': isDarkTheme() }"
+      >
+        <div class="card-header bg-transparent border-0 pt-4">
+          <h4 class="fw-bold mb-0">
+            {{ "admin.profile.security_settings" | translate }}
+          </h4>
+          <p class="text-muted">
+            {{ "admin.profile.security_description" | translate }}
+          </p>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-primary" type="button">
+              <i class="bi bi-key me-2"></i>
+              {{ "admin.profile.change_password" | translate }}
+            </button>
+            <button class="btn btn-outline-primary" type="button">
+              <i class="bi bi-shield-lock me-2"></i>
+              {{ "admin.profile.two_factor_auth" | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>

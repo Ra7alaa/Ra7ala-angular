@@ -53,7 +53,7 @@ export function systemOwnerGuard(): CanActivateFn {
  * Super Admin or higher guard for protecting routes that require SuperAdmin or SystemOwner access
  */
 export function superAdminGuard(): CanActivateFn {
-  return authGuard([UserRole.SuperAdmin, UserRole.SystemOwner]);
+  return authGuard([UserRole.SuperAdmin, UserRole.Admin]);
 }
 
 /**

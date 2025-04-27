@@ -30,6 +30,21 @@
         <span>{{ "admin.sidebar.dashboard" | translate }}</span>
       </a>
     </li>
+
+    <!-- Profile link -->
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/profile" routerLinkActive="active">
+        <i
+          class="bi bi-person"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.profile" | translate }}</span>
+      </a>
+    </li>
+
     <li class="nav-item">
       <a class="nav-link" routerLink="/admin/trips" routerLinkActive="active">
         <i

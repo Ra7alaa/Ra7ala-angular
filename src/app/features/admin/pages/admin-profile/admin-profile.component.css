@@ -1,0 +1,131 @@
+/* Admin Profile Styles */
+.card {
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.card-header {
+  border-bottom: none;
+  background-color: transparent;
+}
+
+.img-thumbnail {
+  border-radius: 50%;
+  border: 3px solid var(--primary-color);
+  padding: 5px;
+  transition: all 0.3s ease;
+}
+
+.form-control {
+  border-radius: 8px;
+  padding: 10px 15px;
+  border-color: var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(255, 140, 0, 0.25);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 8px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color-light);
+  border-color: var(--primary-color-light);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  border-radius: 8px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-outline-secondary {
+  border-radius: 8px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.form-label {
+  color: var(--text-color);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.text-muted {
+  color: var(--text-color-light) !important;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+/* Dark Theme Styles */
+.dark-theme {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+}
+
+.dark-theme .card {
+  background-color: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .form-control {
+  background-color: var(--input-bg-dark);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.dark-theme .form-control:focus {
+  background-color: var(--input-bg-dark-focus);
+}
+
+.dark-theme .btn-outline-secondary {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .btn-outline-secondary:hover {
+  background-color: var(--surface-color-hover);
+  color: var(--primary-color);
+}
+
+/* RTL support for the profile page */
+[dir="rtl"] .me-1 {
+  margin-right: 0 !important;
+  margin-left: 0.25rem !important;
+}
+
+[dir="rtl"] .me-2 {
+  margin-right: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+[dir="rtl"] .ms-1 {
+  margin-left: 0 !important;
+  margin-right: 0.25rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+}
