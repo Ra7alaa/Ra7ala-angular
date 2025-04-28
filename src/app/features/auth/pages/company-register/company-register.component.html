@@ -24,20 +24,40 @@
               />
             </div>
             <div class="invalid-feedback" *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched">
-              {{ "auth.create_company.name_required" | translate }}
+              <span *ngIf="companyForm.get('name')?.errors?.['required']">
+                {{ "auth.create_company.name_required" | translate }}
+              </span>
+              <span *ngIf="companyForm.get('name')?.errors?.['minlength']">
+                Name must be at least 2 characters long
+              </span>
+              <span *ngIf="companyForm.get('name')?.errors?.['serverError']">
+                {{ companyForm.get('name')?.errors?.['serverError'] }}
+              </span>
             </div>
           </div>
 
           <!-- Company Description -->
           <div class="mb-3">
-            <label for="description" class="form-label">{{ "auth.create_company.description" | translate }}</label>
+            <label for="description" class="form-label">{{ "auth.create_company.description" | translate }} *</label>
             <textarea
               id="description"
               formControlName="description"
               class="form-control"
               [placeholder]="'auth.create_company.description_placeholder' | translate"
               rows="3"
+              [ngClass]="{ 'is-invalid': companyForm.get('description')?.invalid && companyForm.get('description')?.touched }"
             ></textarea>
+            <div class="invalid-feedback" *ngIf="companyForm.get('description')?.invalid && companyForm.get('description')?.touched">
+              <span *ngIf="companyForm.get('description')?.errors?.['required']">
+                Description is required
+              </span>
+              <span *ngIf="companyForm.get('description')?.errors?.['minlength']">
+                Description must be at least 5 characters long
+              </span>
+              <span *ngIf="companyForm.get('description')?.errors?.['serverError']">
+                {{ companyForm.get('description')?.errors?.['serverError'] }}
+              </span>
+            </div>
           </div>
 
           <!-- Company Logo -->
@@ -56,7 +76,7 @@
 
           <!-- Company Address -->
           <div class="mb-3">
-            <label for="address" class="form-label">{{ "auth.create_company.address" | translate }}</label>
+            <label for="address" class="form-label">{{ "auth.create_company.address" | translate }} *</label>
             <div class="input-wrapper">
               <i class="bi bi-geo-alt icon"></i>
               <input
@@ -65,14 +85,26 @@
                 formControlName="address"
                 class="form-control"
                 [placeholder]="'auth.create_company.address_placeholder' | translate"
+                [ngClass]="{ 'is-invalid': companyForm.get('address')?.invalid && companyForm.get('address')?.touched }"
               />
+            </div>
+            <div class="invalid-feedback" *ngIf="companyForm.get('address')?.invalid && companyForm.get('address')?.touched">
+              <span *ngIf="companyForm.get('address')?.errors?.['required']">
+                Address is required
+              </span>
+              <span *ngIf="companyForm.get('address')?.errors?.['minlength']">
+                Address must be at least 5 characters long
+              </span>
+              <span *ngIf="companyForm.get('address')?.errors?.['serverError']">
+                {{ companyForm.get('address')?.errors?.['serverError'] }}
+              </span>
             </div>
           </div>
 
           <div class="row" [class.flex-row-reverse]="currentLanguage.rtl">
             <!-- Company Phone -->
             <div class="col-md-6 mb-3">
-              <label for="phoneNumber" class="form-label">{{ "auth.create_company.phone" | translate }}</label>
+              <label for="phoneNumber" class="form-label">{{ "auth.create_company.phone" | translate }} *</label>
               <div class="input-wrapper">
                 <i class="bi bi-telephone icon"></i>
                 <input
@@ -85,13 +117,21 @@
                 />
               </div>
               <div class="invalid-feedback" *ngIf="companyForm.get('phoneNumber')?.invalid && companyForm.get('phoneNumber')?.touched">
-                {{ "auth.create_company.phone_invalid" | translate }}
+                <span *ngIf="companyForm.get('phoneNumber')?.errors?.['required']">
+                  Phone number is required
+                </span>
+                <span *ngIf="companyForm.get('phoneNumber')?.errors?.['pattern']">
+                  Please enter a valid phone number format (e.g., +201234567890)
+                </span>
+                <span *ngIf="companyForm.get('phoneNumber')?.errors?.['serverError']">
+                  {{ companyForm.get('phoneNumber')?.errors?.['serverError'] }}
+                </span>
               </div>
             </div>
 
             <!-- Company Email -->
             <div class="col-md-6 mb-3">
-              <label for="email" class="form-label">{{ "auth.create_company.email" | translate }}</label>
+              <label for="email" class="form-label">{{ "auth.create_company.email" | translate }} *</label>
               <div class="input-wrapper">
                 <i class="bi bi-envelope icon"></i>
                 <input
@@ -104,7 +144,15 @@
                 />
               </div>
               <div class="invalid-feedback" *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched">
-                {{ "auth.create_company.email_invalid" | translate }}
+                <span *ngIf="companyForm.get('email')?.errors?.['required']">
+                  Email is required
+                </span>
+                <span *ngIf="companyForm.get('email')?.errors?.['email'] || companyForm.get('email')?.errors?.['pattern']">
+                  Please enter a valid email address
+                </span>
+                <span *ngIf="companyForm.get('email')?.errors?.['serverError']">
+                  {{ companyForm.get('email')?.errors?.['serverError'] }}
+                </span>
               </div>
             </div>
           </div>
@@ -127,7 +175,15 @@
               />
             </div>
             <div class="invalid-feedback" *ngIf="companyForm.get('superAdminName')?.invalid && companyForm.get('superAdminName')?.touched">
-              {{ "auth.create_company.admin_name_required" | translate }}
+              <span *ngIf="companyForm.get('superAdminName')?.errors?.['required']">
+                Super Admin name is required
+              </span>
+              <span *ngIf="companyForm.get('superAdminName')?.errors?.['minlength']">
+                Super Admin name must be at least 3 characters long
+              </span>
+              <span *ngIf="companyForm.get('superAdminName')?.errors?.['serverError']">
+                {{ companyForm.get('superAdminName')?.errors?.['serverError'] }}
+              </span>
             </div>
           </div>
 
@@ -147,7 +203,15 @@
                 />
               </div>
               <div class="invalid-feedback" *ngIf="companyForm.get('superAdminEmail')?.invalid && companyForm.get('superAdminEmail')?.touched">
-                {{ "auth.create_company.admin_email_invalid" | translate }}
+                <span *ngIf="companyForm.get('superAdminEmail')?.errors?.['required']">
+                  Super Admin email is required
+                </span>
+                <span *ngIf="companyForm.get('superAdminEmail')?.errors?.['email'] || companyForm.get('superAdminEmail')?.errors?.['pattern']">
+                  Please enter a valid email address
+                </span>
+                <span *ngIf="companyForm.get('superAdminEmail')?.errors?.['serverError']">
+                  {{ companyForm.get('superAdminEmail')?.errors?.['serverError'] }}
+                </span>
               </div>
             </div>
 
@@ -166,7 +230,15 @@
                 />
               </div>
               <div class="invalid-feedback" *ngIf="companyForm.get('superAdminPhone')?.invalid && companyForm.get('superAdminPhone')?.touched">
-                {{ "auth.create_company.admin_phone_invalid" | translate }}
+                <span *ngIf="companyForm.get('superAdminPhone')?.errors?.['required']">
+                  Super Admin phone number is required
+                </span>
+                <span *ngIf="companyForm.get('superAdminPhone')?.errors?.['pattern']">
+                  Please enter a valid phone number format (e.g., +201234567890)
+                </span>
+                <span *ngIf="companyForm.get('superAdminPhone')?.errors?.['serverError']">
+                  {{ companyForm.get('superAdminPhone')?.errors?.['serverError'] }}
+                </span>
               </div>
             </div>
           </div>
@@ -180,7 +252,7 @@
           <button
             type="submit"
             class="btn btn-primary w-100 mt-4"
-            [disabled]="companyForm.invalid || isSubmitting"
+            [disabled]="isSubmitting"
           >
             <span *ngIf="isSubmitting" [class.me-2]="!currentLanguage.rtl" [class.ms-2]="currentLanguage.rtl">
               <i class="bi bi-arrow-repeat spinner"></i>
@@ -191,6 +263,15 @@
               {{ "auth.create_company.submit" | translate }}
             </span>
           </button>
+
+          <!-- Debug button - Only visible in development
+          <button
+            type="button"
+            class="btn btn-outline-secondary w-100 mt-2"
+            (click)="testApiDirectly()"
+          >
+            Test API Directly (Debug)
+          </button> -->
         </form>
       </div>
     </div>
