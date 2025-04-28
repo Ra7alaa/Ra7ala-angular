@@ -1,5 +1,5 @@
 <div class="search-container" dir="ltr">
-  <h2 class="search-title">Where are you Travel?</h2>
+  <h2 class="search-title">{{ "search.title" | translate }}</h2>
 
   <div class="search-form-wrapper">
     <div class="row g-3">
@@ -13,7 +13,7 @@
               [(ngModel)]="fromToValue"
               class="w-100"
             />
-            <label for="fromTo">From - To</label>
+            <label for="fromTo">{{ "search.from_to" | translate }}</label>
           </p-floatlabel>
         </div>
       </div>
@@ -22,17 +22,23 @@
       <div class="col-12 col-sm-12 col-md-6 col-lg-3">
         <div class="form-group">
           <p-floatlabel variant="on">
-            <select
-              pInputText
-              id="tripType"
-              [(ngModel)]="tripType"
-              class="form-select w-100"
-            >
-              <option value="return">Return</option>
-              <option value="oneway">One Way</option>
-              <option value="multicity">Multi City</option>
+            <select id="tripRoute" class="form-select">
+              <option value="cairo-alexandria">
+                {{ "cities.cairo" | translate }} - {{ "cities.alexandria" | translate }}
+              </option>
+              <option value="cairo-luxor">
+                {{ "cities.cairo" | translate }} - {{ "cities.luxor" | translate }}
+              </option>
+              <option value="alexandria-luxor">
+                {{ "cities.alexandria" | translate }} - {{ "cities.luxor" | translate }}
+              </option>
+              <option value="luxor-aswan">
+                {{ "cities.luxor" | translate }} - {{ "cities.aswan" | translate }}
+              </option>
+              <option value="alexandria-hurghada">
+                {{ "cities.alexandria" | translate }} - {{ "cities.hurghada" | translate }}
+              </option>
             </select>
-            <!-- <label for="tripType">Trip</label> -->
           </p-floatlabel>
         </div>
       </div>
@@ -47,33 +53,18 @@
               [(ngModel)]="dateRange"
               class="w-100"
             />
-            <label for="dateRange">Depart - Return</label>
+            <label for="dateRange">{{ "search.date_range" | translate }}</label>
           </p-floatlabel>
         </div>
       </div>
 
-   
-
-
       <div class="col-12 col-sm-12 col-md-6 col-lg-3">
         <div class="form-group">
-   
           <button class="search-btn" (click)="onSearch()">
-            <i class="bi bi-send-fill me-1"></i> Show results
+            <i class="bi bi-send-fill me-1"></i> {{ "search.show_results" | translate }}
           </button>
         </div>
       </div>
-  
-
-    </div>
-  </div>
-
-  <!-- Promo code and actions section -->
-  <div class="actions-row">
-    <div class="d-flex flex-wrap justify-content-center gap-2">
-      
-
-
     </div>
   </div>
 </div>

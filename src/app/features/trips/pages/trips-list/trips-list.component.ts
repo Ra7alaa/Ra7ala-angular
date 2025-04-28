@@ -3,22 +3,30 @@ import { Trip } from '../../models/trip.model';
 import { TripsService } from '../../services/trips.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+interface TripResponse {
+  trips: Trip[];
+  total: number;
+}
 
 @Component({
   selector: 'app-trips-list',
   templateUrl: './trips-list.component.html',
   styleUrls: ['./trips-list.component.css'],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   standalone: true,
 })
 export class TripsListComponent implements OnInit {
-  allTrips: Trip[] = [];
-  featuredTrips: Trip[] = [];
+  trips: Trip[] = [];
   filteredTrips: Trip[] = [];
-
   searchTerm: string = '';
-  selectedCategory: string = '';
-
+  
+  // Pagination
+  currentPage: number = 1;
+  pageSize: number = 6;
+  totalTrips: number = 0;
+  
   constructor(private tripsService: TripsService) {}
 
   ngOnInit(): void {
@@ -26,46 +34,47 @@ export class TripsListComponent implements OnInit {
   }
 
   loadTrips(): void {
-    this.tripsService.getAllTrips().subscribe((trips) => {
-      this.allTrips = trips;
+    this.tripsService.getAllTrips(this.currentPage, this.pageSize).subscribe(({trips, total}: TripResponse) => {
+      this.trips = trips;
       this.filteredTrips = trips;
-    });
-
-    this.tripsService.getFeaturedTrips().subscribe((trips) => {
-      this.featuredTrips = trips;
+      this.totalTrips = total;
     });
   }
 
-  search(event: Event): void {
+  onSearch(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.searchTerm = target.value;
+    this.currentPage = 1; // Reset to first page when searching
 
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-      this.tripsService.searchTrips(this.searchTerm).subscribe((trips) => {
-        this.filteredTrips = trips;
-      });
-    } else if (this.selectedCategory) {
-      this.filterByCategory(this.selectedCategory);
+    if (this.searchTerm.trim()) {
+      this.tripsService.searchTrips(this.searchTerm, this.currentPage, this.pageSize)
+        .subscribe(({trips, total}: TripResponse) => {
+          this.filteredTrips = trips;
+          this.totalTrips = total;
+        });
     } else {
-      this.filteredTrips = this.allTrips;
+      this.loadTrips();
     }
   }
 
-  filterByCategory(category: string): void {
-    this.selectedCategory = category;
-
-    if (category && category.trim() !== '') {
-      this.tripsService.getTripsByCategory(category).subscribe((trips) => {
-        this.filteredTrips = trips;
-      });
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    if (this.searchTerm.trim()) {
+      this.tripsService.searchTrips(this.searchTerm, this.currentPage, this.pageSize)
+        .subscribe(({trips, total}: TripResponse) => {
+          this.filteredTrips = trips;
+          this.totalTrips = total;
+        });
     } else {
-      this.filteredTrips = this.allTrips;
+      this.loadTrips();
     }
   }
 
-  resetFilters(): void {
-    this.searchTerm = '';
-    this.selectedCategory = '';
-    this.filteredTrips = this.allTrips;
+  get totalPages(): number {
+    return Math.ceil(this.totalTrips / this.pageSize);
+  }
+
+  get pages(): number[] {
+    return Array.from({length: this.totalPages}, (_, i) => i + 1);
   }
 }

@@ -1,24 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { SharedModule } from '../../shared/shared.module';
-import { CommonTripsComponent } from './components/common-trips/common-trips.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
-  },
+    component: HomeComponent
+  }
 ];
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
     SharedModule,
-    HomeComponent,
-    CommonTripsComponent,
-  ],
+    RouterModule.forChild(routes),
+    HomeComponent
+  ]
 })
-export class HomeModule {}
+export class HomeModule { }

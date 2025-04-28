@@ -2,27 +2,16 @@
   <div class="trip-header">
     <div class="trip-image">
       <img [src]="trip.imageUrl" [alt]="trip.title" />
-      <div class="trip-category">{{ trip.category }}</div>
     </div>
     <div class="trip-header-content">
       <h1>{{ trip.title }}</h1>
       <div class="trip-meta">
         <div class="meta-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>{{ trip.location }}</span>
+          <i class="bi bi-geo-alt"></i>
+          <span>{{ "cities." + trip.location.toLowerCase() | translate }}</span>
         </div>
-        <div class="meta-item">
-          <i class="fas fa-calendar-alt"></i>
-          <span>{{ trip.duration }} days</span>
-        </div>
-        <div class="meta-item">
-          <i class="fas fa-star"></i>
-          <span>{{ trip.rating }} Rating</span>
-        </div>
-        <div class="meta-item">
-          <i class="fas fa-users"></i>
-          <span>Max {{ trip.maxGroupSize }} People</span>
-        </div>
+
+    
       </div>
     </div>
   </div>
@@ -32,189 +21,122 @@
       <div class="section-trip-description">
         <h2>Trip Overview</h2>
         <p>{{ trip.description }}</p>
+        
+        <!-- City specific details -->
+        <div class="trip-location-details">
+          <!-- Alexandria Information -->
+          <div class="trip-info" *ngIf="trip.location === 'Alexandria'">
+            <h3>Historical Background:</h3>
+            <p>Founded by Alexander the Great in 331 BCE, Alexandria quickly became a major center of Greek culture and learning.</p>
+            
+            <h3>Major Attractions:</h3>
+            <ul>
+              <li>Bibliotheca Alexandrina - Modern library built near the site of the ancient Library of Alexandria</li>
+              <li>Citadel of Qaitbay - 15th-century fortress built on the site of the ancient Lighthouse</li>
+              <li>Roman Amphitheater - The only known Roman theater in Egypt</li>
+              <li>Montaza Palace - Royal palace with beautiful gardens along the Mediterranean coast</li>
+            </ul>
+            
+            <h3>Modern Alexandria:</h3>
+            <ul>
+              <li>Population: ~5.2 million</li>
+              <li>Economy: Major port city, tourism, and cultural center</li>
+              <li>Climate: Mediterranean, with mild winters and warm summers</li>
+            </ul>
+          </div>
 
+          <!-- Cairo Information -->
+          <div class="trip-info" *ngIf="trip.location === 'Cairo'">
+            <h3>Historical Background:</h3>
+            <p>Founded in 969 CE, Cairo has been Egypt's capital for over a millennium.</p>
+            
+            <h3>Major Attractions:</h3>
+            <ul>
+              <li>The Pyramids of Giza - Last surviving wonder of the ancient world</li>
+              <li>Egyptian Museum - Home to thousands of ancient artifacts</li>
+              <li>Khan el-Khalili - Historic bazaar and cultural site</li>
+              <li>Al-Azhar Mosque - One of the oldest and most prestigious Islamic institutions</li>
+            </ul>
+            
+            <h3>Modern Cairo:</h3>
+            <ul>
+              <li>Population: ~20 million (metropolitan area)</li>
+              <li>Economy: Egypt's primary commercial and cultural hub</li>
+              <li>Climate: Hot desert climate with mild winters</li>
+            </ul>
+          </div>
+
+          <!-- Luxor Information -->
+          <div class="trip-info" *ngIf="trip.location === 'Luxor'">
+            <h3>Historical Background:</h3>
+            <p>Ancient Thebes, capital of Egypt during the New Kingdom period (16th-11th centuries BCE).</p>
+            
+            <h3>Major Attractions:</h3>
+            <ul>
+              <li>Valley of the Kings - Burial ground of pharaohs including Tutankhamun</li>
+              <li>Karnak Temple - Largest religious building ever constructed</li>
+              <li>Luxor Temple - Stunning example of ancient Egyptian architecture</li>
+              <li>Deir el-Bahari - Temple of Queen Hatshepsut</li>
+            </ul>
+            
+            <h3>Modern Luxor:</h3>
+            <ul>
+              <li>Population: ~500,000</li>
+              <li>Economy: Tourism and agriculture</li>
+              <li>Climate: Hot desert climate with very little rainfall</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Photo Gallery -->
         <div class="trip-gallery">
           <h3>Trip Photos</h3>
           <div class="gallery-grid">
-            <!-- Placeholder gallery images -->
-            <div class="gallery-item">
-              <img [src]="trip.imageUrl" alt="Gallery image" />
+            <div class="gallery-item" *ngIf="trip.imageUrl1">
+              <img [src]="trip.imageUrl1" [alt]="trip.title + ' view 1'" loading="lazy" />
             </div>
-            <div class="gallery-item">
-              <img [src]="trip.imageUrl" alt="Gallery image" />
+            <div class="gallery-item" *ngIf="trip.imageUrl2">
+              <img [src]="trip.imageUrl2" [alt]="trip.title + ' view 2'" loading="lazy" />
             </div>
-            <div class="gallery-item">
-              <img [src]="trip.imageUrl" alt="Gallery image" />
-            </div>
-          </div>
-        </div>
-
-        <div class="trip-itinerary">
-          <h3>Itinerary</h3>
-          <div class="itinerary-day">
-            <div class="day-number">Day 1</div>
-            <div class="day-content">
-              <h4>Arrival and Welcome</h4>
-              <p>
-                Arrive at your destination and check into your accommodation.
-                Meet your guide and fellow travelers for a welcome dinner.
-              </p>
-            </div>
-          </div>
-          <div class="itinerary-day">
-            <div class="day-number">Day 2</div>
-            <div class="day-content">
-              <h4>Exploration Day</h4>
-              <p>
-                Explore the main attractions of the area with your expert guide.
-                Enjoy a relaxed lunch at a local restaurant.
-              </p>
-            </div>
-          </div>
-          <div class="itinerary-day">
-            <div class="day-number">Day 3</div>
-            <div class="day-content">
-              <h4>Adventure Activities</h4>
-              <p>
-                Participate in exciting activities specific to the location.
-                Enjoy free time in the afternoon to explore on your own.
-              </p>
+            <div class="gallery-item" *ngIf="trip.imageUrl3">
+              <img [src]="trip.imageUrl3" [alt]="trip.title + ' view 3'" loading="lazy" />
             </div>
           </div>
         </div>
 
-        <div class="trip-reviews">
-          <h3>Reviews</h3>
-          <div class="review">
-            <div class="review-header">
-              <div class="review-author">
-                <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
-                  alt="Reviewer"
-                />
-                <div>
-                  <h4>John Smith</h4>
-                  <div class="review-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="review-date">April 10, 2025</div>
-            </div>
-            <p>
-              Amazing experience! The guide was knowledgeable and the itinerary
-              was perfectly planned. I highly recommend this trip to anyone
-              looking for an unforgettable adventure.
-            </p>
+        <!-- Location Map -->
+        <div class="trip-location-map">
+          <h3>Location</h3>
+          <div class="map-container">
+            <iframe
+              [src]="getSecureMapUrl(trip.googleMapUrl)"
+              width="100%"
+              height="450"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
           </div>
-          <div class="review">
-            <div class="review-header">
-              <div class="review-author">
-                <img
-                  src="https://randomuser.me/api/portraits/women/44.jpg"
-                  alt="Reviewer"
-                />
-                <div>
-                  <h4>Sarah Johnson</h4>
-                  <div class="review-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="review-date">March 25, 2025</div>
-            </div>
-            <p>
-              Overall a great trip! The accommodations were comfortable and the
-              activities were well organized. Would have liked a bit more free
-              time to explore on my own.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="trip-sidebar">
-      <div class="booking-card">
-        <div class="booking-price">
-          <span class="price">${{ trip.price }}</span>
-          <span class="per-person">per person</span>
-        </div>
-
-        <div class="booking-dates">
-          <div class="date-group">
-            <label>Departure:</label>
-            <div class="date-value">
-              {{ trip.departureDate | date : "mediumDate" }}
-            </div>
-          </div>
-          <div class="date-group">
-            <label>Return:</label>
-            <div class="date-value">
-              {{ trip.returnDate | date : "mediumDate" }}
-            </div>
-          </div>
-        </div>
-
-        <div class="booking-form">
-          <div class="form-group">
-            <label for="travelers">Number of Travelers</label>
-            <select id="travelers" class="form-control">
-              <option value="1">1 Person</option>
-              <option value="2">2 People</option>
-              <option value="3">3 People</option>
-              <option value="4">4 People</option>
-              <option value="5">5 People</option>
-            </select>
-          </div>
-
-          <button class="btn-book-now">Book Now</button>
-          <button class="btn-add-wishlist">
-            <i class="far fa-heart"></i> Add to Wishlist
-          </button>
-        </div>
-      </div>
-
-      <div class="tour-guide-card">
-        <h3>Tour Guide</h3>
-        <div class="guide-profile">
-          <img
-            src="https://randomuser.me/api/portraits/men/55.jpg"
-            alt="Tour Guide"
-          />
-          <div class="guide-info">
-            <h4>Michael Rodriguez</h4>
-            <p>Professional guide with 8+ years of experience</p>
-            <div class="guide-rating"><i class="fas fa-star"></i> 4.9</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="map-card">
-        <h3>Location</h3>
-        <div class="map-placeholder">
-          <i class="fas fa-map-marked-alt"></i>
-          <p>{{ trip.location }}</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="loading-container" *ngIf="!trip">
-  <div class="loading-spinner"></div>
-  <p>Loading trip details...</p>
+<!-- Loading State -->
+<div class="trip-details-container" *ngIf="!trip">
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading trip details...</p>
+  </div>
 </div>
 
-<div class="back-button">
-  <a [routerLink]="['/trips']" class="btn-back"
-    ><i class="fas fa-arrow-left"></i> Back to Trips</a
-  >
+<!-- Back Button -->
+<div class="back-button container">
+  <a [routerLink]="['/']" class="btn-back">
+    <i class="bi bi-arrow-left"></i> Back to Trips
+  </a>
 </div>

@@ -4,12 +4,12 @@ export interface Trip {
   description: string;
   price: number;
   imageUrl: string;
+  imageUrl1: string;
+  imageUrl2: string;
+  imageUrl3: string;
   duration: number;
   location: string;
-  rating: number;
-  featured?: boolean;
+  googleMapUrl: string;
   departureDate?: Date;
   returnDate?: Date;
-  maxGroupSize?: number;
-  category?: string;
 }

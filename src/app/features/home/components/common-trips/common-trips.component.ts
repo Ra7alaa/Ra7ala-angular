@@ -1,60 +1,109 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Trip } from '../../../trips/models/trip.model';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from "../../../settings/pipes/translate.pipe";
+
+interface Trip {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  imageUrl1: string;
+  imageUrl2: string;
+  imageUrl3: string;
+  duration: number;
+  location: string;
+  googleMapUrl?: string;
+}
 
 @Component({
   selector: 'app-common-trips',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, FormsModule, TranslatePipe],
   templateUrl: './common-trips.component.html',
   styleUrl: './common-trips.component.css',
 })
 export class CommonTripsComponent {
   @Input() trips: Trip[] = [];
   currentPage = 0;
+  itemsPerPage = 3;
+  filteredTrips: Trip[] = [];
+  searchTerm: string = '';
+  selectedCity: string = '';
+  cities: string[] = [];
 
-  scrollLeft(): void {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.scrollToCurrentPage();
-    }
+  ngOnInit() {
+    this.trips = this.trips.map(trip => ({
+      ...trip,
+      imageUrl: this.getImagePath(trip.imageUrl),
+      imageUrl1: this.getImagePath(trip.imageUrl1),
+      imageUrl2: this.getImagePath(trip.imageUrl2),
+      imageUrl3: this.getImagePath(trip.imageUrl3)
+    }));
+    this.filteredTrips = this.trips;
+    this.cities = [...new Set(this.trips.map(trip => trip.location))];
   }
 
-  scrollRight(): void {
-    if (this.currentPage < 2) {
-      this.currentPage++;
-      this.scrollToCurrentPage();
-    }
+  ngOnChanges() {
+    this.filteredTrips = this.trips;
+    this.cities = [...new Set(this.trips.map(trip => trip.location))];
+    this.filterTrips();
+  }
+
+  getCurrentPageTrips(): Trip[] {
+    const start = this.currentPage * this.itemsPerPage;
+    return this.filteredTrips.slice(start, start + this.itemsPerPage);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.filteredTrips.length / this.itemsPerPage);
+  }
+
+  getPages(): number[] {
+    return Array.from({ length: this.getTotalPages() }, (_, i) => i);
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
-    this.scrollToCurrentPage();
-  }
-
-  private scrollToCurrentPage(): void {
-    // Get the container and cards
-    const container = document.querySelector('.overflow-auto');
-    const cards = document.querySelectorAll('.card');
-
-    if (container && cards.length > this.currentPage) {
-      // Calculate the scroll position based on the current page
-      const cardElement = cards[this.currentPage] as HTMLElement;
-      container.scrollLeft = cardElement.offsetLeft - 16; // Adjust for container padding
-
-      // Update active dot
-      this.updateActiveDot();
+    if (page >= 0 && page < this.getTotalPages()) {
+      this.currentPage = page;
     }
   }
 
-  private updateActiveDot(): void {
-    const dots = document.querySelectorAll('.btn.p-0');
-    dots.forEach((dot, index) => {
-      if (index === this.currentPage) {
-        dot.classList.add('active-dot');
-      } else {
-        dot.classList.remove('active-dot');
-      }
+  scrollLeft(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  scrollRight(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  filterTrips(): void {
+    this.filteredTrips = this.trips.filter(trip => {
+      const matchesSearch = this.searchTerm ? 
+        trip.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        trip.description.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        trip.location.toLowerCase().includes(this.searchTerm.toLowerCase())
+        : true;
+      
+      const matchesCity = this.selectedCity ? 
+        trip.location === this.selectedCity 
+        : true;
+
+      return matchesSearch && matchesCity;
     });
+    this.currentPage = 0;
+  }
+
+  private getImagePath(url: string): string {
+    return url?.startsWith('http') ? url : `assets/images/${url}`;
+  }
+
+  scrollToSection(): void {
+    const element = document.getElementById('common-trips');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }
