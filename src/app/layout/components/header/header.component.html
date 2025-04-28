@@ -51,12 +51,8 @@
             (click)="closeMobileMenuIfOpen()"
             >{{ "navigation.destinations" | translate }}</a
           >
-          <a
-            routerLink="/packages"
-            routerLinkActive="active"
-            class="nav-link"
-            (click)="closeMobileMenuIfOpen()"
-            >{{ "navigation.packages" | translate }}</a
+          <a href="#common-trips" class="nav-link" (click)="scrollToCommonTrips($event)">
+  {{ "navigation.common_trips" | translate }}</a
           >
           <a
             routerLink="/contact"

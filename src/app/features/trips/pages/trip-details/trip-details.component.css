@@ -1,493 +1,239 @@
 .trip-details-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 2rem;
 }
 
 .trip-header {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 30px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  position: relative;
+  margin-bottom: 2rem;
 }
 
 .trip-image {
-  position: relative;
   height: 400px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .trip-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.trip-category {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: rgba(42, 109, 201, 0.9);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
+.trip-image:hover img {
+  transform: scale(1.05);
 }
 
 .trip-header-content {
-  padding: 25px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-top: -80px;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .trip-header-content h1 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .trip-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
+  gap: 2rem;
+  margin-top: 1rem;
 }
 
 .meta-item {
   display: flex;
   align-items: center;
-  font-size: 1rem;
-  color: #555;
+  gap: 0.5rem;
+  color: #666;
 }
 
 .meta-item i {
-  color: #2a6dc9;
-  margin-right: 8px;
-  font-size: 1.1rem;
+  color: var(--primary-color);
 }
 
 .trip-content {
-  display: flex;
-  gap: 30px;
-}
-
-.trip-main {
-  flex: 2;
-}
-
-.trip-sidebar {
-  flex: 1;
+  margin-top: 2rem;
 }
 
 .section-trip-description {
-  padding: 30px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .section-trip-description h2 {
-  font-size: 1.8rem;
   color: #333;
-  margin-bottom: 15px;
-  position: relative;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
 }
 
-.section-trip-description h2::after {
-  content: "";
+.trip-info {
+  margin: 2.5rem 0;
+  line-height: 1.6;
+}
+
+.trip-info h3 {
+  color: #333;
+  margin: 2rem 0 1rem;
+  font-size: 1.4rem;
+}
+
+.trip-info p {
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.trip-info ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 2rem;
+}
+
+.trip-info ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #555;
+}
+
+.trip-info ul li:before {
+  content: "•";
   position: absolute;
   left: 0;
-  bottom: -8px;
-  width: 60px;
-  height: 3px;
-  background-color: #2a6dc9;
+  color: var(--primary-color);
+  font-size: 1.2em;
 }
 
-.section-trip-description p {
-  color: #555;
-  line-height: 1.7;
-  margin-bottom: 30px;
+.trip-gallery {
+  margin: 3rem 0;
 }
 
-.trip-gallery,
-.trip-itinerary,
-.trip-reviews {
-  margin-top: 40px;
-}
-
-.trip-gallery h3,
-.trip-itinerary h3,
-.trip-reviews h3 {
-  font-size: 1.5rem;
+.trip-gallery h3 {
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  gap: 1.5rem;
 }
 
 .gallery-item {
-  border-radius: 8px;
+  height: 240px;
   overflow: hidden;
-  height: 150px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s;
+  transition: transform 0.5s ease;
 }
 
 .gallery-item:hover img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
-.itinerary-day {
-  display: flex;
-  margin-bottom: 25px;
+.trip-location-map {
+  margin: 3rem 0;
 }
 
-.day-number {
-  flex: 0 0 80px;
-  background-color: #2a6dc9;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 10px;
-  margin-right: 20px;
-}
-
-.day-content {
-  flex: 1;
-}
-
-.day-content h4 {
-  font-size: 1.2rem;
+.trip-location-map h3 {
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
 }
 
-.day-content p {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 0;
-}
-
-.review {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.review-author {
-  display: flex;
-  align-items: center;
-}
-
-.review-author img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 15px;
-}
-
-.review-author h4 {
-  font-size: 1.1rem;
-  color: #333;
-  margin: 0 0 5px;
-}
-
-.review-rating i {
-  color: #ffd700;
-  font-size: 0.9rem;
-}
-
-.review-date {
-  color: #888;
-  font-size: 0.9rem;
-}
-
-.review p {
-  color: #555;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.booking-card,
-.tour-guide-card,
-.map-card {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.booking-price {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.price {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2a6dc9;
-}
-
-.per-person {
-  font-size: 1rem;
-  color: #666;
-  margin-left: 5px;
-}
-
-.booking-dates {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
-
-.date-group {
-  flex: 1;
-}
-
-.date-group label {
-  display: block;
-  font-size: 0.9rem;
-  color: #888;
-  margin-bottom: 5px;
-}
-
-.date-value {
-  font-size: 1rem;
-  color: #333;
-  font-weight: 500;
-}
-
-.booking-form .form-group {
-  margin-bottom: 20px;
-}
-
-.booking-form label {
-  display: block;
-  font-size: 0.9rem;
-  color: #333;
-  margin-bottom: 8px;
-}
-
-.booking-form .form-control {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-
-.btn-book-now {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background-color: #2a6dc9;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  margin-bottom: 15px;
-  transition: background-color 0.3s;
-}
-
-.btn-book-now:hover {
-  background-color: #1e5aa8;
-}
-
-.btn-add-wishlist {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  background-color: transparent;
-  color: #666;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-add-wishlist:hover {
-  background-color: #f5f5f5;
-  color: #2a6dc9;
-  border-color: #2a6dc9;
-}
-
-.btn-add-wishlist i {
-  margin-right: 8px;
-}
-
-.tour-guide-card h3,
-.map-card h3 {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.guide-profile {
-  display: flex;
-  align-items: center;
-}
-
-.guide-profile img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-right: 15px;
-}
-
-.guide-info h4 {
-  font-size: 1.1rem;
-  color: #333;
-  margin: 0 0 5px;
-}
-
-.guide-info p {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0 0 8px;
-}
-
-.guide-rating {
-  color: #333;
-  font-weight: 500;
-}
-
-.guide-rating i {
-  color: #ffd700;
-  margin-right: 5px;
-}
-
-.map-placeholder {
-  height: 150px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-}
-
-.map-placeholder i {
-  font-size: 2.5rem;
-  color: #2a6dc9;
-  margin-bottom: 10px;
-}
-
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #2a6dc9;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.back-button {
-  margin-top: 30px;
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-back {
   display: inline-flex;
   align-items: center;
-  padding: 12px 20px;
-  background-color: #f5f5f5;
-  color: #333;
-  border-radius: 8px;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  color: #666;
   text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 2rem 0;
 }
 
 .btn-back:hover {
-  background-color: #e0e0e0;
+  color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.btn-back i {
-  margin-right: 8px;
-}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .trip-details-container {
+    padding: 1rem;
+  }
 
-@media (max-width: 991px) {
-  .trip-content {
+  .trip-header-content {
+    margin-top: -50px;
+    padding: 1.5rem;
+  }
+
+  .trip-header-content h1 {
+    font-size: 2rem;
+  }
+
+  .trip-meta {
     flex-direction: column;
+    gap: 1rem;
   }
 
   .trip-image {
     height: 300px;
   }
 
+  .section-trip-description {
+    padding: 1.5rem;
+  }
+
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .gallery-item {
+    height: 200px;
   }
 }
 
-@media (max-width: 576px) {
-  .trip-meta {
-    flex-direction: column;
-    gap: 15px;
-  }
-
+@media (max-width: 480px) {
   .gallery-grid {
     grid-template-columns: 1fr;
   }
 
-  .itinerary-day {
-    flex-direction: column;
-  }
-
-  .day-number {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  .review-header {
-    flex-direction: column;
-  }
-
-  .review-date {
-    margin-top: 10px;
+  .trip-header-content h1 {
+    font-size: 1.75rem;
   }
 }

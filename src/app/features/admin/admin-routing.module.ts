@@ -14,13 +14,6 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'profile', component: AdminProfileComponent },
       {
-        path: 'trips',
-        loadChildren: () =>
-          import('./pages/trips-management/trips.module').then(
-            (m) => m.TripsModule
-          ),
-      },
-      {
         path: 'routes',
         loadChildren: () =>
           import('./pages/routes-management/routes.module').then(

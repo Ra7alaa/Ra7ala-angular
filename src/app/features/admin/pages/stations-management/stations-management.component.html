@@ -97,7 +97,7 @@
           <tr *ngFor="let station of filteredStations">
             <td>{{ station.id }}</td>
             <td>{{ station.name }}</td>
-            <td>{{ station.cityName }}</td>
+            <td>{{ "cities." + station.cityName.toLowerCase() | translate }}</td>
             <td>
               <span
                 [class.badge]="true"
