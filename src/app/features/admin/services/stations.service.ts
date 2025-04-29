@@ -189,7 +189,7 @@ export class StationsService {
 
     // Use API if not using mock data
     return this.http
-      .delete<any>(`${this.apiUrl}/${id}`, this.getHttpOptions())
+      .delete<Station>(`${this.apiUrl}/${id}`, this.getHttpOptions())
       .pipe(
         map(() => true),
         catchError((error) => {

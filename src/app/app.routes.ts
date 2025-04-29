@@ -55,6 +55,12 @@ export const routes: Routes = [
       import('./features/admin/admin.module').then((m) => m.AdminModule),
     canActivate: [adminGuard()],
   },
+  {
+    path: 'owner',
+    loadChildren: () =>
+      import('./features/owner/owner.module').then((m) => m.OwnerModule),
+    // TODO: Create and use ownerGuard to protect this route
+  },
   // Error routes
   {
     path: 'error',

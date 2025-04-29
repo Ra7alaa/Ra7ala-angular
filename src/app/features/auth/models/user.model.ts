@@ -34,9 +34,7 @@ export interface AuthResponse {
   userType: UserRole;
   fullName?: string;
   username?: string;
-  companyId?: number;
-  companyName?: string;
-  profilePictureUrl?: string;
+  coprofilePictureUrl?: string;
   phoneNumber?: string;
 }
 

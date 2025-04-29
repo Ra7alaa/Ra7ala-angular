@@ -478,6 +478,34 @@
       "save_settings": "حفظ الإعدادات"
     }
   },
+  "owner": {
+    "title": "نظام إدارة المالك",
+    "sidebar": {
+      "system_management": "نظام إدارة رحالة",
+      "dashboard": "لوحة المعلومات",
+      "companies": "إدارة الشركات",
+      "stations": "إدارة المحطات",
+      "feedback": "التقييمات والملاحظات",
+      "settings": "الإعدادات",
+      "logout": "تسجيل الخروج"
+    },
+    "dashboard": {
+      "title": "لوحة معلومات المالك",
+      "totalCompanies": "إجمالي الشركات",
+      "totalStations": "إجمالي المحطات",
+      "totalTrips": "إجمالي الرحلات",
+      "totalRevenue": "إجمالي الإيرادات",
+      "revenueOverview": "نظرة عامة على الإيرادات",
+      "tripsOverview": "نظرة عامة على الرحلات",
+      "quickActions": "إجراءات سريعة",
+      "manageCompanies": "إدارة الشركات",
+      "manageStations": "إدارة المحطات",
+      "manageTrips": "إدارة الرحلات"
+    }
+  },
+  "common": {
+    "loading": "جار التحميل..."
+
   "cities": {
     "all_cities": "كل المدن",
     "cairo": "القاهرة",
@@ -504,5 +532,6 @@
       "aswan_station": "محطة أسوان",
       "hurghada_terminal": "محطة الغردقة للحافلات"
     }
+
   }
 }

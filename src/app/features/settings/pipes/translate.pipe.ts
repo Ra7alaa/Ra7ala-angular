@@ -21,7 +21,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
     );
   }
 
-  transform(key: string, params?: { [key: string]: string }): string {
+  transform(key: string, params?: Record<string, string>): string {
     if (!key) return '';
 
     let translatedText = this.translationService.translate(key);

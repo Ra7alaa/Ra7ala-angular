@@ -1,0 +1,118 @@
+.dashboard-container {
+  padding: var(--spacing-md);
+}
+
+.stat-card {
+  background-image: linear-gradient(
+    120deg,
+    var(--primary-color),
+    var(--primary-color-dark)
+  );
+  color: white;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  transition: transform var(--transition-speed) var(--transition-timing);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card .icon {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  font-size: 5rem;
+  opacity: 0.2;
+}
+
+.stat-card.secondary {
+  background-image: linear-gradient(
+    120deg,
+    var(--secondary-color, #6c757d),
+    #4e555b
+  );
+}
+
+.stat-card.success {
+  background-image: linear-gradient(120deg, var(--success-color), #1e7e34);
+}
+
+.stat-card.info {
+  background-image: linear-gradient(
+    120deg,
+    var(--info-color, #17a2b8),
+    #117a8b
+  );
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+}
+
+.recent-list {
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.recent-list .list-group-item {
+  border-left: none;
+  border-right: none;
+  transition: background-color var(--transition-speed) var(--transition-timing);
+}
+
+.recent-list .list-group-item:first-child {
+  border-top: none;
+}
+
+.recent-list .list-group-item:last-child {
+  border-bottom: none;
+}
+
+.recent-list .list-group-item:hover {
+  background-color: var(--surface-color);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.timeline-item:before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background-color: var(--border-color);
+}
+
+.timeline-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow);
+}
+
+.card-header {
+  font-weight: 600;
+}

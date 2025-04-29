@@ -1,44 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Only set Content-Type if not already set and if there's a body
-    let modifiedRequest = request;
-    
-    // IMPORTANT FIX: Don't change Content-Type for FormData requests
-    if (request.body && !request.headers.has('Content-Type') && !(request.body instanceof FormData)) {
-      modifiedRequest = request.clone({
-        setHeaders: {
-          'Content-Type': 'application/json'
-        }
-      });
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    // إذا كان الطلب بالفعل يحتوي على URL كامل (يبدأ بـ http أو https)، لا نقوم بتعديله
+    if (request.url.startsWith('http')) {
+      return next.handle(request);
     }
 
-    // Log outgoing requests for debugging
-    console.log('Outgoing request:', {
-      url: modifiedRequest.url,
-      method: modifiedRequest.method,
-      headers: this.getHeadersAsObject(modifiedRequest),
-      body: request.body instanceof FormData ? 'FormData (content not shown)' : modifiedRequest.body
+    // إضافة عنوان API الأساسي إلى الطلبات التي لا تحتوي على URL كامل
+    const apiRequest = request.clone({
+      url: `${environment.apiUrl}${request.url}`,
     });
 
-    return next.handle(modifiedRequest).pipe(
-      tap({
-        next: (event: HttpEvent<any>) => {},
-        error: (error) => {
-          console.error('API request error:', {
-            url: modifiedRequest.url,
-            status: error.status,
-            statusText: error.statusText,
-            error: error.error
-          });
-        }
-      })
-    );
+    return next.handle(apiRequest);
+
   }
   
   // Helper to convert headers to a plain object for logging

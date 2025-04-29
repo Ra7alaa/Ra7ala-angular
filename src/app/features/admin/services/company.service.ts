@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -12,25 +13,27 @@ export class CompanyService {
   // Use the correct API URL from environment
   private apiUrl = `${environment.apiUrl}/api/Company`;
 
-  constructor(private http: HttpClient) {}
 
-  /**
-   * Get all companies
-   */
-  getAllCompanies(): Observable<Company[]> {
-    return this.http
-      .get<Company[]>(this.apiUrl)
-      .pipe(catchError(this.handleError));
-  }
+//   constructor(private http: HttpClient) {}
 
-  /**
-   * Get a specific company by ID
-   */
-  getCompanyById(id: number): Observable<Company> {
-    return this.http
-      .get<Company>(`${this.apiUrl}/${id}`)
-      .pipe(catchError(this.handleError));
-  }
+//   /**
+//    * Get all companies
+//    */
+//   getAllCompanies(): Observable<Company[]> {
+//     return this.http
+//       .get<Company[]>(this.apiUrl)
+//       .pipe(catchError(this.handleError));
+//   }
+
+//   /**
+//    * Get a specific company by ID
+//    */
+//   getCompanyById(id: number): Observable<Company> {
+//     return this.http
+//       .get<Company>(`${this.apiUrl}/${id}`)
+//       .pipe(catchError(this.handleError));
+//   }
+
 
   /**
    * Create a new company
@@ -98,14 +101,6 @@ export class CompanyService {
       .pipe(catchError(this.handleError));
   }
 
-  /**
-   * Delete a company
-   */
-  deleteCompany(id: number): Observable<any> {
-    return this.http
-      .delete(`${this.apiUrl}/${id}`)
-      .pipe(catchError(this.handleError));
-  }
 
   /**
    * Validate company data before sending to API
@@ -209,3 +204,4 @@ export class CompanyService {
       );
   }
 }
+
