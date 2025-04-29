@@ -416,5 +416,33 @@
 
       "save_settings": "Save Settings"
     }
+  },
+  "owner": {
+    "title": "Owner Management System",
+    "sidebar": {
+      "system_management": "Ra7ala Management System",
+      "dashboard": "Dashboard",
+      "companies": "Companies Management",
+      "stations": "Stations Management",
+      "feedback": "Feedback & Ratings",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Owner Dashboard",
+      "totalCompanies": "Total Companies",
+      "totalStations": "Total Stations",
+      "totalTrips": "Total Trips",
+      "totalRevenue": "Total Revenue",
+      "revenueOverview": "Revenue Overview",
+      "tripsOverview": "Trips Overview",
+      "quickActions": "Quick Actions",
+      "manageCompanies": "Manage Companies",
+      "manageStations": "Manage Stations",
+      "manageTrips": "Manage Trips"
+    }
+  },
+  "common": {
+    "loading": "Loading..."
   }
 }

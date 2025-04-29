@@ -9,10 +9,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserRole } from '../../models/user.model';
 import { TranslationService } from '../../../../core/localization/translation.service';
 import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -40,21 +39,26 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Login component initialized');
+    console.log('تم تهيئة مكون تسجيل الدخول');
+
+    // التوجيه إذا كان المستخدم مسجل الدخول بالفعل
+    if (this.authService.isLoggedIn()) {
+      this.redirectBasedOnUserRole();
+    }
   }
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
     console.log(
-      'Password visibility toggled:',
-      this.showPassword ? 'showing' : 'hidden'
+      'تم تبديل وضوح كلمة المرور:',
+      this.showPassword ? 'ظاهرة' : 'مخفية'
     );
   }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
-      console.error('Form validation failed', this.loginForm.errors);
-      // Show error messages for invalid fields
+      console.error('فشل التحقق من صحة النموذج', this.loginForm.errors);
+      // إظهار رسائل الخطأ للحقول غير الصالحة
       this.loginForm.markAllAsTouched();
       return;
     }
@@ -65,52 +69,51 @@ export class LoginComponent implements OnInit {
     const emailOrUsername = this.loginForm.get('emailOrUsername')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    console.log('Attempting login with:', {
+    console.log('محاولة تسجيل الدخول باستخدام:', {
       emailOrUsername,
       password: '******',
     });
-    console.time('Login request');
+    console.time('طلب تسجيل الدخول');
 
-    // Create a LoginRequest object to match the AuthService.login method signature
+    // إنشاء كائن LoginRequest ليتناسب مع توقيع AuthService.login
     const loginRequest = {
       emailOrUsername,
       password,
     };
 
-    this.authService.login(loginRequest).subscribe({
-      next: (user) => {
-        console.timeEnd('Login request');
-        console.log('Login successful, user:', user);
+    this.authService
+      .login(loginRequest)
+      .pipe(
+        finalize(() => {
+          this.isSubmitting = false;
+          console.timeEnd('طلب تسجيل الدخول');
+          console.log('اكتمل طلب تسجيل الدخول');
+        })
+      )
+      .subscribe({
+        next: (user) => {
+          console.log(
+            'تم تسجيل الدخول بنجاح مع بيانات الملف الشخصي الكاملة:',
+            user
+          );
+          this.redirectBasedOnUserRole();
+        },
+        error: (error) => {
+          console.error('خطأ في تسجيل الدخول:', error);
+          this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الدخول';
+        },
+      });
+  }
 
-        // Redirect based on user role
-        if (user.userType === UserRole.Passenger) {
-          // For passengers, redirect to home page
-          this.router.navigate(['/']);
-        } else if (
-          user.userType === UserRole.Admin ||
-          user.userType === UserRole.SuperAdmin ||
-          user.userType === UserRole.SystemOwner
-        ) {
-          // For admin roles, redirect to admin dashboard
-          this.router.navigate(['/admin/dashboard']);
-        } else if (user.userType === UserRole.Driver) {
-          // For drivers, redirect to driver dashboard if it exists, or home otherwise
-          this.router.navigate(['/']);
-        } else {
-          // Default fallback
-          this.router.navigate(['/']);
-        }
+  /**
+   * توجيه المستخدم بناءً على دوره
+   */
+  private redirectBasedOnUserRole(): void {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
 
-        this.isSubmitting = false;
-      },
-      error: (error) => {
-        this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الدخول';
-        this.isSubmitting = false;
-      },
-      complete: () => {
-        console.log('Login request completed');
-      },
-    });
+    // استخدام دالة التوجيه الجديدة في خدمة المصادقة
+    this.authService.redirectBasedOnRole(user);
   }
 
   translate(key: string): string {

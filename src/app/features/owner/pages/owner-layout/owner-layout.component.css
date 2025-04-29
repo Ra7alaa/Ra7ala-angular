@@ -1,0 +1,106 @@
+.owner-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-sidebar {
+  width: 250px;
+  background-color: var(--surface-color);
+  border-right: 1px solid var(--border-color);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.owner-content {
+  flex: 1;
+  padding: var(--spacing-lg);
+  background-color: var(--background-color);
+}
+
+.navbar {
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.navbar-brand {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+}
+
+.nav-link {
+  padding: var(--spacing-md) var(--spacing-lg);
+  transition: background-color var(--transition-speed) var(--transition-timing);
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius);
+}
+
+.nav-link:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+}
+
+.dropdown-menu {
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+/* Dashboard card styles */
+.dashboard-card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  transition: transform var(--transition-speed) var(--transition-timing),
+    box-shadow var(--transition-speed) var(--transition-timing);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px var(--shadow-color);
+}
+
+/* Table styles */
+.table-container {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+.table thead th {
+  background-color: var(--surface-color);
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
+}
+
+.table tbody tr:hover {
+  background-color: var(--surface-color-hover);
+}
+
+/* Button styles */
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+}
+
+/* Modal styles */
+.modal-content {
+  border-radius: var(--border-radius);
+  border: none;
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+}

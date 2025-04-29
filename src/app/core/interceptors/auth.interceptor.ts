@@ -4,8 +4,10 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from '../../features/auth/services/auth.service';
 
 @Injectable()
@@ -16,11 +18,12 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // Get the current user from the auth service
+    // الحصول على المستخدم الحالي من خدمة المصادقة
     const currentUser = this.authService.getCurrentUser();
 
-    // If the user is logged in and has a token, add it to the request headers
+    // إذا كان المستخدم مسجل الدخول ولديه رمز مميز (token)، إضافته إلى رؤوس الطلب
     if (currentUser && currentUser.token) {
+      console.log(`إضافة رمز المصادقة إلى الطلب: ${request.url}`);
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${currentUser.token}`,
@@ -28,6 +31,18 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(request);
+    // معالجة الطلب والتقاط أي أخطاء
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        // إذا حصلنا على خطأ 401 (غير مصرح به)، قم بتسجيل خروج المستخدم
+        if (error.status === 401) {
+          console.error(
+            'انتهت صلاحية رمز المصادقة أو غير صالح، جاري تسجيل الخروج'
+          );
+          this.authService.logout();
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

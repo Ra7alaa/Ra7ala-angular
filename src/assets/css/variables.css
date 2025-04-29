@@ -5,6 +5,7 @@
   --primary-color: #ff8c00;
   --primary-color-light: #ffa030;
   --primary-color-dark: #e27900;
+  --primary-color-rgb: 255, 140, 0;
 
   /* Base colors for light theme (default) */
   --background-color: #ffffff;

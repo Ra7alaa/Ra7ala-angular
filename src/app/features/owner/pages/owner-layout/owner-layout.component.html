@@ -1,0 +1,147 @@
+<div class="owner-layout">
+  <!-- Navbar -->
+  <nav
+    class="navbar navbar-expand-lg navbar-dark"
+    style="background-color: var(--primary-color)"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <span class="me-2"><i class="fas fa-bus"></i></span>
+        Ra7ala | منصة المالك
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fas fa-bell me-1"></i>
+              <span class="badge rounded-pill bg-danger">3</span>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="navbarDropdown"
+            >
+              <li><h6 class="dropdown-header">الإشعارات</h6></li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  >طلب تسجيل جديد: شركة القاهرة</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  >طلب تسجيل جديد: شركة الإسكندرية</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  >تم تعيين مشرف جديد لشركة الأقصر</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#">عرض كل الإشعارات</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="userDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fas fa-user-circle me-1"></i> المالك
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="userDropdown"
+            >
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-user me-2"></i>الملف الشخصي</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-cog me-2"></i>الإعدادات</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div class="owner-sidebar d-none d-lg-block">
+      <div class="list-group list-group-flush mt-3">
+        <a
+          routerLink="/owner/dashboard"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action border-0"
+        >
+          <i class="fas fa-tachometer-alt me-2"></i> لوحة المعلومات
+        </a>
+        <a
+          routerLink="/owner/company-requests"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action border-0"
+        >
+          <i class="fas fa-clipboard-list me-2"></i> طلبات الشركات
+          <span class="badge rounded-pill bg-danger float-end">3</span>
+        </a>
+        <a
+          routerLink="/owner/companies"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action border-0"
+        >
+          <i class="fas fa-building me-2"></i> الشركات المسجلة
+        </a>
+        <a
+          routerLink="/owner/superadmins"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action border-0"
+        >
+          <i class="fas fa-user-shield me-2"></i> مدراء الشركات
+        </a>
+        <hr />
+        <a href="#" class="list-group-item list-group-item-action border-0">
+          <i class="fas fa-chart-line me-2"></i> التقارير والإحصائيات
+        </a>
+        <a href="#" class="list-group-item list-group-item-action border-0">
+          <i class="fas fa-cog me-2"></i> إعدادات النظام
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="owner-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
