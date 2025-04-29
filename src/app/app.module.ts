@@ -13,7 +13,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     // ...other components
   ],
   imports: [
-    // ...existing code...
     HttpClientModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',

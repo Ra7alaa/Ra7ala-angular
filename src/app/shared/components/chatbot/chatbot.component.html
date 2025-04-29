@@ -1,0 +1,59 @@
+<div class="chatbot-container" [class.open]="isOpen">
+  <!-- Chat Toggle Button -->
+  <button class="chat-toggle" (click)="toggleChat()">
+    <i class="bi" [class.bi-x-lg]="isOpen" [class.bi-chat-dots]="!isOpen"></i>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chat-window">
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <div class="chat-title">
+        <i class="bi bi-robot"></i>
+        <span>Ra7ala مساعد</span>
+      </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chat-messages" #messagesContainer>
+      <div *ngFor="let message of messages" 
+           class="message" 
+           [class.user-message]="message.isUser"
+           [class.bot-message]="!message.isUser">
+        <div class="message-content">
+          <div class="message-text">{{ message.text }}</div>
+          <div class="message-time">{{ message.timestamp | date:'shortTime' }}</div>
+          
+          <!-- Quick Reply Options -->
+          <div *ngIf="!message.isUser && message.options" class="quick-reply-options">
+            <button *ngFor="let option of message.options" 
+                    class="quick-reply-btn"
+                    (click)="sendMessage(option)">
+              {{ option }}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Typing Indicator -->
+      <div *ngIf="isBotTyping" class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input">
+      <input type="text" 
+             [(ngModel)]="newMessage" 
+             (keyup.enter)="sendMessage()"
+             placeholder="اكتب رسالتك هنا..."
+             [disabled]="isBotTyping">
+      <button (click)="sendMessage()" 
+              [disabled]="!newMessage.trim() || isBotTyping">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </div>
+  </div>
+</div>

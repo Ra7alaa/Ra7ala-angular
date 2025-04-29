@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
-import { RouterModule, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { HomeComponent } from './pages/home/home.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  }
-];
+import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '../settings/pipes/translate.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
+  declarations: [],
   imports: [
-    SharedModule,
-    RouterModule.forChild(routes),
-    HomeComponent
-  ]
+    CommonModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: HomeComponent,
+      },
+    ]),
+    TranslatePipe,
+    FormsModule
+  ],
 })
 export class HomeModule { }

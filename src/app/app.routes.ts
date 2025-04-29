@@ -105,4 +105,11 @@ export const routes: Routes = [
     redirectTo: 'error/404',
     pathMatch: 'full',
   },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/home/pages/home/home.component').then(
+        (m) => m.HomeComponent
+      ),
+  },
 ];
