@@ -332,7 +332,7 @@
       "add_station": "Add New Station",
       "station_id": "Station ID",
       "name": "Station Name",
-      "location": "Location",
+      "station_location": "Location",
       "city": "City",
       "active": "Active",
       "actions": "Actions",
@@ -404,7 +404,6 @@
         "delete_success": "Station deleted successfully",
         "delete_error": "Failed to delete station"
       },
-      "location": "Location",
       "company_info": "Company Information",
       "company_id": "Company ID",
       "company_info_notice": "This station will be created for your company:",
@@ -413,7 +412,8 @@
       "latitude": "Latitude",
       "longitude": "Longitude",
       "valid_latitude_required": "Valid latitude is required",
-      "valid_longitude_required": "Valid longitude is required"
+      "valid_longitude_required": "Valid longitude is required",
+      "location": "Location"
     },
     "settings": {
       "title": "Settings",
@@ -468,7 +468,7 @@
       "weekly": "Weekly",
       "monthly": "Monthly",
       "backup_retention": "Backup Retention",
-      "days": "{{days}} Days",
+      "days_retention": "{{days}} Days",
       "year": "1 Year",
       "manual_backup": "Manual Backup",
       "create_backup_now": "Create Backup Now",
@@ -479,7 +479,6 @@
       "save_settings": "Save Settings"
     }
   },
-
   "owner": {
     "title": "Owner Management System",
     "sidebar": {
@@ -507,7 +506,7 @@
   },
   "common": {
     "loading": "Loading..."
-
+  },
   "cities": {
     "all_cities": "All Cities",
     "cairo": "Cairo",
@@ -534,6 +533,5 @@
       "aswan_station": "Aswan Station",
       "hurghada_terminal": "Hurghada Bus Terminal"
     }
-
   }
 }

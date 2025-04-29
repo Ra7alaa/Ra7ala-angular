@@ -58,7 +58,8 @@
           "description": "بيانات عملك آمنة معنا"
         }
       }
-    }
+    },
+    "discover": "اكتشف وجهتك القادمة"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -331,7 +332,7 @@
       "add_station": "إضافة محطة جديدة",
       "station_id": "رقم المحطة",
       "name": "اسم المحطة",
-      "location": "الموقع",
+      "station_location": "الموقع",
       "city": "المدينة",
       "active": "نشطة",
       "actions": "الإجراءات",
@@ -403,7 +404,6 @@
         "delete_success": "تم حذف المحطة بنجاح",
         "delete_error": "فشل حذف المحطة"
       },
-      "location": "الموقع",
       "company_info": "معلومات الشركة",
       "company_id": "معرف الشركة",
       "company_info_notice": "سيتم إنشاء هذه المحطة لشركتك:",
@@ -412,7 +412,8 @@
       "latitude": "خط العرض",
       "longitude": "خط الطول",
       "valid_latitude_required": "يجب إدخال خط عرض صحيح",
-      "valid_longitude_required": "يجب إدخال خط طول صحيح"
+      "valid_longitude_required": "يجب إدخال خط طول صحيح",
+      "location": "الموقع"
     },
     "settings": {
       "title": "الإعدادات",
@@ -467,7 +468,7 @@
       "weekly": "أسبوعي",
       "monthly": "شهري",
       "backup_retention": "مدة الاحتفاظ بالنسخ الاحتياطي",
-      "days": "{{days}} يوم",
+      "days_retention": "{{days}} يوم",
       "year": "سنة واحدة",
       "manual_backup": "النسخ الاحتياطي اليدوي",
       "create_backup_now": "إنشاء نسخة احتياطية الآن",
@@ -505,7 +506,7 @@
   },
   "common": {
     "loading": "جار التحميل..."
-
+  },
   "cities": {
     "all_cities": "كل المدن",
     "cairo": "القاهرة",
@@ -532,6 +533,5 @@
       "aswan_station": "محطة أسوان",
       "hurghada_terminal": "محطة الغردقة للحافلات"
     }
-
   }
 }

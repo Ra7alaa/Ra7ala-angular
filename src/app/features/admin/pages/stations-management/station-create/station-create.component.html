@@ -51,12 +51,18 @@
               stationForm.get('cityName')?.touched
             "
           >
-            <option value="" disabled selected>{{ "locations.select_city" | translate }}</option>
+            <option value="" disabled selected>
+              {{ "locations.select_city" | translate }}
+            </option>
             <option value="Cairo">{{ "cities.cairo" | translate }}</option>
-            <option value="Alexandria">{{ "cities.alexandria" | translate }}</option>
+            <option value="Alexandria">
+              {{ "cities.alexandria" | translate }}
+            </option>
             <option value="Luxor">{{ "cities.luxor" | translate }}</option>
             <option value="Aswan">{{ "cities.aswan" | translate }}</option>
-            <option value="Hurghada">{{ "cities.hurghada" | translate }}</option>
+            <option value="Hurghada">
+              {{ "cities.hurghada" | translate }}
+            </option>
           </select>
           <div class="invalid-feedback">
             {{ "admin.stations.create_station.city_required" | translate }}
@@ -107,13 +113,21 @@
 
         <!-- Ownership - Only visible to system owners -->
         <div class="mb-4" *ngIf="canCreateSystemStations">
-          <label class="form-label d-block"
+          <label class="form-label d-block" for="ownershipGroup"
             >{{
               "admin.stations.create_station.ownership" | translate
             }}
             *</label
           >
-          <div class="btn-group" role="group">
+          <div
+            class="btn-group"
+            role="group"
+            id="ownershipGroup"
+            attr.aria-label="{{
+              'admin.stations.create_station.ownership' | translate
+            }}"
+          >
+          
             <input
               type="radio"
               class="btn-check"
