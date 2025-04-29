@@ -6,6 +6,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { TranslatePipe } from '../../../features/settings/pipes/translate.pipe';
 
 @Component({
   selector: 'app-search',
@@ -18,6 +19,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     ButtonModule,
     CalendarModule,
     FloatLabelModule,
+    TranslatePipe
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],

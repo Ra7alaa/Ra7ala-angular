@@ -39,7 +39,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Subscribe to changes in the authentication state
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.currentUser = { ...user, id: Number(user.id) };
@@ -48,17 +47,14 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-    // Subscribe to language changes
     this.languageService.language$.subscribe((language) => {
       this.currentLanguage = language;
     });
 
-    // Subscribe to theme changes
     this.themeService.theme$.subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    // Subscribe to translations
     this.translationService.translations$.subscribe((translations) => {
       this.translations = translations;
     });
@@ -82,5 +78,12 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-
+  scrollToCommonTrips(event: Event): void {
+    event.preventDefault();
+    const element = document.getElementById('common-trips');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      this.closeMobileMenuIfOpen();
+    }
+  }
 }

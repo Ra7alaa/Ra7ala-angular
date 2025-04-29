@@ -98,13 +98,16 @@ export interface AdminRegisterRequest {
  * (Used by SystemOwner)
  */
 export interface CompanyCreateRequest {
-  name: string;
-  description?: string;
-  logoUrl?: string;
-  address?: string;
-  phoneNumber?: string;
-  email?: string;
-  website?: string;
+  Name: string;
+  Description: string;
+  LogoUrl?: string;
+  Address: string;
+  Phone: string;
+  Email: string;
+  Website?: string;
+  SuperAdminName: string;
+  SuperAdminEmail: string;
+  SuperAdminPhone: string;
 }
 
 /**
@@ -118,7 +121,6 @@ export interface Company {
   address?: string;
   phoneNumber?: string;
   email?: string;
-  website?: string;
   dateCreated?: Date | string;
   superAdminId?: number;
 }

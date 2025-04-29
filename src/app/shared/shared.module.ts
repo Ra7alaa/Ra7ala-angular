@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchComponent } from './components/search/search.component';
-import { NewsletterComponent } from './components/newsletter/newsletter.component';
-import { HasPermissionDirective } from './directives/has-permission.directive';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
+  declarations: [],
   imports: [
     CommonModule,
-    SearchComponent,
-    NewsletterComponent,
-    HasPermissionDirective,
+    TranslateModule.forChild()
   ],
-  exports: [SearchComponent, NewsletterComponent, HasPermissionDirective],
+  exports: [
+    TranslateModule
+  ]
 })
-export class SharedModule {}
+export class SharedModule { }

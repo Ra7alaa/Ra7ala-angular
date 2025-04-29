@@ -42,8 +42,7 @@
           <label for="cityName" class="form-label"
             >{{ "admin.stations.create_station.city" | translate }} *</label
           >
-          <input
-            type="text"
+          <select
             class="form-control"
             id="cityName"
             formControlName="cityName"
@@ -51,7 +50,14 @@
               stationForm.get('cityName')?.invalid &&
               stationForm.get('cityName')?.touched
             "
-          />
+          >
+            <option value="" disabled selected>{{ "locations.select_city" | translate }}</option>
+            <option value="Cairo">{{ "cities.cairo" | translate }}</option>
+            <option value="Alexandria">{{ "cities.alexandria" | translate }}</option>
+            <option value="Luxor">{{ "cities.luxor" | translate }}</option>
+            <option value="Aswan">{{ "cities.aswan" | translate }}</option>
+            <option value="Hurghada">{{ "cities.hurghada" | translate }}</option>
+          </select>
           <div class="invalid-feedback">
             {{ "admin.stations.create_station.city_required" | translate }}
           </div>

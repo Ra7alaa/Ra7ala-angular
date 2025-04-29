@@ -5,6 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { VerifyCodeComponent } from './pages/verify-code/verify-code.component';
 import { NewPasswordComponent } from './pages/new-password/new-password.component';
+import { CompanyRegisterComponent } from './pages/company-register/company-register.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'register-company',
+    component: CompanyRegisterComponent,
   },
   {
     path: 'forgot-password',

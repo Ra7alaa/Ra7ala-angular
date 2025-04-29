@@ -2,7 +2,7 @@
   class="home-container"
   [ngClass]="{
     'dark-theme': currentTheme === 'dark',
-    rtl: currentLanguage?.rtl
+    rtl: currentLanguage.rtl
   }"
 >
   <!-- Hero Section -->
@@ -121,8 +121,68 @@
   <!-- Common Trips Section - Using the new component -->
   <app-common-trips [trips]="commonTrips"></app-common-trips>
 
-  <!-- Newsletter Section -->
-  <app-newsletter></app-newsletter>
+  <!-- Map Section -->
+  <section class="map-section py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">{{ "home.discover" | translate }}</h2>
+      <div class="row mb-4">
+        <div class="col-12">
+          <select class="form-select" [(ngModel)]="selectedTripId">
+            <option *ngFor="let trip of commonTrips" [value]="trip.id">
+              {{ trip.title }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="selectedTripId">
+        <div class="col-12">
+          <div class="map-container rounded shadow-sm">
+            <iframe
+              *ngIf="getSelectedTrip()"
+              [src]="sanitizeMapUrl(getSelectedTrip()?.googleMapUrl || '')"
+              width="100%"
+              height="450"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Trip Location">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <img src="assets/images/home4.svg" class="img-fluid w-100" alt="" />
+  <div class="company-creation-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+          <h2 class="mb-4">{{ "auth.create_company.title" | translate }}</h2>
+          <p class="mb-4">{{ "home.company_section.description" | translate }}</p>
+          <div class="features-grid mb-5">
+            <div class="feature-item">
+              <i class="bi bi-graph-up text-primary fs-3"></i>
+              <h4>{{ "home.company_section.features.growth.title" | translate }}</h4>
+              <p>{{ "home.company_section.features.growth.description" | translate }}</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-gear text-primary fs-3"></i>
+              <h4>{{ "home.company_section.features.management.title" | translate }}</h4>
+              <p>{{ "home.company_section.features.management.description" | translate }}</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-shield-check text-primary fs-3"></i>
+              <h4>{{ "home.company_section.features.security.title" | translate }}</h4>
+              <p>{{ "home.company_section.features.security.description" | translate }}</p>
+            </div>
+          </div>
+          <a routerLink="/auth/register-company" class="btn btn-primary btn-lg">
+            <i class="bi bi-building-add me-2"></i>{{ "auth.create_company.submit" | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -25,5 +25,15 @@ export class ApiInterceptor implements HttpInterceptor {
     });
 
     return next.handle(apiRequest);
+
+  }
+  
+  // Helper to convert headers to a plain object for logging
+  private getHeadersAsObject(request: HttpRequest<any>): Record<string, string> {
+    const headers: Record<string, string> = {};
+    request.headers.keys().forEach(key => {
+      headers[key] = request.headers.get(key) || '';
+    });
+    return headers;
   }
 }

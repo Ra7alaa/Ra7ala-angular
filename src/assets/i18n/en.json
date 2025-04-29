@@ -4,7 +4,62 @@
     "about": "About",
     "destinations": "Destinations",
     "packages": "Packages",
-    "contact_us": "Contact Us"
+    "contact_us": "Contact Us",
+    "common_trips": "Common Trips"
+  },
+  "search": {
+    "title": "Where are you Travel?",
+    "from_to": "From - To",
+    "trip_type": {
+      "return": "Return",
+      "one_way": "One Way",
+      "multi_city": "Multi City"
+    },
+    "date_range": "Depart - Return",
+    "show_results": "Show results"
+  },
+  "home": {
+    "hero": {
+      "title": "Book Your Ra7ala Bus Now!",
+      "subtitle": "Book your bus with your credit card in less than 2 minutes"
+    },
+    "planTrip": {
+      "title": "Plan Your Trip With Us",
+      "step1": {
+        "title": "Choose your destination",
+        "description": "Choose from our wide range of destinations across Egypt"
+      },
+      "step2": {
+        "title": "Determine the timing of your trip",
+        "description": "Select your preferred departure and return dates"
+      },
+      "step3": {
+        "title": "Book and enjoy your trip",
+        "description": "Secure your seat and enjoy your comfortable journey"
+      }
+    },
+    "tags": {
+      "topBus": "Top Bus",
+      "topPlaces": "Top Places"
+    },
+    "company_section": {
+      "description": "Join our platform and start managing your transportation business efficiently. Create your company profile and get access to powerful management tools.",
+      "features": {
+        "growth": {
+          "title": "Business Growth",
+          "description": "Expand your reach and grow your customer base"
+        },
+        "management": {
+          "title": "Easy Management",
+          "description": "Efficient tools to manage routes and bookings"
+        },
+        "security": {
+          "title": "Secure Platform",
+          "description": "Your business data is safe with us"
+        }
+      }
+    },
+    "discover": "Discover Your Next Destination"
   },
   "auth": {
     "login": "Log In",
@@ -20,7 +75,39 @@
     "enter_email_or_username": "Enter your Email or Username",
     "email_username_required": "Please enter your email or username",
     "password_required": "Password is required",
-    "login_image_alt": "Login Image"
+    "login_image_alt": "Login Image",
+    "create_company": {
+      "title": "Create Your Transportation Company",
+      "company_info": "Company Information",
+      "name": "Company Name",
+      "name_placeholder": "Enter company name",
+      "name_required": "Company name is required",
+      "description": "Description",
+      "description_placeholder": "Enter company description",
+      "logo": "Company Logo",
+      "address": "Address",
+      "address_placeholder": "Enter company address",
+      "phone": "Phone Number",
+      "phone_invalid": "Please enter a valid phone number",
+      "email": "Email",
+      "email_placeholder": "company@example.com",
+      "email_invalid": "Please enter a valid email address",
+      "website": "Website",
+      "website_placeholder": "https://www.example.com",
+      "admin_info": "Super Admin Information",
+      "admin_name": "Full Name",
+      "admin_name_placeholder": "Enter super admin name",
+      "admin_name_required": "Super admin name is required",
+      "admin_email": "Email",
+      "admin_email_placeholder": "admin@example.com",
+      "admin_email_invalid": "Please enter a valid email address",
+      "admin_phone": "Phone Number",
+      "admin_phone_invalid": "Please enter a valid phone number",
+      "creating": "Creating...",
+      "submit": "Create Company",
+      "have_account": "Already have an account?",
+      "login": "Login"
+    }
   },
   "user_menu": {
     "profile": "Profile",
@@ -91,31 +178,6 @@
       "address": "374 FA Tower, Egypt"
     },
     "copyright": "All rights reserved for Ra7ala"
-  },
-  "home": {
-    "hero": {
-      "title": "Book Your Ra7ala Bus Now!",
-      "subtitle": "Book your bus with your credit card in less than 2 minutes"
-    },
-    "planTrip": {
-      "title": "Plan Your Trip With Us",
-      "step1": {
-        "title": "Choose your destination",
-        "description": "Choose from our wide range of destinations across Egypt"
-      },
-      "step2": {
-        "title": "Determine the timing of your trip",
-        "description": "Select your preferred departure and return dates"
-      },
-      "step3": {
-        "title": "Book and enjoy your trip",
-        "description": "Secure your seat and enjoy your comfortable journey"
-      }
-    },
-    "tags": {
-      "topBus": "Top Bus",
-      "topPlaces": "Top Places"
-    }
   },
   "admin": {
     "sidebar": {
@@ -417,6 +479,7 @@
       "save_settings": "Save Settings"
     }
   },
+
   "owner": {
     "title": "Owner Management System",
     "sidebar": {
@@ -444,5 +507,33 @@
   },
   "common": {
     "loading": "Loading..."
+
+  "cities": {
+    "all_cities": "All Cities",
+    "cairo": "Cairo",
+    "alexandria": "Alexandria",
+    "luxor": "Luxor",
+    "aswan": "Aswan",
+    "hurghada": "Hurghada",
+    "descriptions": {
+      "cairo": "Cairo is the capital and largest city of Egypt, home to the pyramids and rich cultural heritage.",
+      "alexandria": "Alexandria is Egypt's second-largest city, known for its Mediterranean beaches and historic landmarks.",
+      "luxor": "Luxor is famous for its ancient Egyptian monuments and temples.",
+      "aswan": "Aswan is a scenic city in the south, known for its Nile views and Nubian culture.",
+      "hurghada": "Hurghada is a beach resort town along the Red Sea, perfect for diving and water sports."
+    }
+  },
+  "locations": {
+    "search_placeholder": "Search destinations...",
+    "select_city": "Select city",
+    "popular_destinations": "Popular Destinations",
+    "bus_stations": {
+      "cairo_central": "Cairo Central Station",
+      "alexandria_main": "Alexandria Main Station",
+      "luxor_terminal": "Luxor Bus Terminal",
+      "aswan_station": "Aswan Station",
+      "hurghada_terminal": "Hurghada Bus Terminal"
+    }
+
   }
 }

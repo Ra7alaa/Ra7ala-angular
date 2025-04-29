@@ -17,8 +17,10 @@ export const routes: Routes = [
       {
         path: 'trips',
         loadChildren: () =>
-          import('./features/trips/trips.module').then((m) => m.TripsModule),
-        canActivate: [passengerOnlyGuard],
+          import('./features/trips/trips-routing.module').then(
+            (m) => m.TripsRoutingModule // Assuming TripsRoutingModule is the correct module to load
+          ),
+        // Add canActivate guard if needed, e.g., [authGuard()] if details require login
       },
       {
         path: 'about',
