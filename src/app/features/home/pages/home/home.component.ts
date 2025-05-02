@@ -10,6 +10,7 @@ import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ChatbotComponent } from '../../../../shared/components/chatbot/chatbot.component';
 
 interface Trip {
   id: number;
@@ -27,7 +28,7 @@ interface Trip {
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
+  templateUrl: 'home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
   imports: [
@@ -37,7 +38,8 @@ interface Trip {
     SharedModule,
     TranslatePipe,
     RouterModule,
-    FormsModule
+    FormsModule,
+    ChatbotComponent,
   ],
 })
 export class HomeComponent implements OnInit {
