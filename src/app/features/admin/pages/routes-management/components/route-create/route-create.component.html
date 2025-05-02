@@ -1,0 +1,611 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ "Create New Route" | translate }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    id="closeAddRouteModal"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="routeForm" (submit)="createRoute()">
+    <!-- Error message display -->
+    <div
+      *ngIf="error"
+      class="alert alert-danger alert-dismissible fade show mb-3"
+      role="alert"
+    >
+      {{ error }}
+      <button
+        type="button"
+        class="btn-close"
+        (click)="error = null"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <!-- Route Name -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <label for="name" class="form-label"
+          >{{ "Route Name" | translate }} *</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid':
+              routeForm.get('name')?.invalid && routeForm.get('name')?.touched
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="routeForm.get('name')?.errors?.['required'] && routeForm.get('name')?.touched"
+        >
+          {{ "Route name is required" | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Cities and Stations Selection -->
+    <div class="row mb-3">
+      <!-- Start City -->
+      <div class="col-md-6 mb-3">
+        <label for="startCitySelector" class="form-label"
+          >{{ "Departure From" | translate }} *</label
+        >
+        <div class="dropdown-container position-relative">
+          <div
+            id="startCitySelector"
+            tabindex="0"
+            role="button"
+            aria-haspopup="listbox"
+            [attr.aria-expanded]="startCityDropdownOpen"
+            class="form-control d-flex align-items-center justify-content-between cursor-pointer"
+            [ngClass]="{
+              'is-invalid':
+                routeForm.get('startCityId')?.invalid &&
+                routeForm.get('startCityId')?.touched
+            }"
+            (click)="toggleCityDropdown('start', $event)"
+            (keydown.enter)="toggleCityDropdown('start', $event)"
+            (keydown.space)="toggleCityDropdown('start', $event)"
+          >
+            <span>{{
+              selectedStartCity?.name || "Select departure city"
+            }}</span>
+            <i
+              class="bi"
+              [ngClass]="
+                startCityDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'
+              "
+            ></i>
+          </div>
+          <div
+            class="dropdown-menu w-100 position-absolute"
+            [ngClass]="{ show: startCityDropdownOpen }"
+            role="listbox"
+          >
+            <div class="p-2">
+              <input
+                type="text"
+                class="form-control mb-2"
+                placeholder="Search cities..."
+                (click)="$event.stopPropagation()"
+              />
+              <div
+                class="dropdown-item-list"
+                style="max-height: 200px; overflow-y: auto"
+              >
+                <div
+                  *ngFor="let city of cityOptions"
+                  class="dropdown-item cursor-pointer"
+                  role="option"
+                  [attr.aria-selected]="selectedStartCity?.id === city.id"
+                  tabindex="0"
+                  (click)="selectCity(city, 'start')"
+                  (keydown.enter)="selectCity(city, 'start')"
+                  (keydown.space)="selectCity(city, 'start')"
+                >
+                  {{ city.name }}
+                </div>
+                <div *ngIf="isLoadingCities" class="dropdown-item text-center">
+                  <div
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                  ></div>
+                  <span class="ms-2">Loading cities...</span>
+                </div>
+                <div
+                  *ngIf="!isLoadingCities && cityOptions.length === 0"
+                  class="dropdown-item disabled"
+                >
+                  No cities available
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="routeForm.get('startCityId')?.errors?.['required'] && routeForm.get('startCityId')?.touched"
+          >
+            {{ "Departure city is required" | translate }}
+          </div>
+        </div>
+
+        <!-- Start City Stations -->
+        <div class="mt-2" *ngIf="selectedStartCity">
+          <label for="startStationsSelector" class="form-label">{{
+            "Departure Stations" | translate
+          }}</label>
+          <div class="dropdown-container position-relative">
+            <div
+              id="startStationsSelector"
+              tabindex="0"
+              role="button"
+              aria-haspopup="listbox"
+              [attr.aria-expanded]="startStationDropdownOpen"
+              class="form-control d-flex align-items-center justify-content-between cursor-pointer"
+              (click)="toggleStationDropdown('start', $event)"
+              (keydown.enter)="toggleStationDropdown('start', $event)"
+              (keydown.space)="toggleStationDropdown('start', $event)"
+            >
+              <span>{{ getStationDisplayString("start") }}</span>
+              <i
+                class="bi"
+                [ngClass]="
+                  startStationDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'
+                "
+              ></i>
+            </div>
+            <div
+              class="dropdown-menu w-100 position-absolute"
+              [ngClass]="{ show: startStationDropdownOpen }"
+              role="listbox"
+            >
+              <div class="p-2">
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  placeholder="Search stations..."
+                  (click)="$event.stopPropagation()"
+                />
+                <div
+                  class="dropdown-item-list"
+                  style="max-height: 200px; overflow-y: auto"
+                >
+                  <div
+                    *ngIf="isLoadingStations"
+                    class="dropdown-item text-center"
+                  >
+                    <div
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                    ></div>
+                    <span class="ms-2">Loading stations...</span>
+                  </div>
+                  <div
+                    *ngFor="let station of startCityStationsData"
+                    class="dropdown-item d-flex align-items-center cursor-pointer"
+                    role="option"
+                    [attr.aria-selected]="
+                      isStationSelected(station.id, 'start')
+                    "
+                    tabindex="0"
+                    (click)="
+                      selectStation(station, 'start'); $event.stopPropagation()
+                    "
+                    (keydown.enter)="
+                      selectStation(station, 'start'); $event.stopPropagation()
+                    "
+                    (keydown.space)="
+                      selectStation(station, 'start'); $event.stopPropagation()
+                    "
+                  >
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [id]="'start-station-' + station.id"
+                        [checked]="isStationSelected(station.id, 'start')"
+                        (click)="$event.stopPropagation()"
+                        tabindex="-1"
+                      />
+                      <label
+                        class="form-check-label ms-2"
+                        [for]="'start-station-' + station.id"
+                      >
+                        {{ station.name }}
+                        <span
+                          *ngIf="station.companyName === null"
+                          class="badge bg-secondary ms-1"
+                          >System</span
+                        >
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      !isLoadingStations && startCityStationsData.length === 0
+                    "
+                    class="dropdown-item disabled"
+                  >
+                    No stations available for this city
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Stations List -->
+          <div *ngIf="startCityStations.controls.length > 0" class="mt-2">
+            <div class="card">
+              <div class="card-header py-1">
+                <h6 class="mb-0">Selected Departure Stations</h6>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li
+                  *ngFor="
+                    let station of getSelectedStations('start');
+                    let i = index
+                  "
+                  class="list-group-item py-2 d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <span class="badge bg-primary me-2">{{ i + 1 }}</span>
+                    {{ station.name }}
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="selectStation(station, 'start')"
+                    aria-label="Remove station"
+                  >
+                    <i class="bi bi-x"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- End City -->
+      <div class="col-md-6 mb-3">
+        <label for="endCitySelector" class="form-label"
+          >{{ "Arrival To" | translate }} *</label
+        >
+        <div class="dropdown-container position-relative">
+          <div
+            id="endCitySelector"
+            tabindex="0"
+            role="button"
+            aria-haspopup="listbox"
+            [attr.aria-expanded]="endCityDropdownOpen"
+            class="form-control d-flex align-items-center justify-content-between cursor-pointer"
+            [ngClass]="{
+              'is-invalid':
+                routeForm.get('endCityId')?.invalid &&
+                routeForm.get('endCityId')?.touched
+            }"
+            (click)="toggleCityDropdown('end', $event)"
+            (keydown.enter)="toggleCityDropdown('end', $event)"
+            (keydown.space)="toggleCityDropdown('end', $event)"
+          >
+            <span>{{ selectedEndCity?.name || "Select arrival city" }}</span>
+            <i
+              class="bi"
+              [ngClass]="
+                endCityDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'
+              "
+            ></i>
+          </div>
+          <div
+            class="dropdown-menu w-100 position-absolute"
+            [ngClass]="{ show: endCityDropdownOpen }"
+            role="listbox"
+          >
+            <div class="p-2">
+              <input
+                type="text"
+                class="form-control mb-2"
+                placeholder="Search cities..."
+                (click)="$event.stopPropagation()"
+              />
+              <div
+                class="dropdown-item-list"
+                style="max-height: 200px; overflow-y: auto"
+              >
+                <div
+                  *ngFor="let city of cityOptions"
+                  class="dropdown-item cursor-pointer"
+                  role="option"
+                  [attr.aria-selected]="selectedEndCity?.id === city.id"
+                  tabindex="0"
+                  (click)="selectCity(city, 'end')"
+                  (keydown.enter)="selectCity(city, 'end')"
+                  (keydown.space)="selectCity(city, 'end')"
+                >
+                  {{ city.name }}
+                </div>
+                <div *ngIf="isLoadingCities" class="dropdown-item text-center">
+                  <div
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                  ></div>
+                  <span class="ms-2">Loading cities...</span>
+                </div>
+                <div
+                  *ngIf="!isLoadingCities && cityOptions.length === 0"
+                  class="dropdown-item disabled"
+                >
+                  No cities available
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="routeForm.get('endCityId')?.errors?.['required'] && routeForm.get('endCityId')?.touched"
+          >
+            {{ "Arrival city is required" | translate }}
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="routeForm.errors?.['sameCities'] && routeForm.get('endCityId')?.touched"
+          >
+            {{ "Departure and arrival cities must be different" | translate }}
+          </div>
+        </div>
+
+        <!-- End City Stations -->
+        <div class="mt-2" *ngIf="selectedEndCity">
+          <label for="endStationsSelector" class="form-label">{{
+            "Arrival Stations" | translate
+          }}</label>
+          <div class="dropdown-container position-relative">
+            <div
+              id="endStationsSelector"
+              tabindex="0"
+              role="button"
+              aria-haspopup="listbox"
+              [attr.aria-expanded]="endStationDropdownOpen"
+              class="form-control d-flex align-items-center justify-content-between cursor-pointer"
+              (click)="toggleStationDropdown('end', $event)"
+              (keydown.enter)="toggleStationDropdown('end', $event)"
+              (keydown.space)="toggleStationDropdown('end', $event)"
+            >
+              <span>{{ getStationDisplayString("end") }}</span>
+              <i
+                class="bi"
+                [ngClass]="
+                  endStationDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'
+                "
+              ></i>
+            </div>
+            <div
+              class="dropdown-menu w-100 position-absolute"
+              [ngClass]="{ show: endStationDropdownOpen }"
+              role="listbox"
+            >
+              <div class="p-2">
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  placeholder="Search stations..."
+                  (click)="$event.stopPropagation()"
+                />
+                <div
+                  class="dropdown-item-list"
+                  style="max-height: 200px; overflow-y: auto"
+                >
+                  <div
+                    *ngIf="isLoadingStations"
+                    class="dropdown-item text-center"
+                  >
+                    <div
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                    ></div>
+                    <span class="ms-2">Loading stations...</span>
+                  </div>
+                  <div
+                    *ngFor="let station of endCityStationsData"
+                    class="dropdown-item d-flex align-items-center cursor-pointer"
+                    role="option"
+                    [attr.aria-selected]="isStationSelected(station.id, 'end')"
+                    tabindex="0"
+                    (click)="
+                      selectStation(station, 'end'); $event.stopPropagation()
+                    "
+                    (keydown.enter)="
+                      selectStation(station, 'end'); $event.stopPropagation()
+                    "
+                    (keydown.space)="
+                      selectStation(station, 'end'); $event.stopPropagation()
+                    "
+                  >
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [id]="'end-station-' + station.id"
+                        [checked]="isStationSelected(station.id, 'end')"
+                        (click)="$event.stopPropagation()"
+                        tabindex="-1"
+                      />
+                      <label
+                        class="form-check-label ms-2"
+                        [for]="'end-station-' + station.id"
+                      >
+                        {{ station.name }}
+                        <span
+                          *ngIf="station.companyName === null"
+                          class="badge bg-secondary ms-1"
+                          >System</span
+                        >
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      !isLoadingStations && endCityStationsData.length === 0
+                    "
+                    class="dropdown-item disabled"
+                  >
+                    No stations available for this city
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Stations List -->
+          <div *ngIf="endCityStations.controls.length > 0" class="mt-2">
+            <div class="card">
+              <div class="card-header py-1">
+                <h6 class="mb-0">Selected Arrival Stations</h6>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li
+                  *ngFor="
+                    let station of getSelectedStations('end');
+                    let i = index
+                  "
+                  class="list-group-item py-2 d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <span class="badge bg-primary me-2">{{ i + 1 }}</span>
+                    {{ station.name }}
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="selectStation(station, 'end')"
+                    aria-label="Remove station"
+                  >
+                    <i class="bi bi-x"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distance & Duration -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="distance" class="form-label"
+          >{{ "Distance (km)" | translate }} *</label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="distance"
+          formControlName="distance"
+          min="1"
+          [ngClass]="{
+            'is-invalid':
+              routeForm.get('distance')?.invalid &&
+              routeForm.get('distance')?.touched
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="routeForm.get('distance')?.errors?.['required'] && routeForm.get('distance')?.touched"
+        >
+          {{ "Distance is required" | translate }}
+        </div>
+      </div>
+
+      <!-- Duration Hours -->
+      <div class="col-md-4">
+        <label for="durationHours" class="form-label"
+          >{{ "Hours" | translate }} *</label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="durationHours"
+          formControlName="durationHours"
+          min="0"
+          [ngClass]="{
+            'is-invalid':
+              routeForm.get('durationHours')?.invalid &&
+              routeForm.get('durationHours')?.touched
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="routeForm.get('durationHours')?.errors?.['required'] && routeForm.get('durationHours')?.touched"
+        >
+          {{ "Hours are required" | translate }}
+        </div>
+      </div>
+
+      <!-- Duration Minutes -->
+      <div class="col-md-4">
+        <label for="durationMinutes" class="form-label"
+          >{{ "Minutes" | translate }} *</label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="durationMinutes"
+          formControlName="durationMinutes"
+          min="0"
+          max="59"
+          [ngClass]="{
+            'is-invalid':
+              routeForm.get('durationMinutes')?.invalid &&
+              routeForm.get('durationMinutes')?.touched
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="routeForm.get('durationMinutes')?.errors?.['required'] && routeForm.get('durationMinutes')?.touched"
+        >
+          {{ "Minutes are required" | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Is Active Switch -->
+    <div class="form-check form-switch mb-3">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="isActive"
+        formControlName="isActive"
+      />
+      <label class="form-check-label" for="isActive">{{
+        "Active Route" | translate
+      }}</label>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        {{ "Cancel" | translate }}
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSubmitting || isLoadingCities || isLoadingStations"
+      >
+        <span
+          *ngIf="isSubmitting"
+          class="spinner-border spinner-border-sm me-1"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{ "Create Route" | translate }}
+      </button>
+    </div>
+  </form>
+</div>

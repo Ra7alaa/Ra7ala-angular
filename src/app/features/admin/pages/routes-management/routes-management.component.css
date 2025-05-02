@@ -98,3 +98,213 @@
 .route-end-point {
   fill: var(--primary-color);
 }
+
+.routes-content {
+  background-color: var(--surface-color);
+  min-height: calc(100vh - 60px);
+}
+
+.card {
+  border-radius: var(--border-radius-lg);
+  transition: all var(--transition-speed);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.card-header {
+  border-top-left-radius: var(--border-radius-lg) !important;
+  border-top-right-radius: var(--border-radius-lg) !important;
+  background-color: var(--surface-color);
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--text-color-secondary);
+  border-top: none;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  color: var(--text-color);
+}
+
+.route-details-panel .card {
+  height: 100%;
+  box-shadow: 0 0.5rem 1rem var(--shadow-color) !important;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+}
+
+.btn-outline-primary,
+.btn-outline-danger {
+  border-width: 1.5px;
+}
+
+.btn-lg {
+  padding: 0.6rem 1.5rem;
+}
+
+.search-filter-row {
+  margin-bottom: var(--spacing-lg);
+}
+
+.input-group .form-control {
+  border-radius: var(--border-radius);
+}
+
+.input-group .input-group-text {
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+/* Custom styling for the table row hover */
+.table-hover tbody tr:hover {
+  background-color: rgba(var(--primary-color-rgb), 0.05);
+}
+
+/* Styling for the active/selected row */
+.table tbody tr.bg-light {
+  background-color: rgba(var(--primary-color-rgb), 0.08) !important;
+}
+
+/* Improved button styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-danger {
+  color: var(--error-color);
+  border-color: var(--error-color);
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--error-color);
+  border-color: var(--error-color);
+}
+
+/* Badge styles */
+.badge.bg-success {
+  background-color: var(--success-color) !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--text-color-secondary) !important;
+}
+
+/* Detail styles */
+.detail-item strong {
+  font-size: var(--font-size-sm);
+  color: var(--text-color-secondary);
+}
+
+.detail-item p {
+  color: var(--text-color);
+}
+
+/* Alert styles */
+.alert-info {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  border-color: rgba(var(--primary-color-rgb), 0.2);
+  color: var(--primary-color-dark);
+}
+
+/* Actions button styles */
+.action-buttons .btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-speed);
+}
+
+/* Route Management Table Styles */
+.routes-table {
+  font-size: var(--font-size-md); /* تكبير حجم الخط في الجدول بشكل عام */
+}
+
+.routes-table th {
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.8rem 0.9rem; /* زيادة المساحة الداخلية لرؤوس الجدول */
+  background-color: var(--surface-color);
+  font-size: var(--font-size-md); /* حجم خط العناوين */
+}
+
+.routes-table td {
+  padding: 0.8rem 0.9rem; /* زيادة المساحة الداخلية للخلايا */
+  vertical-align: middle;
+  font-size: var(--font-size-md); /* تكبير حجم الخط في الخلايا */
+  font-weight: 500; /* تغليظ النص قليلاً */
+}
+
+.routes-table .route-id {
+  max-width: 100px;
+  width: 100px;
+}
+
+.routes-table .route-from,
+.routes-table .route-to {
+  max-width: 140px;
+  width: 140px;
+}
+
+.routes-table .route-distance {
+  max-width: 110px;
+  width: 110px;
+  white-space: nowrap;
+}
+
+.routes-table .route-duration {
+  max-width: 180px;
+  width: 180px;
+}
+
+.routes-table .route-status {
+  max-width: 100px;
+  width: 100px;
+  text-align: center;
+}
+
+.routes-table .route-actions {
+  max-width: 110px;
+  width: 110px;
+  text-align: center;
+}
+
+/* طريقة عرض صف الجدول عند التمرير فوقه */
+.routes-table tbody tr:hover {
+  background-color: rgba(var(--primary-color-rgb), 0.05);
+}
+
+/* تعديل حجم الأزرار في الجدول */
+.routes-table .btn-group-sm .btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.9rem; /* زيادة حجم الأيقونات */
+}
+
+/* تعديل شكل الشارة */
+.routes-table .badge {
+  font-size: 0.9rem; /* تكبير حجم نص الشارة */
+  padding: 0.35em 0.7em;
+  font-weight: 500;
+}

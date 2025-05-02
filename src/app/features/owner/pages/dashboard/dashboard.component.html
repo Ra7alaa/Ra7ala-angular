@@ -1,23 +1,66 @@
-<div class="dashboard-container">
+<div class="dashboard-container" appRtl>
   <div class="row mb-4">
-    <div class="col-md-12">
-      <h2>لوحة التحكم</h2>
-      <p class="text-muted">مرحبًا بك في لوحة تحكم منصة Ra7ala</p>
+    <div class="col-md-12 d-flex justify-content-between align-items-center">
+      <div>
+        <h2>{{ "owner.dashboard.title" | translate }}</h2>
+        <p class="text-muted">{{ "owner.dashboard.welcome" | translate }}</p>
+      </div>
+      <button class="btn btn-primary" (click)="refresh()">
+        <i class="fas fa-sync-alt me-2"></i>
+        {{ "owner.dashboard.refresh" | translate }}
+      </button>
     </div>
   </div>
 
-  <div class="row mb-4">
+  <div *ngIf="isLoading" class="row mb-4">
+    <div class="col-md-12 text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">{{ "common.loading" | translate }}</span>
+      </div>
+      <p class="mt-2">{{ "owner.dashboard.loading_data" | translate }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="hasError" class="row mb-4">
+    <div class="col-md-12">
+      <div class="alert alert-danger">
+        <h5>
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          {{ "owner.dashboard.load_error_title" | translate }}
+        </h5>
+        <p>
+          {{ "owner.dashboard.load_error_message" | translate }}
+        </p>
+        <div *ngIf="debugInfo.errors.length > 0" class="mt-3">
+          <details>
+            <summary>
+              {{ "owner.dashboard.technical_details" | translate }}
+            </summary>
+            <small class="text-muted">
+              <ul class="mt-2">
+                <li *ngFor="let error of debugInfo.errors">{{ error }}</li>
+              </ul>
+            </small>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !hasError" class="row mb-4">
     <div class="col-md-3 mb-4">
       <div class="stat-card">
         <div class="icon">
           <i class="fas fa-clipboard-list"></i>
         </div>
-        <div class="stat-value">12</div>
-        <div class="stat-label">طلبات تسجيل جديدة</div>
+        <div class="stat-value">{{ pendingRequestsCount }}</div>
+        <div class="stat-label">
+          {{ "owner.dashboard.new_requests" | translate }}
+        </div>
         <div class="mt-3">
-          <a href="/owner/company-requests" class="btn btn-sm btn-light"
-            >عرض الطلبات</a
-          >
+          <a routerLink="/owner/company-requests" class="btn btn-sm btn-light">
+            {{ "owner.dashboard.view_requests" | translate }}
+          </a>
         </div>
       </div>
     </div>
@@ -26,26 +69,14 @@
         <div class="icon">
           <i class="fas fa-building"></i>
         </div>
-        <div class="stat-value">45</div>
-        <div class="stat-label">شركات النقل النشطة</div>
-        <div class="mt-3">
-          <a href="/owner/companies" class="btn btn-sm btn-light"
-            >عرض الشركات</a
-          >
+        <div class="stat-value">{{ activeCompaniesCount }}</div>
+        <div class="stat-label">
+          {{ "owner.dashboard.active_companies" | translate }}
         </div>
-      </div>
-    </div>
-    <div class="col-md-3 mb-4">
-      <div class="stat-card success">
-        <div class="icon">
-          <i class="fas fa-user-shield"></i>
-        </div>
-        <div class="stat-value">38</div>
-        <div class="stat-label">مدراء الشركات النشطين</div>
         <div class="mt-3">
-          <a href="/owner/superadmins" class="btn btn-sm btn-light"
-            >عرض المدراء</a
-          >
+          <a routerLink="/owner/companies" class="btn btn-sm btn-light">
+            {{ "owner.dashboard.view_companies" | translate }}
+          </a>
         </div>
       </div>
     </div>
@@ -54,66 +85,62 @@
         <div class="icon">
           <i class="fas fa-bus"></i>
         </div>
-        <div class="stat-value">254</div>
-        <div class="stat-label">عدد الرحلات اليومية</div>
+        <div class="stat-value">{{ dailyTripsCount }}</div>
+        <div class="stat-label">
+          {{ "owner.dashboard.daily_trips" | translate }}
+        </div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-light">عرض التقارير</a>
+          <a href="#" class="btn btn-sm btn-light">{{
+            "owner.dashboard.view_reports" | translate
+          }}</a>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="!isLoading && !hasError" class="row">
     <div class="col-md-6 mb-4">
       <div class="card border-0 shadow-sm h-100">
         <div class="card-header bg-white py-3">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">طلبات التسجيل الحديثة</h5>
+            <h5 class="mb-0">
+              {{ "owner.dashboard.recent_requests" | translate }}
+            </h5>
             <a
-              href="/owner/company-requests"
+              routerLink="/owner/company-requests"
               class="btn btn-sm"
               style="background-color: var(--primary-color); color: white"
-              >عرض الكل</a
+              >{{ "common.view_all" | translate }}</a
             >
           </div>
         </div>
         <div class="card-body">
-          <div class="list-group recent-list">
-            <a href="#" class="list-group-item list-group-item-action">
+          <div *ngIf="recentRequests.length === 0" class="text-center py-4">
+            <i class="fas fa-inbox fa-2x text-muted mb-3"></i>
+            <p class="text-muted">
+              {{ "owner.dashboard.no_pending_requests" | translate }}
+            </p>
+          </div>
+          <div *ngIf="recentRequests.length > 0" class="list-group recent-list">
+            <a
+              *ngFor="let request of recentRequests"
+              [routerLink]="['/owner/company-requests', request.id]"
+              class="list-group-item list-group-item-action"
+            >
               <div
                 class="d-flex w-100 justify-content-between align-items-center"
               >
                 <div>
-                  <h6 class="mb-1">شركة حافلات القاهرة</h6>
-                  <p class="mb-1 text-muted">القاهرة، مصر</p>
+                  <h6 class="mb-1">{{ request.name }}</h6>
+                  <p class="mb-1 text-muted">{{ request.address }}</p>
                 </div>
-                <span class="badge bg-warning rounded-pill">قيد الانتظار</span>
+                <span class="badge bg-warning rounded-pill">{{
+                  request.status
+                }}</span>
               </div>
-              <small class="text-muted">منذ 3 أيام</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div
-                class="d-flex w-100 justify-content-between align-items-center"
-              >
-                <div>
-                  <h6 class="mb-1">شركة نقل الإسكندرية</h6>
-                  <p class="mb-1 text-muted">الإسكندرية، مصر</p>
-                </div>
-                <span class="badge bg-warning rounded-pill">قيد الانتظار</span>
-              </div>
-              <small class="text-muted">منذ 5 أيام</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div
-                class="d-flex w-100 justify-content-between align-items-center"
-              >
-                <div>
-                  <h6 class="mb-1">شركة الأقصر للسفر</h6>
-                  <p class="mb-1 text-muted">الأقصر، مصر</p>
-                </div>
-                <span class="badge bg-warning rounded-pill">قيد الانتظار</span>
-              </div>
-              <small class="text-muted">منذ أسبوع</small>
+              <small class="text-muted">{{
+                formatDate(request.createdDate)
+              }}</small>
             </a>
           </div>
         </div>
@@ -123,59 +150,34 @@
       <div class="card border-0 shadow-sm h-100">
         <div class="card-header bg-white py-3">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">النشاطات الأخيرة</h5>
+            <h5 class="mb-0">
+              {{ "owner.dashboard.recent_activities" | translate }}
+            </h5>
             <a
               href="#"
               class="btn btn-sm"
               style="background-color: var(--primary-color); color: white"
-              >عرض الكل</a
+              >{{ "common.view_all" | translate }}</a
             >
           </div>
         </div>
         <div class="card-body">
           <div class="timeline">
-            <div class="timeline-item">
+            <div
+              *ngFor="let activity of recentActivities"
+              class="timeline-item"
+            >
               <div class="timeline-icon">
-                <i class="fas fa-check-circle text-success"></i>
+                <i [class]="activity.icon + ' text-' + activity.status"></i>
               </div>
               <div class="timeline-content">
                 <div class="d-flex justify-content-between">
-                  <h6 class="mb-1">تم تعيين مدير لشركة حافلات القاهرة</h6>
-                  <small class="text-muted">اليوم، 10:30 ص</small>
+                  <h6 class="mb-1">{{ activity.title }}</h6>
+                  <small class="text-muted">{{
+                    formatDate(activity.timestamp)
+                  }}</small>
                 </div>
-                <p class="text-muted mb-0">
-                  تم تعيين أحمد محمد كمدير لشركة حافلات القاهرة
-                </p>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-icon">
-                <i class="fas fa-times-circle text-danger"></i>
-              </div>
-              <div class="timeline-content">
-                <div class="d-flex justify-content-between">
-                  <h6 class="mb-1">تم رفض طلب من شركة غير صالحة</h6>
-                  <small class="text-muted">الأمس، 2:45 م</small>
-                </div>
-                <p class="text-muted mb-0">
-                  تم رفض الطلب بسبب نقص في الوثائق المطلوبة
-                </p>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-icon">
-                <i class="fas fa-check-circle text-success"></i>
-              </div>
-              <div class="timeline-content">
-                <div class="d-flex justify-content-between">
-                  <h6 class="mb-1">
-                    تمت الموافقة على طلب من شركة نقل الإسكندرية
-                  </h6>
-                  <small class="text-muted">الأمس، 11:20 ص</small>
-                </div>
-                <p class="text-muted mb-0">
-                  تمت الموافقة على طلب التسجيل وإنشاء حساب للشركة
-                </p>
+                <p class="text-muted mb-0">{{ activity.message }}</p>
               </div>
             </div>
           </div>
@@ -184,36 +186,48 @@
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="!isLoading && !hasError" class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 shadow-sm">
         <div class="card-header bg-white py-3">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">أحدث الشركات المسجلة</h5>
+            <h5 class="mb-0">
+              {{ "owner.dashboard.recent_companies" | translate }}
+            </h5>
             <a
-              href="/owner/companies"
+              routerLink="/owner/companies"
               class="btn btn-sm"
               style="background-color: var(--primary-color); color: white"
-              >عرض الكل</a
+              >{{ "common.view_all" | translate }}</a
             >
           </div>
         </div>
         <div class="card-body p-0">
-          <div class="table-responsive">
+          <div *ngIf="recentCompanies.length === 0" class="text-center py-4">
+            <i class="fas fa-building fa-2x text-muted mb-3"></i>
+            <p class="text-muted">
+              {{ "owner.dashboard.no_companies" | translate }}
+            </p>
+          </div>
+          <div *ngIf="recentCompanies.length > 0" class="table-responsive">
             <table class="table mb-0">
               <thead>
                 <tr>
-                  <th>الشركة</th>
-                  <th>الموقع</th>
-                  <th>المدير</th>
-                  <th>عدد الحافلات</th>
-                  <th>المسارات النشطة</th>
-                  <th>تاريخ التسجيل</th>
-                  <th>الحالة</th>
+                  <th>{{ "owner.dashboard.table.company" | translate }}</th>
+                  <th>{{ "owner.dashboard.table.email" | translate }}</th>
+                  <th>{{ "owner.dashboard.table.phone" | translate }}</th>
+                  <th>{{ "owner.dashboard.table.address" | translate }}</th>
+                  <th>{{ "owner.dashboard.table.status" | translate }}</th>
+                  <th>
+                    {{ "owner.dashboard.table.registration_date" | translate }}
+                  </th>
+                  <th>
+                    {{ "owner.dashboard.table.approved_date" | translate }}
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let company of recentCompanies">
                   <td>
                     <div class="d-flex align-items-center">
                       <div
@@ -228,82 +242,51 @@
                           justify-content: center;
                         "
                       >
-                        <i class="fas fa-bus text-primary"></i>
+                        <img
+                          *ngIf="company.logoUrl"
+                          [src]="company.logoUrl"
+                          alt="{{ company.name }}"
+                          style="
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 4px;
+                          "
+                        />
+                        <i
+                          *ngIf="!company.logoUrl"
+                          class="fas fa-bus text-primary"
+                        ></i>
                       </div>
                       <div>
-                        <strong>شركة حافلات القاهرة</strong>
+                        <strong>{{ company.name }}</strong>
                       </div>
                     </div>
                   </td>
-                  <td>القاهرة، مصر</td>
-                  <td>أحمد محمد</td>
-                  <td>25</td>
-                  <td>12</td>
-                  <td>28 أبريل 2025</td>
+                  <td>{{ company.email }}</td>
+                  <td>{{ company.phone }}</td>
+                  <td>{{ company.address }}</td>
                   <td>
-                    <span class="badge bg-success rounded-pill">نشط</span>
+                    <span
+                      [ngClass]="{
+                        'badge rounded-pill': true,
+                        'bg-success': company.status === 'Approved',
+                        'bg-warning': company.status === 'Pending',
+                        'bg-danger': company.status === 'Rejected'
+                      }"
+                      >{{
+                        "owner.dashboard.status." + company.status.toLowerCase()
+                          | translate
+                      }}</span
+                    >
                   </td>
-                </tr>
-                <tr>
+                  <td>{{ formatDate(company.createdDate) }}</td>
                   <td>
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="company-logo me-2"
-                        style="
-                          width: 36px;
-                          height: 36px;
-                          background-color: #f0f0f0;
-                          border-radius: 4px;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        "
-                      >
-                        <i class="fas fa-bus text-primary"></i>
-                      </div>
-                      <div>
-                        <strong>شركة نقل الإسكندرية</strong>
-                      </div>
-                    </div>
-                  </td>
-                  <td>الإسكندرية، مصر</td>
-                  <td>منى فريد</td>
-                  <td>18</td>
-                  <td>8</td>
-                  <td>25 أبريل 2025</td>
-                  <td>
-                    <span class="badge bg-success rounded-pill">نشط</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="company-logo me-2"
-                        style="
-                          width: 36px;
-                          height: 36px;
-                          background-color: #f0f0f0;
-                          border-radius: 4px;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        "
-                      >
-                        <i class="fas fa-bus text-primary"></i>
-                      </div>
-                      <div>
-                        <strong>شركة الأقصر للسفر</strong>
-                      </div>
-                    </div>
-                  </td>
-                  <td>الأقصر، مصر</td>
-                  <td>خالد صالح</td>
-                  <td>15</td>
-                  <td>6</td>
-                  <td>22 أبريل 2025</td>
-                  <td>
-                    <span class="badge bg-warning rounded-pill">معلق</span>
+                    {{
+                      company.approvedDate
+                        ? formatDate(company.approvedDate)
+                        : ("common.not_available" | translate)
+                    }}
                   </td>
                 </tr>
               </tbody>

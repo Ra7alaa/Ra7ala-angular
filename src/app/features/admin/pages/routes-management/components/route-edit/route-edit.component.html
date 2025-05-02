@@ -1,0 +1,144 @@
+<div class="modal-body">
+  <form [formGroup]="editRouteForm">
+    <input type="hidden" formControlName="id" />
+    <div class="mb-3">
+      <label for="editSourceCity" class="form-label">{{
+        "admin.routes.source_city" | translate
+      }}</label>
+      <select
+        id="editSourceCity"
+        class="form-select"
+        formControlName="startCityId"
+      >
+        <option *ngFor="let city of cityOptions" [value]="city.id">
+          {{ "cities." + city.name.toLowerCase() | translate }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          editRouteForm.get('startCityId')?.invalid &&
+          editRouteForm.get('startCityId')?.touched
+        "
+        class="text-danger small mt-1"
+      >
+        {{ "admin.routes.source_city_required" | translate }}
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="editDestinationCity" class="form-label">{{
+        "admin.routes.destination_city" | translate
+      }}</label>
+      <select
+        id="editDestinationCity"
+        class="form-select"
+        formControlName="endCityId"
+      >
+        <option *ngFor="let city of cityOptions" [value]="city.id">
+          {{ "cities." + city.name.toLowerCase() | translate }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          editRouteForm.get('endCityId')?.invalid &&
+          editRouteForm.get('endCityId')?.touched
+        "
+        class="text-danger small mt-1"
+      >
+        {{ "admin.routes.destination_city_required" | translate }}
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="editRouteDistance" class="form-label">{{
+        "admin.routes.distance_km" | translate
+      }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="editRouteDistance"
+        formControlName="distance"
+      />
+      <div
+        *ngIf="
+          editRouteForm.get('distance')?.invalid &&
+          editRouteForm.get('distance')?.touched
+        "
+        class="text-danger small mt-1"
+      >
+        {{ "admin.routes.distance_required" | translate }}
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="editDurationHours" class="form-label">{{
+          "admin.routes.duration_hours" | translate
+        }}</label>
+        <input
+          type="number"
+          class="form-control"
+          id="editDurationHours"
+          formControlName="durationHours"
+        />
+        <div
+          *ngIf="
+            editRouteForm.get('durationHours')?.invalid &&
+            editRouteForm.get('durationHours')?.touched
+          "
+          class="text-danger small mt-1"
+        >
+          {{ "admin.routes.hours_required" | translate }}
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="editDurationMinutes" class="form-label">{{
+          "admin.routes.duration_minutes" | translate
+        }}</label>
+        <input
+          type="number"
+          class="form-control"
+          id="editDurationMinutes"
+          max="59"
+          formControlName="durationMinutes"
+        />
+        <div
+          *ngIf="
+            editRouteForm.get('durationMinutes')?.invalid &&
+            editRouteForm.get('durationMinutes')?.touched
+          "
+          class="text-danger small mt-1"
+        >
+          {{ "admin.routes.minutes_required" | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="form-check form-switch mb-3">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="editRouteStatus"
+        formControlName="isActive"
+      />
+      <label class="form-check-label" for="editRouteStatus">{{
+        "admin.routes.route_status" | translate
+      }}</label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="resetForm()">
+    {{ "admin.routes.cancel" | translate }}
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    [disabled]="editRouteForm.invalid || isSubmitting"
+    (click)="updateRoute()"
+  >
+    <span
+      *ngIf="isSubmitting"
+      class="spinner-border spinner-border-sm me-1"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{ "admin.routes.update" | translate }}
+  </button>
+</div>

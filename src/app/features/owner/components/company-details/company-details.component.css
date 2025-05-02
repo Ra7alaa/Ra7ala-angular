@@ -46,6 +46,46 @@
   font-weight: 500;
 }
 
+.status-pill-active {
+  background-color: #27ae60;
+  color: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-pill-pending {
+  background-color: #f1c40f;
+  color: #212529;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-pill-rejected {
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-pill-deleted {
+  background-color: #34495e;
+  color: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-pill-inactive {
+  background-color: #7f8c8d;
+  color: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
 /* Information Group */
 .info-label {
   font-size: 0.8rem;

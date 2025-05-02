@@ -7,7 +7,6 @@ import { OwnerLayoutComponent } from './pages/owner-layout/owner-layout.componen
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CompanyRequestsComponent } from './pages/company-requests/company-requests.component';
 import { CompaniesManagementComponent } from './pages/companies-management/companies-management.component';
-import { SuperadminManagementComponent } from './pages/superadmin-management/superadmin-management.component';
 
 @NgModule({
   declarations: [],
@@ -20,7 +19,6 @@ import { SuperadminManagementComponent } from './pages/superadmin-management/sup
     DashboardComponent,
     CompanyRequestsComponent,
     CompaniesManagementComponent,
-    SuperadminManagementComponent,
   ],
 })
 export class OwnerModule {}

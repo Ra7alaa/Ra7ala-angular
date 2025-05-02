@@ -30,6 +30,24 @@ export class CompanyService {
       );
   }
 
+  getActiveCompanies(
+    pageNumber = 1,
+    pageSize = 10
+  ): Observable<CompanyResponse> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    return this.http
+      .get<CompanyResponse>(`${this.baseUrl}/api/Company/approved`, { params })
+      .pipe(
+        catchError((error) => {
+          console.error('Failed to fetch active companies', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
   getPendingCompanies(
     pageNumber = 1,
     pageSize = 10
@@ -77,5 +95,35 @@ export class CompanyService {
             );
         })
       );
+  }
+
+  reviewCompany(
+    companyId: number,
+    isApproved: boolean,
+    rejectionReason?: string
+  ): Observable<unknown> {
+    const reviewData = {
+      companyId: companyId,
+      isApproved: isApproved,
+      rejectionReason: rejectionReason || '',
+    };
+
+    return this.http
+      .post(`${this.baseUrl}/api/Company/review`, reviewData)
+      .pipe(
+        catchError((error) => {
+          console.error('Failed to review company', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  deleteCompany(id: number): Observable<unknown> {
+    return this.http.delete(`${this.baseUrl}/api/Company/${id}`).pipe(
+      catchError((error) => {
+        console.error(`Failed to delete company with ID ${id}`, error);
+        return throwError(() => error);
+      })
+    );
   }
 }

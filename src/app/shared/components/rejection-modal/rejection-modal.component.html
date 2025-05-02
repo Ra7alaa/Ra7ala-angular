@@ -1,0 +1,66 @@
+<div class="modal-overlay" *ngIf="isOpen" appRtl>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>{{ "owner.company_requests.rejection_modal.title" | translate }}</h2>
+      <button class="close-button" (click)="onCancel()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p>
+        {{ "owner.company_requests.rejection_modal.description" | translate }}
+      </p>
+
+      <div class="form-group">
+        <label for="rejection-reason">{{
+          "owner.company_requests.rejection_modal.reason_label" | translate
+        }}</label>
+        <textarea
+          id="rejection-reason"
+          class="form-control"
+          rows="4"
+          [(ngModel)]="rejectionReason"
+          placeholder="{{
+            'owner.company_requests.rejection_modal.reason_placeholder'
+              | translate
+          }}"
+        ></textarea>
+      </div>
+
+      <div class="predefined-reasons">
+        <h4>
+          {{
+            "owner.company_requests.rejection_modal.suggested_reasons"
+              | translate
+          }}:
+        </h4>
+        <div class="reason-chips">
+          <button
+            *ngFor="let reason of predefinedReasons"
+            class="reason-chip"
+            [class.selected]="selectedPredefinedReason === reason"
+            (click)="selectPredefinedReason(reason)"
+            (keydown.enter)="selectPredefinedReason(reason)"
+            tabindex="0"
+          >
+            {{ reason | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="onCancel()">
+        {{ "common.cancel" | translate }}
+      </button>
+      <button
+        class="btn-confirm"
+        (click)="onConfirm()"
+        [disabled]="!rejectionReason.trim()"
+      >
+        {{ "owner.company_requests.rejection_modal.confirm" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

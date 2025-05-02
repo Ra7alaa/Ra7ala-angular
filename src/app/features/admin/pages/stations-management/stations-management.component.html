@@ -16,22 +16,22 @@
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-6">
-          <label for="search" class="form-label">{{
+          <label for="search-station" class="form-label">{{
             "admin.stations.search_placeholder" | translate
           }}</label>
           <input
             type="text"
             class="form-control"
-            id="search"
+            id="search-station"
             placeholder="{{ 'admin.stations.search_placeholder' | translate }}"
             [(ngModel)]="searchTerm"
           />
         </div>
         <div class="col-md-6">
-          <label class="form-label">{{
+          <label for="ownership-filter" class="form-label">{{
             "admin.stations.ownership" | translate
           }}</label>
-          <div class="btn-group w-100">
+          <div id="ownership-filter" class="btn-group w-100">
             <button
               class="btn"
               [class.btn-outline-secondary]="filterSystemOwned !== true"
@@ -97,7 +97,7 @@
           <tr *ngFor="let station of filteredStations">
             <td>{{ station.id }}</td>
             <td>{{ station.name }}</td>
-            <td>{{ "cities." + station.cityName.toLowerCase() | translate }}</td>
+            <td>{{ getCityTranslation(station.cityName) }}</td>
             <td>
               <span
                 [class.badge]="true"

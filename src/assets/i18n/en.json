@@ -319,13 +319,20 @@
       "save": "Save Route",
       "update": "Update Route",
       "cancel": "Cancel",
+      "delete": "Delete",
       "delete_confirm": "Are you sure you want to delete this route?",
       "delete_success": "Route deleted successfully",
       "delete_error": "Failed to delete route",
       "create_success": "Route created successfully",
       "create_error": "Failed to create route",
       "update_success": "Route updated successfully",
-      "update_error": "Failed to update route"
+      "update_error": "Failed to update route",
+      "no_routes_yet": "No routes available yet",
+      "create_first_route": "Create your first route by clicking the \"Add New Route\" button",
+      "km": "km",
+      "route_details": "Route Details",
+      "select_route": "Select a route to view details",
+      "detail_info": "Additional information about this route"
     },
     "stations": {
       "title": "Stations Management",
@@ -477,35 +484,344 @@
       "restore_from_backup": "Restore from Backup",
 
       "save_settings": "Save Settings"
+    },
+    "company_details": {
+      "loading": "Loading company details...",
+      "error_title": "Error Loading Company",
+      "error_message": "There was a problem loading the company details. Please try again or contact support.",
+      "back_to_companies": "Back to Companies",
+      "since": "Since",
+      "delete": "Delete Company",
+      "delete_confirm": "Are you sure you want to delete this company? This action cannot be undone.",
+      "delete_success": "Company deleted successfully",
+      "delete_error": "Failed to delete company. Please try again.",
+      "company_information": "Company Information",
+      "company_id": "Company ID",
+      "email": "Email",
+      "phone": "Phone",
+      "status_label": "Status",
+      "created_date": "Registration Date",
+      "approved_date": "Approval Date",
+      "address": "Address",
+      "description": "Description",
+      "not_available": "N/A",
+      "no_address": "No address provided",
+      "no_description": "No description provided",
+      "ratings": "Customer Ratings",
+      "based_on": "Based on",
+      "super_admin": "Super Administrator",
+      "id": "ID",
+      "statistics": "Company Statistics",
+      "stats": {
+        "admins": "Administrators",
+        "drivers": "Drivers",
+        "buses": "Buses",
+        "routes": "Routes"
+      },
+      "status": {
+        "active": "Active",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "deleted": "Deleted",
+        "unknown": "Unknown",
+        "inactive": "Inactive"
+      }
     }
   },
   "owner": {
     "title": "Owner Management System",
+    "role": "Owner",
     "sidebar": {
       "system_management": "Ra7ala Management System",
       "dashboard": "Dashboard",
-      "companies": "Companies Management",
+      "companies": "Registered Companies",
+      "company_requests": "Company Requests",
       "stations": "Stations Management",
       "feedback": "Feedback & Ratings",
-      "settings": "Settings",
+      "settings": "System Settings",
       "logout": "Logout"
+    },
+    "notifications": {
+      "new_request": "New registration request",
+      "new_admin": "New admin assigned to Luxor Company",
+      "view_all": "View all notifications"
     },
     "dashboard": {
       "title": "Owner Dashboard",
+      "welcome": "Welcome to the Ra7ala system management dashboard",
+      "refresh": "Refresh",
+      "loading_data": "Loading dashboard data...",
+      "load_error_title": "Error Loading Dashboard",
+      "load_error_message": "There was a problem loading the dashboard data. Please try refreshing or contact support if the problem persists.",
+      "technical_details": "Technical Details",
       "totalCompanies": "Total Companies",
       "totalStations": "Total Stations",
       "totalTrips": "Total Trips",
       "totalRevenue": "Total Revenue",
+      "new_requests": "New Requests",
+      "active_companies": "Active Companies",
+      "daily_trips": "Daily Trips",
+      "view_requests": "View Requests",
+      "view_companies": "View Companies",
+      "view_reports": "View Reports",
+      "recent_requests": "Recent Requests",
+      "no_pending_requests": "No pending requests at this time",
+      "recent_activities": "Recent Activities",
+      "recent_companies": "Recent Companies",
+      "no_companies": "No companies registered yet",
       "revenueOverview": "Revenue Overview",
       "tripsOverview": "Trips Overview",
       "quickActions": "Quick Actions",
       "manageCompanies": "Manage Companies",
       "manageStations": "Manage Stations",
-      "manageTrips": "Manage Trips"
+      "manageTrips": "Manage Trips",
+      "status": {
+        "approved": "Approved",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      },
+      "table": {
+        "company": "Company",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "status": "Status",
+        "registration_date": "Registration Date",
+        "approved_date": "Approved Date"
+      }
+    },
+    "company_requests": {
+      "title": "Company Registration Requests",
+      "description": "Review and manage pending company registration requests",
+      "pending_requests": "Pending Requests",
+      "requests_count": "requests",
+      "loading": "Loading requests...",
+      "no_requests_title": "No Pending Requests",
+      "no_requests_description": "There are no pending company requests to review at this time.",
+      "not_specified": "Not specified",
+      "messages": {
+        "approved": "Company \"{{companyName}}\" has been approved successfully",
+        "rejected": "Company \"{{companyName}}\" has been rejected",
+        "approve_error": "Failed to approve company. Please try again.",
+        "reject_error": "Failed to reject company. Please try again."
+      },
+      "actions": {
+        "view": "View details",
+        "approve": "Approve company",
+        "reject": "Reject company"
+      },
+      "table": {
+        "company_name": "Company Name",
+        "location": "Location",
+        "email": "Email",
+        "phone": "Phone",
+        "registration_date": "Registration Date",
+        "actions": "Actions"
+      },
+      "rejection_modal": {
+        "title": "Reject Company Application",
+        "description": "Please provide a reason for rejecting this company registration request:",
+        "reason_label": "Rejection Reason",
+        "reason_placeholder": "Enter reason for rejection",
+        "suggested_reasons": "Suggested Reasons",
+        "confirm": "Confirm Rejection"
+      },
+      "rejection_reasons": {
+        "incomplete_info": "Incomplete or inaccurate company information",
+        "invalid_docs": "Invalid company documentation",
+        "duplicate": "Duplicate registration",
+        "not_eligible": "Company does not meet eligibility criteria",
+        "suspicious": "Suspicious or fraudulent activity detected",
+        "unverifiable": "Unable to verify business legitimacy"
+      }
+    },
+    "companies": {
+      "title": "Companies Management",
+      "description": "View and manage all registered transportation companies",
+      "all_companies": "All Companies",
+      "search_placeholder": "Search companies...",
+      "filter": "Filter",
+      "filter_options": {
+        "all": "All Companies",
+        "active": "Active Companies",
+        "pending": "Pending Companies"
+      },
+      "loading_data": "Loading companies data...",
+      "no_companies_title": "No Companies Found",
+      "no_companies_description": "There are no registered companies in the system yet.",
+      "since": "Since",
+      "not_specified": "Not specified",
+      "not_assigned": "Not assigned",
+      "actions": "Actions",
+      "view": "View Details",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you want to delete this company? This action cannot be undone.",
+      "delete_success": "Company deleted successfully",
+      "delete_error": "Failed to delete company. Please try again.",
+      "status": {
+        "active": "Active",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "deleted": "Deleted",
+        "unknown": "Unknown",
+        "inactive": "Inactive"
+      },
+      "table": {
+        "company_name": "Company Name",
+        "location": "Location",
+        "super_admin": "Super Admin",
+        "buses": "Buses",
+        "routes": "Routes",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "pagination": {
+        "showing": "Showing",
+        "of": "of",
+        "companies": "companies"
+      }
+    },
+    "company_details": {
+      "loading": "Loading company details...",
+      "error_title": "Error Loading Company",
+      "error_message": "There was a problem loading the company details. Please try again or contact support.",
+      "back_to_companies": "Back to Companies",
+      "since": "Since",
+      "delete": "Delete Company",
+      "delete_confirm": "Are you sure you want to delete this company? This action cannot be undone.",
+      "delete_success": "Company deleted successfully",
+      "delete_error": "Failed to delete company. Please try again.",
+      "company_information": "Company Information",
+      "company_id": "Company ID",
+      "email": "Email",
+      "phone": "Phone",
+      "status_label": "Status",
+      "created_date": "Registration Date",
+      "approved_date": "Approval Date",
+      "address": "Address",
+      "description": "Description",
+      "not_available": "N/A",
+      "no_address": "No address provided",
+      "no_description": "No description provided",
+      "ratings": "Customer Ratings",
+      "based_on": "Based on",
+      "super_admin": "Super Administrator",
+      "id": "ID",
+      "statistics": "Company Statistics",
+      "stats": {
+        "admins": "Administrators",
+        "drivers": "Drivers",
+        "buses": "Buses",
+        "routes": "Routes"
+      },
+      "status": {
+        "active": "Active",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "deleted": "Deleted",
+        "unknown": "Unknown",
+        "inactive": "Inactive"
+      }
     }
   },
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "actions": "Actions",
+    "details": "Details",
+    "view_all": "View All",
+    "not_available": "Not Available",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "in_progress": "In Progress"
+    },
+    "error": {
+      "required": "This field is required",
+      "invalid_email": "Please enter a valid email address",
+      "invalid_phone": "Please enter a valid phone number",
+      "password_mismatch": "Passwords do not match",
+      "minimum_length": "Minimum length is {{length}} characters",
+      "maximum_length": "Maximum length is {{length}} characters",
+      "unknown": "An unknown error occurred",
+      "server_error": "A server error occurred. Please try again later.",
+      "not_found": "Not Found",
+      "forbidden": "You don't have permission to access this resource"
+    },
+    "success": {
+      "saved": "Saved successfully",
+      "updated": "Updated successfully",
+      "deleted": "Deleted successfully",
+      "created": "Created successfully"
+    },
+    "date": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "tomorrow": "Tomorrow",
+      "days_ago": "{{days}} days ago",
+      "last_week": "Last week",
+      "last_month": "Last month",
+      "months": {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+      },
+      "days": {
+        "0": "Sunday",
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday"
+      }
+    },
+    "pagination": {
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "results": "results",
+      "per_page": "per page",
+      "first": "First",
+      "last": "Last"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "min_length": "Must be at least {{length}} characters long",
+      "max_length": "Cannot exceed {{length}} characters",
+      "password_match": "Passwords must match",
+      "number": "Must be a valid number"
+    }
   },
   "cities": {
     "all_cities": "All Cities",
@@ -514,12 +830,20 @@
     "luxor": "Luxor",
     "aswan": "Aswan",
     "hurghada": "Hurghada",
+    "damietta": "Damietta",
+    "el_mahalla_el_kubra": "El Mahalla El Kubra",
+    "el_mahalla": "El Mahalla",
+    "kafr_el_sheikh": "Kafr El Sheikh",
+    "el_santa": "El Santa",
     "descriptions": {
       "cairo": "Cairo is the capital and largest city of Egypt, home to the pyramids and rich cultural heritage.",
       "alexandria": "Alexandria is Egypt's second-largest city, known for its Mediterranean beaches and historic landmarks.",
       "luxor": "Luxor is famous for its ancient Egyptian monuments and temples.",
       "aswan": "Aswan is a scenic city in the south, known for its Nile views and Nubian culture.",
-      "hurghada": "Hurghada is a beach resort town along the Red Sea, perfect for diving and water sports."
+      "hurghada": "Hurghada is a beach resort town along the Red Sea, perfect for diving and water sports.",
+      "damietta": "Damietta is a port city and the capital of the Damietta Governorate in Egypt, known for its furniture industry.",
+      "el_mahalla": "El Mahalla El Kubra is a large industrial and agricultural city in Egypt, famous for its textile industry.",
+      "kafr_el_sheikh": "Kafr El Sheikh is the capital of Kafr El Sheikh Governorate, located in the northern part of the Nile Delta."
     }
   },
   "locations": {
