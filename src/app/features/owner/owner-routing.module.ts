@@ -4,7 +4,6 @@ import { OwnerLayoutComponent } from './pages/owner-layout/owner-layout.componen
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CompanyRequestsComponent } from './pages/company-requests/company-requests.component';
 import { CompaniesManagementComponent } from './pages/companies-management/companies-management.component';
-import { SuperadminManagementComponent } from './pages/superadmin-management/superadmin-management.component';
 import { CompanyDetailsComponent } from './components/company-details/company-details.component';
 
 const routes: Routes = [
@@ -17,7 +16,11 @@ const routes: Routes = [
       { path: 'company-requests', component: CompanyRequestsComponent },
       { path: 'companies', component: CompaniesManagementComponent },
       { path: 'companies/:id', component: CompanyDetailsComponent },
-      { path: 'superadmins', component: SuperadminManagementComponent },
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('../settings/settings.module').then((m) => m.SettingsModule),
+      },
     ],
   },
 ];

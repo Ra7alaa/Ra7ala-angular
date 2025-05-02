@@ -1,97 +1,192 @@
-<div class="company-requests-container">
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <h2>Company Registration Requests</h2>
-      <p class="text-muted">Review pending company registration requests</p>
+<div class="company-requests-container" appRtl>
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">{{ "owner.company_requests.title" | translate }}</h1>
+    <p class="page-description">
+      {{ "owner.company_requests.description" | translate }}
+    </p>
+  </div>
+
+  <!-- Action Message -->
+  <div
+    *ngIf="showActionMessage"
+    class="action-message"
+    [class.success]="actionMessageType === 'success'"
+    [class.error]="actionMessageType === 'error'"
+  >
+    <div class="message-content">
+      <i
+        class="fas"
+        [class.fa-check-circle]="actionMessageType === 'success'"
+        [class.fa-exclamation-circle]="actionMessageType === 'error'"
+      ></i>
+      <span>{{ actionMessage | translate }}</span>
+    </div>
+    <button class="close-message" (click)="showActionMessage = false">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Requests Card -->
+  <div class="card">
+    <div class="card-header">
+      <h5>{{ "owner.company_requests.pending_requests" | translate }}</h5>
+      <span class="badge status-badge status-pending">
+        {{ pendingCompanies.length }}
+        {{ "owner.company_requests.requests_count" | translate }}
+      </span>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <span class="loading-text">{{
+        "owner.company_requests.loading" | translate
+      }}</span>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && pendingCompanies.length === 0" class="empty-state">
+      <i class="fas fa-inbox empty-icon"></i>
+      <h3 class="empty-title">
+        {{ "owner.company_requests.no_requests_title" | translate }}
+      </h3>
+      <p class="empty-description">
+        {{ "owner.company_requests.no_requests_description" | translate }}
+      </p>
+    </div>
+
+    <!-- Table with Data -->
+    <div
+      class="table-responsive"
+      *ngIf="!loading && pendingCompanies.length > 0"
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              {{ "owner.company_requests.table.company_name" | translate }}
+            </th>
+            <th>{{ "owner.company_requests.table.location" | translate }}</th>
+            <th>{{ "owner.company_requests.table.email" | translate }}</th>
+            <th>{{ "owner.company_requests.table.phone" | translate }}</th>
+            <th>
+              {{ "owner.company_requests.table.registration_date" | translate }}
+            </th>
+            <th>{{ "owner.company_requests.table.actions" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let company of pendingCompanies">
+            <td>
+              <div class="company-name-cell">
+                <div class="company-logo">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div class="company-info">
+                  <span class="company-name">{{ company.name }}</span>
+                  <span class="company-id">ID: {{ company.id }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              {{
+                company.address ||
+                  ("owner.company_requests.not_specified" | translate)
+              }}
+            </td>
+            <td>{{ company.email }}</td>
+            <td>{{ company.phone }}</td>
+            <td>{{ company.createdDate | formatDate : "datetime" }}</td>
+            <td class="actions-cell">
+              <button
+                class="btn-action btn-view"
+                title="{{ 'owner.company_requests.actions.view' | translate }}"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+              <button
+                class="btn-action btn-approve"
+                title="{{
+                  'owner.company_requests.actions.approve' | translate
+                }}"
+                (click)="approveCompany(company)"
+                [disabled]="
+                  processingAction && selectedCompanyId === company.id
+                "
+              >
+                <i
+                  *ngIf="
+                    !(processingAction && selectedCompanyId === company.id)
+                  "
+                  class="fas fa-check"
+                ></i>
+                <i
+                  *ngIf="processingAction && selectedCompanyId === company.id"
+                  class="fas fa-spinner fa-spin"
+                ></i>
+              </button>
+              <button
+                class="btn-action btn-reject"
+                title="{{
+                  'owner.company_requests.actions.reject' | translate
+                }}"
+                (click)="openRejectModal(company)"
+                [disabled]="
+                  processingAction && selectedCompanyId === company.id
+                "
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a
+            class="page-link"
+            href="javascript:void(0)"
+            (click)="changePage(currentPage - 1)"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="currentPage === i + 1"
+        >
+          <a
+            class="page-link"
+            href="javascript:void(0)"
+            (click)="changePage(i + 1)"
+          >
+            {{ i + 1 }}
+          </a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a
+            class="page-link"
+            href="javascript:void(0)"
+            (click)="changePage(currentPage + 1)"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white">
-          <h5 class="mb-0">Pending Requests</h5>
-        </div>
-        <div class="card-body p-0">
-          <div *ngIf="loading" class="text-center p-4">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-          <div
-            *ngIf="!loading && pendingCompanies.length === 0"
-            class="text-center p-4"
-          >
-            <p class="text-muted">No pending company requests found.</p>
-          </div>
-          <div
-            class="table-responsive"
-            *ngIf="!loading && pendingCompanies.length > 0"
-          >
-            <table class="table table-hover mb-0">
-              <thead>
-                <tr>
-                  <th>Company Name</th>
-                  <th>Location</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Registration Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let company of pendingCompanies">
-                  <td>{{ company.name }}</td>
-                  <td>{{ company.address }}</td>
-                  <td>{{ company.email }}</td>
-                  <td>{{ company.phone }}</td>
-                  <td>{{ company.createdDate | date }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer bg-white py-3" *ngIf="totalPages > 1">
-          <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center mb-0">
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  (click)="changePage(currentPage - 1)"
-                  aria-label="Previous"
-                >
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li
-                class="page-item"
-                *ngFor="let page of [].constructor(totalPages); let i = index"
-                [class.active]="currentPage === i + 1"
-              >
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  (click)="changePage(i + 1)"
-                  >{{ i + 1 }}</a
-                >
-              </li>
-              <li
-                class="page-item"
-                [class.disabled]="currentPage === totalPages"
-              >
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  (click)="changePage(currentPage + 1)"
-                  aria-label="Next"
-                >
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Rejection Reason Modal -->
+  <app-rejection-modal
+    [isOpen]="isRejectionModalOpen"
+    (confirmRejection)="onRejectConfirm($event)"
+    (cancelRejection)="onRejectCancel()"
+  >
+  </app-rejection-modal>
 </div>

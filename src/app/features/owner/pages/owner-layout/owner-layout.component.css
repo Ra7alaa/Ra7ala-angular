@@ -46,6 +46,36 @@
   box-shadow: var(--card-shadow);
 }
 
+/* Sidebar styling */
+.list-group-item {
+  background-color: transparent;
+  color: var(--text-color);
+  border-radius: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: 4px;
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.list-group-item:hover {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+}
+
+.list-group-item.active {
+  background-color: rgba(var(--primary-color-rgb), 0.15);
+  color: var(--primary-color);
+  border-left: 3px solid var(--primary-color);
+}
+
+.list-group-item i {
+  color: var(--primary-color) !important;
+}
+
+/* Badge styling */
+.badge.bg-danger {
+  background-color: var(--error-color) !important;
+}
+
 /* Dashboard card styles */
 .dashboard-card {
   border: none;
@@ -68,13 +98,14 @@
 }
 
 .table thead th {
-  background-color: var(--surface-color);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
   border-bottom: 2px solid var(--border-color);
   font-weight: 600;
+  color: var(--primary-color);
 }
 
 .table tbody tr:hover {
-  background-color: var(--surface-color-hover);
+  background-color: rgba(var(--primary-color-rgb), 0.05);
 }
 
 /* Button styles */
@@ -86,6 +117,26 @@
   justify-content: center;
   border-radius: 50%;
   padding: 0;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
 }
 
 /* Modal styles */
@@ -103,4 +154,22 @@
 .modal-footer {
   border-top: 1px solid var(--border-color);
   background-color: var(--surface-color);
+}
+
+/* Dark theme overrides */
+.dark-theme .owner-sidebar {
+  background-color: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .list-group-item {
+  color: var(--text-color);
+}
+
+.dark-theme .list-group-item:hover {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.dark-theme .list-group-item.active {
+  background-color: rgba(var(--primary-color-rgb), 0.15);
 }

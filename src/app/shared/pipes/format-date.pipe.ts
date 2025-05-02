@@ -11,7 +11,7 @@ export class FormatDatePipe implements PipeTransform {
 
   transform(
     value: string | Date,
-    format: 'short' | 'medium' | 'long' = 'medium'
+    format: 'short' | 'medium' | 'long' | 'time' | 'datetime' = 'medium'
   ): string {
     if (!value) return '';
 
@@ -26,7 +26,7 @@ export class FormatDatePipe implements PipeTransform {
   }
 
   private getFormatOptions(
-    format: 'short' | 'medium' | 'long'
+    format: 'short' | 'medium' | 'long' | 'time' | 'datetime'
   ): Intl.DateTimeFormatOptions {
     switch (format) {
       case 'short':
@@ -41,6 +41,22 @@ export class FormatDatePipe implements PipeTransform {
           day: 'numeric',
           month: 'long',
           year: 'numeric',
+        };
+      case 'time':
+        return {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        };
+      case 'datetime':
+        return {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
         };
       case 'medium':
       default:

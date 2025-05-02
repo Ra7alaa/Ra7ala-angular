@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Company, CompanyStatus } from '../../models/company.model';
 import { CompanyService } from '../../services/company.service';
+import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
+import { RtlDirective } from '../../../settings/directives/rtl.directive';
+import { LanguageService } from '../../../../core/localization/language.service';
 
 @Component({
   selector: 'app-company-details',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe, RtlDirective],
   templateUrl: './company-details.component.html',
   styleUrl: './company-details.component.css',
 })
@@ -19,7 +22,9 @@ export class CompanyDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private companyService: CompanyService
+    private router: Router,
+    private companyService: CompanyService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +54,7 @@ export class CompanyDetailsComponent implements OnInit {
           if (response && typeof response === 'object') {
             const responseObj = response as Record<string, unknown>;
             // إذا كانت الاستجابة كائنًا، تحقق من الهيكل
-          if (responseObj['data']) {
+            if (responseObj['data']) {
               companyData = responseObj['data'];
               console.log('Found company data in response.data');
             } else if (responseObj['company']) {
@@ -93,16 +98,104 @@ export class CompanyDetailsComponent implements OnInit {
     return Array(emptyStars).fill(0);
   }
 
-  getStatusClass(status: CompanyStatus): string {
+  getStatusPillClass(status: CompanyStatus | number): string {
+    // Handle numeric status codes
+    if (typeof status === 'number') {
+      switch (status) {
+        case 1: // Active
+          return 'status-pill-active';
+        case 0: // Pending
+          return 'status-pill-pending';
+        case 2: // Rejected
+          return 'status-pill-rejected';
+        case 3: // Deleted
+          return 'status-pill-deleted';
+        default:
+          return 'status-pill-inactive';
+      }
+    }
+
+    // Handle enum values (for backward compatibility)
     switch (status) {
       case CompanyStatus.Approved:
-        return 'status-active';
+        return 'status-pill-active';
       case CompanyStatus.Pending:
-        return 'status-pending';
+        return 'status-pill-pending';
       case CompanyStatus.Rejected:
-        return 'status-rejected';
+        return 'status-pill-rejected';
       default:
-        return 'status-inactive';
+        return 'status-pill-inactive';
     }
+  }
+
+  getSimpleStatus(status: CompanyStatus | number): string {
+    // Get status key for translation
+    let statusKey: string;
+
+    // Handle numeric status codes
+    if (typeof status === 'number') {
+      switch (status) {
+        case 0:
+          statusKey = 'owner.company_details.status.pending';
+          break;
+        case 1:
+          statusKey = 'owner.company_details.status.active';
+          break;
+        case 2:
+          statusKey = 'owner.company_details.status.rejected';
+          break;
+        case 3:
+          statusKey = 'owner.company_details.status.deleted';
+          break;
+        default:
+          statusKey = 'owner.company_details.status.unknown';
+      }
+    } else {
+      // Handle enum values (for backward compatibility)
+      switch (status) {
+        case CompanyStatus.Approved:
+          statusKey = 'owner.company_details.status.active';
+          break;
+        case CompanyStatus.Pending:
+          statusKey = 'owner.company_details.status.pending';
+          break;
+        case CompanyStatus.Rejected:
+          statusKey = 'owner.company_details.status.rejected';
+          break;
+        default:
+          statusKey = 'owner.company_details.status.inactive';
+      }
+    }
+
+    return statusKey;
+  }
+
+  deleteCompany(companyId: number): void {
+    const confirmMessage = this.getTranslatedText(
+      'owner.company_details.delete_confirm'
+    );
+
+    if (confirm(confirmMessage)) {
+      this.loading = true;
+      this.companyService.deleteCompany(companyId).subscribe({
+        next: () => {
+          this.loading = false;
+          alert(this.getTranslatedText('owner.company_details.delete_success'));
+          // Navigate to companies management page after successful deletion
+          this.router.navigate(['/owner/companies']);
+        },
+        error: (error) => {
+          console.error('Error deleting company:', error);
+          this.loading = false;
+          alert(this.getTranslatedText('owner.company_details.delete_error'));
+        },
+      });
+    }
+  }
+
+  getTranslatedText(key: string): string {
+    // This is a temporary method until we refactor the alert/confirm dialogs
+    // The proper approach is to use the translate pipe in the template
+    return key;
   }
 }

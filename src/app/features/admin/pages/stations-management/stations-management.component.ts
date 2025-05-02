@@ -18,7 +18,7 @@ import { TranslationService } from '../../../../core/localization/translation.se
 })
 export class StationsManagementComponent implements OnInit {
   stations: Station[] = [];
-  loading: boolean = false;
+  loading = false;
   error: string | null = null;
   currentUser: User | null = null;
 
@@ -27,12 +27,12 @@ export class StationsManagementComponent implements OnInit {
 
   // Filtering
   filterSystemOwned: boolean | null = null;
-  searchTerm: string = '';
+  searchTerm = '';
 
   // Pagination
-  currentPage: number = 1;
-  pageSize: number = 20; // Fixed page size at 20
-  totalItems: number = 0;
+  currentPage = 1;
+  pageSize = 20; // Fixed page size at 20
+  totalItems = 0;
 
   constructor(
     private stationsService: StationsService,
@@ -329,5 +329,60 @@ export class StationsManagementComponent implements OnInit {
     this.filterSystemOwned = null;
     this.searchTerm = '';
     this.currentPage = 1; // Reset to first page when clearing filters
+  }
+
+  // Helper method to get city translation
+  getCityTranslation(cityName: string): string {
+    // Normalize city name to handle differences from API
+    const normalizedCityName = this.normalizeCityName(cityName);
+
+    // Try to get translation using normalized city name
+    const translationKey = `cities.${normalizedCityName}`;
+    const translation = this.translateService.translate(translationKey);
+
+    // If translation returns the key itself, it means translation is not found
+    // In this case, return the original city name with first letter capitalized
+    if (translation === translationKey) {
+      return this.capitalizeFirstLetter(cityName);
+    }
+
+    return translation;
+  }
+
+  // Helper to normalize city names from API to match translation keys
+  private normalizeCityName(cityName: string): string {
+    // Convert to lowercase and remove any special formatting
+    let normalized = cityName.toLowerCase().trim();
+
+    // Handle common formatting in city names from API
+    normalized = normalized.replace(/cities\./, '');
+
+    // Remove dots
+    normalized = normalized.replace(/\./g, '');
+
+    // Replace spaces with underscores for multi-word city names
+    normalized = normalized.replace(/\s+/g, '_');
+
+    // Special case mappings for city names that don't match our translation keys
+    const mappings: Record<string, string> = {
+      el_mahalla_el_kubra: 'el_mahalla',
+      'cities.damietta': 'damietta',
+      damietta: 'damietta',
+      'cities.el_mahalla_el_kubra': 'el_mahalla',
+      kafr_el_sheikh: 'kafr_el_sheikh',
+      'cities.kafr_el_sheikh': 'kafr_el_sheikh',
+      el_santa: 'el_santa',
+    };
+
+    return mappings[normalized] || normalized;
+  }
+
+  // Helper to capitalize first letter of each word in city name
+  private capitalizeFirstLetter(str: string): string {
+    if (!str) return '';
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   }
 }

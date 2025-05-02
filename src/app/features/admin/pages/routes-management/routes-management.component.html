@@ -1,395 +1,220 @@
-<div class="routes-content px-3">
-  <!-- Routes Management Content -->
-  <div>
-    <div
-      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-    >
-      <h1 class="h2">{{ "admin.routes.title" | translate }}</h1>
-      <button
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#addRouteModal"
-      >
-        <i class="bi bi-plus-circle me-2"></i
-        >{{ "admin.routes.add_route" | translate }}
-      </button>
-    </div>
-
-    <!-- Search and filter -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <div class="input-group">
-          <span class="input-group-text bg-white border-end-0">
-            <i class="bi bi-search text-muted"></i>
-          </span>
-          <input
-            type="text"
-            class="form-control border-start-0"
-            placeholder="{{ 'admin.routes.search_placeholder' | translate }}"
-          />
-        </div>
-      </div>
-      <div class="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
-        <div class="d-flex gap-2">
-          <select class="form-select">
-            <option selected>
-              {{ "admin.routes.all_routes" | translate }}
-            </option>
-            <option>{{ "admin.routes.active" | translate }}</option>
-            <option>{{ "admin.routes.inactive" | translate }}</option>
-          </select>
-          <button class="btn btn-outline-secondary">
-            <i class="bi bi-funnel me-2"></i
-            >{{ "admin.routes.filter" | translate }}
+<div class="container-fluid py-4" appRtl>
+  <div class="row">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm mb-4">
+        <div
+          class="card-header d-flex justify-content-between align-items-center py-3"
+        >
+          <h5 class="mb-0">
+            {{ "admin.routes.title" | translate }}
+          </h5>
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addRouteModal"
+          >
+            <i class="bi bi-plus-circle me-1"></i>
+            {{ "admin.routes.add_route" | translate }}
           </button>
         </div>
-      </div>
-    </div>
 
-    <!-- Routes Table -->
-    <div class="card border-0 shadow-sm">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead>
-              <tr>
-                <th>{{ "admin.routes.route_id" | translate }}</th>
-                <th>{{ "admin.routes.from" | translate }}</th>
-                <th>{{ "admin.routes.to" | translate }}</th>
-                <th>{{ "admin.routes.distance" | translate }} (km)</th>
-                <th>{{ "admin.routes.duration" | translate }}</th>
-                <th>{{ "admin.routes.status" | translate }}</th>
-                <th>{{ "admin.routes.actions" | translate }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#RT-001</td>
-                <td>Cairo</td>
-                <td>Alexandria</td>
-                <td>221</td>
-                <td>2h 45m</td>
-                <td>
-                  <span class="badge bg-success">{{
-                    "admin.routes.active" | translate
-                  }}</span>
-                </td>
-                <td>
-                  <div class="d-flex gap-1">
-                    <button
-                      class="btn btn-sm btn-outline-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editRouteModal"
+        <div class="card-body p-0">
+          <!-- Loading state -->
+          <div *ngIf="loading" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">{{ "common.loading" | translate }}</p>
+          </div>
+
+          <!-- Error state -->
+          <div *ngIf="error && !loading" class="alert alert-danger m-3">
+            {{ error }}
+          </div>
+
+          <!-- Empty state -->
+          <div
+            *ngIf="!loading && !error && routes.length === 0"
+            class="text-center p-5"
+          >
+            <i
+              class="bi bi-map-fill text-secondary"
+              style="font-size: 3rem"
+            ></i>
+            <h5 class="mt-3">{{ "admin.routes.no_routes_yet" | translate }}</h5>
+            <p class="text-muted">
+              {{ "admin.routes.create_first_route" | translate }}
+            </p>
+          </div>
+
+          <!-- Routes table -->
+          <div
+            class="table-responsive"
+            *ngIf="!loading && !error && routes.length > 0"
+          >
+            <table class="table table-hover table-striped mb-0 routes-table">
+              <thead>
+                <tr>
+                  <th class="route-id">
+                    {{ "admin.routes.route_id" | translate }}
+                  </th>
+                  <th class="route-from">
+                    {{ "admin.routes.from" | translate }}
+                  </th>
+                  <th class="route-to">{{ "admin.routes.to" | translate }}</th>
+                  <th class="route-distance">
+                    {{ "admin.routes.distance" | translate }}
+                  </th>
+                  <th class="route-duration">
+                    {{ "admin.routes.duration" | translate }}
+                  </th>
+                  <th class="route-status">
+                    {{ "admin.routes.status" | translate }}
+                  </th>
+                  <th class="route-actions text-end">
+                    {{ "admin.routes.actions" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let route of routes">
+                  <td class="route-id">
+                    <span class="fw-medium"
+                      >#RT-{{
+                        (route.id || 0).toString().padStart(3, "0")
+                      }}</span
                     >
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#RT-002</td>
-                <td>Cairo</td>
-                <td>Luxor</td>
-                <td>671</td>
-                <td>9h 20m</td>
-                <td>
-                  <span class="badge bg-success">{{
-                    "admin.routes.active" | translate
-                  }}</span>
-                </td>
-                <td>
-                  <div class="d-flex gap-1">
-                    <button
-                      class="btn btn-sm btn-outline-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editRouteModal"
+                  </td>
+                  <td class="route-from">{{ route.startCityName }}</td>
+                  <td class="route-to">{{ route.endCityName }}</td>
+                  <td class="route-distance">
+                    {{ route.distance }} {{ "admin.routes.km" | translate }}
+                  </td>
+                  <td class="route-duration">
+                    {{
+                      formatDuration(route.durationHours, route.durationMinutes)
+                    }}
+                  </td>
+                  <td class="route-status">
+                    <span
+                      class="badge rounded-pill"
+                      [ngClass]="route.isActive ? 'bg-success' : 'bg-secondary'"
                     >
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#RT-003</td>
-                <td>Alexandria</td>
-                <td>Luxor</td>
-                <td>790</td>
-                <td>10h 45m</td>
-                <td>
-                  <span class="badge bg-secondary">{{
-                    "admin.routes.inactive" | translate
-                  }}</span>
-                </td>
-                <td>
-                  <div class="d-flex gap-1">
+                      {{
+                        route.isActive
+                          ? ("admin.routes.active" | translate)
+                          : ("admin.routes.inactive" | translate)
+                      }}
+                    </span>
+                  </td>
+                  <td class="route-actions text-end">
                     <button
-                      class="btn btn-sm btn-outline-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editRouteModal"
+                      class="btn btn-danger btn-sm rounded-pill"
+                      (click)="deleteRoute(route.id || 0)"
                     >
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger">
                       <i class="bi bi-trash"></i>
+                      {{ "admin.routes.delete" | translate }}
                     </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div
+            class="d-flex justify-content-between align-items-center p-3 border-top"
+            *ngIf="totalPages > 1"
+          >
+            <div>
+              <span class="text-muted small me-2">
+                {{ "common.pagination.showing" | translate }}
+                {{ (currentPage - 1) * pageSize + 1 }} -
+                {{ Math.min(currentPage * pageSize, totalItems) }}
+                {{ "common.pagination.of" | translate }} {{ totalItems }}
+              </span>
+            </div>
+            <div>
+              <button
+                class="btn btn-sm btn-outline-secondary me-1"
+                [disabled]="currentPage === 1"
+                (click)="changePage(currentPage - 1)"
+              >
+                {{ "admin.routes.previous" | translate }}
+              </button>
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                [disabled]="currentPage === totalPages"
+                (click)="changePage(currentPage + 1)"
+              >
+                {{ "admin.routes.next" | translate }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Pagination -->
-    <nav aria-label="Page navigation" class="mt-4">
-      <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{
-            "admin.routes.previous" | translate
-          }}</a>
-        </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">{{
-            "admin.routes.next" | translate
-          }}</a>
-        </li>
-      </ul>
-    </nav>
   </div>
-</div>
 
-<!-- Add Route Modal -->
-<div
-  class="modal fade"
-  id="addRouteModal"
-  tabindex="-1"
-  aria-labelledby="addRouteModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addRouteModalLabel">
-          {{ "admin.routes.add_route" | translate }}
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="sourceCity" class="form-label">{{
-              "admin.routes.source_city" | translate
-            }}</label>
-            <select id="sourceCity" class="form-select">
-              <option selected disabled>
-                {{ "admin.routes.select_source" | translate }}
-              </option>
-              <option value="Cairo">{{ "cities.cairo" | translate }}</option>
-              <option value="Alexandria">{{ "cities.alexandria" | translate }}</option>
-              <option value="Luxor">{{ "cities.luxor" | translate }}</option>
-              <option value="Aswan">{{ "cities.aswan" | translate }}</option>
-              <option value="Hurghada">{{ "cities.hurghada" | translate }}</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="destinationCity" class="form-label">{{
-              "admin.routes.destination_city" | translate
-            }}</label>
-            <select id="destinationCity" class="form-select">
-              <option selected disabled>
-                {{ "admin.routes.select_destination" | translate }}
-              </option>
-              <option value="Cairo">{{ "cities.cairo" | translate }}</option>
-              <option value="Alexandria">{{ "cities.alexandria" | translate }}</option>
-              <option value="Luxor">{{ "cities.luxor" | translate }}</option>
-              <option value="Aswan">{{ "cities.aswan" | translate }}</option>
-              <option value="Hurghada">{{ "cities.hurghada" | translate }}</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="routeDistance" class="form-label">{{
-              "admin.routes.distance_km" | translate
-            }}</label>
-            <input
-              type="number"
-              class="form-control"
-              id="routeDistance"
-              placeholder="{{
-                'admin.routes.distance_placeholder' | translate
-              }}"
-            />
-          </div>
-          <div class="row mb-3">
-            <div class="col-6">
-              <label for="durationHours" class="form-label">{{
-                "admin.routes.duration_hours" | translate
-              }}</label>
-              <input
-                type="number"
-                class="form-control"
-                id="durationHours"
-                placeholder="{{ 'admin.routes.hours_placeholder' | translate }}"
-              />
-            </div>
-            <div class="col-6">
-              <label for="durationMinutes" class="form-label">{{
-                "admin.routes.duration_minutes" | translate
-              }}</label>
-              <input
-                type="number"
-                class="form-control"
-                id="durationMinutes"
-                placeholder="{{
-                  'admin.routes.minutes_placeholder' | translate
-                }}"
-                max="59"
-              />
-            </div>
-          </div>
-          <div class="form-check form-switch mb-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="routeStatus"
-              checked
-            />
-            <label class="form-check-label" for="routeStatus">{{
-              "admin.routes.route_status" | translate
-            }}</label>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          {{ "admin.routes.cancel" | translate }}
-        </button>
-        <button type="button" class="btn btn-primary">
-          {{ "admin.routes.save" | translate }}
-        </button>
+  <!-- Add Route Modal -->
+  <div
+    class="modal fade"
+    id="addRouteModal"
+    tabindex="-1"
+    aria-labelledby="addRouteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRouteModalLabel">
+            {{ "admin.routes.add_route" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            id="closeAddRouteModal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <app-route-create
+            (routeCreated)="onRouteCreated($event)"
+          ></app-route-create>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Edit Route Modal -->
-<div
-  class="modal fade"
-  id="editRouteModal"
-  tabindex="-1"
-  aria-labelledby="editRouteModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editRouteModalLabel">
-          {{ "admin.routes.edit_route" | translate }}
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="editSourceCity" class="form-label">{{
-              "admin.routes.source_city" | translate
-            }}</label>
-            <select id="editSourceCity" class="form-select">
-              <option>Cairo</option>
-              <option>Alexandria</option>
-              <option selected>Luxor</option>
-              <option>Aswan</option>
-              <option>Hurghada</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="editDestinationCity" class="form-label">{{
-              "admin.routes.destination_city" | translate
-            }}</label>
-            <select id="editDestinationCity" class="form-select">
-              <option>Cairo</option>
-              <option selected>Alexandria</option>
-              <option>Luxor</option>
-              <option>Aswan</option>
-              <option>Hurghada</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="editRouteDistance" class="form-label">{{
-              "admin.routes.distance_km" | translate
-            }}</label>
-            <input
-              type="number"
-              class="form-control"
-              id="editRouteDistance"
-              value="790"
-            />
-          </div>
-          <div class="row mb-3">
-            <div class="col-6">
-              <label for="editDurationHours" class="form-label">{{
-                "admin.routes.duration_hours" | translate
-              }}</label>
-              <input
-                type="number"
-                class="form-control"
-                id="editDurationHours"
-                value="10"
-              />
-            </div>
-            <div class="col-6">
-              <label for="editDurationMinutes" class="form-label">{{
-                "admin.routes.duration_minutes" | translate
-              }}</label>
-              <input
-                type="number"
-                class="form-control"
-                id="editDurationMinutes"
-                value="45"
-                max="59"
-              />
-            </div>
-          </div>
-          <div class="form-check form-switch mb-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="editRouteStatus"
-            />
-            <label class="form-check-label" for="editRouteStatus">{{
-              "admin.routes.route_status" | translate
-            }}</label>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          {{ "admin.routes.cancel" | translate }}
-        </button>
-        <button type="button" class="btn btn-primary">
-          {{ "admin.routes.update" | translate }}
-        </button>
+  <!-- Edit Route Modal -->
+  <div
+    class="modal fade"
+    id="editRouteModal"
+    tabindex="-1"
+    aria-labelledby="editRouteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editRouteModalLabel">
+            {{ "admin.routes.edit_route" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            id="closeEditRouteModal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- <app-route-edit
+            [route]="selectedRoute"
+            (routeUpdated)="onRouteUpdated($event)"
+          ></app-route-edit> -->
+        </div>
       </div>
     </div>
   </div>
