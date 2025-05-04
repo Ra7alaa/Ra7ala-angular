@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatbotService, BotResponse } from '../../services/chatbot.service';
@@ -17,11 +17,13 @@ interface ChatMessage {
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.css']
 })
-export class ChatbotComponent implements OnInit {
+export class ChatbotComponent implements OnInit, AfterViewChecked {
   isOpen = false;
   messages: ChatMessage[] = [];
   newMessage = '';
   isBotTyping = false;
+
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
   constructor(private chatbotService: ChatbotService) {}
 
@@ -33,6 +35,10 @@ export class ChatbotComponent implements OnInit {
       'What are the ticket prices?',
       'Where are the departure locations?'
     ]);
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   toggleChat() {
@@ -50,15 +56,21 @@ export class ChatbotComponent implements OnInit {
     // Simulate bot typing
     this.isBotTyping = true;
 
-    // Get response from service
-    this.chatbotService.getResponse(messageToSend).subscribe({
-      next: (response: BotResponse) => {
+    // Send message to API
+    this.chatbotService.sendMessage(messageToSend).subscribe({
+      next: (response) => {
         this.isBotTyping = false;
-        this.addBotMessage(response.text, response.options);
+        const botResponse = this.chatbotService.formatResponse(response);
+        this.addBotMessage(botResponse.text, botResponse.options);
       },
-      error: () => {
+      error: (error) => {
+        console.error('Chatbot API error:', error);
         this.isBotTyping = false;
-        this.addBotMessage('I apologize, but I encountered an error. Please try again.');
+        this.addBotMessage('I apologize, but I encountered an error. Please try again.', [
+          'Try again',
+          'Help',
+          'Contact support'
+        ]);
       }
     });
   }
@@ -78,5 +90,13 @@ export class ChatbotComponent implements OnInit {
       timestamp: new Date(),
       options
     });
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Error scrolling chat to bottom:', err);
+    }
   }
 }

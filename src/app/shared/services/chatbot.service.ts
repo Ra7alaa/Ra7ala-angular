@@ -1,16 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../features/auth/services/auth.service';
 
 export interface BotResponse {
   text: string;
   options?: string[];
+}
+//link with API
+
+export interface ChatbotApiResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    response: string;
+    sessionId: string;
+    success: boolean;
+    errorMessage: null | string;
+  };
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatbotService {
+  private apiUrl = `${environment.apiUrl}/api/ChatBot`;
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
+
   private commonQuestions = [
     'What destinations do you offer?',
     'How do I book a trip?',
@@ -35,33 +57,28 @@ export class ChatbotService {
     ['wifi', 'Yes, all our buses are equipped with free Wi-Fi for passengers. Would you like to know about other onboard amenities?']
   ]);
 
-  getResponse(message: string): Observable<BotResponse> {
-    const lowercaseMsg = message.toLowerCase();
-    let response: BotResponse = {
-      text: 'I apologize, but I didn\'t quite understand your question. Could you please rephrase it or choose from these common topics?',
-      options: this.commonQuestions
+  sendMessage(message: string): Observable<ChatbotApiResponse> {
+    const currentUser = this.authService.getCurrentUser();
+    const payload = {
+      Message: message,
+      userId: currentUser?.id || '1dd89d5a-1195-4f87-ab7d-6c5892b8ea1b' // Default user ID if not logged in
     };
 
-    // Check for keywords in the message
-    for (const [key, value] of this.responses.entries()) {
-      if (lowercaseMsg.includes(key.toLowerCase())) {
-        response = {
-          text: value,
-          options: ['Yes, please', 'No, thanks', 'Tell me more']
-        };
-        break;
-      }
-    }
+    return this.http.post<ChatbotApiResponse>(`${this.apiUrl}/message`, payload);
+  }
 
-    // Handle greetings
-    if (lowercaseMsg.includes('hi') || lowercaseMsg.includes('hello')) {
-      response = {
-        text: 'Hello! Welcome to Ra7ala! How may I assist you today?',
-        options: this.commonQuestions
+  // Convert API response to BotResponse format
+  formatResponse(apiResponse: ChatbotApiResponse): BotResponse {
+    if (!apiResponse.data.success) {
+      return {
+        text: apiResponse.data.errorMessage || 'Sorry, I encountered an error. Please try again.',
+        options: ['Try again', 'Help', 'Contact support']
       };
     }
 
-    // Simulate network delay
-    return of(response).pipe(delay(1000));
+    return {
+      text: apiResponse.data.response,
+      options: ['Tell me more', 'Ask another question', 'Help']
+    };
   }
 }
