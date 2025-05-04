@@ -212,6 +212,7 @@
       "upcoming": "Upcoming",
       "cancelled": "Cancelled",
       "route_distribution": "Route Distribution",
+      "no_recent_trips": "No recent trips found",
       "chart_placeholder": "Chart Placeholder",
       "cairo_alexandria": "Cairo - Alexandria",
       "cairo_luxor": "Cairo - Luxor",

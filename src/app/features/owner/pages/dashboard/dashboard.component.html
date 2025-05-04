@@ -230,34 +230,7 @@
                 <tr *ngFor="let company of recentCompanies">
                   <td>
                     <div class="d-flex align-items-center">
-                      <div
-                        class="company-logo me-2"
-                        style="
-                          width: 36px;
-                          height: 36px;
-                          background-color: #f0f0f0;
-                          border-radius: 4px;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        "
-                      >
-                        <img
-                          *ngIf="company.logoUrl"
-                          [src]="company.logoUrl"
-                          alt="{{ company.name }}"
-                          style="
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            border-radius: 4px;
-                          "
-                        />
-                        <i
-                          *ngIf="!company.logoUrl"
-                          class="fas fa-bus text-primary"
-                        ></i>
-                      </div>
+                      
                       <div>
                         <strong>{{ company.name }}</strong>
                       </div>

@@ -212,6 +212,8 @@
       "upcoming": "قادمة",
       "cancelled": "ملغاة",
       "route_distribution": "توزيع المسارات",
+      "no_recent_trips": "لا يوجد رحلات حديثة",
+
       "chart_placeholder": "الرسم البياني",
       "cairo_alexandria": "القاهرة - الإسكندرية",
       "cairo_luxor": "القاهرة - الأقصر",
