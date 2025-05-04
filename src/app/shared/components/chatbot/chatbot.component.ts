@@ -30,10 +30,9 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     // Add welcome message
     this.addBotMessage('Hello! Welcome to Ra7ala Assistant! How can I help you today?', [
-      'When is the next trip?',
-      'How can I book a ticket?',
-      'What are the ticket prices?',
-      'Where are the departure locations?'
+      'When will the next trip be?',
+      'Give me trips from Cairo to Alexandria',
+      'I want all trips will be available tomorrow' 
     ]);
   }
 
