@@ -78,7 +78,7 @@ export class ChatbotService {
 
     return {
       text: apiResponse.data.response,
-      options: ['Tell me more', 'Ask another question', 'Help']
+      // options: ['Tell me more', 'Ask another question', 'Help']
     };
   }
 }
