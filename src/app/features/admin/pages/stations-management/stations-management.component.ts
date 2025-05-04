@@ -18,12 +18,17 @@ import { TranslationService } from '../../../../core/localization/translation.se
 })
 export class StationsManagementComponent implements OnInit {
   stations: Station[] = [];
+  systemStations: Station[] = [];
+  companyStations: Station[] = [];
   loading = false;
   error: string | null = null;
   currentUser: User | null = null;
 
   // Expose UserRole enum to the template
   UserRole = UserRole;
+
+  // Active tab
+  activeTab: 'all' | 'system' | 'company' = 'all';
 
   // Filtering
   filterSystemOwned: boolean | null = null;
@@ -53,6 +58,14 @@ export class StationsManagementComponent implements OnInit {
     this.stationsService.getAllStations().subscribe({
       next: (stations) => {
         this.stations = stations;
+        // Separate stations into system and company owned
+        this.systemStations = stations.filter(
+          (station) => station.isSystemOwned || station.companyId === null
+        );
+        this.companyStations = stations.filter(
+          (station) => !station.isSystemOwned && station.companyId !== null
+        );
+
         this.totalItems = stations.length;
 
         // Check if current page is valid after data is loaded
@@ -65,6 +78,21 @@ export class StationsManagementComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  // Set active tab
+  setActiveTab(tab: 'all' | 'system' | 'company'): void {
+    this.activeTab = tab;
+    this.currentPage = 1; // Reset to first page when changing tabs
+
+    // Update filter based on tab
+    if (tab === 'system') {
+      this.filterSystemOwned = true;
+    } else if (tab === 'company') {
+      this.filterSystemOwned = false;
+    } else {
+      this.filterSystemOwned = null;
+    }
   }
 
   // Validate that current page is within valid range
@@ -83,7 +111,11 @@ export class StationsManagementComponent implements OnInit {
       // Apply system ownership filter if set
       if (
         this.filterSystemOwned !== null &&
-        station.isSystemOwned !== this.filterSystemOwned
+        ((this.filterSystemOwned &&
+          !station.isSystemOwned &&
+          station.companyId !== null) ||
+          (!this.filterSystemOwned &&
+            (station.isSystemOwned || station.companyId === null)))
       ) {
         return false;
       }
@@ -93,9 +125,12 @@ export class StationsManagementComponent implements OnInit {
         const term = this.searchTerm.toLowerCase();
         return (
           station.name.toLowerCase().includes(term) ||
-          station.cityName.toLowerCase().includes(term) ||
-          (station.companyName &&
-            station.companyName.toLowerCase().includes(term))
+          (station.cityName
+            ? station.cityName.toLowerCase().includes(term)
+            : false) ||
+          (station.companyName
+            ? station.companyName.toLowerCase().includes(term)
+            : false)
         );
       }
 
@@ -108,6 +143,51 @@ export class StationsManagementComponent implements OnInit {
     this.validateCurrentPage();
 
     // Apply pagination with fixed page size
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return filtered.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  // Get the filtered system stations
+  get filteredSystemStations(): Station[] {
+    const filtered = this.systemStations.filter((station) => {
+      // Apply search term if set
+      if (this.searchTerm && this.searchTerm.trim() !== '') {
+        const term = this.searchTerm.toLowerCase();
+        return (
+          station.name.toLowerCase().includes(term) ||
+          (station.cityName
+            ? station.cityName.toLowerCase().includes(term)
+            : false)
+        );
+      }
+      return true;
+    });
+
+    // Apply pagination
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return filtered.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  // Get the filtered company stations
+  get filteredCompanyStations(): Station[] {
+    const filtered = this.companyStations.filter((station) => {
+      // Apply search term if set
+      if (this.searchTerm && this.searchTerm.trim() !== '') {
+        const term = this.searchTerm.toLowerCase();
+        return (
+          station.name.toLowerCase().includes(term) ||
+          (station.cityName
+            ? station.cityName.toLowerCase().includes(term)
+            : false) ||
+          (station.companyName
+            ? station.companyName.toLowerCase().includes(term)
+            : false)
+        );
+      }
+      return true;
+    });
+
+    // Apply pagination
     const startIndex = (this.currentPage - 1) * this.pageSize;
     return filtered.slice(startIndex, startIndex + this.pageSize);
   }
@@ -181,78 +261,6 @@ export class StationsManagementComponent implements OnInit {
     }
   }
 
-  // Check if current user can create station
-  canCreateStation(): boolean {
-    if (!this.currentUser) return false;
-
-    // System Owners and SuperAdmins can create any station
-    if (
-      this.currentUser.userType === UserRole.SystemOwner ||
-      this.currentUser.userType === UserRole.SuperAdmin
-    ) {
-      return true;
-    }
-
-    // Admins can only create stations for their company
-    if (this.currentUser.userType === UserRole.Admin) {
-      return true; // They can create, but in the creation form we'll restrict to company stations
-    }
-
-    return false;
-  }
-
-  // Check if current user can edit a specific station
-  canEditStation(station: Station): boolean {
-    if (!this.currentUser) return false;
-
-    // System Owners and SuperAdmins can edit any station
-    if (
-      this.currentUser.userType === UserRole.SystemOwner ||
-      this.currentUser.userType === UserRole.SuperAdmin
-    ) {
-      return true;
-    }
-
-    // Admins can only edit their own company's stations
-    if (this.currentUser.userType === UserRole.Admin) {
-      // Can't edit system stations
-      if (station.isSystemOwned) {
-        return false;
-      }
-
-      // Can only edit stations belonging to their company
-      return station.companyId === this.currentUser.companyId;
-    }
-
-    return false;
-  }
-
-  // Check if current user can delete a specific station
-  canDeleteStation(station: Station): boolean {
-    if (!this.currentUser) return false;
-
-    // System Owners and SuperAdmins can delete any station
-    if (
-      this.currentUser.userType === UserRole.SystemOwner ||
-      this.currentUser.userType === UserRole.SuperAdmin
-    ) {
-      return true;
-    }
-
-    // Admins can only delete their own company's stations
-    if (this.currentUser.userType === UserRole.Admin) {
-      // Can't delete system stations
-      if (station.isSystemOwned) {
-        return false;
-      }
-
-      // Can only delete stations belonging to their company
-      return station.companyId === this.currentUser.companyId;
-    }
-
-    return false;
-  }
-
   // Navigate to station details
   viewStationDetails(id: number): void {
     this.router.navigate(['/admin/stations', id]);
@@ -260,51 +268,29 @@ export class StationsManagementComponent implements OnInit {
 
   // Navigate to station edit
   navigateToEdit(id: number): void {
-    const station = this.stations.find((s) => s.id === id);
-    if (station && !this.canEditStation(station)) {
-      alert(
-        this.translateService.translate('admin.stations.no_permission_edit')
-      );
-      return;
-    }
-
     this.router.navigate(['/admin/stations', id, 'edit']);
   }
 
   // Navigate to create new station
   navigateToCreate(): void {
-    if (!this.canCreateStation()) {
-      alert(
-        this.translateService.translate('admin.stations.no_permission_create')
-      );
-      return;
-    }
-
     this.router.navigate(['/admin/stations/create']);
   }
 
   // Delete a station
   deleteStation(id: number): void {
-    const station = this.stations.find((s) => s.id === id);
-    if (!station) {
-      alert(this.translateService.translate('admin.stations.not_found'));
-      return;
-    }
-
-    if (!this.canDeleteStation(station)) {
-      alert(
-        this.translateService.translate('admin.stations.no_permission_delete')
-      );
-      return;
-    }
-
     if (
       confirm(this.translateService.translate('admin.stations.confirm_delete'))
     ) {
       this.loading = true;
       this.stationsService.deleteStation(id).subscribe({
         next: () => {
+          // Update both the main stations list and the filtered lists
           this.stations = this.stations.filter((s) => s.id !== id);
+          this.systemStations = this.systemStations.filter((s) => s.id !== id);
+          this.companyStations = this.companyStations.filter(
+            (s) => s.id !== id
+          );
+          this.totalItems = this.stations.length;
           this.loading = false;
         },
         error: (err) => {
@@ -322,6 +308,15 @@ export class StationsManagementComponent implements OnInit {
   filterByOwnership(isSystemOwned: boolean | null): void {
     this.filterSystemOwned = isSystemOwned;
     this.currentPage = 1; // Reset to first page when filtering
+
+    // Update active tab based on filter
+    if (isSystemOwned === true) {
+      this.activeTab = 'system';
+    } else if (isSystemOwned === false) {
+      this.activeTab = 'company';
+    } else {
+      this.activeTab = 'all';
+    }
   }
 
   // Reset all filters
@@ -329,10 +324,13 @@ export class StationsManagementComponent implements OnInit {
     this.filterSystemOwned = null;
     this.searchTerm = '';
     this.currentPage = 1; // Reset to first page when clearing filters
+    this.activeTab = 'all';
   }
 
   // Helper method to get city translation
   getCityTranslation(cityName: string): string {
+    if (!cityName) return '';
+
     // Normalize city name to handle differences from API
     const normalizedCityName = this.normalizeCityName(cityName);
 

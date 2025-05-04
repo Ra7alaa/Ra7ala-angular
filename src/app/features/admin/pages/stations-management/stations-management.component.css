@@ -367,3 +367,130 @@
     display: none;
   }
 }
+
+/* Styling for the nav tabs */
+.nav-tabs .nav-link {
+  font-weight: 500;
+  color: #495057;
+  border-bottom-width: 3px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: transparent transparent #ddd;
+  color: #007bff;
+}
+
+.nav-tabs .nav-link.active {
+  color: #007bff;
+  border-color: transparent transparent #007bff;
+}
+
+/* Custom tab styling */
+.nav-tabs {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link {
+  color: var(--text-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  background-color: transparent;
+  border-bottom: 3px solid var(--primary-color);
+}
+
+/* Active tab styling to match screenshot */
+.nav-tabs .nav-link.active:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Badge styling for system and company counts */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.3em 0.6em;
+  border-radius: 8px;
+}
+
+.badge.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--success-color) !important;
+}
+
+/* Table styling */
+.table-responsive {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: var(--surface-color);
+  font-weight: 600;
+}
+
+/* Badge styling */
+.badge {
+  padding: 0.4em 0.65em;
+  font-weight: 500;
+}
+
+/* Table styling */
+.table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.btn-group .btn {
+  margin-right: 2px;
+}
+
+/* Empty state */
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Responsive card table */
+@media (max-width: 768px) {
+  .table-responsive {
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+}
+
+/* Tab with badge styling */
+.nav-link .badge {
+  font-size: 0.75em;
+  vertical-align: middle;
+}
+
+/* Add some spacing to the container */
+.container.py-4 {
+  min-height: 70vh;
+}

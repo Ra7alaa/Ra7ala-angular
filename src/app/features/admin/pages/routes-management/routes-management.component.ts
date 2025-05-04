@@ -34,6 +34,7 @@ import { RouteCreateComponent } from './components/route-create/route-create.com
 })
 export class RoutesManagementComponent implements OnInit {
   routes: Route[] = [];
+  filteredRoutes: Route[] = []; // New property to hold filtered routes
   loading = false;
   error: string | null = null;
   currentUser: User | null = null;
@@ -46,7 +47,6 @@ export class RoutesManagementComponent implements OnInit {
 
   // Filtering
   searchTerm = '';
-  statusFilter: 'all' | 'active' | 'inactive' = 'all';
 
   // Pagination
   currentPage = 1;
@@ -73,6 +73,9 @@ export class RoutesManagementComponent implements OnInit {
 
   // RTL control
   isRtl = false;
+
+  // Store all loaded routes for client-side filtering
+  private allRoutes: Route[] = [];
 
   constructor(
     private routesService: RoutesService,
@@ -107,13 +110,21 @@ export class RoutesManagementComponent implements OnInit {
           next: (response: PaginatedRoutesResponse) => {
             // Handle the API response format where routes are in data.routes
             if (response.data && response.data.routes) {
-              this.routes = response.data.routes;
+              this.allRoutes = response.data.routes; // Store all routes for filtering
+              this.routes = this.allRoutes; // Initially show all routes
+              this.filteredRoutes = this.allRoutes; // Initialize filtered routes
               this.totalItems = response.data.totalCount;
               this.totalPages = Math.ceil(
                 response.data.totalCount / response.data.pageSize
               );
+              // Apply any existing search filter
+              if (this.searchTerm) {
+                this.applySearchFilter();
+              }
             } else {
+              this.allRoutes = [];
               this.routes = [];
+              this.filteredRoutes = [];
               this.totalItems = 0;
               this.totalPages = 0;
             }
@@ -125,7 +136,9 @@ export class RoutesManagementComponent implements OnInit {
             this.error = 'Failed to load routes. Please try again.';
             this.loading = false;
             // Ensure routes is an empty array on error
+            this.allRoutes = [];
             this.routes = [];
+            this.filteredRoutes = [];
           },
         });
     } else {
@@ -136,13 +149,21 @@ export class RoutesManagementComponent implements OnInit {
           next: (response: PaginatedRoutesResponse) => {
             // Handle the API response format where routes are in data.routes
             if (response.data && response.data.routes) {
-              this.routes = response.data.routes;
+              this.allRoutes = response.data.routes; // Store all routes for filtering
+              this.routes = this.allRoutes; // Initially show all routes
+              this.filteredRoutes = this.allRoutes; // Initialize filtered routes
               this.totalItems = response.data.totalCount;
               this.totalPages = Math.ceil(
                 response.data.totalCount / response.data.pageSize
               );
+              // Apply any existing search filter
+              if (this.searchTerm) {
+                this.applySearchFilter();
+              }
             } else {
+              this.allRoutes = [];
               this.routes = [];
+              this.filteredRoutes = [];
               this.totalItems = 0;
               this.totalPages = 0;
             }
@@ -154,7 +175,9 @@ export class RoutesManagementComponent implements OnInit {
             this.error = 'Failed to load routes. Please try again.';
             this.loading = false;
             // Ensure routes is an empty array on error
+            this.allRoutes = [];
             this.routes = [];
+            this.filteredRoutes = [];
           },
         });
     }
@@ -162,17 +185,64 @@ export class RoutesManagementComponent implements OnInit {
 
   // Method to filter routes by status
   filterByStatus(status: 'all' | 'active' | 'inactive'): void {
-    this.statusFilter = status;
     // Reset to first page when filtering
     this.currentPage = 1;
     this.loadRoutes();
+    // Log the status filter that was applied
+    console.log(`Filter applied: ${status}`);
   }
 
-  // Method to search routes
+  // Method to search routes client-side
   searchRoutes(): void {
-    // Reset to first page when searching
-    this.currentPage = 1;
-    this.loadRoutes();
+    this.applySearchFilter();
+    console.log(`Search term applied: ${this.searchTerm}`);
+  }
+
+  // Apply search filter to routes
+  private applySearchFilter(): void {
+    if (!this.searchTerm || this.searchTerm.trim() === '') {
+      // If search term is empty, show all routes
+      this.routes = [...this.allRoutes];
+      this.filteredRoutes = this.routes;
+      this.updatePaginationForFilteredResults();
+      return;
+    }
+
+    const searchTermLower = this.searchTerm.toLowerCase().trim();
+
+    // Filter routes based on search term
+    this.filteredRoutes = this.allRoutes.filter((route) => {
+      return (
+        (route.startCityName &&
+          route.startCityName.toLowerCase().includes(searchTermLower)) ||
+        (route.endCityName &&
+          route.endCityName.toLowerCase().includes(searchTermLower)) ||
+        (route.id && route.id.toString().includes(searchTermLower)) ||
+        (route.distance && route.distance.toString().includes(searchTermLower))
+      );
+    });
+
+    // Update the routes to display based on current page
+    this.updatePaginationForFilteredResults();
+  }
+
+  // Update pagination info based on filtered results
+  private updatePaginationForFilteredResults(): void {
+    this.totalItems = this.filteredRoutes.length;
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+
+    // Reset to page 1 if current page is now invalid
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
+
+    // Get the slice of filtered routes for the current page
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = Math.min(
+      startIndex + this.pageSize,
+      this.filteredRoutes.length
+    );
+    this.routes = this.filteredRoutes.slice(startIndex, endIndex);
   }
 
   // Method for pagination
@@ -181,7 +251,30 @@ export class RoutesManagementComponent implements OnInit {
       return;
     }
     this.currentPage = page;
-    this.loadRoutes();
+    // Update displayed routes based on new page
+    this.updatePaginationForFilteredResults();
+  }
+
+  // Method for generating pagination range for responsive display
+  getPaginationRange(): number[] {
+    const range: number[] = [];
+    const maxVisiblePages = 5;
+
+    // Calculate the range of page numbers to display
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    const end = Math.min(this.totalPages, start + maxVisiblePages - 1);
+
+    // Adjust start if end is at max
+    if (end === this.totalPages) {
+      start = Math.max(1, end - maxVisiblePages + 1);
+    }
+
+    // Generate the range array
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+
+    return range;
   }
 
   // Format duration string from hours and minutes or estimatedDuration

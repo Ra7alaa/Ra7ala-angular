@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
@@ -21,6 +28,7 @@ import { Subscription } from 'rxjs';
 })
 export class AdminSidebarComponent implements OnInit, OnDestroy {
   @Input() isHidden = false;
+  @Output() sidebarClosed = new EventEmitter<void>();
 
   currentLanguage!: Language;
   currentTheme!: ThemeOption;
@@ -59,5 +67,11 @@ export class AdminSidebarComponent implements OnInit, OnDestroy {
   // Helper method to check if current theme is dark
   isDarkTheme(): boolean {
     return this.themeService.isDarkTheme();
+  }
+
+  // إغلاق الـ sidebar عندما يتم النقر على زر الإغلاق
+  closeSidebar(): void {
+    this.isHidden = true;
+    this.sidebarClosed.emit();
   }
 }

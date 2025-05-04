@@ -1,28 +1,41 @@
 <div
   class="admin-layout"
-  [ngClass]="{ 'dark-theme': isDarkTheme() }"
+  [ngClass]="{ 'dark-theme': isDarkTheme(), 'mobile-view': isMobileView }"
   [dir]="currentLanguage.rtl ? 'rtl' : 'ltr'"
+  (click)="closeSidebarOnOutsideClick($event)"
+  (keydown)="handleKeyboardEvent($event)"
+  tabindex="0"
+  role="region"
+  aria-label="Admin layout main container"
 >
+  <!-- Mobile overlay when sidebar is shown -->
+  <div
+    *ngIf="isMobileView && !isSidebarHidden"
+    class="mobile-overlay"
+    (click)="toggleSidebar()"
+    aria-hidden="true"
+  ></div>
+
   <div class="admin-wrapper container-fluid g-0">
-    <!-- Sidebar (removing collapse functionality) -->
+    <!-- Sidebar with responsive behavior -->
     <app-admin-sidebar
       [isHidden]="isSidebarHidden"
+      (sidebarClosed)="isSidebarHidden = true"
       class="d-block"
     ></app-admin-sidebar>
 
-    <!-- Main content area (removing classes related to sidebar collapse) -->
+    <!-- Main content area with responsive classes -->
     <div class="main-content" [class.sidebar-hidden]="isSidebarHidden">
-      <!-- Admin header - with profile section -->
-      <header class="admin-header">
-        <div class="d-flex justify-content-between align-items-center w-100">
-          <!-- Title on the left -->
-          <div class="d-flex align-items-center">
-            <h1 class="admin-title">
-              {{ "admin.dashboard_title" | translate }}
-            </h1>
-          </div>
-        </div>
-      </header>
+      <!-- Toggle button for mobile -->
+      <div class="mobile-toggle-container">
+        <button
+          class="toggle-sidebar-btn"
+          (click)="toggleSidebar()"
+          aria-label="Toggle sidebar"
+        >
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
 
       <!-- Admin content -->
       <div class="admin-content">

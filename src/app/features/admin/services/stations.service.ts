@@ -1,12 +1,17 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import {
   Station,
   StationCreateRequest,
   StationUpdateRequest,
 } from '../models/station.model';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,85 +19,41 @@ import { environment } from '../../../../environments/environment';
 export class StationsService {
   private apiUrl = `${environment.apiUrl}/api/Station`;
 
-  // Mock data for development
-  private mockStations: Station[] = [
-    {
-      id: 1,
-      name: 'Cairo Main Station',
-      latitude: 30.0444,
-      longitude: 31.2357,
-      cityName: 'Cairo',
-      isSystemOwned: true,
-      companyId: 0,
-    },
-    {
-      id: 2,
-      name: 'Alexandria Station',
-      latitude: 31.2001,
-      longitude: 29.9187,
-      cityName: 'Alexandria',
-      isSystemOwned: true,
-      companyId: 0,
-    },
-    {
-      id: 3,
-      name: 'Sharm El Sheikh Station',
-      latitude: 27.9158,
-      longitude: 34.33,
-      cityName: 'Sharm El Sheikh',
-      isSystemOwned: false,
-      companyName: 'Eastern Tourism Company',
-      companyId: 5,
-    },
-  ];
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  constructor(private http: HttpClient) {}
-
-  // Get HTTP options with headers
   private getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      }),
-    };
-  }
+    const currentUser = this.authService.getCurrentUser();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
 
-  // Get all stations
-  getAllStations(): Observable<Station[]> {
-    // Use mock data if specified in environment
-    if (environment.useMockData) {
-      return of(this.mockStations);
+    if (currentUser && currentUser.token) {
+      return {
+        headers: headers.set('Authorization', `Bearer ${currentUser.token}`),
+      };
     }
 
-    // Use API if not using mock data
-    return this.http.get<Station[]>(this.apiUrl, this.getHttpOptions()).pipe(
-      map((stations) => {
-        // Ensure isSystemOwned is set correctly based on companyId
-        return stations.map((station) => {
-          station.isSystemOwned = station.companyId === null;
-          return station;
-        });
-      }),
-      catchError((error) => {
+    return { headers };
+  }
+
+  getAllStations(): Observable<Station[]> {
+    const currentUser = this.authService.getCurrentUser();
+    const companyId = currentUser?.companyId;
+
+    const endpoint = companyId
+      ? `${this.apiUrl}/system-and-company/${companyId}`
+      : this.apiUrl;
+
+    return this.http.get<Station[]>(endpoint, this.getHttpOptions()).pipe(
+      catchError((error: HttpErrorResponse) => {
         console.error('Error fetching stations', error);
         return throwError(() => new Error('Failed to load stations'));
       })
     );
   }
 
-  // Get station by ID
   getStationById(id: number): Observable<Station> {
-    // Use mock data if specified in environment
-    if (environment.useMockData) {
-      const station = this.mockStations.find((s) => s.id === id);
-      if (station) {
-        return of(station);
-      }
-      return throwError(() => new Error('Station not found'));
-    }
-
-    // Use API if not using mock data
     return this.http
       .get<Station>(`${this.apiUrl}/${id}`, this.getHttpOptions())
       .pipe(
@@ -103,64 +64,70 @@ export class StationsService {
       );
   }
 
-  // Create new station
   createStation(station: StationCreateRequest): Observable<Station> {
-    // Check if companyId is null and set isSystemOwned accordingly
-    if (station.companyId === null) {
-      station.isSystemOwned = true;
-    } else if (station.isSystemOwned) {
-      station.companyId = 0;
+    const currentUser = this.authService.getCurrentUser();
+
+    if (!currentUser?.companyId) {
+      return throwError(
+        () => new Error('Company ID is required to create a station')
+      );
     }
 
-    // Use mock data if specified in environment
-    if (environment.useMockData) {
-      const newStation: Station = {
-        ...station,
-        id:
-          this.mockStations.length > 0
-            ? Math.max(...this.mockStations.map((s) => s.id || 0)) + 1
-            : 1,
-      };
-      this.mockStations.push(newStation);
-      return of(newStation);
+    if (!station.cityName) {
+      return throwError(
+        () => new Error('City name is required to create a station')
+      );
     }
 
-    // Use API if not using mock data
+    const batchRequest = [
+      {
+        name: station.name,
+        latitude: Number(station.latitude),
+        longitude: Number(station.longitude),
+        cityId: Number(station.cityId),
+        cityName: station.cityName,
+        companyId: Number(currentUser.companyId),
+      },
+    ];
+
+    console.log('Creating station using batch endpoint:', batchRequest);
+
     return this.http
-      .post<Station>(this.apiUrl, station, this.getHttpOptions())
+      .post<Station[]>(
+        `${this.apiUrl}/company/batch`,
+        batchRequest,
+        this.getHttpOptions()
+      )
       .pipe(
-        catchError((error) => {
-          console.error('Error creating station', error);
-          return throwError(() => new Error('Failed to create station'));
+        map((stations) => {
+          if (stations && stations.length > 0) {
+            console.log('Station created successfully:', stations[0]);
+            return stations[0];
+          }
+          throw new Error('No station returned from creation');
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error creating station:', error);
+          let errorMessage = 'Failed to create station';
+
+          if (error.error && typeof error.error === 'string') {
+            errorMessage += ': ' + error.error;
+          } else if (error.error?.message) {
+            errorMessage += ': ' + error.error.message;
+          } else if (error.message) {
+            errorMessage += ': ' + error.message;
+          }
+
+          return throwError(() => new Error(errorMessage));
         })
       );
   }
 
-  // Update station
   updateStation(station: Station | StationUpdateRequest): Observable<Station> {
-    // Make sure we have an ID
     if (!station.id) {
       return throwError(() => new Error('Station ID is required for updates'));
     }
 
-    // Check if companyId is null and set isSystemOwned accordingly
-    if (station.companyId === null) {
-      station.isSystemOwned = true;
-      station.companyId = 0; // Ensure companyId is 0 for system-owned stations
-    }
-
-    // Use mock data if specified in environment
-    if (environment.useMockData) {
-      const index = this.mockStations.findIndex((s) => s.id === station.id);
-      if (index !== -1) {
-        const updatedStation = { ...this.mockStations[index], ...station };
-        this.mockStations[index] = updatedStation;
-        return of(updatedStation);
-      }
-      return throwError(() => new Error('Station not found'));
-    }
-
-    // Use API if not using mock data
     return this.http
       .put<Station>(
         `${this.apiUrl}/${station.id}`,
@@ -175,19 +142,7 @@ export class StationsService {
       );
   }
 
-  // Delete station
   deleteStation(id: number): Observable<boolean> {
-    // Use mock data if specified in environment
-    if (environment.useMockData) {
-      const index = this.mockStations.findIndex((s) => s.id === id);
-      if (index !== -1) {
-        this.mockStations.splice(index, 1);
-        return of(true);
-      }
-      return throwError(() => new Error('Station not found'));
-    }
-
-    // Use API if not using mock data
     return this.http
       .delete<Station>(`${this.apiUrl}/${id}`, this.getHttpOptions())
       .pipe(
@@ -199,16 +154,7 @@ export class StationsService {
       );
   }
 
-  // Get stations by ownership (system or company)
   getStationsByOwnership(isSystemOwned: boolean): Observable<Station[]> {
-    // Use mock data if specified in environment
-    if (environment.useMockData) {
-      return of(
-        this.mockStations.filter((s) => s.isSystemOwned === isSystemOwned)
-      );
-    }
-
-    // Use API if not using mock data
     const url = `${this.apiUrl}?isSystemOwned=${isSystemOwned}`;
     return this.http.get<Station[]>(url, this.getHttpOptions()).pipe(
       catchError((error) => {

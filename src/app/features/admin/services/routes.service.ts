@@ -5,6 +5,7 @@ import {
   RouteCreateRequest,
   RouteResponse,
   PaginatedRoutesResponse,
+  RoutesResponse,
 } from '../models/route.model';
 import { environment } from '../../../../environments/environment';
 
@@ -132,6 +133,21 @@ export class RoutesService {
           return throwError(() => new Error('Failed to load routes'));
         })
       );
+  }
+
+  // Get active routes (useful for dropdowns)
+  getActiveRoutes(companyId: number | null = null): Observable<RoutesResponse> {
+    let url = `${this.apiUrl}/active`;
+    if (companyId) {
+      url += `?companyId=${companyId}`;
+    }
+
+    return this.http.get<RoutesResponse>(url, this.getHttpOptions()).pipe(
+      catchError((error) => {
+        console.error('Error fetching active routes:', error);
+        return throwError(() => new Error('Failed to load active routes'));
+      })
+    );
   }
 
   // Create new route

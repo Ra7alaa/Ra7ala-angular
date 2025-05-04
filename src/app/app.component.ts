@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GridModule, PagerModule } from '@syncfusion/ej2-angular-grids';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { LayoutModule } from './layout/layout.module';
 
 // Import our core services
 import { ThemeService } from './core/themes/theme.service';
 import { LanguageService } from './core/localization/language.service';
 import { TranslationService } from './core/localization/translation.service';
+import { AuthService } from './features/auth/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,16 +18,46 @@ import { TranslationService } from './core/localization/translation.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Ra7ala';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private themeService: ThemeService,
     private languageService: LanguageService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Initialize app settings
+    this.initializeAppSettings();
+
+    // Monitor authentication state changes
+    this.monitorAuthState();
+
+    // Handle route changes
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((event: NavigationEnd) => {
+        // Check for 403 errors
+        if (event.url === '/error/403') {
+          console.log('On 403 error page, checking auth state...');
+          this.tryRecoverFromError();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private initializeAppSettings(): void {
     // Initialize theme based on stored preference or system setting
     const currentTheme = this.themeService.getCurrentTheme();
     this.themeService.setTheme(currentTheme);
@@ -37,5 +70,40 @@ export class AppComponent implements OnInit {
     console.log(
       `App initialized with theme: ${currentTheme}, language: ${currentLang}`
     );
+  }
+
+  private monitorAuthState(): void {
+    // Subscribe to authentication state changes
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => {
+        console.log('Auth state changed:', !!user);
+
+        if (user) {
+          // User is authenticated - we don't need to read from localStorage anymore
+          // as the BehaviorSubject in AuthService will hold the current user
+          console.log(
+            `User authenticated as: ${user.username}, role: ${user.userType}`
+          );
+        }
+      });
+  }
+
+  // Method to try recovering from errors
+  private tryRecoverFromError(): void {
+    // Try to recover only if the user is authenticated
+    if (this.authService.isLoggedIn()) {
+      console.log('User is authenticated, trying to recover...');
+
+      // Get the current authenticated user
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        // Navigate based on user role
+        this.authService.redirectBasedOnRole(currentUser);
+      }
+    } else {
+      console.log('No valid authentication found, redirecting to login');
+      this.router.navigate(['/auth/login']);
+    }
   }
 }

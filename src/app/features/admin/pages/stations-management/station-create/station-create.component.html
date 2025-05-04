@@ -12,69 +12,73 @@
   <div class="card">
     <div class="card-body">
       <form [formGroup]="stationForm" (ngSubmit)="onSubmit()">
-        <!-- Error alert -->
         <div *ngIf="error" class="alert alert-danger mb-4">
           {{ error }}
         </div>
 
-        <!-- Station Name -->
         <div class="mb-3">
-          <label for="name" class="form-label"
-            >{{ "admin.stations.create_station.name" | translate }} *</label
-          >
+          <label for="name" class="form-label">
+            {{ "admin.stations.create_station.name" | translate }} *
+          </label>
           <input
             type="text"
             class="form-control"
             id="name"
             formControlName="name"
-            [class.is-invalid]="
-              stationForm.get('name')?.invalid &&
-              stationForm.get('name')?.touched
-            "
+            [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)"
           />
-          <div class="invalid-feedback">
-            {{ "admin.stations.create_station.name_required" | translate }}
+          <div
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="name?.errors?.['required']">
+              {{ "admin.stations.create_station.name_required" | translate }}
+            </div>
+            <div *ngIf="name?.errors?.['minlength']">
+              {{ "admin.stations.create_station.name_min_length" | translate }}
+            </div>
           </div>
         </div>
 
-        <!-- City Name -->
         <div class="mb-3">
-          <label for="cityName" class="form-label"
-            >{{ "admin.stations.create_station.city" | translate }} *</label
-          >
+          <label for="cityId" class="form-label">
+            {{ "admin.stations.create_station.city" | translate }} *
+          </label>
           <select
-            class="form-control"
-            id="cityName"
-            formControlName="cityName"
+            class="form-select"
+            id="cityId"
+            formControlName="cityId"
             [class.is-invalid]="
-              stationForm.get('cityName')?.invalid &&
-              stationForm.get('cityName')?.touched
+              cityId?.invalid && (cityId?.dirty || cityId?.touched)
             "
           >
             <option value="" disabled selected>
               {{ "locations.select_city" | translate }}
             </option>
-            <option value="Cairo">{{ "cities.cairo" | translate }}</option>
-            <option value="Alexandria">
-              {{ "cities.alexandria" | translate }}
+            <option *ngIf="loadingCities">
+              {{ "common.loading" | translate }}...
             </option>
-            <option value="Luxor">{{ "cities.luxor" | translate }}</option>
-            <option value="Aswan">{{ "cities.aswan" | translate }}</option>
-            <option value="Hurghada">
-              {{ "cities.hurghada" | translate }}
-            </option>
+            <ng-container *ngIf="!loadingCities">
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </ng-container>
           </select>
-          <div class="invalid-feedback">
-            {{ "admin.stations.create_station.city_required" | translate }}
+          <div
+            *ngIf="cityId?.invalid && (cityId?.dirty || cityId?.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="cityId?.errors?.['required']">
+              {{ "admin.stations.create_station.city_required" | translate }}
+            </div>
           </div>
         </div>
 
-        <!-- Location (Latitude & Longitude) -->
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="latitude" class="form-label"
-              >{{ "admin.stations.latitude" | translate }} *</label
-            >
+            <label for="latitude" class="form-label">
+              {{ "admin.stations.latitude" | translate }} *
+            </label>
             <input
               type="number"
               class="form-control"
@@ -82,18 +86,30 @@
               formControlName="latitude"
               step="0.0001"
               [class.is-invalid]="
-                stationForm.get('latitude')?.invalid &&
-                stationForm.get('latitude')?.touched
+                latitude?.invalid && (latitude?.dirty || latitude?.touched)
               "
             />
-            <div class="invalid-feedback">
-              {{ "admin.stations.valid_latitude_required" | translate }}
+            <div
+              *ngIf="
+                latitude?.invalid && (latitude?.dirty || latitude?.touched)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="latitude?.errors?.['required']">
+                {{ "admin.stations.valid_latitude_required" | translate }}
+              </div>
+              <div
+                *ngIf="latitude?.errors?.['min'] || latitude?.errors?.['max']"
+              >
+                {{ "admin.stations.latitude_range" | translate }}
+              </div>
             </div>
           </div>
+
           <div class="col-md-6">
-            <label for="longitude" class="form-label"
-              >{{ "admin.stations.longitude" | translate }} *</label
-            >
+            <label for="longitude" class="form-label">
+              {{ "admin.stations.longitude" | translate }} *
+            </label>
             <input
               type="number"
               class="form-control"
@@ -101,148 +117,27 @@
               formControlName="longitude"
               step="0.0001"
               [class.is-invalid]="
-                stationForm.get('longitude')?.invalid &&
-                stationForm.get('longitude')?.touched
+                longitude?.invalid && (longitude?.dirty || longitude?.touched)
               "
             />
-            <div class="invalid-feedback">
-              {{ "admin.stations.valid_longitude_required" | translate }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Ownership - Only visible to system owners -->
-        <div class="mb-4" *ngIf="canCreateSystemStations">
-          <label class="form-label d-block" for="ownershipGroup"
-            >{{
-              "admin.stations.create_station.ownership" | translate
-            }}
-            *</label
-          >
-          <div
-            class="btn-group"
-            role="group"
-            id="ownershipGroup"
-            attr.aria-label="{{
-              'admin.stations.create_station.ownership' | translate
-            }}"
-          >
-          
-            <input
-              type="radio"
-              class="btn-check"
-              name="isSystemOwned"
-              id="systemOwned"
-              [value]="true"
-              formControlName="isSystemOwned"
-            />
-            <label class="btn btn-outline-primary" for="systemOwned">
-              {{ "admin.stations.create_station.system_owned" | translate }}
-            </label>
-
-            <input
-              type="radio"
-              class="btn-check"
-              name="isSystemOwned"
-              id="companyOwned"
-              [value]="false"
-              formControlName="isSystemOwned"
-            />
-            <label class="btn btn-outline-primary" for="companyOwned">
-              {{ "admin.stations.create_station.company_owned" | translate }}
-            </label>
-          </div>
-        </div>
-
-        <!-- Company Information notice for company admins -->
-        <div
-          *ngIf="currentUser?.userType === UserRole.Admin"
-          class="alert alert-info mb-4"
-        >
-          <i class="bi bi-info-circle-fill me-2"></i>
-          {{ "admin.stations.company_info_notice" | translate }}
-          <strong>{{ currentUser?.companyName }}</strong>
-        </div>
-
-        <!-- Company Information for company admins (read-only) -->
-        <div *ngIf="currentUser?.userType === UserRole.Admin" class="mb-3">
-          <div class="card bg-light">
-            <div class="card-body">
-              <h5 class="card-title">
-                {{ "admin.stations.company_info" | translate }}
-              </h5>
-
-              <div class="mb-3">
-                <label for="companyNameReadOnly" class="form-label">{{
-                  "admin.stations.create_station.company" | translate
-                }}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="companyNameReadOnly"
-                  [value]="currentUser?.companyName"
-                  readonly
-                />
-                <small class="form-text text-muted">
-                  {{ "admin.stations.company_cannot_change" | translate }}
-                </small>
+            <div
+              *ngIf="
+                longitude?.invalid && (longitude?.dirty || longitude?.touched)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="longitude?.errors?.['required']">
+                {{ "admin.stations.valid_longitude_required" | translate }}
+              </div>
+              <div
+                *ngIf="longitude?.errors?.['min'] || longitude?.errors?.['max']"
+              >
+                {{ "admin.stations.longitude_range" | translate }}
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Company Information (only shown if company owned and user is system owner) -->
-        <div *ngIf="!isSystemOwned && canCreateSystemStations" class="mb-3">
-          <div class="card bg-light">
-            <div class="card-body">
-              <h5 class="card-title">
-                {{ "admin.stations.company_info" | translate }}
-              </h5>
-
-              <div class="mb-3">
-                <label for="companyName" class="form-label"
-                  >{{
-                    "admin.stations.create_station.company" | translate
-                  }}
-                  *</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="companyName"
-                  formControlName="companyName"
-                  [class.is-invalid]="
-                    !isSystemOwned &&
-                    stationForm.get('companyName')?.invalid &&
-                    stationForm.get('companyName')?.touched
-                  "
-                />
-                <div class="invalid-feedback">
-                  {{
-                    "admin.stations.create_station.company_required" | translate
-                  }}
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="companyId" class="form-label">{{
-                  "admin.stations.company_id" | translate
-                }}</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="companyId"
-                  formControlName="companyId"
-                />
-                <small class="form-text text-muted">
-                  {{ "admin.stations.optional_company_id" | translate }}
-                </small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Submit Buttons -->
         <div class="d-flex justify-content-end gap-2 mt-4">
           <button
             type="button"
@@ -252,7 +147,11 @@
           >
             {{ "admin.stations.create_station.cancel" | translate }}
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="loading">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading || stationForm.invalid"
+          >
             <span
               *ngIf="loading"
               class="spinner-border spinner-border-sm me-2"

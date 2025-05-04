@@ -1,7 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../features/auth/services/auth.service';
 
 export interface City {
   id: number;
@@ -52,27 +57,53 @@ export interface StationResponse {
 export class CitiesService {
   private apiUrl = `${environment.apiUrl}/api`;
 
-  constructor(private http: HttpClient) {}
+  // Define a fallback list of Egyptian cities in case the API fails
+  private fallbackCities: City[] = [
+    { id: 1, name: 'Cairo', countryId: 1 },
+    { id: 2, name: 'Alexandria', countryId: 1 },
+    { id: 3, name: 'Luxor', countryId: 1 },
+    { id: 4, name: 'Aswan', countryId: 1 },
+    { id: 5, name: 'Hurghada', countryId: 1 },
+    { id: 6, name: 'Sharm El Sheikh', countryId: 1 },
+    { id: 7, name: 'Damietta', countryId: 1 },
+    { id: 8, name: 'El Mahalla El Kubra', countryId: 1 },
+    { id: 9, name: 'Tanta', countryId: 1 },
+    { id: 10, name: 'Mansoura', countryId: 1 },
+    { id: 11, name: 'Kafr El Sheikh', countryId: 1 },
+    { id: 12, name: 'El Santa', countryId: 1 },
+  ];
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Get HTTP options with headers
   private getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      }),
-    };
+    const currentUser = this.authService.getCurrentUser();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
+
+    // Add authorization header if user is logged in
+    if (currentUser && currentUser.token) {
+      return {
+        headers: headers.set('Authorization', `Bearer ${currentUser.token}`),
+      };
+    }
+
+    return { headers };
   }
 
   // Get all cities
   getAllCities(): Observable<City[]> {
+    console.log('Fetching cities from API...');
+
     return this.http
       .get<unknown>(`${this.apiUrl}/City`, this.getHttpOptions())
       .pipe(
         map((response) => {
           console.log('Cities API Response:', response);
 
-          // If we have an array directly, use it (as seen in your console)
+          // If we have an array directly, use it
           if (Array.isArray(response)) {
             return response as City[];
           }
@@ -86,8 +117,15 @@ export class CitiesService {
           console.log('Received empty cities data from API');
           return [];
         }),
-        catchError((error) => {
+        catchError((error: HttpErrorResponse) => {
           console.error('Error retrieving cities from API:', error);
+
+          // If we get a 403 Forbidden error, use the fallback cities list
+          if (error.status === 403) {
+            console.log('API access forbidden. Using fallback cities list.');
+            return of(this.fallbackCities);
+          }
+
           return throwError(() => new Error('Failed to load cities from API'));
         })
       );

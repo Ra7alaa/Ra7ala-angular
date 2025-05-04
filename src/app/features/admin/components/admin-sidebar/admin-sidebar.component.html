@@ -6,11 +6,19 @@
   }"
 >
   <div class="sidebar-header">
-    <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
       <h5 class="fw-bold mb-0">
         {{ "admin.sidebar.title" | translate }}
       </h5>
     </div>
+    <!-- زر الإغلاق الذي يظهر فقط في عرض الموبايل -->
+    <button
+      class="sidebar-close-btn"
+      (click)="closeSidebar()"
+      aria-label="Close sidebar"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
   </div>
 
   <ul class="nav flex-column">
@@ -67,6 +75,18 @@
           }"
         ></i>
         <span>{{ "admin.sidebar.routes" | translate }}</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/buses" routerLinkActive="active">
+        <i
+          class="bi bi-truck-front"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.buses" | translate }}</span>
       </a>
     </li>
     <li class="nav-item">

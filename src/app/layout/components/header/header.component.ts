@@ -41,7 +41,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
-        this.currentUser = { ...user, id: Number(user.id) };
+        // Convert id to string if it's a number to avoid type errors
+        this.currentUser = {
+          ...user,
+          id: typeof user.id === 'number' ? String(user.id) : user.id,
+        };
       } else {
         this.currentUser = null;
       }

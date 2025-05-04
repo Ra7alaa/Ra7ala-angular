@@ -1,1 +1,39 @@
 /* Styling for station-create component */
+
+/* نمط لبطاقة النموذج */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+}
+
+/* تأثير التحويم على أزرار النموذج */
+.btn:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
+
+/* تصميم الرؤوس */
+h1 {
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+/* تأثيرات الحقول عند التركيز */
+.form-control:focus,
+.form-select:focus {
+  border-color: #6c757d;
+  box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25);
+}
+
+/* نمط للتسميات */
+.form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+/* نمط للحقول المطلوبة */
+.form-label::after {
+  content: " *";
+  color: #dc3545;
+}

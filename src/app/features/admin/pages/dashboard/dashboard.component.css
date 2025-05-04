@@ -4,6 +4,67 @@
   --primary-color-light: #ffcc00;
 }
 
+/* Button Styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: #e68a00;
+  border-color: #e68a00;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.rounded-pill {
+  border-radius: 50rem !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn i {
+  vertical-align: middle;
+}
+
+/* Action button styles - updated */
+.action-btn.rounded-circle {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary.rounded-circle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+}
+
+.btn-outline-success.rounded-circle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-outline-danger.rounded-circle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
 /* RTL specific adjustments for dashboard */
 [dir="rtl"] .admin-dashboard .stat-card .stat-change,
 [dir="rtl"] .admin-dashboard .stat-card .text-muted span {

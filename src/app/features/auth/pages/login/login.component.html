@@ -1,109 +1,109 @@
 <div class="login-wrapper">
-  <div class="login-left">
-    <img
-      src="assets/images/bus.svg"
-      alt="{{ 'auth.login_image_alt' | translate }}"
-      class="login-image"
-    />
-  </div>
-  <div class="login-right">
-    <h1 class="logo-text">Ra7ala</h1>
+  <div class="login-container">
+    <h1>Ra7ala</h1>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Error message -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Email/Username field -->
       <div class="form-group">
-        <label>{{ "auth.email_or_username" | translate }}</label>
+        <label for="emailOrUsername">Email or Username</label>
         <div class="input-wrapper">
-          <i class="fa fa-envelope icon"></i>
           <input
             type="text"
+            id="emailOrUsername"
             formControlName="emailOrUsername"
-            class="form-control email-input"
-            placeholder="{{ 'auth.enter_email_or_username' | translate }}"
             [ngClass]="{
               'is-invalid':
                 loginForm.get('emailOrUsername')?.invalid &&
-                (loginForm.get('emailOrUsername')?.dirty ||
-                  loginForm.get('emailOrUsername')?.touched)
+                loginForm.get('emailOrUsername')?.touched
             }"
+            placeholder="Enter your email or username"
           />
           <div
-            class="invalid-feedback"
             *ngIf="
               loginForm.get('emailOrUsername')?.invalid &&
-              (loginForm.get('emailOrUsername')?.dirty ||
-                loginForm.get('emailOrUsername')?.touched)
+              loginForm.get('emailOrUsername')?.touched
             "
+            class="error-text"
           >
-            {{ "auth.email_username_required" | translate }}
+            Email or username is required
           </div>
         </div>
       </div>
 
+      <!-- Password field -->
       <div class="form-group">
-        <label>{{ "auth.password" | translate }}</label>
+        <label for="password">Password</label>
         <div class="input-wrapper">
-          <i class="fa fa-lock icon"></i>
           <input
             [type]="showPassword ? 'text' : 'password'"
+            id="password"
             formControlName="password"
-            placeholder="{{ 'auth.password' | translate }}"
             [ngClass]="{
               'is-invalid':
                 loginForm.get('password')?.invalid &&
-                (loginForm.get('password')?.dirty ||
-                  loginForm.get('password')?.touched)
+                loginForm.get('password')?.touched
             }"
+            placeholder="Enter your password"
           />
-          <span class="password-toggle" (click)="togglePasswordVisibility()">
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            (keydown.enter)="togglePasswordVisibility()"
+            (keydown.space)="
+              togglePasswordVisibility(); $event.preventDefault()
+            "
+            tabindex="0"
+            aria-label="Toggle password visibility"
+          >
             <i
               class="fa"
               [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
             ></i>
-          </span>
+          </button>
           <div
-            class="invalid-feedback"
             *ngIf="
               loginForm.get('password')?.invalid &&
-              (loginForm.get('password')?.dirty ||
-                loginForm.get('password')?.touched)
+              loginForm.get('password')?.touched
             "
+            class="error-text"
           >
-            {{ "auth.password_required" | translate }}
+            Password is required
           </div>
         </div>
       </div>
 
+      <!-- Remember me checkbox -->
       <div class="form-options">
         <div class="remember-me">
-          <input type="checkbox" id="remember" />
-          <label for="remember">{{ "auth.remember_me" | translate }}</label>
+          <input type="checkbox" id="rememberMe" formControlName="rememberMe" />
+          <label for="rememberMe">Remember me</label>
         </div>
-        <a routerLink="/auth/forgot-password" class="forgot">
-          {{ "auth.forgot_password" | translate }}
-        </a>
+        <a routerLink="/auth/forgot-password" class="forgot-link"
+          >Forgot password?</a
+        >
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
-
+      <!-- Login button -->
       <button
         type="submit"
-        class="btn-login"
         [disabled]="loginForm.invalid || isSubmitting"
+        class="btn-login"
       >
-        <span *ngIf="!isSubmitting">{{ "auth.login" | translate }}</span>
+        <span *ngIf="!isSubmitting">Login</span>
         <span *ngIf="isSubmitting">
-          <i class="fa fa-spinner fa-spin"></i>
-          {{ "auth.logging_in" | translate }}
+          <i class="fa fa-spinner fa-spin"></i> Logging in...
         </span>
       </button>
 
-      <p class="signup-link">
-        {{ "auth.not_member_yet" | translate }}
-        <a routerLink="/auth/register">{{
-          "auth.create_account" | translate
-        }}</a>
+      <!-- Register link -->
+      <p class="register-text">
+        Don't have an account? <a routerLink="/auth/register">Sign Up</a>
       </p>
     </form>
   </div>

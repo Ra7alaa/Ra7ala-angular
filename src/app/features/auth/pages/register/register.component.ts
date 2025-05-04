@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { PassengerRegisterRequest } from '../../models/user.model';
+import { PassengerRegisterRequest, User } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -146,7 +146,7 @@ export class RegisterComponent {
     });
 
     this.authService.registerPassenger(registerData).subscribe({
-      next: (user) => {
+      next: (user: User) => {
         console.log('Registration successful:', user);
         // Show success message
         this.errorMessage = '';

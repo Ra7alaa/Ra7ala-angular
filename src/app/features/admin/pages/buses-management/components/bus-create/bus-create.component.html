@@ -1,0 +1,127 @@
+<form [formGroup]="busForm" (ngSubmit)="createBus()">
+  <!-- Error message area -->
+  <div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Registration Number -->
+  <div class="mb-3">
+    <label for="RegistrationNumber" class="form-label"
+      >{{ "admin.buses.registration_number" | translate }} *</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="RegistrationNumber"
+      formControlName="RegistrationNumber"
+      placeholder="{{
+        'admin.buses.registration_number_placeholder' | translate
+      }}"
+    />
+    <div
+      *ngIf="
+        busForm.get('RegistrationNumber')?.invalid &&
+        busForm.get('RegistrationNumber')?.touched
+      "
+      class="text-danger mt-1 small"
+    >
+      {{ "admin.buses.registration_required" | translate }}
+    </div>
+  </div>
+
+  <!-- Model -->
+  <div class="mb-3">
+    <label for="Model" class="form-label"
+      >{{ "admin.buses.model" | translate }} *</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="Model"
+      formControlName="Model"
+      placeholder="{{ 'admin.buses.model_placeholder' | translate }}"
+    />
+    <div
+      *ngIf="busForm.get('Model')?.invalid && busForm.get('Model')?.touched"
+      class="text-danger mt-1 small"
+    >
+      {{ "admin.buses.model_required" | translate }}
+    </div>
+  </div>
+
+  <!-- Capacity -->
+  <div class="mb-3">
+    <label for="Capacity" class="form-label"
+      >{{ "admin.buses.capacity" | translate }} *</label
+    >
+    <input
+      type="number"
+      class="form-control"
+      id="Capacity"
+      formControlName="Capacity"
+      placeholder="{{ 'admin.buses.capacity_placeholder' | translate }}"
+    />
+    <div
+      *ngIf="
+        busForm.get('Capacity')?.invalid && busForm.get('Capacity')?.touched
+      "
+      class="text-danger mt-1 small"
+    >
+      {{ "admin.buses.capacity_required" | translate }}
+    </div>
+  </div>
+
+  <!-- Amenity Description -->
+  <div class="mb-3">
+    <label for="AmenityDescription" class="form-label"
+      >{{ "admin.buses.amenity_description" | translate }} *</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      id="AmenityDescription"
+      formControlName="AmenityDescription"
+      placeholder="{{
+        'admin.buses.amenity_description_placeholder' | translate
+      }}"
+    />
+    <div
+      *ngIf="
+        busForm.get('AmenityDescription')?.invalid &&
+        busForm.get('AmenityDescription')?.touched
+      "
+      class="text-danger mt-1 small"
+    >
+      {{ "admin.buses.amenity_description_required" | translate }}
+    </div>
+  </div>
+
+  <!-- Is Active Switch -->
+  <div class="form-check form-switch mb-3">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="IsActive"
+      formControlName="IsActive"
+    />
+    <label class="form-check-label" for="IsActive">{{
+      "admin.buses.active_bus" | translate
+    }}</label>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+      {{ "admin.buses.cancel" | translate }}
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+      <span
+        *ngIf="isSubmitting"
+        class="spinner-border spinner-border-sm me-1"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ "admin.buses.save" | translate }}
+    </button>
+  </div>
+</form>

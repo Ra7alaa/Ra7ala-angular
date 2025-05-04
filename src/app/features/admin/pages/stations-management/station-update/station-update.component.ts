@@ -72,6 +72,13 @@ export class StationUpdateComponent implements OnInit {
 
     this.stationsService.getStationById(this.stationId).subscribe({
       next: (station) => {
+        // التحقق من أن المحطة ليست محطة نظام (companyId ليس null)
+        if (station.companyId === null) {
+          this.error = 'You do not have permission to edit this station.';
+          this.loading = false;
+          return;
+        }
+
         this.updateFormWithStationData(station);
         this.loading = false;
       },

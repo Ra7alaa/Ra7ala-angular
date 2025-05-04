@@ -18,6 +18,7 @@
   transition: all 0.3s ease;
   overflow-x: hidden;
   flex-grow: 1;
+  position: relative;
 }
 
 .main-content.expanded {
@@ -25,37 +26,30 @@
   margin-left: 70px;
 }
 
-/* RTL Support for main content - keep margin on the left side for RTL too */
+/* RTL Support for main content */
 [dir="rtl"] .main-content {
-  margin-left: 250px !important;
-  margin-right: 0 !important;
+  margin-left: 0;
+  margin-right: 250px;
   width: calc(100% - 250px);
 }
 
 [dir="rtl"] .main-content.expanded {
-  margin-left: 70px !important;
-  margin-right: 0 !important;
+  margin-left: 0;
+  margin-right: 70px;
   width: calc(100% - 70px);
 }
 
-/* Admin Header - updated for simplified layout */
-.admin-header {
-  padding: 1rem 1.5rem;
+/* Mobile toggle container - replaces header */
+.mobile-toggle-container {
+  display: none; /* Hidden on desktop */
+  padding: 0.75rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background-color: var(--surface-color);
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.admin-header .d-flex {
-  gap: 20px; /* Add some base gap between elements */
-}
-
-.admin-title {
-  font-size: 1.5rem;
-  margin-bottom: 0;
-  color: var(--text-color);
 }
 
 .toggle-sidebar-btn {
@@ -63,65 +57,20 @@
   border: none;
   color: var(--text-color);
   font-size: 1.25rem;
-  padding: 0.25rem 0.5rem;
-  margin-right: 1rem;
+  padding: 0.5rem;
   cursor: pointer;
   transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
 }
 
 .toggle-sidebar-btn:hover {
   color: var(--primary-color);
-}
-
-/* Admin profile at the extreme right */
-.admin-profile {
-  margin-left: auto; /* Push to the extreme right */
-}
-
-[dir="rtl"] .admin-profile {
-  margin-left: 0; /* Reset for RTL */
-  margin-right: auto; /* Push to the extreme left in RTL */
-}
-
-/* User profile dropdown */
-.profile-dropdown {
-  background-color: transparent;
-  border: none;
-  color: var(--text-color);
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  transition: all 0.2s;
-}
-
-.profile-dropdown:hover {
   background-color: var(--surface-color-hover);
-}
-
-.avatar-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.dropdown-menu {
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-}
-
-.dropdown-item {
-  color: var(--text-color);
-  transition: all 0.2s;
-}
-
-.dropdown-item:hover {
-  background-color: var(--surface-color-hover);
-}
-
-.dropdown-divider {
-  border-top-color: var(--border-color);
 }
 
 /* Admin Content Area */
@@ -129,49 +78,66 @@
   padding: 1rem 1.5rem 2rem;
 }
 
+/* Mobile overlay for better UX */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 990;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile view specific styles */
+.mobile-view app-admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1030;
+  width: 85%;
+  max-width: 280px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: none !important; /* Hide completely on mobile until shown */
+}
+
+.mobile-view app-admin-sidebar:not([ishidden="true"]) {
+  transform: translateX(0);
+  display: block !important;
+}
+
+[dir="rtl"] .mobile-view app-admin-sidebar {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+[dir="rtl"] .mobile-view app-admin-sidebar:not([ishidden="true"]) {
+  transform: translateX(0);
+}
+
 /* Dark Theme Specific Styles */
-.dark-theme .admin-header {
+.dark-theme .mobile-toggle-container {
   background-color: var(--surface-color);
   border-bottom-color: var(--border-color);
 }
 
-.dark-theme .dropdown-menu {
-  background-color: var(--surface-color);
-  border-color: var(--border-color);
-}
-
-.dark-theme .dropdown-item:hover {
-  background-color: var(--surface-color-hover);
-}
-
-/* RTL Support - Important for proper localization */
-[dir="rtl"] .toggle-sidebar-btn {
-  margin-right: 0;
-  margin-left: 1rem;
-}
-
-/* Bootstrap RTL overrides */
-[dir="rtl"] .ms-1,
-[dir="rtl"] .ms-2 {
-  margin-left: 0 !important;
-  margin-right: 0.25rem !important;
-}
-
-[dir="rtl"] .ms-2 {
-  margin-right: 0.5rem !important;
-}
-
-[dir="rtl"] .me-2,
-[dir="rtl"] .me-3 {
-  margin-right: 0 !important;
-}
-
-[dir="rtl"] .me-2 {
-  margin-left: 0.5rem !important;
-}
-
-[dir="rtl"] .me-3 {
-  margin-left: 1rem !important;
+.dark-theme .mobile-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 /* Fully collapsed sidebar - content takes full width */
@@ -194,49 +160,166 @@
   }
 
   [dir="rtl"] .main-content {
-    margin-left: 70px !important;
-    margin-right: 0 !important;
+    margin-left: 0;
+    margin-right: 70px;
     width: calc(100% - 70px);
   }
 
-  .main-content.expanded {
+  .main-content.sidebar-hidden {
     margin-left: 0;
     width: 100%;
   }
 
-  [dir="rtl"] .main-content.expanded {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  [dir="rtl"] .main-content.sidebar-hidden {
+    margin-left: 0;
+    margin-right: 0;
     width: 100%;
+  }
+
+  .admin-content {
+    padding: 0.75rem 1rem 1.5rem;
+  }
+
+  /* Show mobile toggle on tablets */
+  .mobile-toggle-container {
+    display: block;
   }
 }
 
-/* Admin Profile Section */
-.avatar-circle {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border: 2px solid var(--primary-color);
-  position: relative;
+@media (max-width: 800px) {
+  /* Changed from 768px to 800px */
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  [dir="rtl"] .main-content {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  /* Adjust padding for mobile views */
+  .admin-content {
+    padding: 0.5rem 1rem 1rem;
+  }
+
+  /* Improve toggle button for mobile */
+  .mobile-toggle-container {
+    padding: 0.75rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    background-color: #ff8000; /* تغيير اللون لمطابقة لون الصورة */
+    box-shadow: none; /* إزالة الظل */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Add a title to the mobile header */
+  .mobile-toggle-container::after {
+    content: "Admin Panel";
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  [dir="rtl"] .mobile-toggle-container::after {
+    content: "لوحة الإدارة";
+  }
+
+  /* Adjust main content to not be hidden under toggle button */
+  .admin-content {
+    margin-top: 65px;
+  }
+
+  /* Ensure mobile overlay covers the entire screen */
+  .mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1025;
+    animation: none; /* إزالة التأثير الحركي */
+  }
+
+  /* Menu button prominence */
+  .toggle-sidebar-btn {
+    background-color: transparent; /* إزالة الخلفية الشفافة */
+    color: white;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0; /* إزالة الحواف الدائرية */
+    font-size: 1.4rem;
+  }
+
+  .toggle-sidebar-btn:hover {
+    background-color: transparent;
+    color: white;
+  }
+
+  .toggle-sidebar-btn i {
+    color: white;
+  }
 }
 
-.avatar-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+@media (max-width: 576px) {
+  .mobile-toggle-container {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .admin-content {
+    padding: 0.5rem 0.75rem 1rem;
+    margin-top: 60px;
+  }
+
+  /* Extra small screen adjustments */
+  .mobile-view app-admin-sidebar {
+    width: 85%;
+    max-width: 260px;
+  }
+
+  /* Make form controls and inputs larger on small screens */
+  .mobile-view input,
+  .mobile-view select,
+  .mobile-view textarea,
+  .mobile-view .form-control,
+  .mobile-view .btn {
+    font-size: 16px !important; /* Prevent iOS zoom on input focus */
+    padding: 0.5rem !important;
+  }
+
+  /* Adjust table views for small screens */
+  .mobile-view table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
-.avatar-circle i {
-  font-size: 2rem;
-  color: var(--primary-color);
+@media (max-width: 400px) {
+  .admin-content {
+    padding: 0.5rem;
+    margin-top: 58px;
+  }
+
+  /* Very small screen adjustments */
+  .mobile-view app-admin-sidebar {
+    width: 90%;
+  }
+
+  /* Make buttons more touch-friendly on smaller screens */
+  .mobile-view .btn {
+    margin-bottom: 0.5rem;
+  }
 }
