@@ -61,6 +61,20 @@ export const routes: Routes = [
       import('./features/owner/owner.module').then((m) => m.OwnerModule),
     // TODO: Create and use ownerGuard to protect this route
   },
+  {
+    path: 'book-trips',
+    loadComponent: () =>
+      import('./features/trips/pages/book-trips/book-trips.component').then(
+        (m) => m.BookTripsComponent
+      ),
+  },
+  {
+    path: 'booking/:tripId',
+    loadComponent: () =>
+      import('./features/trips/pages/booking/booking.component').then(
+        (m) => m.BookingComponent
+      ),
+  },
   // Error routes
   {
     path: 'error',

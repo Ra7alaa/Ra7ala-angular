@@ -3,7 +3,12 @@
   border-bottom: 1px solid var(--border-color);
   padding: 15px 0;
   transition: background-color 0.3s ease, color 0.3s ease;
+  justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
 }
+
 
 .header.dark-theme {
   background-color: #1a1a1a;
@@ -14,6 +19,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+
+
 }
 
 /* Logo styling */
@@ -39,8 +47,12 @@
 /* Navigation links */
 .nav-links {
   display: flex;
-  justify-content: center;
+
   gap: 30px;
+    justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 0 auto;
 }
 
 .nav-links a {

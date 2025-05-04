@@ -1,0 +1,115 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">Search for Trips</h2>
+    </div>
+  </div>
+
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div class="row g-3">
+      <!-- Start City -->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="startCityId" class="form-label">From City</label>
+          <select class="form-select" id="startCityId" formControlName="startCityId"
+            [class.is-invalid]="searchForm.get('startCityId')?.touched && searchForm.get('startCityId')?.invalid">
+            <option value="">Select departure city</option>
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{city.name}}
+            </option>
+          </select>
+          <div class="invalid-feedback"
+            *ngIf="searchForm.get('startCityId')?.touched && searchForm.get('startCityId')?.invalid">
+            Please select a departure city
+          </div>
+        </div>
+      </div>
+
+      <!-- End City -->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="endCityId" class="form-label">To City</label>
+          <select class="form-select" id="endCityId" formControlName="endCityId"
+            [class.is-invalid]="searchForm.get('endCityId')?.touched && searchForm.get('endCityId')?.invalid">
+            <option value="">Select destination city</option>
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{city.name}}
+            </option>
+          </select>
+          <div class="invalid-feedback"
+            *ngIf="searchForm.get('endCityId')?.touched && searchForm.get('endCityId')?.invalid">
+            Please select a destination city
+          </div>
+        </div>
+      </div>
+
+      <!-- Departure Date -->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="departureDate" class="form-label">Departure Date</label>
+          <input type="datetime-local" class="form-control" id="departureDate" formControlName="departureDate"
+            [class.is-invalid]="searchForm.get('departureDate')?.touched && searchForm.get('departureDate')?.invalid">
+          <div class="invalid-feedback"
+            *ngIf="searchForm.get('departureDate')?.touched && searchForm.get('departureDate')?.invalid">
+            Please select a departure date
+          </div>
+        </div>
+      </div>
+
+      <!-- Required Seats -->
+      <div class="col-md-2">
+        <div class="form-group">
+          <label for="requiredSeats" class="form-label">Number of Seats</label>
+          <input type="number" class="form-control" id="requiredSeats" formControlName="requiredSeats" min="1"
+            [class.is-invalid]="searchForm.get('requiredSeats')?.touched && searchForm.get('requiredSeats')?.invalid">
+          <div class="invalid-feedback"
+            *ngIf="searchForm.get('requiredSeats')?.touched && searchForm.get('requiredSeats')?.invalid">
+            Please enter a valid number of seats (minimum 1)
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Button -->
+      <div class="col-md-1 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="!searchForm.valid || isLoading">
+          <span *ngIf="!isLoading">Search</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="isLoading" class="mt-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="searchResults && searchResults.data.length > 0" class="mt-4">
+    <div class="card mb-3" *ngFor="let trip of searchResults.data">
+      <div class="card-body">
+        <h5 class="card-title">{{trip.routeName}}</h5>
+        <div class="row">
+          <div class="col-md-4">
+            <p><strong>Company:</strong> {{trip.companyName}}</p>
+            <p><strong>Price:</strong> {{trip.price}} EGP</p>
+            <p><strong>Available Seats:</strong> {{trip.availableSeats}}</p>
+          </div>
+          <div class="col-md-4">
+            <p><strong>Departure:</strong> {{trip.departureTime | date:'medium'}}</p>
+            <p><strong>Arrival:</strong> {{trip.arrivalTime | date:'medium'}}</p>
+            <p><strong>Bus Number:</strong> {{trip.busRegistrationNumber}}</p>
+          </div>
+          <div class="col-md-4">
+            <p><strong>Driver:</strong> {{trip.driverName}}</p>
+            <p><strong>Driver Phone:</strong> {{trip.driverPhoneNumber}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchResults && searchResults.data.length === 0" class="mt-4 alert alert-info">
+    No trips found for the selected criteria.
+  </div>
+</div>
