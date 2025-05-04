@@ -38,7 +38,7 @@
         <button
           class="btn btn-outline-primary"
           (click)="navigateToEdit()"
-          *ngIf="canEditStation()"
+          *ngIf="station.companyId !== null"
         >
           <i class="bi bi-pencil"></i>
           {{ "admin.stations.details.edit" | translate }}
@@ -46,7 +46,7 @@
         <button
           class="btn btn-outline-danger"
           (click)="deleteStation()"
-          *ngIf="canDeleteStation()"
+          *ngIf="station.companyId !== null"
         >
           <i class="bi bi-trash"></i>
           {{ "admin.stations.details.delete" | translate }}
@@ -73,7 +73,9 @@
             <dt class="col-sm-4">
               {{ "admin.stations.details.city" | translate }}
             </dt>
-            <dd class="col-sm-8">{{ "cities." + station.cityName.toLowerCase() | translate }}</dd>
+            <dd class="col-sm-8">
+              {{ "cities." + station.cityName.toLowerCase() | translate }}
+            </dd>
 
             <dt class="col-sm-4">
               {{ "admin.stations.details.ownership" | translate }}

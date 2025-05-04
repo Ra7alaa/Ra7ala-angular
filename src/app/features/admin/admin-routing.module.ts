@@ -20,6 +20,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'buses',
+        loadChildren: () =>
+          import('./pages/buses-management/buses.module').then(
+            (m) => m.BusesModule
+          ),
+      },
+      {
         path: 'trips',
         loadChildren: () =>
           import('./pages/trips-management/trips.module').then(
@@ -33,9 +40,10 @@ const routes: Routes = [
             (m) => m.StationsModule
           ),
       },
-      { 
-        path: 'settings', 
-        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsModule) 
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('../settings/settings.module').then((m) => m.SettingsModule),
       },
     ],
   },

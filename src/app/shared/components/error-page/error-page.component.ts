@@ -10,21 +10,30 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   styleUrls: ['./error-page.component.css'],
 })
 export class ErrorPageComponent implements OnInit {
-  @Input() errorCode: string = '404';
-  @Input() errorTitle: string = 'Page Not Found';
-  @Input() errorMessage: string =
+  @Input() errorCode = '404';
+  @Input() errorTitle = 'Page Not Found';
+  @Input() errorMessage =
     'The page you are looking for does not exist.';
-  @Input() showHomeButton: boolean = true;
-  @Input() showBackButton: boolean = true;
+  @Input() showHomeButton = true;
+  @Input() showBackButton = true;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    // Check for custom message in router state
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation && navigation.extras.state) {
+      const state = navigation.extras.state as { message?: string };
+      if (state.message) {
+        this.errorMessage = state.message;
+      }
+    }
+
     // Get error data from route data if available
     this.route.data.subscribe((data) => {
       if (data['errorCode']) this.errorCode = data['errorCode'];
       if (data['errorTitle']) this.errorTitle = data['errorTitle'];
-      if (data['errorMessage']) this.errorMessage = data['errorMessage'];
+      if (data['errorMessage'] && !this.errorMessage) this.errorMessage = data['errorMessage'];
     });
 
     // Get error code from route params if available (for the :code route)

@@ -25,19 +25,33 @@
           type="text"
           class="form-control border-start-0"
           placeholder="{{ 'admin.trips.search_placeholder' | translate }}"
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
         />
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
       <div class="d-flex gap-2">
-        <select class="form-select">
-          <option selected>{{ "admin.trips.all_status" | translate }}</option>
-          <option>{{ "admin.trips.upcoming" | translate }}</option>
-          <option>{{ "admin.trips.in_progress" | translate }}</option>
-          <option>{{ "admin.trips.completed" | translate }}</option>
-          <option>{{ "admin.trips.cancelled" | translate }}</option>
+        <select
+          class="form-select"
+          [(ngModel)]="selectedStatus"
+          (change)="filterByStatus(selectedStatus)"
+        >
+          <option value="">{{ "admin.trips.all_status" | translate }}</option>
+          <option value="upcoming">
+            {{ "admin.trips.upcoming" | translate }}
+          </option>
+          <option value="in_progress">
+            {{ "admin.trips.in_progress" | translate }}
+          </option>
+          <option value="completed">
+            {{ "admin.trips.completed" | translate }}
+          </option>
+          <option value="cancelled">
+            {{ "admin.trips.cancelled" | translate }}
+          </option>
         </select>
-        <button class="btn btn-outline-secondary">
+        <button class="btn btn-outline-secondary" (click)="loadTrips()">
           <i class="bi bi-funnel me-2"></i
           >{{ "admin.trips.filter" | translate }}
         </button>
@@ -45,8 +59,39 @@
     </div>
   </div>
 
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ "shared.loading" | translate }}</span>
+    </div>
+    <p class="mt-3">{{ "admin.trips.loading_trips" | translate }}</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="!isLoading && errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- No data state -->
+  <div
+    *ngIf="!isLoading && !errorMessage && trips.length === 0"
+    class="text-center py-5"
+  >
+    <i class="bi bi-exclamation-circle display-1 text-muted"></i>
+    <h3 class="mt-3">{{ "admin.trips.no_trips" | translate }}</h3>
+    <p class="text-muted">{{ "admin.trips.add_first_trip" | translate }}</p>
+    <button
+      class="btn btn-primary mt-3"
+      data-bs-toggle="modal"
+      data-bs-target="#addTripModal"
+    >
+      <i class="bi bi-plus-circle me-2"></i
+      >{{ "admin.trips.add_trip" | translate }}
+    </button>
+  </div>
+
   <!-- Trips Table -->
-  <div class="card border-0 shadow-sm">
+  <div *ngIf="!isLoading && trips.length > 0" class="card border-0 shadow-sm">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-hover align-middle">
@@ -63,17 +108,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#TRP-1234</td>
-              <td>{{ "cities.cairo" | translate }} - {{ "cities.alexandria" | translate }}</td>
-              <td>Apr 24, 2025 07:30 AM</td>
-              <td>Apr 24, 2025 10:15 AM</td>
-              <td>Bus-101 (VIP)</td>
-              <td>250 EGP</td>
+            <tr *ngFor="let trip of filteredTrips">
+              <td>#TRP-{{ trip.id }}</td>
+              <td>{{ trip.routeName }}</td>
+              <td>{{ trip.departureTime | date : "MMM d, y hh:mm a" }}</td>
+              <td>{{ trip.arrivalTime | date : "MMM d, y hh:mm a" }}</td>
+              <td>{{ trip.busRegistrationNumber }}</td>
+              <td>{{ trip.price }} EGP</td>
               <td>
-                <span class="badge bg-primary">{{
-                  "admin.trips.upcoming" | translate
-                }}</span>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-primary': !trip.isCompleted,
+                    'bg-success': trip.isCompleted
+                  }"
+                >
+                  {{
+                    trip.isCompleted
+                      ? ("admin.trips.completed" | translate)
+                      : ("admin.trips.upcoming" | translate)
+                  }}
+                </span>
               </td>
               <td>
                 <div class="d-flex gap-1">
@@ -87,97 +142,10 @@
                   >
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>#TRP-1235</td>
-              <td>{{ "cities.cairo" | translate }} - {{ "cities.luxor" | translate }}</td>
-              <td>Apr 23, 2025 10:00 PM</td>
-              <td>Apr 24, 2025 07:20 AM</td>
-              <td>Bus-102 (Standard)</td>
-              <td>400 EGP</td>
-              <td>
-                <span class="badge bg-success">{{
-                  "admin.trips.in_progress" | translate
-                }}</span>
-              </td>
-              <td>
-                <div class="d-flex gap-1">
-                  <button class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-eye"></i>
-                  </button>
                   <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editTripModal"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="deleteTrip(trip.id)"
                   >
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>#TRP-1236</td>
-              <td>{{ "cities.alexandria" | translate }} - {{ "cities.luxor" | translate }}</td>
-              <td>Apr 22, 2025 08:00 AM</td>
-              <td>Apr 22, 2025 06:45 PM</td>
-              <td>Bus-103 (VIP)</td>
-              <td>500 EGP</td>
-              <td>
-                <span class="badge bg-secondary">{{
-                  "admin.trips.completed" | translate
-                }}</span>
-              </td>
-              <td>
-                <div class="d-flex gap-1">
-                  <button class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editTripModal"
-                  >
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>#TRP-1237</td>
-              <td>{{ "cities.cairo" | translate }} - {{ "cities.alexandria" | translate }}</td>
-              <td>Apr 21, 2025 04:30 PM</td>
-              <td>Apr 21, 2025 07:15 PM</td>
-              <td>Bus-104 (Standard)</td>
-              <td>200 EGP</td>
-              <td>
-                <span class="badge bg-danger">{{
-                  "admin.trips.cancelled" | translate
-                }}</span>
-              </td>
-              <td>
-                <div class="d-flex gap-1">
-                  <button class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editTripModal"
-                  >
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -190,18 +158,38 @@
   </div>
 
   <!-- Pagination -->
-  <nav aria-label="Page navigation" class="mt-4">
+  <nav
+    *ngIf="!isLoading && totalPages > 1"
+    aria-label="Page navigation"
+    class="mt-4"
+  >
     <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{
-          "admin.trips.previous" | translate
-        }}</a>
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button
+          class="page-link"
+          (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+        >
+          {{ "admin.trips.previous" | translate }}
+        </button>
       </li>
-      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">{{ "admin.trips.next" | translate }}</a>
+
+      <li
+        class="page-item"
+        *ngFor="let page of pages"
+        [class.active]="page === currentPage"
+      >
+        <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+      </li>
+
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button
+          class="page-link"
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+        >
+          {{ "admin.trips.next" | translate }}
+        </button>
       </li>
     </ul>
   </nav>
@@ -226,164 +214,14 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          id="closeAddTripModal"
         ></button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="row mb-3">
-            <div class="col-md-12">
-              <label for="tripRoute" class="form-label">{{
-                "admin.trips.route" | translate
-              }}</label>
-              <select id="tripRoute" class="form-select">
-                <option selected disabled>
-                  {{ "admin.trips.select_route" | translate }}
-                </option>
-                <option>Cairo - Alexandria</option>
-                <option>Cairo - Luxor</option>
-                <option>Alexandria - Luxor</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="departureStation" class="form-label">{{
-                "admin.trips.departure_station" | translate
-              }}</label>
-              <select id="departureStation" class="form-select">
-                <option selected disabled>
-                  {{ "admin.trips.select_departure" | translate }}
-                </option>
-                <option value="cairo_central">{{ "locations.bus_stations.cairo_central" | translate }}</option>
-                <option value="alexandria_main">{{ "locations.bus_stations.alexandria_main" | translate }}</option>
-                <option value="luxor_terminal">{{ "locations.bus_stations.luxor_terminal" | translate }}</option>
-                <option value="aswan_station">{{ "locations.bus_stations.aswan_station" | translate }}</option>
-                <option value="hurghada_terminal">{{ "locations.bus_stations.hurghada_terminal" | translate }}</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="arrivalStation" class="form-label">{{
-                "admin.trips.arrival_station" | translate
-              }}</label>
-              <select id="arrivalStation" class="form-select">
-                <option selected disabled>
-                  {{ "admin.trips.select_arrival" | translate }}
-                </option>
-                <option value="cairo_central">{{ "locations.bus_stations.cairo_central" | translate }}</option>
-                <option value="alexandria_main">{{ "locations.bus_stations.alexandria_main" | translate }}</option>
-                <option value="luxor_terminal">{{ "locations.bus_stations.luxor_terminal" | translate }}</option>
-                <option value="aswan_station">{{ "locations.bus_stations.aswan_station" | translate }}</option>
-                <option value="hurghada_terminal">{{ "locations.bus_stations.hurghada_terminal" | translate }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="departureDate" class="form-label">{{
-                "admin.trips.departure_date" | translate
-              }}</label>
-              <input type="date" class="form-control" id="departureDate" />
-            </div>
-            <div class="col-md-6">
-              <label for="departureTime" class="form-label">{{
-                "admin.trips.departure_time" | translate
-              }}</label>
-              <input type="time" class="form-control" id="departureTime" />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="arrivalDate" class="form-label">{{
-                "admin.trips.arrival_date" | translate
-              }}</label>
-              <input type="date" class="form-control" id="arrivalDate" />
-            </div>
-            <div class="col-md-6">
-              <label for="arrivalTime" class="form-label">{{
-                "admin.trips.arrival_time" | translate
-              }}</label>
-              <input type="time" class="form-control" id="arrivalTime" />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="tripBus" class="form-label">{{
-                "admin.trips.bus" | translate
-              }}</label>
-              <select id="tripBus" class="form-select">
-                <option selected disabled>
-                  {{ "admin.trips.select_bus" | translate }}
-                </option>
-                <option>Bus-101 (VIP - 45 seats)</option>
-                <option>Bus-102 (Standard - 50 seats)</option>
-                <option>Bus-103 (VIP - 45 seats)</option>
-                <option>Bus-104 (Standard - 50 seats)</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="tripPrice" class="form-label"
-                >{{ "admin.trips.price" | translate }} (EGP)</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="tripPrice"
-                placeholder="{{ 'admin.trips.price_placeholder' | translate }}"
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="tripStatus" class="form-label">{{
-                "admin.trips.status" | translate
-              }}</label>
-              <select id="tripStatus" class="form-select">
-                <option selected>
-                  {{ "admin.trips.upcoming" | translate }}
-                </option>
-                <option>{{ "admin.trips.in_progress" | translate }}</option>
-                <option>{{ "admin.trips.completed" | translate }}</option>
-                <option>{{ "admin.trips.cancelled" | translate }}</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="availableSeats" class="form-label">{{
-                "admin.trips.available_seats" | translate
-              }}</label>
-              <input
-                type="number"
-                class="form-control"
-                id="availableSeats"
-                placeholder="{{ 'admin.trips.seats_placeholder' | translate }}"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="tripNotes" class="form-label">{{
-              "admin.trips.notes" | translate
-            }}</label>
-            <textarea
-              class="form-control"
-              id="tripNotes"
-              rows="3"
-              placeholder="{{ 'admin.trips.notes_placeholder' | translate }}"
-            ></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          {{ "admin.trips.cancel" | translate }}
-        </button>
-        <button type="button" class="btn btn-primary">
-          {{ "admin.trips.save" | translate }}
-        </button>
+        <!-- Use our new trip-create component -->
+        <app-trip-create
+          (tripCreated)="onTripCreated($event)"
+        ></app-trip-create>
       </div>
     </div>
   </div>
@@ -418,9 +256,18 @@
                 "admin.trips.route" | translate
               }}</label>
               <select id="editTripRoute" class="form-select">
-                <option>{{ "cities.cairo" | translate }} - {{ "cities.alexandria" | translate }}</option>
-                <option selected>{{ "cities.cairo" | translate }} - {{ "cities.luxor" | translate }}</option>
-                <option>{{ "cities.alexandria" | translate }} - {{ "cities.luxor" | translate }}</option>
+                <option>
+                  {{ "cities.cairo" | translate }} -
+                  {{ "cities.alexandria" | translate }}
+                </option>
+                <option selected>
+                  {{ "cities.cairo" | translate }} -
+                  {{ "cities.luxor" | translate }}
+                </option>
+                <option>
+                  {{ "cities.alexandria" | translate }} -
+                  {{ "cities.luxor" | translate }}
+                </option>
               </select>
             </div>
           </div>
@@ -431,11 +278,21 @@
                 "admin.trips.departure_station" | translate
               }}</label>
               <select id="editDepartureStation" class="form-select">
-                <option value="cairo_central" selected>{{ "locations.bus_stations.cairo_central" | translate }}</option>
-                <option value="alexandria_main">{{ "locations.bus_stations.alexandria_main" | translate }}</option>
-                <option value="luxor_terminal">{{ "locations.bus_stations.luxor_terminal" | translate }}</option>
-                <option value="aswan_station">{{ "locations.bus_stations.aswan_station" | translate }}</option>
-                <option value="hurghada_terminal">{{ "locations.bus_stations.hurghada_terminal" | translate }}</option>
+                <option value="cairo_central" selected>
+                  {{ "locations.bus_stations.cairo_central" | translate }}
+                </option>
+                <option value="alexandria_main">
+                  {{ "locations.bus_stations.alexandria_main" | translate }}
+                </option>
+                <option value="luxor_terminal">
+                  {{ "locations.bus_stations.luxor_terminal" | translate }}
+                </option>
+                <option value="aswan_station">
+                  {{ "locations.bus_stations.aswan_station" | translate }}
+                </option>
+                <option value="hurghada_terminal">
+                  {{ "locations.bus_stations.hurghada_terminal" | translate }}
+                </option>
               </select>
             </div>
             <div class="col-md-6">
@@ -443,11 +300,21 @@
                 "admin.trips.arrival_station" | translate
               }}</label>
               <select id="editArrivalStation" class="form-select">
-                <option value="cairo_central">{{ "locations.bus_stations.cairo_central" | translate }}</option>
-                <option value="alexandria_main">{{ "locations.bus_stations.alexandria_main" | translate }}</option>
-                <option value="luxor_terminal" selected>{{ "locations.bus_stations.luxor_terminal" | translate }}</option>
-                <option value="aswan_station">{{ "locations.bus_stations.aswan_station" | translate }}</option>
-                <option value="hurghada_terminal">{{ "locations.bus_stations.hurghada_terminal" | translate }}</option>
+                <option value="cairo_central">
+                  {{ "locations.bus_stations.cairo_central" | translate }}
+                </option>
+                <option value="alexandria_main">
+                  {{ "locations.bus_stations.alexandria_main" | translate }}
+                </option>
+                <option value="luxor_terminal" selected>
+                  {{ "locations.bus_stations.luxor_terminal" | translate }}
+                </option>
+                <option value="aswan_station">
+                  {{ "locations.bus_stations.aswan_station" | translate }}
+                </option>
+                <option value="hurghada_terminal">
+                  {{ "locations.bus_stations.hurghada_terminal" | translate }}
+                </option>
               </select>
             </div>
           </div>

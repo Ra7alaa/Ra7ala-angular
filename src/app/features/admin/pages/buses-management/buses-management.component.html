@@ -1,0 +1,238 @@
+<div class="container-fluid py-4" appRtl>
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+      <h2 class="mb-0">{{ "admin.buses.title" | translate }}</h2>
+    </div>
+    <div class="col-md-6 text-md-end">
+      <button
+        class="btn btn-primary btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#addBusModal"
+      >
+        <i class="bi bi-plus-circle me-1"></i>
+        {{ "admin.buses.add_bus" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="input-group search-container">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          #searchInput
+          type="text"
+          class="form-control border-start-0 ps-0"
+          placeholder="{{ 'admin.buses.search' | translate }}"
+          (keyup.enter)="search(searchInput.value)"
+        />
+        <button
+          class="btn btn-primary search-btn px-4"
+          (click)="search(searchInput.value)"
+        >
+          {{ "admin.buses.search" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-0">
+          <!-- Loading state -->
+          <div *ngIf="loading" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">{{ "common.loading" | translate }}</p>
+          </div>
+
+          <!-- Error state -->
+          <div *ngIf="error && !loading" class="alert alert-danger m-3">
+            {{ error }}
+          </div>
+
+          <!-- Empty state -->
+          <div
+            *ngIf="!loading && !error && buses.length === 0"
+            class="text-center p-5"
+          >
+            <i
+              class="bi bi-bus-front text-secondary"
+              style="font-size: 3rem"
+            ></i>
+            <h5 class="mt-3">{{ "admin.buses.no_buses_yet" | translate }}</h5>
+            <p class="text-muted">
+              {{ "admin.buses.create_first_bus" | translate }}
+            </p>
+          </div>
+
+          <!-- Buses table -->
+          <div
+            class="table-responsive"
+            *ngIf="!loading && !error && buses.length > 0"
+          >
+            <table class="table table-hover mb-0 buses-table">
+              <thead>
+                <tr>
+                  <th class="bus-id">
+                    {{ "admin.buses.bus_id" | translate }}
+                  </th>
+                  <th class="bus-registration">
+                    {{ "admin.buses.registration_number" | translate }}
+                  </th>
+                  <th class="bus-model">
+                    {{ "admin.buses.model" | translate }}
+                  </th>
+                  <th class="bus-capacity">
+                    {{ "admin.buses.capacity" | translate }}
+                  </th>
+                  <th class="bus-amenity d-none d-lg-table-cell">
+                    {{ "admin.buses.amenity" | translate }}
+                  </th>
+                  <th class="bus-status">
+                    {{ "admin.buses.status" | translate }}
+                  </th>
+                  <th class="bus-actions text-end">
+                    {{ "admin.buses.actions" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let bus of paginatedBuses">
+                  <td class="bus-id">
+                    <span class="fw-medium"
+                      >#BS-{{ (bus.id || 0).toString().padStart(3, "0") }}</span
+                    >
+                  </td>
+                  <td class="bus-registration">{{ bus.registrationNumber }}</td>
+                  <td class="bus-model">{{ bus.model }}</td>
+                  <td class="bus-capacity">
+                    {{ bus.capacity }} {{ "admin.buses.seats" | translate }}
+                  </td>
+                  <td class="bus-amenity d-none d-lg-table-cell">
+                    {{ bus.amenityDescription || "N/A" }}
+                  </td>
+                  <td class="bus-status">
+                    <span
+                      class="badge rounded-pill"
+                      [ngClass]="bus.isActive ? 'bg-success' : 'bg-secondary'"
+                    >
+                      {{
+                        bus.isActive
+                          ? ("admin.buses.active" | translate)
+                          : ("admin.buses.inactive" | translate)
+                      }}
+                    </span>
+                  </td>
+                  <td class="bus-actions text-end">
+                    <button
+                      class="btn btn-danger btn-sm rounded-pill"
+                      (click)="deleteBus(bus.id || 0)"
+                    >
+                      <i class="bi bi-trash"></i>
+                      <span class="d-none d-sm-inline">{{
+                        "admin.buses.delete" | translate
+                      }}</span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div
+              class="d-flex justify-content-between align-items-center p-3 border-top"
+              *ngIf="totalPages > 1"
+            >
+              <div>
+                <span class="text-muted"
+                  >{{ "admin.buses.showing" | translate }}
+                  {{ (currentPage - 1) * itemsPerPage + 1 }}-{{
+                    Math.min(currentPage * itemsPerPage, filteredBuses.length)
+                  }}
+                  {{ "admin.buses.of" | translate }}
+                  {{ filteredBuses.length }}</span
+                >
+              </div>
+              <nav aria-label="Buses pagination">
+                <ul class="pagination pagination-sm mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      (click)="goToPage(currentPage - 1)"
+                    >
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li
+                    class="page-item d-none d-sm-block"
+                    *ngFor="let page of pages"
+                    [class.active]="page === currentPage"
+                  >
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      (click)="goToPage(page)"
+                      >{{ page }}</a
+                    >
+                  </li>
+                  <li class="page-item d-block d-sm-none">
+                    <span class="page-link border-0 bg-transparent"
+                      >{{ currentPage }} / {{ totalPages }}</span
+                    >
+                  </li>
+                  <li
+                    class="page-item"
+                    [class.disabled]="currentPage === totalPages"
+                  >
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      (click)="goToPage(currentPage + 1)"
+                    >
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Bus Modal -->
+  <div
+    class="modal fade"
+    id="addBusModal"
+    tabindex="-1"
+    aria-labelledby="addBusModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBusModalLabel">
+            {{ "admin.buses.add_bus" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            id="closeAddBusModal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <app-bus-create (busCreated)="onBusCreated($event)"></app-bus-create>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -141,6 +141,8 @@
 .badge {
   font-weight: 500;
   padding: 0.4em 0.8em;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .btn-outline-primary,
@@ -307,4 +309,74 @@
   font-size: 0.9rem; /* تكبير حجم نص الشارة */
   padding: 0.35em 0.7em;
   font-weight: 500;
+}
+
+/* Responsive table styles */
+.routes-table th,
+.routes-table td {
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+/* Column width adjustments */
+.route-id {
+  width: 100px;
+}
+
+.route-status {
+  width: 120px;
+}
+
+/* Mobile styling */
+@media (max-width: 767.98px) {
+  .route-actions {
+    width: 75px;
+  }
+
+  /* Make action buttons stack well on mobile */
+  .route-actions .btn {
+    margin-bottom: 0.25rem;
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Smaller font for tables on mobile */
+  .routes-table {
+    font-size: 0.85rem;
+  }
+
+  /* Modal adjustments for small screens */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}
+
+/* Filter buttons responsive styling */
+.btn-group .btn {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* RTL support */
+[dir="rtl"] .route-actions {
+  text-align: left !important;
+}
+
+[dir="rtl"] .route-actions .btn i {
+  margin-left: 0.25rem;
+  margin-right: 0;
+}
+
+/* Improve pagination visibility on mobile */
+.pagination .page-link {
+  padding: 0.25rem 0.5rem;
+}
+
+@media (max-width: 576px) {
+  .pagination .page-link {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+  }
 }

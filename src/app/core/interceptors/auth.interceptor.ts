@@ -9,21 +9,22 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../../features/auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // الحصول على المستخدم الحالي من خدمة المصادقة
+    // Get current user directly from auth service
     const currentUser = this.authService.getCurrentUser();
 
-    // إذا كان المستخدم مسجل الدخول ولديه رمز مميز (token)، إضافته إلى رؤوس الطلب
+    // If user is logged in and has a token, add it to request headers
     if (currentUser && currentUser.token) {
-      console.log(`إضافة رمز المصادقة إلى الطلب: ${request.url}`);
+      // Clone the request with the Authorization header
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${currentUser.token}`,
@@ -31,16 +32,29 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    // معالجة الطلب والتقاط أي أخطاء
+    // Process the request and handle errors
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        // إذا حصلنا على خطأ 401 (غير مصرح به)، قم بتسجيل خروج المستخدم
+        // If unauthorized error (401), log out the user
         if (error.status === 401) {
-          console.error(
-            'انتهت صلاحية رمز المصادقة أو غير صالح، جاري تسجيل الخروج'
-          );
+          console.error('Auth token expired or invalid, logging out');
           this.authService.logout();
         }
+
+        // If forbidden error (403), handle appropriately
+        if (error.status === 403) {
+          console.error(
+            `FORBIDDEN ERROR (403) for ${request.url}:`,
+            error.message
+          );
+
+          // Don't redirect on API calls
+          if (!request.url.includes('/api/')) {
+            console.log('Redirecting to error page for 403 error');
+            this.router.navigate(['/error/403']);
+          }
+        }
+
         return throwError(() => error);
       })
     );

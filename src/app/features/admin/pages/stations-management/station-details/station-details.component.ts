@@ -120,7 +120,12 @@ export class StationDetailsComponent implements OnInit {
   canEditStation(): boolean {
     if (!this.currentUser || !this.station) return false;
 
-    // Owners and SuperAdmins can edit any station
+    // لا يمكن لأحد تعديل محطات النظام (companyId is null)
+    if (this.station.companyId === null) {
+      return false;
+    }
+
+    // Owners and SuperAdmins can edit company stations
     if (
       this.currentUser.userType === UserRole.SystemOwner ||
       this.currentUser.userType === UserRole.SuperAdmin
@@ -130,12 +135,6 @@ export class StationDetailsComponent implements OnInit {
 
     // Admins can only edit their own company's stations
     if (this.currentUser.userType === UserRole.Admin) {
-      // Can't edit system stations
-      if (this.station.isSystemOwned) {
-        return false;
-      }
-
-      // Can only edit stations belonging to their company
       return this.station.companyId === this.currentUser.companyId;
     }
 
@@ -146,7 +145,12 @@ export class StationDetailsComponent implements OnInit {
   canDeleteStation(): boolean {
     if (!this.currentUser || !this.station) return false;
 
-    // Owners and SuperAdmins can delete any station
+    // لا يمكن لأحد حذف محطات النظام (companyId is null)
+    if (this.station.companyId === null) {
+      return false;
+    }
+
+    // Owners and SuperAdmins can delete company stations
     if (
       this.currentUser.userType === UserRole.SystemOwner ||
       this.currentUser.userType === UserRole.SuperAdmin
@@ -156,12 +160,6 @@ export class StationDetailsComponent implements OnInit {
 
     // Admins can only delete their own company's stations
     if (this.currentUser.userType === UserRole.Admin) {
-      // Can't delete system stations
-      if (this.station.isSystemOwned) {
-        return false;
-      }
-
-      // Can only delete stations belonging to their company
       return this.station.companyId === this.currentUser.companyId;
     }
 

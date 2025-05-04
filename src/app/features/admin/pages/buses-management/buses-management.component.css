@@ -1,0 +1,199 @@
+/* Buses Management Component Styles */
+.buses-management {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+/* Search Container Styling */
+.search-container {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.search-container .input-group-text {
+  border: 1px solid #dee2e6;
+  border-right: none;
+}
+
+.search-container .form-control {
+  height: 48px;
+  border: 1px solid #dee2e6;
+  border-left: none;
+  box-shadow: none;
+}
+
+.search-container .form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+.search-container .search-btn {
+  min-width: 120px;
+  height: 48px;
+  font-weight: 500;
+}
+
+/* Bus card and table styling */
+.bus-card {
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.bus-card:hover {
+  box-shadow: var(--box-shadow-md);
+  border-color: var(--primary-color);
+}
+
+.bus-actions .btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.bus-actions .btn-primary:hover {
+  background-color: var(--primary-color-light);
+  border-color: var(--primary-color-light);
+}
+
+.bus-actions .btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.bus-actions .btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Responsive table width adjustments */
+.buses-table .bus-id {
+  width: 12%;
+}
+
+.buses-table .bus-registration {
+  width: 15%;
+}
+
+.buses-table .bus-model {
+  width: 15%;
+}
+
+.buses-table .bus-capacity {
+  width: 12%;
+}
+
+.buses-table .bus-amenity {
+  width: 25%;
+}
+
+.buses-table .bus-status {
+  width: 10%;
+}
+
+.buses-table .bus-actions {
+  width: 11%;
+}
+
+/* Table styling */
+.buses-table {
+  margin-bottom: 0;
+}
+
+.buses-table th {
+  background-color: #f8f9fa;
+  border-top: none;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #495057;
+}
+
+.buses-table td {
+  vertical-align: middle;
+}
+
+/* Responsive styling */
+@media (max-width: 991.98px) {
+  .buses-table .bus-registration {
+    width: 20%;
+  }
+
+  .buses-table .bus-model {
+    width: 20%;
+  }
+
+  .buses-table .bus-status {
+    width: 15%;
+  }
+
+  .buses-table .bus-actions {
+    width: 15%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .buses-table .bus-registration {
+    width: 30%;
+  }
+
+  .buses-table .bus-model {
+    width: 25%;
+  }
+
+  .buses-table .bus-status {
+    width: 20%;
+  }
+
+  .buses-table .bus-actions {
+    width: 25%;
+  }
+
+  .card-header h5 {
+    margin-bottom: 1rem;
+  }
+
+  .buses-table .btn {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .search-container .search-btn {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .buses-table {
+    font-size: 0.875rem;
+  }
+
+  .card-header {
+    text-align: center;
+  }
+
+  .pagination {
+    margin-top: 1rem;
+  }
+
+  .input-group {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .page-link,
+  .btn {
+    min-height: 38px;
+    min-width: 38px;
+  }
+
+  .pagination .page-link {
+    padding: 0.5rem 0.75rem;
+  }
+}

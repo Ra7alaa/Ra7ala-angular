@@ -4,18 +4,19 @@ export interface Station {
   latitude: number;
   longitude: number;
   cityName: string;
-  isSystemOwned: boolean;
-  companyId?: number; // 0 means system-owned station
-  companyName?: string; // Company name if the station is owned by a company
+  cityId?: number;
+  isSystemOwned?: boolean;
+  companyId?: number;
+  companyName?: string;
 }
 
 export interface StationCreateRequest {
   name: string;
   latitude: number;
   longitude: number;
+  cityId: number;
   cityName: string;
-  isSystemOwned: boolean;
-  companyId?: number; // 0 means system-owned station
+  companyId?: number;
   companyName?: string;
 }
 
@@ -24,8 +25,9 @@ export interface StationUpdateRequest {
   name?: string;
   latitude?: number;
   longitude?: number;
-  cityName?: string;
+  cityName: string;
+  cityId?: number;
   isSystemOwned?: boolean;
-  companyId?: number; // 0 means system-owned station
+  companyId?: number;
   companyName?: string;
 }

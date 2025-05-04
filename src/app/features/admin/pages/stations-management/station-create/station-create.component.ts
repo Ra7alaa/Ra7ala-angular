@@ -11,9 +11,10 @@ import { Router, RouterModule } from '@angular/router';
 import { StationsService } from '../../../services/stations.service';
 import { StationCreateRequest } from '../../../models/station.model';
 import { AuthService } from '../../../../auth/services/auth.service';
-import { User, UserRole } from '../../../../auth/models/user.model';
+import { User } from '../../../../auth/models/user.model';
 import { TranslatePipe } from '../../../../../features/settings/pipes/translate.pipe';
 import { TranslationService } from '../../../../../core/localization/translation.service';
+import { CitiesService, City } from '../../../services/cities.service';
 
 @Component({
   selector: 'app-station-create',
@@ -31,122 +32,123 @@ import { TranslationService } from '../../../../../core/localization/translation
 export class StationCreateComponent implements OnInit {
   stationForm: FormGroup;
   loading = false;
+  loadingCities = false;
   error: string | null = null;
-  isSystemOwned = true;
   currentUser: User | null = null;
-
-  // Expose UserRole enum to the template
-  UserRole = UserRole;
-
-  // Flag to know if user can create system-owned stations
-  canCreateSystemStations = false;
+  cities: City[] = [];
+  selectedCity: City | null = null;
 
   constructor(
     private fb: FormBuilder,
     private stationsService: StationsService,
+    private citiesService: CitiesService,
     private authService: AuthService,
     private router: Router,
     private translateService: TranslationService
   ) {
     this.stationForm = this.fb.group({
-      name: ['', [Validators.required]],
-      latitude: [0, [Validators.required]],
-      longitude: [0, [Validators.required]],
-      cityName: ['', [Validators.required]],
-      isSystemOwned: [true],
-      companyId: [0],
-      companyName: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      latitude: [
+        30.0444,
+        [Validators.required, Validators.min(-90), Validators.max(90)],
+      ],
+      longitude: [
+        31.2357,
+        [Validators.required, Validators.min(-180), Validators.max(180)],
+      ],
+      cityId: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
+    console.log('Current user:', this.currentUser);
 
-    // Check if user has permission to create system stations
-    this.canCreateSystemStations =
-      this.currentUser?.userType === UserRole.SystemOwner ||
-      this.currentUser?.userType === UserRole.SuperAdmin;
+    this.loadCities();
 
-    // If user is a company admin, set default values for company stations
-    if (this.currentUser?.userType === UserRole.Admin) {
-      this.isSystemOwned = false;
-      this.stationForm.get('isSystemOwned')?.setValue(false);
-      this.stationForm.get('isSystemOwned')?.disable(); // Disable the field
-      this.stationForm.get('companyId')?.setValue(this.currentUser.companyId);
-
-      // Set company name from the user profile if available
-      if (this.currentUser.companyName) {
-        this.stationForm
-          .get('companyName')
-          ?.setValue(this.currentUser.companyName);
-        this.stationForm.get('companyName')?.disable(); // Make it read-only for company admins
+    this.stationForm.get('cityId')?.valueChanges.subscribe((cityId) => {
+      if (cityId) {
+        this.updateSelectedCity(cityId);
       }
-    }
+    });
+  }
 
-    // Subscribe to changes in isSystemOwned to update companyId
-    this.stationForm
-      .get('isSystemOwned')
-      ?.valueChanges.subscribe((isSystemOwned) => {
-        this.isSystemOwned = isSystemOwned;
-        if (isSystemOwned) {
-          this.stationForm.get('companyId')?.setValue(0);
-          this.stationForm.get('companyName')?.setValue('');
-        } else if (this.currentUser?.userType === UserRole.Admin) {
-          // For company admin, set their company ID and name
-          this.stationForm
-            .get('companyId')
-            ?.setValue(this.currentUser.companyId);
-          if (this.currentUser.companyName) {
-            this.stationForm
-              .get('companyName')
-              ?.setValue(this.currentUser.companyName);
-          }
-        } else {
-          this.stationForm.get('companyId')?.setValue(null);
-        }
-      });
+  loadCities(): void {
+    this.loadingCities = true;
+    console.log('Loading cities...');
+
+    this.citiesService.getAllCities().subscribe({
+      next: (cities) => {
+        console.log('Cities loaded successfully:', cities);
+        this.cities = cities;
+        this.loadingCities = false;
+      },
+      error: (err) => {
+        console.error('Error loading cities:', err);
+        this.error =
+          this.translateService.translate('admin.stations.cities_load_error') ||
+          'Failed to load cities. Please try again.';
+        this.loadingCities = false;
+      },
+    });
+  }
+
+  updateSelectedCity(cityId: number): void {
+    this.selectedCity =
+      this.cities.find((city) => city.id === Number(cityId)) || null;
   }
 
   onSubmit(): void {
+    Object.keys(this.stationForm.controls).forEach((key) => {
+      this.stationForm.get(key)?.markAsTouched();
+    });
+
     if (this.stationForm.invalid) {
-      // Mark all fields as touched to trigger validation errors
-      Object.keys(this.stationForm.controls).forEach((key) => {
-        this.stationForm.get(key)?.markAsTouched();
-      });
+      console.log('Form is invalid:', this.stationForm.errors);
+      return;
+    }
+
+    if (!this.currentUser || !this.currentUser.companyId) {
+      this.error = 'User information is missing. Cannot create station.';
+      console.error('Current user or companyId is missing:', this.currentUser);
+      return;
+    }
+
+    if (!this.selectedCity) {
+      this.error = 'Please select a valid city first.';
       return;
     }
 
     this.loading = true;
     this.error = null;
 
-    // Create a copy of the form value to handle disabled controls
-    const formValue = { ...this.stationForm.getRawValue() };
-    const stationData: StationCreateRequest = formValue;
+    const formValue = this.stationForm.value;
 
-    // For company admins, ensure station is assigned to their company
-    if (this.currentUser?.userType === UserRole.Admin) {
-      stationData.isSystemOwned = false;
-      stationData.companyId = this.currentUser.companyId;
-    } else {
-      // Ensure companyId is set to 0 for system-owned stations
-      if (stationData.isSystemOwned) {
-        stationData.companyId = 0;
-        stationData.companyName = undefined;
-      }
-    }
+    const stationData: StationCreateRequest = {
+      name: formValue.name,
+      latitude: Number(formValue.latitude),
+      longitude: Number(formValue.longitude),
+      cityId: Number(formValue.cityId),
+      cityName: this.selectedCity.name,
+      companyId: Number(this.currentUser.companyId),
+    };
+
+    console.log('Creating station with data:', stationData);
 
     this.stationsService.createStation(stationData).subscribe({
-      next: () => {
+      next: (result) => {
+        console.log('Station created successfully:', result);
         this.loading = false;
         this.router.navigate(['/admin/stations']);
       },
       error: (err) => {
+        console.error('Error creating station:', err);
         this.error =
           this.translateService.translate(
             'admin.stations.create_station.error'
           ) +
           ': ' +
-          err.message;
+          (err.message || 'Unknown error');
         this.loading = false;
       },
     });
@@ -154,5 +156,18 @@ export class StationCreateComponent implements OnInit {
 
   cancel(): void {
     this.router.navigate(['/admin/stations']);
+  }
+
+  get name() {
+    return this.stationForm.get('name');
+  }
+  get latitude() {
+    return this.stationForm.get('latitude');
+  }
+  get longitude() {
+    return this.stationForm.get('longitude');
+  }
+  get cityId() {
+    return this.stationForm.get('cityId');
   }
 }
