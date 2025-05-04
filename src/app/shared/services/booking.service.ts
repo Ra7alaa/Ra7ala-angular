@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export interface TripDetailsResponse {
   statusCode: number;
@@ -68,23 +69,50 @@ export class BookingService {
   constructor(private http: HttpClient) {}
 
   getTripDetails(tripId: number): Observable<TripDetailsResponse> {
-    return this.http.get<TripDetailsResponse>(`${this.apiUrl}/Trips/${tripId}`);
+    console.log('Getting trip details for tripId:', tripId);
+    const url = `${this.apiUrl}/Trips/${tripId}`;
+    console.log('GET request to:', url);
+
+    return this.http.get<TripDetailsResponse>(url).pipe(
+      tap({
+        next: response => console.log('Trip details response:', response),
+        error: error => console.error('Error fetching trip details:', error)
+      })
+    );
   }
 
   bookTrip(bookingData: BookingRequest): Observable<BookingResponse> {
     // Validate the booking data before sending
     if (!this.isValidBookingRequest(bookingData)) {
+      console.error('Invalid booking request data:', bookingData);
       throw new Error('Invalid booking request data');
     }
 
-    return this.http.post<BookingResponse>(
-      `${this.apiUrl}/Booking`,
-      bookingData
+    const url = `${this.apiUrl}/Booking`;
+    console.log('POST request to:', url);
+    console.log('Request body:', bookingData);
+
+    return this.http.post<BookingResponse>(url, bookingData).pipe(
+      tap({
+        next: (response) => {
+          console.log('Booking API response:', response);
+          console.log('Response status:', response.statusCode);
+          console.log('Response data:', response.data);
+        },
+        error: (error) => {
+          console.error('Booking API error:', error);
+          console.error('Error details:', {
+            status: error.status,
+            message: error.error?.message,
+            error: error.error
+          });
+        }
+      })
     );
   }
 
   private isValidBookingRequest(booking: BookingRequest): boolean {
-    return !!(
+    const isValid = !!(
       booking.tripId &&
       booking.startStationId &&
       booking.endStationId &&
@@ -92,5 +120,19 @@ export class BookingService {
       booking.numberOfTickets > 0 &&
       booking.startStationId !== booking.endStationId
     );
+
+    console.log('Booking request validation:', {
+      booking,
+      isValid,
+      checks: {
+        hasTripId: !!booking.tripId,
+        hasStartStation: !!booking.startStationId,
+        hasEndStation: !!booking.endStationId,
+        hasValidTickets: booking.numberOfTickets > 0,
+        hasDifferentStations: booking.startStationId !== booking.endStationId
+      }
+    });
+
+    return isValid;
   }
 }

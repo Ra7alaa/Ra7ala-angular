@@ -50,9 +50,9 @@
           <div class="mb-3">
             <label for="startStation" class="form-label">Departure Station <span class="text-danger">*</span></label>
             <select id="startStation" name="startStation" class="form-select" [(ngModel)]="bookingData.startStationId"
-              required>
-              <option value="">Select departure station</option>
-              <option *ngFor="let station of stations" [value]="station.stationId">
+              required [compareWith]="compareStationIds">
+              <option [ngValue]="0">Select departure station</option>
+              <option *ngFor="let station of stations" [ngValue]="station.stationId">
                 {{station.stationName}} ({{station.cityName}})
                 <ng-container *ngIf="station.departureTime">
                   - Departure: {{station.departureTime | date:'shortTime'}}
@@ -64,9 +64,9 @@
           <div class="mb-3">
             <label for="endStation" class="form-label">Arrival Station <span class="text-danger">*</span></label>
             <select id="endStation" name="endStation" class="form-select" [(ngModel)]="bookingData.endStationId"
-              required>
-              <option value="">Select arrival station</option>
-              <option *ngFor="let station of stations" [value]="station.stationId">
+              required [compareWith]="compareStationIds">
+              <option [ngValue]="0">Select arrival station</option>
+              <option *ngFor="let station of stations" [ngValue]="station.stationId">
                 {{station.stationName}} ({{station.cityName}})
                 <ng-container *ngIf="station.arrivalTime">
                   - Arrival: {{station.arrivalTime | date:'shortTime'}}
