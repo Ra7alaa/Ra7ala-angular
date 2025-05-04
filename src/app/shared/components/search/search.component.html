@@ -2,69 +2,60 @@
   <h2 class="search-title">{{ "search.title" | translate }}</h2>
 
   <div class="search-form-wrapper">
-    <div class="row g-3">
-      <!-- From-To Section with Float Label -->
-      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
-        <div class="form-group">
-          <p-floatlabel variant="on">
-            <input
-              pInputText
-              id="fromTo"
-              [(ngModel)]="fromToValue"
-              class="w-100"
-            />
-            <label for="fromTo">{{ "search.from_to" | translate }}</label>
-          </p-floatlabel>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+
+      <!-- Row 1: Inputs only -->
+      <div class="d-flex flex-wrap justify-content-between gap-3 mb-3">
+        <!-- Start City -->
+        <div class="form-group flex-fill">
+          <label class="form-label" for="startCity">
+            <i class="bi bi-geo-alt-fill me-1"></i> {{ "Start_city" | translate }}
+          </label>
+          <select id="startCity" formControlName="startCityId" class="form-select">
+            <option value="">{{ "" | translate }}</option>
+            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+          </select>
+        </div>
+
+        <!-- End City -->
+        <div class="form-group flex-fill">
+          <label class="form-label" for="endCity">
+            <i class="bi bi-geo-alt-fill me-1"></i> {{ "End_city" | translate }}
+          </label>
+          <select id="endCity" formControlName="endCityId" class="form-select">
+            <option value="">{{ "" | translate }}</option>
+            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+          </select>
+        </div>
+
+        <!-- Departure Date -->
+        <div class="form-group flex-fill">
+          <label class="form-label" for="departureDate">
+            <i class="bi bi-calendar-event me-1"></i> {{ "Departure_date" | translate }}
+          </label>
+          <p-calendar id="departureDate" formControlName="departureDate" [showIcon]="true" [minDate]="minDate"
+            dateFormat="yy-mm-dd" [readonlyInput]="true" styleClass="w-100"></p-calendar>
+        </div>
+
+        <!-- Required Seats -->
+        <div class="form-group flex-fill">
+          <label class="form-label" for="requiredSeats">
+            <i class="bi bi-person-plus-fill me-1"></i> {{ "Required_seats" | translate }}
+          </label>
+          <p-inputNumber id="requiredSeats" formControlName="requiredSeats" [showButtons]="true" [min]="1" [max]="10"
+            buttonLayout="horizontal" spinnerMode="horizontal" [step]="1" inputId="horizontal" styleClass="w-100">
+          </p-inputNumber>
         </div>
       </div>
 
-      <!-- Trip Type Section with Float Label -->
-      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
-        <div class="form-group">
-          <p-floatlabel variant="on">
-            <select id="tripRoute" class="form-select">
-              <option value="cairo-alexandria">
-                {{ "cities.cairo" | translate }} - {{ "cities.alexandria" | translate }}
-              </option>
-              <option value="cairo-luxor">
-                {{ "cities.cairo" | translate }} - {{ "cities.luxor" | translate }}
-              </option>
-              <option value="alexandria-luxor">
-                {{ "cities.alexandria" | translate }} - {{ "cities.luxor" | translate }}
-              </option>
-              <option value="luxor-aswan">
-                {{ "cities.luxor" | translate }} - {{ "cities.aswan" | translate }}
-              </option>
-              <option value="alexandria-hurghada">
-                {{ "cities.alexandria" | translate }} - {{ "cities.hurghada" | translate }}
-              </option>
-            </select>
-          </p-floatlabel>
-        </div>
+      <!-- Row 2: Search Button -->
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="search-btn" [disabled]="searchForm.invalid || isLoading">
+          <i class="bi bi-search"></i>
+          <span *ngIf="!isLoading">{{ "search " | translate }}</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+        </button>
       </div>
-
-      <!-- Date Section with Float Label -->
-      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
-        <div class="form-group">
-          <p-floatlabel variant="on">
-            <input
-              pInputText
-              id="dateRange"
-              [(ngModel)]="dateRange"
-              class="w-100"
-            />
-            <label for="dateRange">{{ "search.date_range" | translate }}</label>
-          </p-floatlabel>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-12 col-md-6 col-lg-3">
-        <div class="form-group">
-          <button class="search-btn" (click)="onSearch()">
-            <i class="bi bi-send-fill me-1"></i> {{ "search.show_results" | translate }}
-          </button>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </div>

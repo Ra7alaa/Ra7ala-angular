@@ -37,30 +37,16 @@
             (click)="closeMobileMenuIfOpen()"
             >{{ "navigation.home" | translate }}</a
           >
-          <a
-            routerLink="/about"
-            routerLinkActive="active"
-            class="nav-link"
-            (click)="closeMobileMenuIfOpen()"
-            >{{ "navigation.about" | translate }}</a
-          >
-          <a
-            routerLink="/destinations"
-            routerLinkActive="active"
-            class="nav-link"
-            (click)="closeMobileMenuIfOpen()"
-            >{{ "navigation.destinations" | translate }}</a
-          >
+
+
           <a href="#common-trips" class="nav-link" (click)="scrollToCommonTrips($event)">
-  {{ "navigation.common_trips" | translate }}</a
+  {{ "navigation.destinations" | translate }}</a
           >
-          <a
-            routerLink="/contact"
-            routerLinkActive="active"
-            class="nav-link"
-            (click)="closeMobileMenuIfOpen()"
-            >{{ "navigation.contact_us" | translate }}</a
-          >
+
+          <a routerLink="/about" routerLinkActive="active" class="nav-link" (click)="closeMobileMenuIfOpen()">{{
+            "navigation.about" | translate }}</a>
+
+
         </div>
 
         <!-- Auth Buttons -->

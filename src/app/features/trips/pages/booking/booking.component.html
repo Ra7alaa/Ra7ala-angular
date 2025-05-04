@@ -1,0 +1,98 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Book Your Trip</h2>
+    </div>
+    <div class="card-body">
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Error Display -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" (click)="clearError()" aria-label="Close"></button>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="bookingSuccess && bookingResponse?.data" class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Booking Successful!</h4>
+        <p>Your trip has been booked successfully. Booking ID: {{bookingResponse?.data?.bookingId}}</p>
+        <hr>
+        <p class="mb-0">Total Price: {{bookingResponse?.data?.totalPrice | currency:'EGP':'symbol':'1.0-0'}}</p>
+      </div>
+
+      <!-- Trip Details -->
+      <div *ngIf="tripDetails && !loading && !bookingSuccess" class="mb-4">
+        <div class="trip-info">
+          <h3>{{tripDetails.routeName}}</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Departure:</strong> {{tripDetails.departureTime | date:'medium'}}</p>
+              <p><strong>Driver:</strong> {{tripDetails.driverName}} ({{tripDetails.driverPhoneNumber}})</p>
+              <p><strong>Company:</strong> {{tripDetails.companyName}}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Arrival:</strong> {{tripDetails.arrivalTime | date:'medium'}}</p>
+              <p><strong>Bus Number:</strong> {{tripDetails.busRegistrationNumber}}</p>
+              <p><strong>Available Seats:</strong> {{tripDetails.availableSeats}}</p>
+            </div>
+          </div>
+          <p><strong>Price per ticket:</strong> {{tripDetails.price | currency:'EGP':'symbol':'1.0-0'}}</p>
+          <p *ngIf="tripDetails.amenityDescription"><strong>Amenities:</strong> {{tripDetails.amenityDescription}}</p>
+        </div>
+
+        <!-- Booking Form -->
+        <form #bookingForm="ngForm" (ngSubmit)="onSubmit()" class="mt-4">
+          <div class="mb-3">
+            <label for="startStation" class="form-label">Departure Station <span class="text-danger">*</span></label>
+            <select id="startStation" name="startStation" class="form-select" [(ngModel)]="bookingData.startStationId"
+              required [compareWith]="compareStationIds">
+              <option [ngValue]="0">Select departure station</option>
+              <option *ngFor="let station of stations" [ngValue]="station.stationId">
+                {{station.stationName}} ({{station.cityName}})
+                <ng-container *ngIf="station.departureTime">
+                  - Departure: {{station.departureTime | date:'shortTime'}}
+                </ng-container>
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="endStation" class="form-label">Arrival Station <span class="text-danger">*</span></label>
+            <select id="endStation" name="endStation" class="form-select" [(ngModel)]="bookingData.endStationId"
+              required [compareWith]="compareStationIds">
+              <option [ngValue]="0">Select arrival station</option>
+              <option *ngFor="let station of stations" [ngValue]="station.stationId">
+                {{station.stationName}} ({{station.cityName}})
+                <ng-container *ngIf="station.arrivalTime">
+                  - Arrival: {{station.arrivalTime | date:'shortTime'}}
+                </ng-container>
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="tickets" class="form-label">Number of Tickets <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="tickets" name="tickets"
+              [(ngModel)]="bookingData.numberOfTickets" [min]="1" [max]="tripDetails?.availableSeats || 1" required>
+            <div class="form-text">
+              Total Price: {{(tripDetails.price || 0) * bookingData.numberOfTickets | currency:'EGP':'symbol':'1.0-0'}}
+            </div>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary" [disabled]="!bookingForm.form.valid || loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                aria-hidden="true"></span>
+              {{ loading ? 'Booking...' : 'Book Now' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
