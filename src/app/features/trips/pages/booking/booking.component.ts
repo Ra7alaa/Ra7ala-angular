@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { BookingService, TripDetailsResponse, TripStation, BookingResponse } from '../../../../shared/services/booking.service';
+import {
+  BookingService,
+  TripDetailsResponse,
+  TripStation,
+  BookingResponse,
+} from '../../../../shared/services/booking.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +15,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule]
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class BookingComponent implements OnInit {
   tripId: number = 0;
@@ -25,7 +30,7 @@ export class BookingComponent implements OnInit {
     tripId: 0,
     startStationId: 0,
     endStationId: 0,
-    numberOfTickets: 1
+    numberOfTickets: 1,
   };
 
   constructor(
@@ -76,12 +81,14 @@ export class BookingComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading trip details:', error);
-        this.error = error?.error?.message || 'Failed to load trip details. Please try again.';
+        this.error =
+          error?.error?.message ||
+          'Failed to load trip details. Please try again.';
         this.loading = false;
         setTimeout(() => {
           this.router.navigate(['/trips/search']);
         }, 2000);
-      }
+      },
     });
   }
 
@@ -105,12 +112,16 @@ export class BookingComponent implements OnInit {
     }
 
     if (!this.isValidStationSequence()) {
-      this.error = 'Invalid station selection. Arrival station must come after departure station.';
+      this.error =
+        'Invalid station selection. Arrival station must come after departure station.';
       console.log('Validation failed: invalid station sequence');
       return;
     }
 
-    if (!this.tripDetails?.availableSeats || this.bookingData.numberOfTickets > this.tripDetails.availableSeats) {
+    if (
+      !this.tripDetails?.availableSeats ||
+      this.bookingData.numberOfTickets > this.tripDetails.availableSeats
+    ) {
       this.error = 'Not enough seats available';
       console.log('Validation failed: insufficient seats');
       return;
@@ -123,7 +134,7 @@ export class BookingComponent implements OnInit {
       tripId: this.bookingData.tripId,
       startStationId: this.bookingData.startStationId,
       endStationId: this.bookingData.endStationId,
-      numberOfTickets: this.bookingData.numberOfTickets
+      numberOfTickets: this.bookingData.numberOfTickets,
     };
 
     console.log('Sending booking request:', bookingRequest);
@@ -141,8 +152,8 @@ export class BookingComponent implements OnInit {
             this.router.navigate(['/profile/bookings'], {
               queryParams: {
                 bookingId: response.data.bookingId,
-                totalPrice: response.data.totalPrice
-              }
+                totalPrice: response.data.totalPrice,
+              },
             });
           }, 2000);
         } else {
@@ -153,8 +164,9 @@ export class BookingComponent implements OnInit {
       error: (error) => {
         console.error('Booking error:', error);
         this.loading = false;
-        this.error = error?.error?.message || 'Failed to book the trip. Please try again.';
-      }
+        this.error =
+          error?.error?.message || 'Failed to book the trip. Please try again.';
+      },
     });
   }
 
@@ -169,11 +181,14 @@ export class BookingComponent implements OnInit {
     }
 
     // Log all stations and their sequence numbers
-    console.log('Available stations:', this.stations.map(s => ({
-      stationId: s.stationId,
-      name: s.stationName,
-      sequenceNumber: s.sequenceNumber
-    })));
+    console.log(
+      'Available stations:',
+      this.stations.map((s) => ({
+        stationId: s.stationId,
+        name: s.stationName,
+        sequenceNumber: s.sequenceNumber,
+      }))
+    );
 
     const startStationId = Number(this.bookingData.startStationId);
     const endStationId = Number(this.bookingData.endStationId);
@@ -181,11 +196,13 @@ export class BookingComponent implements OnInit {
     console.log('Validating stations:', {
       startStationId,
       endStationId,
-      tripId: this.tripId
+      tripId: this.tripId,
     });
 
-    const startStation = this.stations.find(s => s.stationId === startStationId);
-    const endStation = this.stations.find(s => s.stationId === endStationId);
+    const startStation = this.stations.find(
+      (s) => s.stationId === startStationId
+    );
+    const endStation = this.stations.find((s) => s.stationId === endStationId);
 
     if (!startStation) {
       console.log(`Start station with ID ${startStationId} not found`);
@@ -201,26 +218,26 @@ export class BookingComponent implements OnInit {
       start: {
         id: startStation.stationId,
         name: startStation.stationName,
-        sequence: startStation.sequenceNumber
+        sequence: startStation.sequenceNumber,
       },
       end: {
         id: endStation.stationId,
         name: endStation.stationName,
-        sequence: endStation.sequenceNumber
-      }
+        sequence: endStation.sequenceNumber,
+      },
     });
 
     const result = startStation.sequenceNumber < endStation.sequenceNumber;
     console.log(`Station sequence validation result: ${result}`, {
       startStationSequence: startStation.sequenceNumber,
       endStationSequence: endStation.sequenceNumber,
-      isValid: result
+      isValid: result,
     });
 
     return result;
   }
 
-  compareStationIds(id1: any, id2: any): boolean {
+  compareStationIds(id1: number | string, id2: number | string): boolean {
     return Number(id1) === Number(id2);
   }
 }

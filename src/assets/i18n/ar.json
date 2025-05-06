@@ -140,6 +140,7 @@
   },
   "profile": {
     "profile_picture": "الصورة الشخصية",
+    "upload_photo": "تحميل صورة",
     "profile_title": "المعلومات الشخصية",
     "profile_description": "قم بتحديث معلوماتك الشخصية هنا",
     "full_name": "الاسم الكامل",
@@ -149,7 +150,7 @@
     "address": "العنوان",
     "full_name_required": "الاسم الكامل مطلوب",
     "email_required": "يرجى إدخال بريد إلكتروني صحيح",
-    "phone_format": "يجب أن يتكون رقم الهاتف من 11 رقمًا",
+    "phone_format": "يرجى إدخال رقم هاتف صحيح مع مفتاح الدولة",
     "change_photo": "تغيير الصورة",
     "profile_updated": "تم تحديث الملف الشخصي بنجاح",
     "save": "حفظ التغييرات",
@@ -272,6 +273,8 @@
       "filter": "تصفية",
       "previous": "السابق",
       "next": "التالي",
+      "showing": "تعرض",
+      "of": "من",
       "departure_station": "محطة المغادرة",
       "arrival_station": "محطة الوصول",
       "departure_date": "تاريخ المغادرة",
@@ -288,7 +291,30 @@
       "select_route": "اختر المسار",
       "select_departure": "اختر محطة المغادرة",
       "select_arrival": "اختر محطة الوصول",
-      "select_bus": "اختر الحافلة"
+      "select_bus": "اختر الحافلة",
+      "basic_information": "المعلومات الأساسية",
+      "trip_details": "تفاصيل الرحلة",
+      "trip_stations": "محطات الرحلة",
+      "driver": "السائق",
+      "select_driver": "اختر السائق",
+      "driver_required": "السائق مطلوب",
+      "bus_required": "الحافلة مطلوبة",
+      "loading_trips": "جارِ تحميل الرحلات...",
+      "departure_time_required": "وقت المغادرة مطلوب",
+      "price_required": "السعر مطلوب",
+      "price_min": "يجب أن يكون السعر أكبر من صفر",
+      "seats_required": "عدد المقاعد المتاحة مطلوب",
+      "seats_min": "يجب أن يكون عدد المقاعد أكبر من صفر",
+      "select_route_first": "الرجاء اختيار المسار أولاً لعرض المحطات",
+      "station_departure_time": "وقت المغادرة من المحطة",
+      "station_arrival_time": "وقت الوصول إلى المحطة",
+      "reset": "إعادة تعيين",
+      "create_trip": "إنشاء رحلة",
+      "routes_load_error": "فشل في تحميل المسارات. يرجى المحاولة مرة أخرى.",
+      "buses_load_error": "فشل في تحميل الحافلات. يرجى المحاولة مرة أخرى.",
+      "drivers_load_error": "فشل في تحميل السائقين. يرجى المحاولة مرة أخرى.",
+      "create_failed": "فشل في إنشاء الرحلة. يرجى المحاولة مرة أخرى.",
+      "station_placeholder": "محطة"
     },
     "routes": {
       "title": "إدارة المسارات",
@@ -768,7 +794,10 @@
       "rejected": "مرفوض",
       "completed": "مكتمل",
       "cancelled": "ملغى",
-      "in_progress": "قيد التنفيذ"
+      "in_progress": "قيد التنفيذ",
+      "start_point": "نقطة البداية",
+      "end_point": "نقطة النهاية",
+      "transit_station": "محطة عبور"
     },
     "error": {
       "required": "هذا الحقل مطلوب",
@@ -871,5 +900,8 @@
       "aswan_station": "محطة أسوان",
       "hurghada_terminal": "محطة الغردقة للحافلات"
     }
+  },
+  "shared": {
+    "loading": "جاري التحميل..."
   }
 }

@@ -27,6 +27,8 @@ export class TripsManagementComponent implements OnInit {
   pageSize = 10;
   totalTrips = 0;
   totalPages = 1;
+  itemsPerPage = 10; // عدد العناصر في كل صفحة
+  totalItems = 0; // إجمالي عدد العناصر
 
   // Filters
   searchTerm = '';
@@ -63,13 +65,13 @@ export class TripsManagementComponent implements OnInit {
   getCompanyIdAndLoadTrips(): void {
     // Use the new method to get companyId from profile
     this.authService.getCompanyId().subscribe({
-      next: (companyId) => {
+      next: (companyId: number) => {
         console.log('Company ID retrieved from profile:', companyId);
         this.companyId = companyId;
         // Load trips after getting companyId
         this.loadTrips();
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error('Error getting company ID:', error);
         this.errorMessage = 'Failed to get company ID. Cannot load trips.';
         // Try to get from localStorage as fallback
@@ -144,8 +146,10 @@ export class TripsManagementComponent implements OnInit {
       this.trips = response.data.trips || [];
       this.filteredTrips = this.trips;
       this.totalTrips = response.data.totalCount || 0;
+      this.totalItems = response.data.totalCount || 0; // تعيين إجمالي عدد العناصر
       this.currentPage = response.data.currentPage || 1;
       this.pageSize = response.data.pageSize || 10;
+      this.itemsPerPage = response.data.pageSize || 10; // تعيين عدد العناصر في كل صفحة
       this.totalPages = response.data.totalPages || 1;
     } else {
       this.errorMessage = response.message || 'Error loading trips';

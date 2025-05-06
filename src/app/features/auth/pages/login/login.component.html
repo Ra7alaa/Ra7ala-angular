@@ -1,110 +1,103 @@
-<div class="login-wrapper">
-  <div class="login-container">
-    <h1>Ra7ala</h1>
+<div class="login-page row m-0">
+  <!-- Left: Bus Image -->
+  <div class="col-md-6 p-0">
+    <div class="bus-container">
+      <img
+        src="assets/images/r7ala-bus.svg"
+        alt="Bus"
+        class="bus-image img-fluid"
+      />
+    </div>
+  </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <!-- Error message -->
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
+  <!-- Right: Login Form -->
+  <div class="col-md-6 p-0">
+    <div class="form-container">
+      <div class="form-content">
+        <h1 class="logo-title">Ra7ala</h1>
 
-      <!-- Email/Username field -->
-      <div class="form-group">
-        <label for="emailOrUsername">Email or Username</label>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            id="emailOrUsername"
-            formControlName="emailOrUsername"
-            [ngClass]="{
-              'is-invalid':
-                loginForm.get('emailOrUsername')?.invalid &&
-                loginForm.get('emailOrUsername')?.touched
-            }"
-            placeholder="Enter your email or username"
-          />
-          <div
-            *ngIf="
-              loginForm.get('emailOrUsername')?.invalid &&
-              loginForm.get('emailOrUsername')?.touched
-            "
-            class="error-text"
-          >
-            Email or username is required
-          </div>
-        </div>
-      </div>
-
-      <!-- Password field -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <div class="input-wrapper">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            id="password"
-            formControlName="password"
-            [ngClass]="{
-              'is-invalid':
-                loginForm.get('password')?.invalid &&
-                loginForm.get('password')?.touched
-            }"
-            placeholder="Enter your password"
-          />
-          <button
-            type="button"
-            class="password-toggle"
-            (click)="togglePasswordVisibility()"
-            (keydown.enter)="togglePasswordVisibility()"
-            (keydown.space)="
-              togglePasswordVisibility(); $event.preventDefault()
-            "
-            tabindex="0"
-            aria-label="Toggle password visibility"
-          >
-            <i
-              class="fa"
-              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-            ></i>
-          </button>
-          <div
-            *ngIf="
-              loginForm.get('password')?.invalid &&
-              loginForm.get('password')?.touched
-            "
-            class="error-text"
-          >
-            Password is required
-          </div>
-        </div>
-      </div>
-
-      <!-- Remember me checkbox -->
-      <div class="form-options">
-        <div class="remember-me">
-          <input type="checkbox" id="rememberMe" formControlName="rememberMe" />
-          <label for="rememberMe">Remember me</label>
-        </div>
-        <a routerLink="/auth/forgot-password" class="forgot-link"
-          >Forgot password?</a
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+          class="login-form"
         >
+          <!-- Error message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Email Address -->
+          <div class="form-group mb-4">
+            <label for="emailOrUsername" class="form-label"
+              >Email Address</label
+            >
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="emailOrUsername"
+                formControlName="emailOrUsername"
+                class="form-control"
+                placeholder="Enter your Email"
+              />
+              <span class="input-icon">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-4">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-control"
+                placeholder="Password"
+              />
+              <span class="input-icon">
+                <i class="fa fa-lock"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Remember me and forgot password -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="rememberMe"
+                formControlName="rememberMe"
+              />
+              <label class="form-check-label" for="rememberMe"
+                >Remember Me</label
+              >
+            </div>
+            <a routerLink="/auth/forgot-password" class="forgot-link"
+              >Forgot Password?</a
+            >
+          </div>
+
+          <!-- Login button -->
+          <button
+            type="submit"
+            [disabled]="loginForm.invalid || isSubmitting"
+            class="btn btn-login w-100"
+          >
+            Log In
+          </button>
+
+          <!-- Register link -->
+          <div class="text-center mt-3 signup-text">
+            <span>Not member yet? </span>
+            <a routerLink="/auth/register" class="create-account"
+              >Create an account</a
+            >
+          </div>
+        </form>
       </div>
-
-      <!-- Login button -->
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid || isSubmitting"
-        class="btn-login"
-      >
-        <span *ngIf="!isSubmitting">Login</span>
-        <span *ngIf="isSubmitting">
-          <i class="fa fa-spinner fa-spin"></i> Logging in...
-        </span>
-      </button>
-
-      <!-- Register link -->
-      <p class="register-text">
-        Don't have an account? <a routerLink="/auth/register">Sign Up</a>
-      </p>
-    </form>
+    </div>
   </div>
 </div>

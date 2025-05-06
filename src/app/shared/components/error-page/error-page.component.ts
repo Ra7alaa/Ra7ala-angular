@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../features/auth/services/auth.service';
+import { UserRole } from '../../../features/auth/models/user.model';
 
 @Component({
   selector: 'app-error-page',
@@ -12,12 +14,15 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 export class ErrorPageComponent implements OnInit {
   @Input() errorCode = '404';
   @Input() errorTitle = 'Page Not Found';
-  @Input() errorMessage =
-    'The page you are looking for does not exist.';
+  @Input() errorMessage = 'The page you are looking for does not exist.';
   @Input() showHomeButton = true;
   @Input() showBackButton = true;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     // Check for custom message in router state
@@ -33,7 +38,8 @@ export class ErrorPageComponent implements OnInit {
     this.route.data.subscribe((data) => {
       if (data['errorCode']) this.errorCode = data['errorCode'];
       if (data['errorTitle']) this.errorTitle = data['errorTitle'];
-      if (data['errorMessage'] && !this.errorMessage) this.errorMessage = data['errorMessage'];
+      if (data['errorMessage'] && !this.errorMessage)
+        this.errorMessage = data['errorMessage'];
     });
 
     // Get error code from route params if available (for the :code route)
@@ -72,10 +78,41 @@ export class ErrorPageComponent implements OnInit {
   }
 
   goBack(): void {
-    window.history.back();
+    // Check if there's a previous page to go back to
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // If there's no previous page, redirect to appropriate home page based on role
+      this.goHome();
+    }
   }
 
   goHome(): void {
-    this.router.navigate(['/']);
+    const currentUser = this.authService.getCurrentUser();
+
+    if (currentUser) {
+      // Redirect based on user role
+      switch (currentUser.userType) {
+        case UserRole.SystemOwner:
+          this.router.navigate(['/owner/dashboard']);
+          break;
+        case UserRole.SuperAdmin:
+        case UserRole.Admin:
+          this.router.navigate(['/admin/dashboard']);
+          break;
+        case UserRole.Driver:
+          this.router.navigate(['/driver/dashboard']);
+          break;
+        case UserRole.Passenger:
+          this.router.navigate(['/']);
+          break;
+        default:
+          this.router.navigate(['/']);
+          break;
+      }
+    } else {
+      // If no user is logged in, navigate to the main page
+      this.router.navigate(['/']);
+    }
   }
 }

@@ -1,6 +1,7 @@
 <form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
   <!-- Error Message -->
   <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
     {{ errorMessage }}
   </div>
 
@@ -11,326 +12,333 @@
     </div>
   </div>
 
-  <!-- Route Selection -->
-  <div class="row mb-3">
-    <div class="col-md-12">
-      <label for="routeId" class="form-label"
-        >{{ "admin.trips.route" | translate }} *</label
-      >
-      <select
-        id="routeId"
-        class="form-select"
-        formControlName="routeId"
-        [ngClass]="{
-          'is-invalid':
-            tripForm.get('routeId')?.invalid && tripForm.get('routeId')?.touched
-        }"
-      >
-        <option value="" disabled selected>
-          {{ "admin.trips.select_route" | translate }}
-        </option>
-        <option *ngFor="let route of routes" [value]="route.id">
-          {{ route.startCityName }} - {{ route.endCityName }}
-        </option>
-      </select>
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('routeId')?.errors?.['required'] && tripForm.get('routeId')?.touched"
-      >
-        {{ "admin.trips.route_required" | translate }}
+  <!-- Trip Basic Information -->
+  <div class="form-section mb-4">
+    <h4 class="section-title mb-3">
+      <i class="bi bi-info-circle-fill me-2 text-primary"></i>
+      {{ "admin.trips.basic_information" | translate }}
+    </h4>
+
+    <!-- Route Selection -->
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <label for="routeId" class="form-label d-flex align-items-center">
+          <i class="bi bi-map me-2 text-primary"></i>
+          {{ "admin.trips.route" | translate }} *
+        </label>
+        <select
+          id="routeId"
+          class="form-select"
+          formControlName="routeId"
+          (change)="onRouteChange($event)"
+          [ngClass]="{
+            'is-invalid':
+              tripForm.get('routeId')?.invalid &&
+              tripForm.get('routeId')?.touched
+          }"
+        >
+          <option value="" disabled selected>
+            {{ "admin.trips.select_route" | translate }}
+          </option>
+          <option *ngFor="let route of routes" [value]="route.id">
+            {{ route.startCityName }} - {{ route.endCityName }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('routeId')?.errors?.['required'] && tripForm.get('routeId')?.touched"
+        >
+          {{ "admin.trips.route_required" | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Driver Selection -->
+      <div class="col-md-6 mb-3">
+        <label for="driverId" class="form-label d-flex align-items-center">
+          <i class="bi bi-person-badge me-2 text-primary"></i>
+          {{ "admin.trips.driver" | translate }} *
+        </label>
+        <select
+          id="driverId"
+          class="form-select"
+          formControlName="driverId"
+          [ngClass]="{
+            'is-invalid':
+              tripForm.get('driverId')?.invalid &&
+              tripForm.get('driverId')?.touched
+          }"
+        >
+          <option value="" disabled selected>
+            {{ "admin.trips.select_driver" | translate }}
+          </option>
+          <option *ngFor="let driver of drivers" [value]="driver.id">
+            {{ driver.fullName }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('driverId')?.errors?.['required'] && tripForm.get('driverId')?.touched"
+        >
+          {{ "admin.trips.driver_required" | translate }}
+        </div>
+      </div>
+
+      <!-- Bus Selection -->
+      <div class="col-md-6 mb-3">
+        <label for="busId" class="form-label d-flex align-items-center">
+          <i class="bi bi-bus-front me-2 text-primary"></i>
+          {{ "admin.trips.bus" | translate }} *
+        </label>
+        <select
+          id="busId"
+          class="form-select"
+          formControlName="busId"
+          [ngClass]="{
+            'is-invalid':
+              tripForm.get('busId')?.invalid && tripForm.get('busId')?.touched
+          }"
+        >
+          <option value="" disabled selected>
+            {{ "admin.trips.select_bus" | translate }}
+          </option>
+          <option *ngFor="let bus of buses" [value]="bus.id">
+            {{ bus.registrationNumber }} ({{ bus.model }} - {{ bus.capacity }}
+            {{ "admin.buses.seats" | translate }})
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('busId')?.errors?.['required'] && tripForm.get('busId')?.touched"
+        >
+          {{ "admin.trips.bus_required" | translate }}
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Driver Selection -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label for="driverId" class="form-label"
-        >{{ "admin.trips.driver" | translate }} *</label
-      >
-      <select
-        id="driverId"
-        class="form-select"
-        formControlName="driverId"
-        [ngClass]="{
-          'is-invalid':
-            tripForm.get('driverId')?.invalid &&
-            tripForm.get('driverId')?.touched
-        }"
-      >
-        <option value="" disabled selected>
-          {{ "admin.trips.select_driver" | translate }}
-        </option>
-        <option *ngFor="let driver of drivers" [value]="driver.id">
-          {{ driver.fullName }}
-        </option>
-      </select>
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('driverId')?.errors?.['required'] && tripForm.get('driverId')?.touched"
-      >
-        {{ "admin.trips.driver_required" | translate }}
+  <!-- Trip Details -->
+  <div class="form-section mb-4">
+    <h4 class="section-title mb-3">
+      <i class="bi bi-card-checklist me-2 text-primary"></i>
+      {{ "admin.trips.trip_details" | translate }}
+    </h4>
+
+    <div class="row">
+      <!-- Departure Time -->
+      <div class="col-md-6 mb-3">
+        <label for="departureTime" class="form-label d-flex align-items-center">
+          <i class="bi bi-calendar-check me-2 text-primary"></i>
+          {{ "admin.trips.departure_time" | translate }} *
+        </label>
+        <input
+          type="datetime-local"
+          id="departureTime"
+          class="form-control"
+          formControlName="departureTime"
+          [ngClass]="{
+            'is-invalid':
+              tripForm.get('departureTime')?.invalid &&
+              tripForm.get('departureTime')?.touched
+          }"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('departureTime')?.errors?.['required'] && tripForm.get('departureTime')?.touched"
+        >
+          {{ "admin.trips.departure_time_required" | translate }}
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="col-md-6 mb-3">
+        <label for="price" class="form-label d-flex align-items-center">
+          <i class="bi bi-currency-dollar me-2 text-primary"></i>
+          {{ "admin.trips.price" | translate }} (EGP) *
+        </label>
+        <input
+          type="number"
+          id="price"
+          class="form-control"
+          formControlName="price"
+          [ngClass]="{
+            'is-invalid':
+              tripForm.get('price')?.invalid && tripForm.get('price')?.touched
+          }"
+          min="1"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('price')?.errors?.['required'] && tripForm.get('price')?.touched"
+        >
+          {{ "admin.trips.price_required" | translate }}
+        </div>
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('price')?.errors?.['min'] && tripForm.get('price')?.touched"
+        >
+          {{ "admin.trips.price_min" | translate }}
+        </div>
       </div>
     </div>
 
-    <!-- Bus Selection -->
-    <div class="col-md-6">
-      <label for="busId" class="form-label"
-        >{{ "admin.trips.bus" | translate }} *</label
-      >
-      <select
-        id="busId"
-        class="form-select"
-        formControlName="busId"
-        [ngClass]="{
-          'is-invalid':
-            tripForm.get('busId')?.invalid && tripForm.get('busId')?.touched
-        }"
-      >
-        <option value="" disabled selected>
-          {{ "admin.trips.select_bus" | translate }}
-        </option>
-        <option *ngFor="let bus of buses" [value]="bus.id">
-          {{ bus.registrationNumber }} ({{ bus.model }} -
-          {{ bus.capacity }} seats)
-        </option>
-      </select>
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('busId')?.errors?.['required'] && tripForm.get('busId')?.touched"
-      >
-        {{ "admin.trips.bus_required" | translate }}
-      </div>
-    </div>
-  </div>
-
-  <!-- Departure Time -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label for="departureTime" class="form-label"
-        >{{ "admin.trips.departure_time" | translate }} *</label
-      >
-      <input
-        type="datetime-local"
-        id="departureTime"
-        class="form-control"
-        formControlName="departureTime"
-        [ngClass]="{
-          'is-invalid':
-            tripForm.get('departureTime')?.invalid &&
-            tripForm.get('departureTime')?.touched
-        }"
-      />
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('departureTime')?.errors?.['required'] && tripForm.get('departureTime')?.touched"
-      >
-        {{ "admin.trips.departure_time_required" | translate }}
-      </div>
-    </div>
-
-    <!-- Price -->
-    <div class="col-md-6">
-      <label for="price" class="form-label"
-        >{{ "admin.trips.price" | translate }} (EGP) *</label
-      >
-      <input
-        type="number"
-        id="price"
-        class="form-control"
-        formControlName="price"
-        [ngClass]="{
-          'is-invalid':
-            tripForm.get('price')?.invalid && tripForm.get('price')?.touched
-        }"
-        min="1"
-      />
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('price')?.errors?.['required'] && tripForm.get('price')?.touched"
-      >
-        {{ "admin.trips.price_required" | translate }}
-      </div>
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('price')?.errors?.['min'] && tripForm.get('price')?.touched"
-      >
-        {{ "admin.trips.price_min" | translate }}
-      </div>
-    </div>
-  </div>
-
-  <!-- Available Seats -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label for="availableSeats" class="form-label"
-        >{{ "admin.trips.available_seats" | translate }} *</label
-      >
-      <input
-        type="number"
-        id="availableSeats"
-        class="form-control"
-        formControlName="availableSeats"
-        [ngClass]="{
-          'is-invalid':
-            tripForm.get('availableSeats')?.invalid &&
-            tripForm.get('availableSeats')?.touched
-        }"
-        min="1"
-      />
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('availableSeats')?.errors?.['required'] && tripForm.get('availableSeats')?.touched"
-      >
-        {{ "admin.trips.seats_required" | translate }}
-      </div>
-      <div
-        class="invalid-feedback"
-        *ngIf="tripForm.get('availableSeats')?.errors?.['min'] && tripForm.get('availableSeats')?.touched"
-      >
-        {{ "admin.trips.seats_min" | translate }}
+    <!-- Available Seats -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label
+          for="availableSeats"
+          class="form-label d-flex align-items-center"
+        >
+          <i class="bi bi-person-fill-add me-2 text-primary"></i>
+          {{ "admin.trips.available_seats" | translate }} *
+        </label>
+        <input
+          type="number"
+          id="availableSeats"
+          class="form-control"
+          formControlName="availableSeats"
+          [ngClass]="{
+            'is-invalid':
+              tripForm.get('availableSeats')?.invalid &&
+              tripForm.get('availableSeats')?.touched
+          }"
+          min="1"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('availableSeats')?.errors?.['required'] && tripForm.get('availableSeats')?.touched"
+        >
+          {{ "admin.trips.seats_required" | translate }}
+        </div>
+        <div
+          class="invalid-feedback"
+          *ngIf="tripForm.get('availableSeats')?.errors?.['min'] && tripForm.get('availableSeats')?.touched"
+        >
+          {{ "admin.trips.seats_min" | translate }}
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Trip Stations -->
-  <div class="mb-3">
-    <label for="tripStationsSection" class="form-label"
-      >{{ "admin.trips.trip_stations" | translate }} *</label
+  <div class="form-section mb-4">
+    <h4 class="section-title d-flex align-items-center mb-3">
+      <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+      {{ "admin.trips.trip_stations" | translate }} *
+    </h4>
+
+    <div
+      *ngIf="tripStations.length === 0"
+      class="alert alert-info d-flex align-items-center"
     >
+      <i class="bi bi-info-circle-fill me-2"></i>
+      <span>{{ "admin.trips.select_route_first" | translate }}</span>
+    </div>
 
-    <div id="tripStationsSection" formArrayName="tripStations">
+    <div
+      id="tripStationsSection"
+      formArrayName="tripStations"
+      class="route-timeline"
+    >
       <div
-        *ngFor="let stationGroup of tripStations.controls; let i = index"
-        class="border rounded p-3 mb-3"
+        *ngFor="
+          let stationGroup of tripStations.controls;
+          let i = index;
+          let isFirst = first;
+          let isLast = last
+        "
+        class="station-card mb-3"
       >
-        <div [formGroupName]="i" class="row">
-          <!-- Station ID -->
-          <div class="col-md-6 mb-3">
-            <label [for]="'stationId-' + i" class="form-label"
-              >{{ "admin.trips.station" | translate }} *</label
-            >
-            <select
-              [id]="'stationId-' + i"
-              class="form-select"
-              formControlName="stationId"
-              [ngClass]="{
-                'is-invalid':
-                  stationGroup.get('stationId')?.invalid &&
-                  stationGroup.get('stationId')?.touched
-              }"
-            >
-              <option value="" disabled selected>
-                {{ "admin.trips.select_station" | translate }}
-              </option>
-              <option value="9">Downtown Cairo Station</option>
-              <!-- We would need to dynamically load stations here based on the route selected -->
-            </select>
-            <div
-              class="invalid-feedback"
-              *ngIf="stationGroup.get('stationId')?.errors?.['required'] && stationGroup.get('stationId')?.touched"
-            >
-              {{ "admin.trips.station_required" | translate }}
-            </div>
+        <div class="station-indicator">
+          <div
+            class="station-number"
+            [ngClass]="{ 'start-station': isFirst, 'end-station': isLast }"
+          >
+            {{ i + 1 }}
           </div>
-
-          <!-- Sequence Number -->
-          <div class="col-md-6 mb-3">
-            <label [for]="'sequenceNumber-' + i" class="form-label"
-              >{{ "admin.trips.sequence_number" | translate }} *</label
-            >
-            <input
-              type="number"
-              [id]="'sequenceNumber-' + i"
-              class="form-control"
-              formControlName="sequenceNumber"
-              [ngClass]="{
-                'is-invalid':
-                  stationGroup.get('sequenceNumber')?.invalid &&
-                  stationGroup.get('sequenceNumber')?.touched
-              }"
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="stationGroup.get('sequenceNumber')?.errors?.['required'] && stationGroup.get('sequenceNumber')?.touched"
-            >
-              {{ "admin.trips.sequence_required" | translate }}
-            </div>
-          </div>
-
-          <!-- Departure Time -->
-          <div class="col-md-6 mb-3">
-            <label [for]="'departureTime-' + i" class="form-label"
-              >{{ "admin.trips.station_departure_time" | translate }} *</label
-            >
-            <input
-              type="datetime-local"
-              [id]="'departureTime-' + i"
-              class="form-control"
-              formControlName="departureTime"
-              [ngClass]="{
-                'is-invalid':
-                  stationGroup.get('departureTime')?.invalid &&
-                  stationGroup.get('departureTime')?.touched
-              }"
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="stationGroup.get('departureTime')?.errors?.['required'] && stationGroup.get('departureTime')?.touched"
-            >
-              {{ "admin.trips.departure_time_required" | translate }}
-            </div>
-          </div>
-
-          <!-- Arrival Time -->
-          <div class="col-md-6 mb-3">
-            <label [for]="'arrivalTime-' + i" class="form-label">{{
-              "admin.trips.station_arrival_time" | translate
-            }}</label>
-            <input
-              type="datetime-local"
-              [id]="'arrivalTime-' + i"
-              class="form-control"
-              formControlName="arrivalTime"
-            />
-          </div>
+          <div *ngIf="!isLast" class="station-connector"></div>
         </div>
 
-        <!-- Remove Station Button -->
-        <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            class="btn btn-sm btn-outline-danger"
-            (click)="removeTripStation(i)"
-            [disabled]="tripStations.length <= 1"
-          >
-            <i class="bi bi-trash"></i>
-            {{ "admin.trips.remove_station" | translate }}
-          </button>
+        <div class="station-details" [formGroupName]="i">
+          <div class="station-header">
+            <h5 class="station-name">
+              {{ getStationDisplayName(stationGroup.get("stationId")?.value) }}
+            </h5>
+            <span
+              class="badge rounded-pill"
+              [ngClass]="{
+                'bg-success': isFirst,
+                'bg-danger': isLast,
+                'bg-info': !isFirst && !isLast
+              }"
+            >
+              {{
+                isFirst
+                  ? ("common.status.start_point" | translate)
+                  : isLast
+                  ? ("common.status.end_point" | translate)
+                  : ("common.status.transit_station" | translate)
+              }}
+            </span>
+          </div>
+
+          <input type="hidden" formControlName="stationId" />
+          <input type="hidden" formControlName="sequenceNumber" />
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label [for]="'departureTime-' + i" class="form-label">
+                <i class="bi bi-clock me-1"></i>
+                {{ "admin.trips.station_departure_time" | translate }} *
+              </label>
+              <input
+                type="datetime-local"
+                [id]="'departureTime-' + i"
+                class="form-control"
+                formControlName="departureTime"
+                [ngClass]="{
+                  'is-invalid':
+                    stationGroup.get('departureTime')?.invalid &&
+                    stationGroup.get('departureTime')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="stationGroup.get('departureTime')?.errors?.['required'] && stationGroup.get('departureTime')?.touched"
+              >
+                {{ "admin.trips.departure_time_required" | translate }}
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label [for]="'arrivalTime-' + i" class="form-label">
+                <i class="bi bi-clock-history me-1"></i>
+                {{ "admin.trips.station_arrival_time" | translate }}
+              </label>
+              <input
+                type="datetime-local"
+                [id]="'arrivalTime-' + i"
+                class="form-control"
+                formControlName="arrivalTime"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Add Station Button -->
-    <button
-      type="button"
-      class="btn btn-sm btn-outline-secondary"
-      (click)="addTripStation()"
-    >
-      <i class="bi bi-plus-circle"></i>
-      {{ "admin.trips.add_station" | translate }}
-    </button>
   </div>
 
   <!-- Form Actions -->
   <div class="d-flex justify-content-end gap-2 mt-4">
     <button type="button" class="btn btn-secondary" (click)="resetForm()">
+      <i class="bi bi-arrow-counterclockwise me-1"></i>
       {{ "admin.trips.reset" | translate }}
     </button>
     <button
       type="submit"
       class="btn btn-primary"
-      [disabled]="isSubmitting || isLoading"
+      [disabled]="isSubmitting || isLoading || tripForm.invalid"
     >
       <span
         *ngIf="isSubmitting"
@@ -338,6 +346,7 @@
         role="status"
         aria-hidden="true"
       ></span>
+      <i *ngIf="!isSubmitting" class="bi bi-check-circle me-1"></i>
       {{ "admin.trips.create_trip" | translate }}
     </button>
   </div>

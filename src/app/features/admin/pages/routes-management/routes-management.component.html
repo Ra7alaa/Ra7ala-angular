@@ -172,6 +172,7 @@
                       class="page-link"
                       href="javascript:void(0)"
                       (click)="changePage(1)"
+                      aria-label="First page"
                     >
                       <i class="bi bi-chevron-double-left"></i>
                     </a>
@@ -181,6 +182,7 @@
                       class="page-link"
                       href="javascript:void(0)"
                       (click)="changePage(currentPage - 1)"
+                      aria-label="Previous page"
                     >
                       <i class="bi bi-chevron-left"></i>
                     </a>
@@ -216,6 +218,7 @@
                       class="page-link"
                       href="javascript:void(0)"
                       (click)="changePage(currentPage + 1)"
+                      aria-label="Next page"
                     >
                       <i class="bi bi-chevron-right"></i>
                     </a>
@@ -228,6 +231,7 @@
                       class="page-link"
                       href="javascript:void(0)"
                       (click)="changePage(totalPages)"
+                      aria-label="Last page"
                     >
                       <i class="bi bi-chevron-double-right"></i>
                     </a>

@@ -142,6 +142,7 @@
     "profile_picture": "Profile Picture",
     "profile_title": "Personal Information",
     "profile_description": "Update your personal information here",
+    "upload_photo": "Upload Photo",
     "full_name": "Full Name",
     "email": "Email Address",
     "phone": "Phone Number",
@@ -204,7 +205,7 @@
       "export": "Export",
       "recent_trips": "Recent Trips",
       "view_all": "View All",
-      "view_details":"View Details",
+      "view_details": "View Details",
       "since_last_month": "since last month",
       "total_revenue": "Total Revenue",
       "completed": "Completed",
@@ -259,9 +260,12 @@
       "status": "Status",
       "actions": "Actions",
       "route": "Route",
+      "loading_trips": "Loading trips...",
       "departure_time": "Departure Time",
       "arrival_time": "Arrival Time",
       "bus": "Bus",
+      "driver": "Driver",
+      "select_driver": "Select driver",
       "search_placeholder": "Search trips...",
       "all_status": "All Status",
       "upcoming": "Upcoming",
@@ -271,6 +275,8 @@
       "filter": "Filter",
       "previous": "Previous",
       "next": "Next",
+      "showing": "Showing",
+      "of": "of",
       "departure_station": "Departure Station",
       "arrival_station": "Arrival Station",
       "departure_date": "Departure Date",
@@ -287,7 +293,20 @@
       "select_route": "Select route",
       "select_departure": "Select departure station",
       "select_arrival": "Select arrival station",
-      "select_bus": "Select bus"
+      "select_bus": "Select bus",
+      "basic_information": "Basic Information",
+      "trip_details": "Trip Details",
+      "trip_stations": "Trip Stations",
+      "select_route_first": "Please select a route first to display stations",
+      "station_departure_time": "Departure Time from Station",
+      "station_arrival_time": "Arrival Time at Station",
+      "create_trip": "Create Trip",
+      "reset": "Reset",
+      "routes_load_error": "Failed to load routes. Please try again.",
+      "buses_load_error": "Failed to load buses. Please try again.",
+      "drivers_load_error": "Failed to load drivers. Please try again.",
+      "create_failed": "Failed to create trip. Please try again.",
+      "station_placeholder": "Station"
     },
     "routes": {
       "title": "Routes Management",
@@ -809,7 +828,10 @@
       "rejected": "Rejected",
       "completed": "Completed",
       "cancelled": "Cancelled",
-      "in_progress": "In Progress"
+      "in_progress": "In Progress",
+      "start_point": "Start Point",
+      "end_point": "End Point",
+      "transit_station": "Transit Station"
     },
     "error": {
       "required": "This field is required",
@@ -912,5 +934,8 @@
       "aswan_station": "Aswan Station",
       "hurghada_terminal": "Hurghada Bus Terminal"
     }
+  },
+  "shared": {
+    "loading": "Loading..."
   }
 }

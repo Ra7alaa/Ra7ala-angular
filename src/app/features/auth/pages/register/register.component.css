@@ -1,7 +1,9 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
+  background-color: #f8f9fa;
 }
 
 .register-page {
@@ -16,39 +18,61 @@ body, html {
   padding: 2rem;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   height: 100vh; /* Full screen height */
-  overflow: hidden; /* No scroll here */
+  overflow: auto; /* Allow scrolling if needed */
   position: relative;
+  background-color: #f8f9fa;
 }
 
 .register-card {
   width: 100%;
-  max-width: 500px;
-  height: 100%; /* Full height inside container */
-  overflow-y: auto; /* Only the card scrolls vertically */
-  background: #fff;
+  max-width: 550px;
+  border: none;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  padding: 1rem; /* تحسين التباعد الداخلي للبطاقة */
 }
 
-
 .card-body {
-  padding: 2rem;
+  padding: 2.5rem; /* زيادة التباعد الداخلي لمحتوى البطاقة */
+}
+
+.logo-container {
+  margin-top: 7rem; /* زيادة المسافة من الأعلى بشكل أكبر */
+  margin-bottom: 3rem; /* زيادة المسافة بين الشعار والنموذج */
+  padding: 0.75rem;
+  border-radius: 12px;
+  background-color: #fff;
 }
 
 .logo-text {
   text-align: center;
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-size: 3rem;
+  font-weight: 700;
   background: linear-gradient(to right, #c9e265, #f9aa61);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
+  margin-bottom: 0.25rem;
+  display: block;
+  line-height: 1.2;
+  padding: 10px 0;
+  overflow: visible;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.logo-subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .input-wrapper {
   position: relative;
+  margin-bottom: 0.5rem;
 }
 
 .input-wrapper .icon {
@@ -58,30 +82,73 @@ body, html {
   transform: translateY(-50%);
   color: #888;
   font-size: 1rem;
+  z-index: 2;
 }
 
-.form-control {
+.form-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: #495057;
+}
+
+.custom-input.form-control {
   padding: 0.75rem 0.75rem 0.75rem 2.5rem;
   border: 1px solid #ddd;
   border-radius: 12px;
   font-size: 0.9rem;
   transition: all 0.3s;
+  height: auto;
+  background-color: #fff;
 }
 
-.form-control:focus {
+.custom-input.form-control:focus {
   border-color: #ffbc3b;
-  box-shadow: 0 0 0 2px rgba(255, 188, 59, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 188, 59, 0.1);
   outline: none;
 }
 
-.form-control.is-invalid {
+.custom-input.form-control.is-invalid {
   border-color: #dc3545;
+  background-image: none;
+}
+
+/* تنسيق زر إظهار/إخفاء كلمة المرور */
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.password-toggle-btn:hover {
+  color: #ffbc3b;
+}
+
+.password-toggle-btn:focus {
+  outline: none;
+}
+
+.password-toggle-btn i {
+  font-size: 1rem;
 }
 
 .invalid-feedback {
   color: #dc3545;
   font-size: 0.75rem;
   margin-top: 0.25rem;
+  display: block;
 }
 
 .btn-warning {
@@ -90,19 +157,23 @@ body, html {
   border: none;
   padding: 0.75rem;
   transition: 0.3s;
+  color: white;
+  font-weight: 600;
 }
 
 .btn-warning:hover:not(:disabled) {
   background-color: #ff9800;
+  transform: translateY(-2px);
 }
 
 .btn-warning:disabled {
   opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .register-image {
   flex: 1;
-  background: #f4f4f4;
+  background: linear-gradient(145deg, #ffebcd, #ffe0b2);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,10 +183,16 @@ body, html {
 }
 
 .register-image img {
-  max-width: 100%;
+  max-width: 80%;
   max-height: 570px;
   border-radius: 2rem;
   object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  transition: all 0.5s ease;
+}
+
+.register-image img:hover {
+  transform: translateY(-5px);
 }
 
 .alert-danger {
@@ -124,19 +201,33 @@ body, html {
   color: #dc3545;
   padding: 0.75rem 1rem;
   border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
 }
 
+.register-form {
+  margin-bottom: 1rem;
+}
+
+/* Responsive designs */
 @media (max-width: 992px) {
   .register-page {
     flex-direction: column-reverse;
   }
 
+  .register-container {
+    padding: 1rem;
+    height: auto;
+    min-height: 70vh;
+  }
+
   .register-image {
-    height: 200px;
+    height: 30vh;
+    min-height: 250px;
   }
 
   .register-image img {
-    max-height: 180px;
+    max-height: 200px;
   }
 }
 
@@ -145,11 +236,37 @@ body, html {
     font-size: 2rem;
   }
 
-  .form-control {
+  .custom-input.form-control {
+    font-size: 0.85rem;
+    padding: 0.65rem 0.65rem 0.65rem 2.25rem;
+  }
+
+  .form-label {
     font-size: 0.85rem;
   }
 
   .btn-warning {
     font-size: 0.9rem;
+    padding: 0.65rem;
   }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+/* Animation for smooth loading */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-card {
+  animation: fadeIn 0.5s ease-out;
 }

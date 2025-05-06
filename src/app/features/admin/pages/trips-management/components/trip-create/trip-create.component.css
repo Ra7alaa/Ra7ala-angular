@@ -1,5 +1,6 @@
 .form-label {
   font-weight: 500;
+  color: #495057;
 }
 
 .invalid-feedback {
@@ -12,13 +13,80 @@
 
 /* Styling for the station cards */
 .station-card {
+  display: flex;
+  background-color: #f8f9fa;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .station-card:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Trip Stations Timeline Styling */
+.route-timeline {
+  position: relative;
+  padding: 10px 0;
+}
+
+.station-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  background-color: #f0f0f0;
+  width: 70px;
+}
+
+.station-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #6c757d;
+  color: white;
+  font-weight: bold;
+}
+
+.start-station {
+  background-color: #28a745;
+}
+
+.end-station {
+  background-color: #dc3545;
+}
+
+.station-connector {
+  flex: 1;
+  width: 3px;
+  background-color: #6c757d;
+  margin: 10px 0;
+}
+
+.station-details {
+  flex: 1;
+  padding: 15px;
+}
+
+.station-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+}
+
+.station-name {
+  margin: 0;
+  font-weight: 600;
+  color: #495057;
 }
 
 /* Custom button styles */
@@ -40,4 +108,63 @@
 .btn-outline-danger:hover {
   background-color: #dc3545;
   color: white;
+}
+
+.form-select,
+.form-control {
+  border-radius: 6px;
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-select:focus,
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
+  border-color: #565e64;
+}
+
+/* Add a nice border to the main form sections */
+.form-section {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Make the form container look nicer */
+form {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }

@@ -8,23 +8,54 @@
       >
         <div class="card-body text-center">
           <div class="position-relative d-inline-block mb-3">
+            <!-- عرض معاينة الصورة المحددة إذا كانت موجودة، وإلا عرض الصورة الحالية أو الصورة الافتراضية -->
             <img
               [src]="
-                profileForm.get('profilePictureUrl')?.value ||
+                selectedProfileImagePreview ||
+                getFullProfileImageUrl(
+                  profileForm.get('profilePictureUrl')?.value
+                ) ||
                 'assets/images/default-avatar.svg'
               "
               alt="{{ 'admin.profile.profile_picture' | translate }}"
               class="rounded-circle img-thumbnail"
               style="width: 150px; height: 150px; object-fit: cover"
-              onerror="this.src='assets/images/default-avatar.png'"
+              onerror="this.src='assets/images/default-avatar.svg'"
             />
-            <button
-              type="button"
+            <label
               class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle p-2"
+              for="profileImageInput"
+              style="cursor: pointer"
             >
               <i class="bi bi-pencil-fill"></i>
+            </label>
+            <input
+              type="file"
+              id="profileImageInput"
+              class="d-none"
+              accept="image/*"
+              (change)="onProfileImageSelected($event)"
+            />
+          </div>
+
+          <!-- قسم تحميل الصورة المحددة -->
+          <div *ngIf="selectedProfileImage" class="mb-3">
+            <button
+              type="button"
+              class="btn btn-success"
+              [disabled]="isSubmitting"
+              (click)="uploadProfileImage()"
+            >
+              <span *ngIf="!isSubmitting">
+                <i class="bi bi-cloud-upload me-1"></i> رفع الصورة
+              </span>
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm me-1"></span>
+                جاري الرفع...
+              </span>
             </button>
           </div>
+
           <h5 class="fw-bold">
             {{ profileForm.get("fullName")?.value || "Admin Name" }}
           </h5>
@@ -96,7 +127,9 @@
               type="button"
               class="btn-close"
               (click)="submitSuccess = false"
-            ></button>
+            >
+              <span class="visually-hidden">Close</span>
+            </button>
           </div>
 
           <div
@@ -109,7 +142,9 @@
               type="button"
               class="btn-close"
               (click)="submitError = null"
-            ></button>
+            >
+              <span class="visually-hidden">Close</span>
+            </button>
           </div>
 
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
@@ -247,6 +282,7 @@
                 type="button"
                 class="btn btn-outline-secondary"
                 [disabled]="isSubmitting"
+                (click)="cancelChanges()"
               >
                 {{ "admin.profile.cancel" | translate }}
               </button>

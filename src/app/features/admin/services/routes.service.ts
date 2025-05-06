@@ -28,54 +28,49 @@ export class RoutesService {
   }
 
   // Get all routes for system owners
-  getAllRoutes(page = 1, pageSize = 10): Observable<PaginatedRoutesResponse> {
-    const url = `${environment.apiUrl}/api/Routes/paginated?pageNumber=${page}&pageSize=${pageSize}`;
+  getAllRoutes(companyId?: number): Observable<RoutesResponse> {
+    let url = `${environment.apiUrl}/api/Routes`;
 
-    return this.http
-      .get<PaginatedRoutesResponse>(url, this.getHttpOptions())
-      .pipe(
-        map((response) => {
-          console.log('API Response:', response);
+    // Add companyId filter if provided
+    if (companyId) {
+      url += `?companyId=${companyId}`;
+    }
 
-          if (!response || !response.data || !response.data.routes) {
+    return this.http.get<RoutesResponse>(url, this.getHttpOptions()).pipe(
+      map((response) => {
+        console.log('API Response:', response);
+
+        if (!response || !response.data) {
+          return {
+            statusCode: response.statusCode || 200,
+            message: 'No routes available',
+            data: [],
+          };
+        }
+
+        // Convert estimatedDuration to hours and minutes for display
+        const routesWithDuration = response.data.map((route) => {
+          if (route.estimatedDuration !== undefined) {
+            const totalMinutes = Math.floor(route.estimatedDuration / 60);
             return {
-              statusCode: response.statusCode || 200,
-              message: 'No routes available',
-              data: {
-                totalCount: 0,
-                pageNumber: page,
-                pageSize: pageSize,
-                routes: [],
-              },
+              ...route,
+              durationHours: Math.floor(totalMinutes / 60),
+              durationMinutes: totalMinutes % 60,
             };
           }
+          return route;
+        });
 
-          // Convert estimatedDuration to hours and minutes for display
-          const routesWithDuration = response.data.routes.map((route) => {
-            if (route.estimatedDuration !== undefined) {
-              const totalMinutes = Math.floor(route.estimatedDuration / 60);
-              return {
-                ...route,
-                durationHours: Math.floor(totalMinutes / 60),
-                durationMinutes: totalMinutes % 60,
-              };
-            }
-            return route;
-          });
-
-          return {
-            ...response,
-            data: {
-              ...response.data,
-              routes: routesWithDuration,
-            },
-          };
-        }),
-        catchError((error) => {
-          console.error('Error fetching routes:', error);
-          return throwError(() => new Error('Failed to load routes'));
-        })
-      );
+        return {
+          ...response,
+          data: routesWithDuration,
+        };
+      }),
+      catchError((error) => {
+        console.error('Error fetching routes:', error);
+        return throwError(() => new Error('Failed to load routes'));
+      })
+    );
   }
 
   // Get paginated routes with companyId filter
