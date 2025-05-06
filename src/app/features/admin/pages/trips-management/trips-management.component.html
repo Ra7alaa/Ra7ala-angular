@@ -163,35 +163,74 @@
     aria-label="Page navigation"
     class="mt-4"
   >
-    <ul class="pagination justify-content-center">
-      <li class="page-item" [class.disabled]="currentPage === 1">
-        <button
-          class="page-link"
-          (click)="goToPage(currentPage - 1)"
-          [disabled]="currentPage === 1"
-        >
-          {{ "admin.trips.previous" | translate }}
-        </button>
-      </li>
+    <div class="d-flex justify-content-center">
+      <p class="mb-0 me-3 align-self-center">
+        {{ "admin.trips.showing" | translate }}
+        {{ (currentPage - 1) * itemsPerPage + 1 }} -
+        {{
+          currentPage === totalPages ? totalItems : currentPage * itemsPerPage
+        }}
+        {{ "admin.trips.of" | translate }} {{ totalItems }}
+      </p>
+      <ul class="pagination">
+        <!-- First Page Button -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button
+            class="page-link"
+            (click)="goToPage(1)"
+            [disabled]="currentPage === 1"
+            aria-label="First"
+          >
+            <i class="bi bi-chevron-double-left"></i>
+          </button>
+        </li>
 
-      <li
-        class="page-item"
-        *ngFor="let page of pages"
-        [class.active]="page === currentPage"
-      >
-        <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
-      </li>
+        <!-- Previous Button -->
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button
+            class="page-link"
+            (click)="goToPage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+            aria-label="Previous"
+          >
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </li>
 
-      <li class="page-item" [class.disabled]="currentPage === totalPages">
-        <button
-          class="page-link"
-          (click)="goToPage(currentPage + 1)"
-          [disabled]="currentPage === totalPages"
+        <!-- Page Numbers -->
+        <li
+          class="page-item"
+          *ngFor="let page of pages"
+          [class.active]="page === currentPage"
         >
-          {{ "admin.trips.next" | translate }}
-        </button>
-      </li>
-    </ul>
+          <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+        </li>
+
+        <!-- Next Button -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button
+            class="page-link"
+            (click)="goToPage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+            aria-label="Next"
+          >
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </li>
+
+        <!-- Last Page Button -->
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button
+            class="page-link"
+            (click)="goToPage(totalPages)"
+            [disabled]="currentPage === totalPages"
+            aria-label="Last"
+          >
+            <i class="bi bi-chevron-double-right"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
   </nav>
 </div>
 

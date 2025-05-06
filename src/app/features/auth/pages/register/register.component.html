@@ -1,159 +1,335 @@
 <div class="register-page">
   <!-- Left: Registration Form -->
   <div class="register-container">
-    <div class="register-card card shadow">
-      <div class="card-body">
-        <h1 class="logo-text">Ra7ala</h1>
+    <div class="register-card card shadow-lg">
+      <div class="card-body p-md-5 p-4">
+        <div class="logo-container mb-4">
+          <h1 class="logo-text">Ra7ala</h1>
+          <div class="logo-subtitle text-muted text-center">رحلتك تبدأ هنا</div>
+        </div>
 
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onSubmit()"
+          class="register-form"
+          enctype="multipart/form-data"
+        >
           <!-- Full Name -->
           <div class="mb-3">
-            <label for="fullName" class="form-label">Full Name</label>
+            <label for="fullName" class="form-label fw-semibold"
+              >Full Name</label
+            >
             <div class="input-wrapper">
               <i class="fa fa-user icon"></i>
               <input
                 type="text"
                 id="fullName"
                 formControlName="fullName"
-                class="form-control"
+                class="form-control custom-input"
                 placeholder="Enter your full name"
-                [ngClass]="{ 'is-invalid': registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched) }"
+                [ngClass]="{
+                  'is-invalid':
+                    registerForm.get('fullName')?.invalid &&
+                    (registerForm.get('fullName')?.dirty ||
+                      registerForm.get('fullName')?.touched)
+                }"
               />
             </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)">
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                registerForm.get('fullName')?.invalid &&
+                (registerForm.get('fullName')?.dirty ||
+                  registerForm.get('fullName')?.touched)
+              "
+            >
               Full name is required
             </div>
           </div>
 
-          <!-- Username -->
-          <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <div class="input-wrapper">
-              <i class="fa fa-at icon"></i>
-              <input
-                type="text"
-                id="username"
-                formControlName="username"
-                class="form-control"
-                placeholder="Choose a username"
-                [ngClass]="{ 'is-invalid': registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched) }"
-              />
+          <div class="row">
+            <!-- Profile Picture -->
+            <div class="col-md-6 mb-3">
+              <label for="profilePicture" class="form-label fw-semibold"
+                >Profile Picture</label
+              >
+              <div class="input-wrapper">
+                <i class="fa fa-image icon"></i>
+                <input
+                  type="file"
+                  id="profilePicture"
+                  class="form-control custom-input"
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                  [ngClass]="{
+                    'is-invalid': !isProfilePictureSelected && isFormSubmitted
+                  }"
+                />
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="!isProfilePictureSelected && isFormSubmitted"
+              >
+                Profile picture is required
+              </div>
             </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)">
-              Username is required
+
+            <!-- Username -->
+            <div class="col-md-6 mb-3">
+              <label for="username" class="form-label fw-semibold"
+                >Username</label
+              >
+              <div class="input-wrapper">
+                <i class="fa fa-at icon"></i>
+                <input
+                  type="text"
+                  id="username"
+                  formControlName="username"
+                  class="form-control custom-input"
+                  placeholder="Choose a username"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('username')?.invalid &&
+                      (registerForm.get('username')?.dirty ||
+                        registerForm.get('username')?.touched)
+                  }"
+                />
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  registerForm.get('username')?.invalid &&
+                  (registerForm.get('username')?.dirty ||
+                    registerForm.get('username')?.touched)
+                "
+              >
+                Username is required
+              </div>
             </div>
           </div>
 
-          <!-- Email -->
-          <div class="mb-3">
-            <label for="email" class="form-label">Email Address</label>
-            <div class="input-wrapper">
-              <i class="fa fa-envelope icon"></i>
-              <input
-                type="email"
-                id="email"
-                formControlName="email"
-                class="form-control"
-                placeholder="Enter your email"
-                [ngClass]="{ 'is-invalid': registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched) }"
-              />
+          <div class="row">
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label fw-semibold"
+                >Email Address</label
+              >
+              <div class="input-wrapper">
+                <i class="fa fa-envelope icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="form-control custom-input"
+                  placeholder="Enter your email"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('email')?.invalid &&
+                      (registerForm.get('email')?.dirty ||
+                        registerForm.get('email')?.touched)
+                  }"
+                />
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  registerForm.get('email')?.invalid &&
+                  (registerForm.get('email')?.dirty ||
+                    registerForm.get('email')?.touched)
+                "
+              >
+                Please enter a valid email address
+              </div>
             </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
-              Please enter a valid email address
+
+            <!-- Phone Number -->
+            <div class="col-md-6 mb-3">
+              <label for="phoneNumber" class="form-label fw-semibold"
+                >Phone Number</label
+              >
+              <div class="input-wrapper">
+                <i class="fa fa-phone icon"></i>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  formControlName="phoneNumber"
+                  class="form-control custom-input"
+                  placeholder="+201234567890"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('phoneNumber')?.invalid &&
+                      (registerForm.get('phoneNumber')?.dirty ||
+                        registerForm.get('phoneNumber')?.touched)
+                  }"
+                />
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  registerForm.get('phoneNumber')?.invalid &&
+                  (registerForm.get('phoneNumber')?.dirty ||
+                    registerForm.get('phoneNumber')?.touched)
+                "
+              >
+                Please enter a valid phone number
+              </div>
             </div>
           </div>
 
-          <!-- Phone Number -->
-          <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Phone Number</label>
-            <div class="input-wrapper">
-              <i class="fa fa-phone icon"></i>
-              <input
-                type="tel"
-                id="phoneNumber"
-                formControlName="phoneNumber"
-                class="form-control"
-                placeholder="+201234567890"
-                [ngClass]="{ 'is-invalid': registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched) }"
-              />
+          <div class="row">
+            <!-- Date of Birth -->
+            <div class="col-md-6 mb-3">
+              <label for="dateOfBirth" class="form-label fw-semibold"
+                >Date of Birth</label
+              >
+              <div class="input-wrapper">
+                <i class="fa fa-calendar icon"></i>
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  formControlName="dateOfBirth"
+                  class="form-control custom-input"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('dateOfBirth')?.invalid &&
+                      (registerForm.get('dateOfBirth')?.dirty ||
+                        registerForm.get('dateOfBirth')?.touched)
+                  }"
+                />
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  registerForm.get('dateOfBirth')?.invalid &&
+                  (registerForm.get('dateOfBirth')?.dirty ||
+                    registerForm.get('dateOfBirth')?.touched)
+                "
+              >
+                Date of birth is required
+              </div>
             </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)">
-              Please enter a valid phone number
-            </div>
-          </div>
 
-          <!-- Date of Birth -->
-          <div class="mb-3">
-            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-            <div class="input-wrapper">
-              <i class="fa fa-calendar icon"></i>
-              <input
-                type="date"
-                id="dateOfBirth"
-                formControlName="dateOfBirth"
-                class="form-control"
-                [ngClass]="{ 'is-invalid': registerForm.get('dateOfBirth')?.invalid && (registerForm.get('dateOfBirth')?.dirty || registerForm.get('dateOfBirth')?.touched) }"
-              />
-            </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('dateOfBirth')?.invalid && (registerForm.get('dateOfBirth')?.dirty || registerForm.get('dateOfBirth')?.touched)">
-              Date of birth is required
-            </div>
-          </div>
-
-          <!-- Address -->
-          <div class="mb-3">
-            <label for="address" class="form-label">Address</label>
-            <div class="input-wrapper">
-              <i class="fa fa-map-marker icon"></i>
-              <input
-                type="text"
-                id="address"
-                formControlName="address"
-                class="form-control"
-                placeholder="Enter your address"
-                [ngClass]="{ 'is-invalid': registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched) }"
-              />
-            </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)">
-              Address is required
+            <!-- Address -->
+            <div class="col-md-6 mb-3">
+              <label for="address" class="form-label fw-semibold"
+                >Address</label
+              >
+              <div class="input-wrapper">
+                <i class="fa fa-map-marker icon"></i>
+                <input
+                  type="text"
+                  id="address"
+                  formControlName="address"
+                  class="form-control custom-input"
+                  placeholder="Enter your address"
+                  [ngClass]="{
+                    'is-invalid':
+                      registerForm.get('address')?.invalid &&
+                      (registerForm.get('address')?.dirty ||
+                        registerForm.get('address')?.touched)
+                  }"
+                />
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  registerForm.get('address')?.invalid &&
+                  (registerForm.get('address')?.dirty ||
+                    registerForm.get('address')?.touched)
+                "
+              >
+                Address is required
+              </div>
             </div>
           </div>
 
           <!-- Password -->
           <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label fw-semibold"
+              >Password</label
+            >
             <div class="input-wrapper">
               <i class="fa fa-lock icon"></i>
               <input
-                type="password"
+                [type]="showPassword ? 'text' : 'password'"
                 id="password"
                 formControlName="password"
-                class="form-control"
+                class="form-control custom-input"
                 placeholder="Enter your password"
-                [ngClass]="{ 'is-invalid': registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched) }"
+                [ngClass]="{
+                  'is-invalid':
+                    registerForm.get('password')?.invalid &&
+                    (registerForm.get('password')?.dirty ||
+                      registerForm.get('password')?.touched)
+                }"
               />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                (click)="togglePasswordVisibility()"
+                tabindex="-1"
+                aria-label="Toggle password visibility"
+              >
+                <i
+                  class="fa"
+                  [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                ></i>
+              </button>
             </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                registerForm.get('password')?.invalid &&
+                (registerForm.get('password')?.dirty ||
+                  registerForm.get('password')?.touched)
+              "
+            >
               Password must be at least 6 characters
             </div>
           </div>
 
           <!-- Confirm Password -->
           <div class="mb-4">
-            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <label for="confirmPassword" class="form-label fw-semibold"
+              >Confirm Password</label
+            >
             <div class="input-wrapper">
               <i class="fa fa-lock icon"></i>
               <input
-                type="password"
+                [type]="showConfirmPassword ? 'text' : 'password'"
                 id="confirmPassword"
                 formControlName="confirmPassword"
-                class="form-control"
+                class="form-control custom-input"
                 placeholder="Confirm your password"
-                [ngClass]="{ 'is-invalid': registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched) }"
+                [ngClass]="{
+                  'is-invalid':
+                    registerForm.get('confirmPassword')?.invalid &&
+                    (registerForm.get('confirmPassword')?.dirty ||
+                      registerForm.get('confirmPassword')?.touched)
+                }"
               />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                (click)="toggleConfirmPasswordVisibility()"
+                tabindex="-1"
+                aria-label="Toggle confirm password visibility"
+              >
+                <i
+                  class="fa"
+                  [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+                ></i>
+              </button>
             </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
-              Passwords do not match
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                registerForm.get('confirmPassword')?.hasError('required') &&
+                (registerForm.get('confirmPassword')?.dirty ||
+                  registerForm.get('confirmPassword')?.touched)
+              "
+            >
+              Confirmation password is required
             </div>
           </div>
 
@@ -165,15 +341,18 @@
           <!-- Submit Button -->
           <button
             type="submit"
-            class="btn btn-warning w-100 text-white fw-bold"
+            class="btn btn-warning w-100 py-2 text-white fw-bold shadow-sm"
             [disabled]="registerForm.invalid || isSubmitting"
           >
-            Create account
+            <i class="fa fa-user-plus me-2"></i> Create account
           </button>
         </form>
 
-        <div class="text-center mt-3">
-          Have an account? <a routerLink="/auth/login" class="text-warning">Login</a>
+        <div class="text-center mt-4">
+          <p class="mb-0">
+            Have an account?
+            <a routerLink="/auth/login" class="text-warning fw-bold">Login</a>
+          </p>
         </div>
       </div>
     </div>
@@ -181,6 +360,6 @@
 
   <!-- Right: Image -->
   <div class="register-image">
-    <img src="assets/images/bus.svg" alt="Bus" />
+    <img src="assets/images/bus.svg" alt="Bus" class="img-fluid" />
   </div>
 </div>

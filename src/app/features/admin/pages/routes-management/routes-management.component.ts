@@ -142,44 +142,19 @@ export class RoutesManagementComponent implements OnInit {
           },
         });
     } else {
-      // For system owners or super admins who can see all routes
-      this.routesService
-        .getAllRoutes(this.currentPage, this.pageSize)
-        .subscribe({
-          next: (response: PaginatedRoutesResponse) => {
-            // Handle the API response format where routes are in data.routes
-            if (response.data && response.data.routes) {
-              this.allRoutes = response.data.routes; // Store all routes for filtering
-              this.routes = this.allRoutes; // Initially show all routes
-              this.filteredRoutes = this.allRoutes; // Initialize filtered routes
-              this.totalItems = response.data.totalCount;
-              this.totalPages = Math.ceil(
-                response.data.totalCount / response.data.pageSize
-              );
-              // Apply any existing search filter
-              if (this.searchTerm) {
-                this.applySearchFilter();
-              }
-            } else {
-              this.allRoutes = [];
-              this.routes = [];
-              this.filteredRoutes = [];
-              this.totalItems = 0;
-              this.totalPages = 0;
-            }
-            this.loading = false;
-            console.log('Loaded routes for system owner:', this.routes);
-          },
-          error: (err: HttpErrorResponse) => {
-            console.error('Error loading routes:', err);
-            this.error = 'Failed to load routes. Please try again.';
-            this.loading = false;
-            // Ensure routes is an empty array on error
-            this.allRoutes = [];
-            this.routes = [];
-            this.filteredRoutes = [];
-          },
-        });
+      // For system owners or super admins - handle the case when no companyId is available
+      this.loading = false;
+      this.error =
+        'No routes found. Please make sure your account is properly configured with a company ID.';
+
+      // Display empty state
+      this.allRoutes = [];
+      this.routes = [];
+      this.filteredRoutes = [];
+      this.totalItems = 0;
+      this.totalPages = 0;
+
+      console.log('Cannot load routes: No company ID available');
     }
   }
 
@@ -251,8 +226,14 @@ export class RoutesManagementComponent implements OnInit {
       return;
     }
     this.currentPage = page;
-    // Update displayed routes based on new page
-    this.updatePaginationForFilteredResults();
+
+    // If we're searching/filtering, update the display based on the filtered results
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      this.updatePaginationForFilteredResults();
+    } else {
+      // Otherwise, load new data from the server for the selected page
+      this.loadRoutes();
+    }
   }
 
   // Method for generating pagination range for responsive display

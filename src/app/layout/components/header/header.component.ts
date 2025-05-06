@@ -13,6 +13,7 @@ import {
   TranslationDictionary,
 } from '../../../core/localization/translation.service';
 import { TranslatePipe } from '../../../features/settings/pipes/translate.pipe';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,9 @@ export class HeaderComponent implements OnInit {
   currentLanguage: Language;
   currentTheme: ThemeOption;
   translations: TranslationDictionary = {};
+
+  // Base URL for images
+  private apiBaseUrl = environment.apiUrl;
 
   constructor(
     private authService: AuthService,
@@ -89,5 +93,30 @@ export class HeaderComponent implements OnInit {
       element.scrollIntoView({ behavior: 'smooth' });
       this.closeMobileMenuIfOpen();
     }
+  }
+
+  // Function to get full URL for profile image
+  getFullProfileImageUrl(imageUrl: string | null | undefined): string {
+    if (!imageUrl) {
+      return 'assets/images/default-avatar.svg';
+    }
+
+    // If URL starts with http:// or https://, it's a complete URL
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+
+    // If URL starts with "/", it's a relative path from the server
+    if (imageUrl.startsWith('/')) {
+      return `${this.apiBaseUrl}${imageUrl}`;
+    }
+
+    // If URL starts with "assets/", it's a local path
+    if (imageUrl.startsWith('assets/')) {
+      return imageUrl;
+    }
+
+    // By default, assume it's a relative path from the server
+    return `${this.apiBaseUrl}/${imageUrl}`;
   }
 }

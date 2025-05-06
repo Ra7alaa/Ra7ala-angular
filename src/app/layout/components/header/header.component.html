@@ -38,15 +38,21 @@
             >{{ "navigation.home" | translate }}</a
           >
 
-
-          <a href="#common-trips" class="nav-link" (click)="scrollToCommonTrips($event)">
-  {{ "navigation.destinations" | translate }}</a
+          <a
+            href="#common-trips"
+            class="nav-link"
+            (click)="scrollToCommonTrips($event)"
+          >
+            {{ "navigation.destinations" | translate }}</a
           >
 
-          <a routerLink="/about" routerLinkActive="active" class="nav-link" (click)="closeMobileMenuIfOpen()">{{
-            "navigation.about" | translate }}</a>
-
-
+          <a
+            routerLink="/about"
+            routerLinkActive="active"
+            class="nav-link"
+            (click)="closeMobileMenuIfOpen()"
+            >{{ "navigation.about" | translate }}</a
+          >
         </div>
 
         <!-- Auth Buttons -->
@@ -73,10 +79,11 @@
                 (click)="closeMobileMenuIfOpen()"
               >
                 <div class="avatar-circle">
-                  <!-- Show user profile image if available, otherwise show default avatar -->
                   <img
                     *ngIf="currentUser?.profilePictureUrl"
-                    [src]="currentUser?.profilePictureUrl"
+                    [src]="
+                      getFullProfileImageUrl(currentUser?.profilePictureUrl)
+                    "
                     alt="User Profile"
                     onerror="this.src='assets/images/default-avatar.svg'"
                   />
