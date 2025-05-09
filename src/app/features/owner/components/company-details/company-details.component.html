@@ -186,6 +186,48 @@
 
       <!-- Right Column - Stats and Admin Info -->
       <div class="col-lg-4 mb-4">
+        <!-- Documents Card - NEW -->
+        <div class="card mb-4" *ngIf="hasTaxDocument">
+          <div class="card-header">
+            <h5 class="mb-0">
+              {{ "owner.company_details.registration_documents" | translate }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="document-item mb-2" *ngIf="company.taxDocumentUrl">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <i class="fas fa-file-pdf text-danger me-2"></i>
+                  {{ "owner.company_details.tax_document" | translate }}
+                </div>
+                <a
+                  [href]="getDocumentUrl(company.taxDocumentUrl)"
+                  target="_blank"
+                  class="btn btn-sm btn-primary"
+                >
+                  <i class="fas fa-download me-1"></i>
+                  {{ "owner.company_details.view" | translate }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rejection Reason Card - NEW -->
+        <div class="card mb-4" *ngIf="hasRejectionReason">
+          <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">
+              {{ "owner.company_details.rejection_reason" | translate }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="rejection-reason">
+              <i class="fas fa-exclamation-circle text-danger me-2"></i>
+              {{ company.rejectionReason }}
+            </div>
+          </div>
+        </div>
+
         <!-- Ratings Card -->
         <div class="card mb-4">
           <div class="card-header">
@@ -260,6 +302,14 @@
             <h5 class="mb-0">
               {{ "owner.company_details.statistics" | translate }}
             </h5>
+            <!-- Pending Status Warning - NEW -->
+            <div
+              class="alert alert-warning mt-2 mb-0"
+              *ngIf="isPendingStatus(company.status)"
+            >
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              {{ "owner.company_details.pending_stats_notice" | translate }}
+            </div>
           </div>
           <div class="card-body">
             <div class="row">
@@ -322,6 +372,25 @@
                     </div>
                     <div class="stat-label">
                       {{ "owner.company_details.stats.routes" | translate }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feedbacks Counter - NEW -->
+            <div class="row mt-4">
+              <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+                <div class="stat-card">
+                  <div class="stat-icon bg-secondary-light">
+                    <i class="fas fa-comment-alt text-secondary"></i>
+                  </div>
+                  <div class="stat-info">
+                    <div class="stat-value">
+                      {{ company.statistics.totalFeedbacks || 0 }}
+                    </div>
+                    <div class="stat-label">
+                      {{ "owner.company_details.stats.feedbacks" | translate }}
                     </div>
                   </div>
                 </div>

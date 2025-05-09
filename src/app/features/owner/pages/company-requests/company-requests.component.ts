@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
 import { Company } from '../../models/company.model';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
@@ -14,6 +15,7 @@ import { LanguageService } from '../../../../core/localization/language.service'
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     FormatDatePipe,
     RejectionModalComponent,
     TranslatePipe,
@@ -42,7 +44,8 @@ export class CompanyRequestsComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -138,6 +141,11 @@ export class CompanyRequestsComponent implements OnInit {
   onRejectCancel(): void {
     this.selectedCompanyId = null;
     this.isRejectionModalOpen = false;
+  }
+
+  // Navigate to company details
+  viewCompanyDetails(company: Company): void {
+    this.router.navigate(['/owner/companies', company.id]);
   }
 
   showMessage(messageKey: string, type: 'success' | 'error'): void {

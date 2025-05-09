@@ -1,6 +1,6 @@
 export interface Driver {
   id: string;
-  fullName: string; // Changed from 'name' to 'fullName' to match API response
+  fullName: string;
   phoneNumber: string;
   email?: string;
   isAvailable?: boolean;
@@ -14,6 +14,21 @@ export interface Driver {
   licenseNumber?: string;
   driverStatus?: number;
   userType?: string;
+}
+
+// Updated interface for driver registration request
+export interface DriverRegistrationRequest {
+  FullName: string;
+  Email: string;
+  PhoneNumber: string;
+  LicenseNumber: string;
+  LicenseExpiryDate: string;
+  ContactAddress: string;
+  HireDate: string;
+  DateOfBirth?: string | null;
+  CompanyId: number;
+  UserType: string;
+  ProfilePicture?: File | null;
 }
 
 export interface DriversResponse {

@@ -14,6 +14,10 @@ export class CompanyService {
 
   constructor(private http: HttpClient) {}
 
+  // File storage for uploads
+  private logoFile: File | null = null;
+  private taxDocumentFile: File | null = null;
+
   /**
    * Get all companies
    */
@@ -30,6 +34,20 @@ export class CompanyService {
     return this.http
       .get<Company>(`${this.apiUrl}/${id}`)
       .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Set the logo file to use for company creation
+   */
+  setLogoFile(file: File | null) {
+    this.logoFile = file;
+  }
+
+  /**
+   * Set the tax document file to use for company creation
+   */
+  setTaxDocumentFile(file: File | null) {
+    this.taxDocumentFile = file;
   }
 
   /**
@@ -67,6 +85,15 @@ export class CompanyService {
         formData.append('Logo', this.logoFile, this.logoFile.name);
       }
 
+      // Add tax document file if available
+      if (this.taxDocumentFile) {
+        formData.append(
+          'TaxDocument',
+          this.taxDocumentFile,
+          this.taxDocumentFile.name
+        );
+      }
+
       console.log('Sending company registration request to:', this.apiUrl);
 
       // Send request - don't set Content-Type, browser will add boundary
@@ -81,16 +108,6 @@ export class CompanyService {
       return throwError(() => validationError);
     }
   }
-
-  /**
-   * Set the logo file to use for company creation
-   */
-  setLogoFile(file: File | null) {
-    this.logoFile = file;
-  }
-
-  // File storage for logo upload
-  private logoFile: File | null = null;
 
   /**
    * Update a company
@@ -131,6 +148,11 @@ export class CompanyService {
       if (!company[field as keyof CompanyCreateRequest]) {
         missingFields.push(label);
       }
+    }
+
+    // Check if the tax document file is set
+    if (!this.taxDocumentFile) {
+      missingFields.push('Tax document');
     }
 
     if (missingFields.length > 0) {
@@ -200,6 +222,9 @@ export class CompanyService {
     formData.append('SuperAdminName', 'Test Admin');
     formData.append('SuperAdminEmail', 'admin@example.com');
     formData.append('SuperAdminPhone', '+201012345679');
+
+    // Note: Test is missing required TaxDocument
+    console.log('Note: Test is missing required TaxDocument');
 
     console.log('Test FormData created with all required fields');
 

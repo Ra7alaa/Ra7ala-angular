@@ -1,0 +1,208 @@
+<form [formGroup]="adminForm" (ngSubmit)="createAdmin()" class="admin-form">
+  <!-- Error message area -->
+  <div class="alert alert-danger" *ngIf="error">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ error }}
+  </div>
+
+  <!-- Personal Info Section -->
+  <div class="form-section mb-4">
+    <h5 class="section-title mb-3">
+      {{ "admin.admins.create_admin.personal_info" | translate }}
+    </h5>
+
+    <div class="field-group">
+      <!-- Full Name -->
+      <div
+        class="form-group"
+        [class.has-error]="
+          adminForm.get('fullName')?.invalid &&
+          adminForm.get('fullName')?.touched
+        "
+      >
+        <label for="fullName" class="form-label required-field">
+          {{ "admin.admins.full_name" | translate }}
+        </label>
+        <div class="input-group has-icon">
+          <i class="bi bi-person input-icon"></i>
+          <input
+            type="text"
+            class="form-control"
+            id="fullName"
+            formControlName="fullName"
+            placeholder="{{
+              'admin.admins.create_admin.name_placeholder' | translate
+            }}"
+          />
+        </div>
+        <div
+          *ngIf="
+            adminForm.get('fullName')?.invalid &&
+            adminForm.get('fullName')?.touched
+          "
+          class="text-danger mt-1 small"
+        >
+          <span *ngIf="adminForm.get('fullName')?.errors?.['required']">
+            {{ "admin.admins.create_admin.name_required" | translate }}
+          </span>
+          <span *ngIf="adminForm.get('fullName')?.errors?.['minlength']">
+            {{ "admin.admins.create_admin.name_min_length" | translate }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <label for="dateOfBirth" class="form-label">
+          {{ "admin.admins.create_admin.date_of_birth_label" | translate }}
+        </label>
+        <div class="input-group has-icon">
+          <i class="bi bi-calendar3 input-icon"></i>
+          <input
+            type="date"
+            class="form-control"
+            id="dateOfBirth"
+            formControlName="dateOfBirth"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Info Section -->
+    <div class="field-group">
+      <!-- Email -->
+      <div
+        class="form-group"
+        [class.has-error]="
+          adminForm.get('email')?.invalid && adminForm.get('email')?.touched
+        "
+      >
+        <label for="email" class="form-label required-field">
+          {{ "admin.admins.email" | translate }}
+        </label>
+        <div class="input-group has-icon">
+          <i class="bi bi-envelope input-icon"></i>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            placeholder="{{
+              'admin.admins.create_admin.email_placeholder' | translate
+            }}"
+          />
+        </div>
+        <div
+          *ngIf="
+            adminForm.get('email')?.invalid && adminForm.get('email')?.touched
+          "
+          class="text-danger mt-1 small"
+        >
+          <span *ngIf="adminForm.get('email')?.errors?.['required']">
+            {{ "admin.admins.create_admin.email_required" | translate }}
+          </span>
+          <span *ngIf="adminForm.get('email')?.errors?.['email']">
+            {{ "admin.admins.create_admin.email_invalid" | translate }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div
+        class="form-group"
+        [class.has-error]="
+          adminForm.get('phoneNumber')?.invalid &&
+          adminForm.get('phoneNumber')?.touched
+        "
+      >
+        <label for="phoneNumber" class="form-label required-field">
+          {{ "admin.admins.create_admin.phone_label" | translate }}
+        </label>
+        <div class="input-group has-icon">
+          <i class="bi bi-telephone input-icon"></i>
+          <input
+            type="tel"
+            class="form-control"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            placeholder="{{
+              'admin.admins.create_admin.phone_placeholder' | translate
+            }}"
+          />
+        </div>
+        <div
+          *ngIf="
+            adminForm.get('phoneNumber')?.invalid &&
+            adminForm.get('phoneNumber')?.touched
+          "
+          class="text-danger mt-1 small"
+        >
+          {{ "admin.admins.create_admin.phone_invalid" | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work Info Section -->
+  <div class="form-section mb-4">
+    <h5 class="section-title mb-3">
+      {{ "admin.admins.create_admin.work_info" | translate }}
+    </h5>
+
+    <!-- Department -->
+    <div class="form-group">
+      <label for="department" class="form-label">
+        {{ "admin.admins.create_admin.department_label" | translate }}
+      </label>
+      <div class="input-group has-icon">
+        <i class="bi bi-building input-icon"></i>
+        <input
+          type="text"
+          class="form-control"
+          id="department"
+          formControlName="department"
+          placeholder="{{
+            'admin.admins.create_admin.department_placeholder' | translate
+          }}"
+        />
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+      <label for="address" class="form-label">
+        {{ "admin.admins.create_admin.address_label" | translate }}
+      </label>
+      <div class="input-group has-icon">
+        <i class="bi bi-geo-alt input-icon"></i>
+        <textarea
+          class="form-control"
+          id="address"
+          formControlName="address"
+          rows="3"
+          placeholder="{{
+            'admin.admins.create_admin.address_placeholder' | translate
+          }}"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="d-flex justify-content-end gap-3 mt-4">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+      <i class="bi bi-x-circle me-1"></i>
+      {{ "admin.common.cancel" | translate }}
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+      <span
+        *ngIf="isSubmitting"
+        class="spinner-border spinner-border-sm me-1"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <i *ngIf="!isSubmitting" class="bi bi-check-circle me-1"></i>
+      {{ "admin.common.save" | translate }}
+    </button>
+  </div>
+</form>

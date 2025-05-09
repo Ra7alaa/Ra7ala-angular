@@ -41,6 +41,18 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'admins',
+        loadChildren: () =>
+          import('./pages/admins-management/index').then((m) => m.AdminsModule),
+      },
+      {
+        path: 'drivers',
+        loadChildren: () =>
+          import('./pages/drivers-management/drivers.module').then(
+            (m) => m.DriversModule
+          ),
+      },
+      {
         path: 'settings',
         loadChildren: () =>
           import('../settings/settings.module').then((m) => m.SettingsModule),

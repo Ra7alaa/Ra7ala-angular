@@ -12,6 +12,11 @@ export class CompanyService {
 
   constructor(private http: HttpClient) {}
 
+  // Add method to get base URL for document formatting
+  getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
   getAllCompanies(pageNumber = 1, pageSize = 10): Observable<CompanyResponse> {
     const params = new HttpParams()
       .set('pageNumber', pageNumber.toString())

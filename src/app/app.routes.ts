@@ -40,7 +40,7 @@ export const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./features/home/home.module').then((m) => m.HomeModule),
-      },
+        },
       {
         path: 'trips',
         loadChildren: () =>
@@ -61,7 +61,6 @@ export const routes: Routes = [
           import('./features/settings/settings.module').then(
             (m) => m.SettingsModule
           ),
-        canActivate: [roleGuard([UserRole.Passenger])],
       },
       {
         path: 'profile',
@@ -82,7 +81,7 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('./features/admin/admin.module').then((m) => m.AdminModule),
-    canActivate: [roleGuard([UserRole.Admin, UserRole.SuperAdmin])],
+    canActivate: [roleGuard([UserRole.SuperAdmin, UserRole.Admin])],
   },
   {
     path: 'owner',
@@ -96,6 +95,7 @@ export const routes: Routes = [
       import('./features/trips/pages/book-trips/book-trips.component').then(
         (m) => m.BookTripsComponent
       ),
+    canActivate: [roleGuard([UserRole.Passenger])],
   },
   {
     path: 'booking/:tripId',
@@ -103,6 +103,7 @@ export const routes: Routes = [
       import('./features/trips/pages/booking/booking.component').then(
         (m) => m.BookingComponent
       ),
+    canActivate: [roleGuard([UserRole.Passenger])],
   },
   // Error routes
   {

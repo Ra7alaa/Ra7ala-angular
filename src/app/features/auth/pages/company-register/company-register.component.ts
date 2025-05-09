@@ -23,7 +23,7 @@ import { RtlDirective } from '../../../settings/directives/rtl.directive';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
-// Define the CompanyCreateRequest interface to include Website
+// Define the CompanyCreateRequest interface to include Website and TaxDocument
 interface CompanyCreateRequest {
   Name: string;
   Description: string;
@@ -35,6 +35,7 @@ interface CompanyCreateRequest {
   SuperAdminName: string;
   SuperAdminEmail: string;
   SuperAdminPhone: string;
+  TaxDocument?: File; // Added field for tax document
 }
 
 @Component({
@@ -56,6 +57,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   errorMessage = '';
   logoFile: File | null = null;
+  taxDocumentFile: File | null = null; // Added tax document file
   currentLanguage!: Language;
   currentTheme!: ThemeOption;
   private subscriptions: Subscription[] = [];
@@ -77,6 +79,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
       name: ['', [Validators.required, Validators.minLength(2)]],
       description: ['', [Validators.required, Validators.minLength(5)]],
       logoUrl: [''],
+      taxDocumentUrl: [''], // Added tax document control
       address: ['', [Validators.required, Validators.minLength(5)]],
       phoneNumber: [
         '',
@@ -151,6 +154,25 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
     }
   }
 
+  onTaxDocumentChange(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.taxDocumentFile = file;
+
+      // Store the file in the service for submission
+      this.companyService.setTaxDocumentFile(file);
+
+      console.log(
+        'Tax document file selected:',
+        file.name,
+        'size:',
+        file.size,
+        'type:',
+        file.type
+      );
+    }
+  }
+
   onSubmit() {
     if (this.companyForm.invalid) {
       // Mark all fields as touched to trigger validation display
@@ -162,6 +184,12 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
       });
 
       console.log('Form validation errors:', this.getFormValidationErrors());
+      return;
+    }
+
+    // Check if tax document is provided
+    if (!this.taxDocumentFile) {
+      this.errorMessage = 'Tax document is required';
       return;
     }
 
@@ -186,12 +214,20 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
     console.log('Form data to be submitted:', {
       ...companyData,
       LogoFile: this.logoFile ? `File: ${this.logoFile.name}` : 'No file',
+      TaxDocument: this.taxDocumentFile
+        ? `File: ${this.taxDocumentFile.name}`
+        : 'No file',
     });
 
     // Check if the form has a logo file
     if (this.logoFile) {
       // Set the logo file in the service
       this.companyService.setLogoFile(this.logoFile);
+    }
+
+    // Set the tax document file in the service
+    if (this.taxDocumentFile) {
+      this.companyService.setTaxDocumentFile(this.taxDocumentFile);
     }
 
     this.companyService.createCompany(companyData).subscribe({
@@ -275,6 +311,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
       SuperAdminName: 'superAdminName',
       SuperAdminEmail: 'superAdminEmail',
       SuperAdminPhone: 'superAdminPhone',
+      TaxDocument: 'taxDocumentUrl',
     };
     return fieldMapping[backendField] || backendField.toLowerCase();
   }

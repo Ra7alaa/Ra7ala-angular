@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   standalone: true,
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent{
   forgotPasswordForm: FormGroup;
   isSubmitting = false;
   errorMessage = '';
@@ -32,7 +32,6 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.forgotPasswordForm.invalid) {

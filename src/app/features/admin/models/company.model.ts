@@ -10,6 +10,7 @@ export interface Company {
   email: string;
   website?: string;
   logoUrl?: string;
+  taxDocumentUrl?: string; // Added field for tax document URL
   createdAt?: string;
   updatedAt?: string;
 }
@@ -28,4 +29,5 @@ export interface CompanyCreateRequest {
   SuperAdminEmail: string;
   SuperAdminPhone: string;
   Logo?: File;
+  TaxDocument?: File; // Added field for tax document file
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '../../../../features/settings/pipes/translate.pipe';
 import { TranslationService } from '../../../../core/localization/translation.service';
 import { TripsService } from '../../services/trips.service';
@@ -13,7 +14,13 @@ import { AuthService } from '../../../auth/services/auth.service';
 @Component({
   selector: 'app-trips-management',
   standalone: true,
-  imports: [CommonModule, TranslatePipe, FormsModule, TripCreateComponent],
+  imports: [
+    CommonModule,
+    TranslatePipe,
+    FormsModule,
+    TripCreateComponent,
+    RouterModule,
+  ],
   templateUrl: './trips-management.component.html',
   styleUrl: './trips-management.component.css',
 })

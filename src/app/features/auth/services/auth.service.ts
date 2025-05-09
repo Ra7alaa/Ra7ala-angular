@@ -154,8 +154,10 @@ export class AuthService {
         this.router.navigate(['/owner/dashboard']);
         break;
       case UserRole.SuperAdmin:
+        this.router.navigate(['/admin/dashboard']);
+        break;
       case UserRole.Admin:
-        this.router.navigate(['/admin/trips']);
+        this.router.navigate(['/admin/dashboard']);
         break;
       case UserRole.Driver:
         this.router.navigate(['/driver/dashboard']);
@@ -175,8 +177,10 @@ export class AuthService {
         this.router.navigate(['/owner/dashboard']);
         break;
       case UserRole.SuperAdmin:
+        this.router.navigate(['/admin/dashboard']);
+        break;
       case UserRole.Admin:
-        this.router.navigate(['/admin/trips']);
+        this.router.navigate(['/admin/dashboard']);
         break;
       case UserRole.Driver:
         this.router.navigate(['/driver/dashboard']);
