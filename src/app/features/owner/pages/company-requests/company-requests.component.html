@@ -78,7 +78,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let company of pendingCompanies">
-            <td>
+            <td
+              attr.data-label="{{
+                'owner.company_requests.table.company_name' | translate
+              }}"
+            >
               <div class="company-name-cell">
                 <div class="company-logo">
                   <i class="fas fa-building"></i>
@@ -89,19 +93,47 @@
                 </div>
               </div>
             </td>
-            <td>
+            <td
+              attr.data-label="{{
+                'owner.company_requests.table.location' | translate
+              }}"
+            >
               {{
                 company.address ||
                   ("owner.company_requests.not_specified" | translate)
               }}
             </td>
-            <td>{{ company.email }}</td>
-            <td>{{ company.phone }}</td>
-            <td>{{ company.createdDate | formatDate : "datetime" }}</td>
-            <td class="actions-cell">
+            <td
+              attr.data-label="{{
+                'owner.company_requests.table.email' | translate
+              }}"
+            >
+              {{ company.email }}
+            </td>
+            <td
+              attr.data-label="{{
+                'owner.company_requests.table.phone' | translate
+              }}"
+            >
+              {{ company.phone }}
+            </td>
+            <td
+              attr.data-label="{{
+                'owner.company_requests.table.registration_date' | translate
+              }}"
+            >
+              {{ company.createdDate | formatDate : "datetime" }}
+            </td>
+            <td
+              attr.data-label="{{
+                'owner.company_requests.table.actions' | translate
+              }}"
+              class="actions-cell"
+            >
               <button
                 class="btn-action btn-view"
                 title="{{ 'owner.company_requests.actions.view' | translate }}"
+                (click)="viewCompanyDetails(company)"
               >
                 <i class="fas fa-eye"></i>
               </button>

@@ -18,6 +18,8 @@ import {
 } from '../../../../core/themes/theme.service';
 import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../auth/services/auth.service';
+import { User, UserRole } from '../../../auth/models/user.model';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -33,10 +35,13 @@ export class AdminSidebarComponent implements OnInit, OnDestroy {
   currentLanguage!: Language;
   currentTheme!: ThemeOption;
   private subscriptions: Subscription[] = [];
+  currentUser: User | null = null;
+  userRole = UserRole;
 
   constructor(
     public languageService: LanguageService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private authService: AuthService
   ) {
     // Initialize with current settings
     this.currentLanguage = this.languageService.getCurrentLanguage();
@@ -57,6 +62,16 @@ export class AdminSidebarComponent implements OnInit, OnDestroy {
         this.currentTheme = theme;
       })
     );
+
+    // Get current user information
+    this.currentUser = this.authService.getCurrentUser();
+
+    // Subscribe to auth changes
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe((user) => {
+        this.currentUser = user;
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -73,5 +88,10 @@ export class AdminSidebarComponent implements OnInit, OnDestroy {
   closeSidebar(): void {
     this.isHidden = true;
     this.sidebarClosed.emit();
+  }
+
+  // التحقق إذا كان المستخدم هو SuperAdmin
+  isSuperAdmin(): boolean {
+    return this.currentUser?.userType === UserRole.SuperAdmin;
   }
 }

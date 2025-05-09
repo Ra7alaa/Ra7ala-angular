@@ -1,0 +1,211 @@
+<form [formGroup]="driverForm" (submit)="createDriver()">
+  <!-- Error message display -->
+  <div
+    *ngIf="error"
+    class="alert alert-danger alert-dismissible fade show mb-3"
+    role="alert"
+  >
+    {{ error }}
+    <button
+      type="button"
+      class="btn-close"
+      (click)="error = null"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <div class="row">
+    <!-- Full Name -->
+    <div class="col-md-6 mb-3">
+      <label for="fullName" class="form-label">
+        {{ "admin.drivers.full_name" | translate }} *
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        id="fullName"
+        formControlName="fullName"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('fullName')?.invalid &&
+            driverForm.get('fullName')?.touched
+        }"
+      />
+      <div class="invalid-feedback">
+        {{ "admin.drivers.name_required" | translate }}
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="col-md-6 mb-3">
+      <label for="email" class="form-label">
+        {{ "admin.drivers.email" | translate }} *
+      </label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('email')?.invalid && driverForm.get('email')?.touched
+        }"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="driverForm.get('email')?.errors?.['required']"
+      >
+        {{ "admin.drivers.email_required" | translate }}
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="driverForm.get('email')?.errors?.['email']"
+      >
+        {{ "admin.drivers.email_invalid" | translate }}
+      </div>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="col-md-6 mb-3">
+      <label for="phoneNumber" class="form-label">
+        {{ "admin.drivers.phone" | translate }} *
+      </label>
+      <input
+        type="tel"
+        class="form-control"
+        id="phoneNumber"
+        formControlName="phoneNumber"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('phoneNumber')?.invalid &&
+            driverForm.get('phoneNumber')?.touched
+        }"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="driverForm.get('phoneNumber')?.errors?.['required']"
+      >
+        {{ "admin.drivers.phone_required" | translate }}
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="driverForm.get('phoneNumber')?.errors?.['pattern']"
+      >
+        {{ "admin.drivers.phone_invalid" | translate }}
+      </div>
+    </div>
+
+    <!-- License Number -->
+    <div class="col-md-6 mb-3">
+      <label for="licenseNumber" class="form-label">
+        {{ "admin.drivers.license" | translate }} *
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        id="licenseNumber"
+        formControlName="licenseNumber"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('licenseNumber')?.invalid &&
+            driverForm.get('licenseNumber')?.touched
+        }"
+      />
+      <div class="invalid-feedback">
+        {{ "admin.drivers.license_required" | translate }}
+      </div>
+    </div>
+
+    <!-- License Expiry Date -->
+    <div class="col-md-6 mb-3">
+      <label for="licenseExpiryDate" class="form-label">
+        {{ "admin.drivers.license_expiry" | translate }} *
+      </label>
+      <input
+        type="date"
+        class="form-control"
+        id="licenseExpiryDate"
+        formControlName="licenseExpiryDate"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('licenseExpiryDate')?.invalid &&
+            driverForm.get('licenseExpiryDate')?.touched
+        }"
+      />
+      <div class="invalid-feedback">
+        {{ "admin.drivers.license_expiry_required" | translate }}
+      </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="col-md-6 mb-3">
+      <label for="dateOfBirth" class="form-label">
+        {{ "admin.drivers.date_of_birth" | translate }}
+      </label>
+      <input
+        type="date"
+        class="form-control"
+        id="dateOfBirth"
+        formControlName="dateOfBirth"
+      />
+    </div>
+
+    <!-- Hire Date -->
+    <div class="col-md-6 mb-3">
+      <label for="hireDate" class="form-label">
+        {{ "admin.drivers.hire_date" | translate }} *
+      </label>
+      <input
+        type="date"
+        class="form-control"
+        id="hireDate"
+        formControlName="hireDate"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('hireDate')?.invalid &&
+            driverForm.get('hireDate')?.touched
+        }"
+      />
+      <div class="invalid-feedback">
+        {{ "admin.drivers.hire_date_required" | translate }}
+      </div>
+    </div>
+
+    <!-- Contact Address -->
+    <div class="col-md-12 mb-3">
+      <label for="contactAddress" class="form-label">
+        {{ "admin.drivers.contact_address" | translate }} *
+      </label>
+      <textarea
+        class="form-control"
+        id="contactAddress"
+        formControlName="contactAddress"
+        rows="3"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('contactAddress')?.invalid &&
+            driverForm.get('contactAddress')?.touched
+        }"
+      ></textarea>
+      <div class="invalid-feedback">
+        {{ "admin.drivers.address_required" | translate }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Form buttons -->
+  <div class="d-flex justify-content-end mt-4">
+    <button type="button" class="btn btn-secondary me-2" (click)="resetForm()">
+      {{ "admin.common.cancel" | translate }}
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+      <span
+        *ngIf="isSubmitting"
+        class="spinner-border spinner-border-sm me-1"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ "admin.drivers.create_driver" | translate }}
+    </button>
+  </div>
+</form>

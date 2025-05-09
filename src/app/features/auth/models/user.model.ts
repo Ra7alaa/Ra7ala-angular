@@ -6,7 +6,7 @@ export enum UserRole {
   Passenger = "Passenger",
   // SystemOwner = 0,
   // SuperAdmin = 1,
-  // Admin = 2,
+  // AdminVal = 2,
   // Driver = 3,
   // Passenger = 4,
 }

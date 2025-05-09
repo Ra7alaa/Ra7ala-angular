@@ -34,6 +34,8 @@ export interface Company {
   description: string;
   superAdmin?: CompanySuperAdmin;
   statistics?: CompanyStatistics;
+  taxDocumentUrl?: string;
+  rejectionReason?: string;
 }
 
 export interface CompanyResponse {

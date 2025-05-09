@@ -19,9 +19,12 @@ export class TripResultsComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
   sortedTrips: TripData[] = [];
-  selectedStartStations: { [key: number]: number } = {};
-  selectedEndStations: { [key: number]: number } = {};
-  numberOfTickets: { [key: number]: number } = {};
+  selectedStartStations: Record<number, number> = {};
+  selectedEndStations: Record<number, number> = {};
+  numberOfTickets: Record<number, number> = {};
+  
+  // تاريخ البحث الأصلي المدخل بواسطة المستخدم
+  originalSearchDate = '';
 
   constructor(
     private tripResultsService: TripResultsService,
@@ -35,7 +38,11 @@ export class TripResultsComponent implements OnInit {
       next: (results) => {
         this.searchResults = results;
         if (results?.data) {
-          this.sortedTrips = [...results.data];
+          // الحصول على تاريخ البحث الأصلي من الخدمة
+          this.originalSearchDate = this.extractSearchDate();
+          
+          // تصفية الرحلات حسب التاريخ المحدد
+          this.sortedTrips = this.filterTripsByDate(results.data);
           this.initializeBookingData();
         }
         this.isLoading = false;
@@ -45,6 +52,40 @@ export class TripResultsComponent implements OnInit {
         this.error = 'Failed to load search results';
         this.isLoading = false;
       }
+    });
+  }
+  
+  // استخلاص تاريخ البحث المدخل من قبل المستخدم
+  private extractSearchDate(): string {
+    // محاولة الحصول على تاريخ البحث من التخزين المحلي
+    const searchDate = localStorage.getItem('searchDate');
+    
+    if (searchDate) {
+      return searchDate.split('T')[0]; // استخراج جزء التاريخ فقط YYYY-MM-DD
+    }
+    
+    // إذا لم يتم تخزين تاريخ البحث، استخدم اليوم الحالي
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  }
+  
+  // تصفية الرحلات حسب التاريخ المحدد
+  private filterTripsByDate(trips: TripData[]): TripData[] {
+    if (!this.originalSearchDate || !trips || trips.length === 0) return trips;
+    
+    console.log(`Filtering trips for date: ${this.originalSearchDate}`);
+    
+    return trips.filter(trip => {
+      const tripDate = new Date(trip.departureTime);
+      const tripDateString = tripDate.toISOString().split('T')[0];
+      
+      console.log(`Trip ${trip.id}: ${tripDateString} vs Search: ${this.originalSearchDate}`);
+      
+      // مقارنة تاريخ الرحلة مع تاريخ البحث
+      const tripDay = tripDate.getDate();
+      const searchDay = new Date(this.originalSearchDate).getDate();
+      
+      return tripDay === searchDay;
     });
   }
 
@@ -121,12 +162,18 @@ export class TripResultsComponent implements OnInit {
             }
           });
         } else {
-          this.error = response.message || 'Booking failed. Please try again.';
+          this.error = response.message || 'Booking failed';
+          setTimeout(() => {
+            this.error = null;
+          }, 3000);
         }
       },
       error: (error) => {
-        this.error = error?.error?.message || 'Failed to book the trip. Please try again.';
-        console.error('Booking error:', error);
+        console.error('Error booking trip:', error);
+        this.error = 'Failed to book trip';
+        setTimeout(() => {
+          this.error = null;
+        }, 3000);
       }
     });
   }

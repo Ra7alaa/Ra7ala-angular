@@ -1,0 +1,575 @@
+<div class="container-fluid py-4" appRtl>
+  <!-- Back button and header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button class="btn btn-outline-secondary" (click)="goBack()">
+      <i class="bi bi-arrow-left me-2"></i
+      >{{ "admin.general.back" | translate }}
+    </button>
+    <h1 class="h2 mb-0">
+      {{ "admin.trips.trip_details" | translate }}
+      <span class="text-primary">#TRP-{{ tripId }}</span>
+    </h1>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary">
+        <i class="bi bi-pencil me-2"></i>{{ "admin.general.edit" | translate }}
+      </button>
+      <button class="btn btn-outline-danger">
+        <i class="bi bi-trash me-2"></i>{{ "admin.general.delete" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ "shared.loading" | translate }}</span>
+    </div>
+    <p class="mt-3">{{ "admin.trips.loading_trip_details" | translate }}</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="!isLoading && errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+    <button class="btn btn-link" (click)="loadTripDetails()">
+      {{ "admin.trips.try_again" | translate }}
+    </button>
+  </div>
+
+  <!-- Trip Details Content -->
+  <div *ngIf="!isLoading && !errorMessage && trip" class="row g-4">
+    <!-- Top Banner showing trip summary -->
+    <div class="col-12">
+      <div
+        class="card border-0 hero-card shadow position-relative overflow-hidden"
+      >
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <div class="d-flex align-items-center mb-2">
+                <span
+                  class="badge me-2"
+                  [ngClass]="{
+                    'bg-success': trip.isCompleted,
+                    'bg-primary text-white': !trip.isCompleted
+                  }"
+                >
+                  {{ trip.isCompleted ? "Completed" : "Upcoming" }}
+                </span>
+                <h2 class="mb-0 fw-bold" style="color: var(--primary-color)">
+                  {{ trip.routeName }}
+                </h2>
+              </div>
+
+              <!-- Trip route visual -->
+              <div class="d-flex align-items-center my-3">
+                <div class="route-point start-point">
+                  <i
+                    class="bi bi-circle-fill"
+                    style="color: var(--primary-color)"
+                  ></i>
+                  <span>{{ trip.tripStations[0].stationName }}</span>
+                  <small class="text-muted d-block">{{
+                    trip.tripStations[0].cityName
+                  }}</small>
+                </div>
+                <div class="route-line flex-grow-1">
+                  <div class="route-stops">
+                    <span
+                      *ngFor="let station of trip.tripStations.slice(1, -1)"
+                      class="route-stop"
+                      [title]="station.stationName"
+                    ></span>
+                  </div>
+                </div>
+                <div class="route-point end-point">
+                  <i
+                    class="bi bi-geo-alt-fill"
+                    style="color: var(--error-color)"
+                  ></i>
+                  <span>{{
+                    trip.tripStations[trip.tripStations.length - 1].stationName
+                  }}</span>
+                  <small class="text-muted d-block">{{
+                    trip.tripStations[trip.tripStations.length - 1].cityName
+                  }}</small>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap gap-4 mt-3">
+                <div class="trip-info-item">
+                  <i
+                    class="bi bi-calendar-event me-2"
+                    style="color: var(--primary-color)"
+                  ></i>
+                  <span>{{ trip.departureTime | date : "MMM d, y" }}</span>
+                </div>
+                <div class="trip-info-item">
+                  <i
+                    class="bi bi-clock me-2"
+                    style="color: var(--primary-color)"
+                  ></i>
+                  <span
+                    >{{ trip.departureTime | date : "h:mm a" }} -
+                    {{ trip.arrivalTime | date : "h:mm a" }}</span
+                  >
+                </div>
+                <div class="trip-info-item">
+                  <i
+                    class="bi bi-currency-dollar me-2"
+                    style="color: var(--success-color)"
+                  ></i>
+                  <span class="fw-bold">{{ trip.price }} EGP</span>
+                </div>
+                <div class="trip-info-item">
+                  <i
+                    class="bi bi-people me-2"
+                    style="color: var(--primary-color)"
+                  ></i>
+                  <span>{{ trip.availableSeats }} seats available</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
+              <div class="company-info">
+                <div
+                  class="company-badge rounded-pill px-4 py-2 d-inline-block"
+                >
+                  <i class="bi bi-building me-2"></i>{{ trip.companyName }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-decoration"></div>
+      </div>
+    </div>
+
+    <!-- Trip Details Columns -->
+    <div class="col-lg-8">
+      <div class="row g-4">
+        <!-- Trip Details -->
+        <div class="col-12">
+          <div class="card border-0 shadow-sm info-card">
+            <div
+              class="card-header bg-white py-3 d-flex justify-content-between align-items-center"
+            >
+              <h5 class="card-title mb-0">
+                <i class="bi bi-info-circle me-2 text-primary"></i>
+                {{ "admin.trips.trip_details" | translate }}
+              </h5>
+              <span class="info-badge">
+                {{ calculateDuration(trip.departureTime, trip.arrivalTime) }}
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="info-item">
+                    <div class="info-icon">
+                      <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="info-content">
+                      <span class="info-label">Departure Date</span>
+                      <span class="info-value">{{
+                        trip.departureTime | date : "longDate"
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-item">
+                    <div class="info-icon">
+                      <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div class="info-content">
+                      <span class="info-label">Arrival Date</span>
+                      <span class="info-value">{{
+                        trip.arrivalTime | date : "longDate"
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-item">
+                    <div class="info-icon">
+                      <i class="bi bi-clock"></i>
+                    </div>
+                    <div class="info-content">
+                      <span class="info-label">Departure Time</span>
+                      <span class="info-value">{{
+                        trip.departureTime | date : "shortTime"
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-item">
+                    <div class="info-icon">
+                      <i class="bi bi-clock-history"></i>
+                    </div>
+                    <div class="info-content">
+                      <span class="info-label">Arrival Time</span>
+                      <span class="info-value">{{
+                        trip.arrivalTime | date : "shortTime"
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-item">
+                    <div class="info-icon">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="info-content">
+                      <span class="info-label">Price</span>
+                      <span class="info-value fw-bold"
+                        >{{ trip.price }} EGP</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-item">
+                    <div class="info-icon">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="info-content">
+                      <span class="info-label">Available Seats</span>
+                      <span class="info-value">{{ trip.availableSeats }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bus Details Card -->
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100 info-card">
+            <div class="card-header bg-white py-3">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-bus-front me-2 text-primary"></i>
+                {{ "admin.trips.bus_information" | translate }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <div
+                class="d-flex flex-column align-items-center text-center mb-4"
+              >
+                <div class="bus-icon-wrapper mb-3">
+                  <i class="bi bi-bus-front"></i>
+                </div>
+                <h5>{{ trip.busRegistrationNumber }}</h5>
+              </div>
+
+              <div class="bus-features">
+                <div class="row g-3">
+                  <div class="col-6">
+                    <div class="feature-item">
+                      <i class="bi bi-wifi"></i>
+                      <span>WiFi</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="feature-item">
+                      <i class="bi bi-snow"></i>
+                      <span>AC</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="feature-item">
+                      <i class="bi bi-battery-charging"></i>
+                      <span>USB Charging</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="feature-item">
+                      <i class="bi bi-chair"></i>
+                      <span>Comfort Seats</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-item mt-4">
+                <div class="info-icon">
+                  <i class="bi bi-hash"></i>
+                </div>
+                <div class="info-content">
+                  <span class="info-label">Bus ID</span>
+                  <span class="info-value">{{ trip.busId }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Driver Information Card -->
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100 info-card">
+            <div class="card-header bg-white py-3">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-person me-2 text-primary"></i>
+                {{ "admin.trips.driver_information" | translate }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <div
+                class="d-flex flex-column align-items-center text-center mb-4"
+              >
+                <div class="driver-avatar mb-3">
+                  <i class="bi bi-person-circle"></i>
+                </div>
+                <h5>{{ trip.driverName }}</h5>
+                <a href="tel:{{ trip.driverPhoneNumber }}" class="driver-phone">
+                  <i class="bi bi-telephone me-2"></i
+                  >{{ trip.driverPhoneNumber }}
+                </a>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon">
+                  <i class="bi bi-person-vcard"></i>
+                </div>
+                <div class="info-content">
+                  <span class="info-label">Driver ID</span>
+                  <span class="info-value">{{ trip.driverId }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trip Stations Card -->
+        <div class="col-12">
+          <div class="card border-0 shadow-sm info-card">
+            <div class="card-header bg-white py-3">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-geo-alt me-2 text-primary"></i>
+                {{ "admin.trips.trip_stations" | translate }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="stations-timeline">
+                <div class="timeline-container">
+                  <div
+                    *ngFor="
+                      let station of trip.tripStations;
+                      let i = index;
+                      let isFirst = first;
+                      let isLast = last
+                    "
+                    class="timeline-item"
+                    [ngClass]="{
+                      'first-station': isFirst,
+                      'last-station': isLast
+                    }"
+                  >
+                    <div
+                      class="timeline-marker"
+                      [ngClass]="{
+                        'start-marker': isFirst,
+                        'end-marker': isLast,
+                        'mid-marker': !isFirst && !isLast
+                      }"
+                    >
+                      <i *ngIf="isFirst" class="bi bi-circle-fill"></i>
+                      <i *ngIf="isLast" class="bi bi-geo-alt-fill"></i>
+                      <i
+                        *ngIf="!isFirst && !isLast"
+                        class="bi bi-record-circle"
+                      ></i>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="station-card">
+                        <div class="station-header">
+                          <h6 class="station-name">
+                            {{ station.stationName }}
+                          </h6>
+                          <span class="city-badge">{{ station.cityName }}</span>
+                        </div>
+                        <div class="station-time">
+                          <div class="time-slot">
+                            <i
+                              class="bi bi-box-arrow-in-down-right text-primary me-2"
+                            ></i>
+                            <span>Arrival: </span>
+                            <strong>{{
+                              station.arrivalTime
+                                ? (station.arrivalTime | date : "shortTime")
+                                : "N/A"
+                            }}</strong>
+                          </div>
+                          <div class="time-slot">
+                            <i
+                              class="bi bi-box-arrow-up-right text-success me-2"
+                            ></i>
+                            <span>Departure: </span>
+                            <strong>{{
+                              station.departureTime
+                                ? (station.departureTime | date : "shortTime")
+                                : "N/A"
+                            }}</strong>
+                          </div>
+                        </div>
+                        <div class="sequence-number">
+                          <span>{{ station.sequenceNumber }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar with Stats -->
+    <div class="col-lg-4">
+      <!-- Company Card -->
+      <div class="card border-0 shadow-sm mb-4 info-card">
+        <div class="card-header bg-white py-3">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-building me-2 text-primary"></i>
+            Company Information
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="company-logo mb-3">
+            <i class="bi bi-building"></i>
+            <h4 class="mt-3">{{ trip.companyName }}</h4>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="bi bi-hash"></i>
+            </div>
+            <div class="info-content">
+              <span class="info-label">Company ID</span>
+              <span class="info-value">{{ trip.companyId }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trip Statistics Card -->
+      <div class="card border-0 shadow-sm mb-4 info-card">
+        <div class="card-header bg-white py-3">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-graph-up me-2 text-primary"></i>
+            {{ "admin.trips.statistics" | translate }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Seat Occupancy Progress -->
+          <div class="stat-item mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0">Seat Occupancy</h6>
+              <span class="occupancy-percent"
+                >{{
+                  ((50 - trip.availableSeats) / 50) * 100 | number : "1.0-0"
+                }}%</span
+              >
+            </div>
+            <div class="progress" style="height: 12px">
+              <div
+                class="progress-bar bg-primary"
+                role="progressbar"
+                [style.width]="((50 - trip.availableSeats) / 50) * 100 + '%'"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="stat-card available">
+                <div class="stat-value">{{ trip.availableSeats }}</div>
+                <div class="stat-label">Available Seats</div>
+                <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-card total">
+                <div class="stat-value">50</div>
+                <div class="stat-label">Total Seats</div>
+                <div class="stat-icon"><i class="bi bi-grid-3x3"></i></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-card booked">
+                <div class="stat-value">{{ 50 - trip.availableSeats }}</div>
+                <div class="stat-label">Booked Seats</div>
+                <div class="stat-icon"><i class="bi bi-person-check"></i></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="stat-card revenue">
+                <div class="stat-value">
+                  {{
+                    (50 - trip.availableSeats) * trip.price | number : "1.0-0"
+                  }}
+                </div>
+                <div class="stat-label">Revenue (EGP)</div>
+                <div class="stat-icon"><i class="bi bi-cash"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Timeline Card -->
+      <div class="card border-0 shadow-sm info-card">
+        <div class="card-header bg-white py-3">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-clock-history me-2 text-primary"></i>
+            Trip Status
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="status-timeline">
+            <div class="status-item" [class.active]="true">
+              <div class="status-marker"></div>
+              <div class="status-content">
+                <h6>Trip Created</h6>
+                <p class="text-muted mb-0">Trip was scheduled in the system</p>
+              </div>
+            </div>
+            <div class="status-item" [class.active]="true">
+              <div class="status-marker"></div>
+              <div class="status-content">
+                <h6>Tickets Available</h6>
+                <p class="text-muted mb-0">Tickets opened for booking</p>
+              </div>
+            </div>
+            <div class="status-item" [class.active]="!trip.isCompleted">
+              <div class="status-marker"></div>
+              <div class="status-content">
+                <h6>Trip Upcoming</h6>
+                <p class="text-muted mb-0">
+                  {{ trip.availableSeats }} seats still available
+                </p>
+              </div>
+            </div>
+            <div class="status-item" [class.active]="trip.isCompleted">
+              <div class="status-marker"></div>
+              <div class="status-content">
+                <h6>Trip Completed</h6>
+                <p class="text-muted mb-0" *ngIf="trip.isCompleted">
+                  Trip has been completed
+                </p>
+                <p class="text-muted mb-0" *ngIf="!trip.isCompleted">
+                  Trip not yet completed
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

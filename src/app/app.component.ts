@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GridModule, PagerModule } from '@syncfusion/ej2-angular-grids';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { LayoutModule } from './layout/layout.module';
 
 // Import our core services
@@ -72,21 +72,22 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  private monitorAuthState(): void {
-    // Subscribe to authentication state changes
-    this.authService.currentUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((user) => {
-        console.log('Auth state changed:', !!user);
+  private async monitorAuthState(): Promise<void> {
+    try {
+      const user = await firstValueFrom(this.authService.currentUser$);
+      console.log('Auth state changed:', !!user);
 
-        if (user) {
-          // User is authenticated - we don't need to read from localStorage anymore
-          // as the BehaviorSubject in AuthService will hold the current user
-          console.log(
-            `User authenticated as: ${user.username}, role: ${user.userType}`
-          );
-        }
-      });
+      if (user) {
+        // User is authenticated - we don't need to read from localStorage anymore
+        // as the BehaviorSubject in AuthService will hold the current user
+        console.log(
+          `User authenticated as: ${user.fullName || user.username || 'Unknown'}, role: ${user.userType || 'Unknown'}`
+        );
+        console.log('Full user object:', user); // Log the complete user object to debug
+      }
+    } catch (error) {
+      console.error('Error monitoring auth state:', error);
+    }
   }
 
   // Method to try recovering from errors

@@ -1,5 +1,9 @@
-<div class="modal-overlay" *ngIf="isOpen" appRtl>
-  <div class="modal-container">
+<div
+  class="modal-overlay"
+  *ngIf="isOpen"
+  [dir]="currentLanguage?.rtl ? 'rtl' : 'ltr'"
+>
+  <div class="modal-container" [class.rtl]="currentLanguage?.rtl">
     <div class="modal-header">
       <h2>{{ "owner.company_requests.rejection_modal.title" | translate }}</h2>
       <button class="close-button" (click)="onCancel()" aria-label="Close">
@@ -25,6 +29,7 @@
             'owner.company_requests.rejection_modal.reason_placeholder'
               | translate
           }}"
+          [dir]="currentLanguage?.rtl ? 'rtl' : 'ltr'"
         ></textarea>
       </div>
 
@@ -37,14 +42,14 @@
         </h4>
         <div class="reason-chips">
           <button
-            *ngFor="let reason of predefinedReasons"
+            *ngFor="let reason of translatedReasons"
             class="reason-chip"
-            [class.selected]="selectedPredefinedReason === reason"
-            (click)="selectPredefinedReason(reason)"
-            (keydown.enter)="selectPredefinedReason(reason)"
+            [class.selected]="selectedPredefinedReason === reason.key"
+            (click)="selectPredefinedReason(reason.key)"
+            (keydown.enter)="selectPredefinedReason(reason.key)"
             tabindex="0"
           >
-            {{ reason | translate }}
+            {{ reason.text }}
           </button>
         </div>
       </div>

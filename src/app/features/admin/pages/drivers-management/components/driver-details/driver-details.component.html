@@ -1,0 +1,676 @@
+<div class="driver-details-container p-3">
+  <!-- Error message -->
+  <div
+    *ngIf="error"
+    class="alert alert-danger alert-dismissible fade show mb-4"
+    role="alert"
+  >
+    {{ error }}
+    <button
+      type="button"
+      class="btn-close"
+      (click)="error = null"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <!-- Back button -->
+  <div class="mb-4">
+    <button class="btn btn-outline-primary rounded-pill" (click)="goBack()">
+      <i class="bi bi-arrow-left me-2"></i>Back to Drivers List
+    </button>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && driver" class="driver-profile">
+    <!-- Modern Header section with gradient background -->
+    <div class="profile-header card mb-4">
+      <div class="card-body bg-gradient-primary text-white rounded p-4">
+        <div class="row align-items-center">
+          <div class="col-md-2">
+            <div class="avatar-container position-relative">
+              <img
+                [src]="
+                  driver.profilePictureUrl || 'assets/images/default-avatar.svg'
+                "
+                alt="Driver Photo"
+                class="img-fluid rounded-circle profile-avatar border-3 border-white shadow"
+              />
+              <span
+                class="position-absolute bottom-0 end-0 translate-middle badge rounded-pill"
+                [ngClass]="{
+                  'bg-success': driver.isAvailable,
+                  'bg-danger': !driver.isAvailable
+                }"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-check-lg': driver.isAvailable,
+                    'bi-x-lg': !driver.isAvailable
+                  }"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h1 class="driver-name fw-bold mb-2">
+              {{ driver.fullName || "No Name" }}
+            </h1>
+            <div class="driver-meta d-flex flex-wrap gap-3 mb-2">
+              <span
+                class="badge p-2 rounded-pill"
+                [ngClass]="getDriverStatus(driver.driverStatus).class"
+              >
+                <i class="bi bi-person-badge me-1"></i>
+                {{ getDriverStatus(driver.driverStatus).text }}
+              </span>
+              <span class="badge bg-light text-dark p-2 rounded-pill">
+                <i class="bi bi-fingerprint me-1"></i> ID: {{ driver.id }}
+              </span>
+              <span
+                *ngIf="driver.companyName"
+                class="badge bg-light text-dark p-2 rounded-pill"
+              >
+                <i class="bi bi-building me-1"></i> {{ driver.companyName }}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-2 text-end">
+            <a
+              [routerLink]="['/admin/drivers/edit', driver.id]"
+              class="btn btn-light rounded-pill shadow-sm"
+            >
+              <i class="bi bi-pencil me-2"></i> Edit Profile
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick action cards -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <button
+          class="btn btn-outline-primary w-100 p-3 rounded-pill shadow-sm"
+        >
+          <i class="bi bi-telephone-outbound me-2"></i> Contact Driver
+        </button>
+      </div>
+      <div class="col-md-4">
+        <button
+          class="btn btn-outline-success w-100 p-3 rounded-pill shadow-sm"
+        >
+          <i class="bi bi-calendar-plus me-2"></i> Schedule Trip
+        </button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-outline-info w-100 p-3 rounded-pill shadow-sm">
+          <i class="bi bi-chat-dots me-2"></i> Send Message
+        </button>
+      </div>
+    </div>
+
+    <!-- Key information cards -->
+    <div class="row mb-4">
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card h-100 border-0 shadow-sm hover-card">
+          <div class="card-body text-center p-4">
+            <div
+              class="stats-icon rounded-circle bg-primary-light p-3 mx-auto mb-3"
+            >
+              <i class="bi bi-person fs-3 text-primary"></i>
+            </div>
+            <h6 class="stats-label text-uppercase text-muted fw-bold">
+              User Type
+            </h6>
+            <h3 class="stats-value fw-bold">
+              {{ driver.userType || "Driver" }}
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card h-100 border-0 shadow-sm hover-card">
+          <div class="card-body text-center p-4">
+            <div
+              class="stats-icon rounded-circle bg-success-light p-3 mx-auto mb-3"
+            >
+              <i class="bi bi-calendar-check fs-3 text-success"></i>
+            </div>
+            <h6 class="stats-label text-uppercase text-muted fw-bold">
+              Registration Date
+            </h6>
+            <h3 class="stats-value fw-bold">
+              {{ formatDate(driver.dateCreated) }}
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card h-100 border-0 shadow-sm hover-card">
+          <div class="card-body text-center p-4">
+            <div
+              class="stats-icon rounded-circle p-3 mx-auto mb-3"
+              [ngClass]="{
+                'bg-success-light': driver.isAvailable,
+                'bg-danger-light': !driver.isAvailable
+              }"
+            >
+              <i
+                class="bi fs-3"
+                [ngClass]="{
+                  'bi-check-circle text-success': driver.isAvailable,
+                  'bi-x-circle text-danger': !driver.isAvailable
+                }"
+              ></i>
+            </div>
+            <h6 class="stats-label text-uppercase text-muted fw-bold">
+              Status
+            </h6>
+            <h3 class="stats-value fw-bold">
+              {{ driver.isAvailable ? "Available" : "Not Available" }}
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card h-100 border-0 shadow-sm hover-card">
+          <div class="card-body text-center p-4">
+            <div
+              class="stats-icon rounded-circle bg-info-light p-3 mx-auto mb-3"
+            >
+              <i class="bi bi-clock-history fs-3 text-info"></i>
+            </div>
+            <h6 class="stats-label text-uppercase text-muted fw-bold">
+              Last Active
+            </h6>
+            <h3 class="stats-value fw-bold">
+              {{ formatDate(driver.lastLogin) }}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabbed information section -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-0">
+        <ul class="nav nav-tabs" id="driverInfoTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active px-4 py-3"
+              id="personal-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#personal"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-person-vcard me-2"></i> Personal Info
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link px-4 py-3"
+              id="license-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#license"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-card-heading me-2"></i> License
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link px-4 py-3"
+              id="trips-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#trips"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-map me-2"></i> Trips
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link px-4 py-3"
+              id="advanced-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#advanced"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-gear me-2"></i> Advanced
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content p-4" id="driverInfoTabsContent">
+          <!-- Personal Information Tab -->
+          <div
+            class="tab-pane fade show active"
+            id="personal"
+            role="tabpanel"
+            aria-labelledby="personal-tab"
+          >
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div
+                  class="info-card p-3 rounded border-start border-5 border-primary"
+                >
+                  <h6 class="text-muted mb-1">
+                    <i class="bi bi-envelope text-primary me-2"></i> Email
+                  </h6>
+                  <p class="fs-5 fw-bold mb-0">
+                    {{ driver.email || "Not Available" }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div
+                  class="info-card p-3 rounded border-start border-5 border-primary"
+                >
+                  <h6 class="text-muted mb-1">
+                    <i class="bi bi-telephone text-primary me-2"></i> Phone
+                    Number
+                  </h6>
+                  <p class="fs-5 fw-bold mb-0">
+                    {{ driver.phoneNumber || "Not Available" }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div
+                  class="info-card p-3 rounded border-start border-5 border-primary"
+                >
+                  <h6 class="text-muted mb-1">
+                    <i class="bi bi-calendar text-primary me-2"></i> Date of
+                    Birth
+                  </h6>
+                  <p class="fs-5 fw-bold mb-0">
+                    {{ formatDate(driver.dateOfBirth) }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div
+                  class="info-card p-3 rounded border-start border-5 border-primary"
+                >
+                  <h6 class="text-muted mb-1">
+                    <i class="bi bi-clock-history text-primary me-2"></i> Last
+                    Login
+                  </h6>
+                  <p class="fs-5 fw-bold mb-0">
+                    {{ formatDate(driver.lastLogin) }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div
+                  class="info-card p-3 rounded border-start border-5 border-primary"
+                >
+                  <h6 class="text-muted mb-1">
+                    <i class="bi bi-geo-alt text-primary me-2"></i> Address
+                  </h6>
+                  <p class="fs-5 fw-bold mb-0">
+                    {{ driver.address || "Not Available" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- License Tab -->
+          <div
+            class="tab-pane fade"
+            id="license"
+            role="tabpanel"
+            aria-labelledby="license-tab"
+          >
+            <div class="license-card bg-light p-4 rounded-3 shadow-sm">
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div
+                    class="info-card p-3 rounded border-start border-5 border-warning"
+                  >
+                    <h6 class="text-muted mb-1">
+                      <i
+                        class="bi bi-credit-card-2-front text-warning me-2"
+                      ></i>
+                      License Number
+                    </h6>
+                    <p class="fs-5 fw-bold mb-0">
+                      {{ driver.licenseNumber || "Not Available" }}
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div
+                    class="info-card p-3 rounded border-start border-5 border-warning"
+                  >
+                    <h6 class="text-muted mb-1">
+                      <i class="bi bi-calendar-x text-warning me-2"></i>
+                      Expiration Date
+                    </h6>
+                    <!-- Use a conditional message instead of trying to access unavailable property -->
+                    <p class="fs-5 fw-bold mb-0">Not Available</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="d-flex justify-content-center mt-3">
+                    <div
+                      class="license-preview p-4 bg-white rounded-3 shadow-sm text-center"
+                      style="max-width: 400px"
+                    >
+                      <h5 class="text-uppercase mb-4">
+                        <i class="bi bi-card-heading me-2"></i>Driver License
+                      </h5>
+                      <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                          <img
+                            [src]="
+                              driver.profilePictureUrl ||
+                              'assets/images/default-avatar.svg'
+                            "
+                            alt="License Photo"
+                            class="img-fluid rounded"
+                            style="
+                              width: 100px;
+                              height: 100px;
+                              object-fit: cover;
+                            "
+                          />
+                        </div>
+                        <div class="text-start">
+                          <p class="mb-1">
+                            <strong>Name:</strong> {{ driver.fullName }}
+                          </p>
+                          <p class="mb-1">
+                            <strong>ID:</strong> {{ driver.licenseNumber }}
+                          </p>
+                          <p class="mb-1">
+                            <strong>Type:</strong> Professional
+                          </p>
+                          <!-- Use a conditional message instead of trying to access unavailable property -->
+                          <p class="mb-0"><strong>Valid Until:</strong> N/A</p>
+                        </div>
+                      </div>
+                      <div class="license-barcode bg-light p-2 rounded">
+                        <i class="bi bi-upc fs-1"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trips Tab -->
+          <div
+            class="tab-pane fade"
+            id="trips"
+            role="tabpanel"
+            aria-labelledby="trips-tab"
+          >
+            <div class="text-center p-5">
+              <div class="display-6 text-muted mb-3">
+                <i class="bi bi-calendar-event"></i>
+              </div>
+              <h5 class="mb-3">
+                No trips have been assigned to this driver yet
+              </h5>
+              <p class="text-muted mb-4">
+                Future trips and driver activity will appear here
+              </p>
+              <button class="btn btn-primary rounded-pill px-4">
+                <i class="bi bi-plus-circle me-2"></i> Schedule New Trip
+              </button>
+            </div>
+          </div>
+
+          <!-- Advanced Tab -->
+          <div
+            class="tab-pane fade"
+            id="advanced"
+            role="tabpanel"
+            aria-labelledby="advanced-tab"
+          >
+            <div class="accordion" id="driverAdvancedAccordion">
+              <div class="accordion-item border-0 mb-3">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button rounded shadow-sm"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseSystem"
+                  >
+                    <i class="bi bi-gear-fill me-2"></i> System Information
+                  </button>
+                </h2>
+                <div
+                  id="collapseSystem"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#driverAdvancedAccordion"
+                >
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <div
+                          class="info-card p-3 rounded border-start border-5 border-secondary"
+                        >
+                          <h6 class="text-muted mb-1">
+                            <i
+                              class="bi bi-fingerprint text-secondary me-2"
+                            ></i>
+                            User ID
+                          </h6>
+                          <p class="fw-bold mb-0">{{ driver.id }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <div
+                          class="info-card p-3 rounded border-start border-5 border-secondary"
+                        >
+                          <h6 class="text-muted mb-1">
+                            <i
+                              class="bi bi-calendar-check text-secondary me-2"
+                            ></i>
+                            Created On
+                          </h6>
+                          <p class="fw-bold mb-0">
+                            {{ formatDate(driver.dateCreated) }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-3">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed rounded shadow-sm"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseJSON"
+                  >
+                    <i class="bi bi-braces me-2"></i> JSON Data
+                  </button>
+                </h2>
+                <div
+                  id="collapseJSON"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#driverAdvancedAccordion"
+                >
+                  <div class="accordion-body">
+                    <pre class="json-debug bg-light p-3 rounded">{{
+                      driver | json
+                    }}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performance Analytics Preview -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-transparent border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <i class="bi bi-graph-up me-2"></i> Performance Overview
+          </h4>
+          <span class="badge rounded-pill bg-primary">Last 30 Days</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3 mb-4 mb-md-0">
+            <div class="text-center">
+              <div class="display-6 text-primary mb-2">14</div>
+              <p class="text-muted mb-0">Total Trips</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4 mb-md-0">
+            <div class="text-center">
+              <div class="display-6 text-success mb-2">4.8</div>
+              <p class="text-muted mb-0">Rating</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4 mb-md-0">
+            <div class="text-center">
+              <div class="display-6 text-info mb-2">98%</div>
+              <p class="text-muted mb-0">On-time Rate</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="text-center">
+              <div class="display-6 text-warning mb-2">840km</div>
+              <p class="text-muted mb-0">Distance Driven</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No driver data - Enhanced empty state -->
+  <div *ngIf="!loading && !driver && !error" class="text-center my-5">
+    <div
+      class="empty-state p-5 bg-light rounded-3 shadow-sm mx-auto"
+      style="max-width: 500px"
+    >
+      <div class="display-1 text-muted mb-4">
+        <i class="bi bi-question-circle"></i>
+      </div>
+      <h2 class="mb-3">Driver Not Found</h2>
+      <p class="text-muted mb-4">
+        We couldn't find this driver's information in our system. The driver may
+        have been deleted or the ID might be incorrect.
+      </p>
+      <button
+        class="btn btn-primary btn-lg rounded-pill px-4"
+        (click)="goBack()"
+      >
+        <i class="bi bi-arrow-left me-2"></i> Back to Drivers List
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add these CSS styles to your component's CSS file -->
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #3a8ffe 0%, #1a5cbd 100%);
+  }
+
+  .avatar-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bg-primary-light {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+
+  .bg-success-light {
+    background-color: rgba(25, 135, 84, 0.1);
+  }
+
+  .bg-danger-light {
+    background-color: rgba(220, 53, 69, 0.1);
+  }
+
+  .bg-info-light {
+    background-color: rgba(13, 202, 240, 0.1);
+  }
+
+  .bg-warning-light {
+    background-color: rgba(255, 193, 7, 0.1);
+  }
+
+  .stats-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-card {
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+  }
+
+  .info-card:hover {
+    background-color: white;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .hover-card {
+    transition: all 0.3s ease;
+  }
+
+  .hover-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .nav-tabs .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+  }
+
+  .nav-tabs .nav-link.active {
+    color: #0d6efd;
+    border-bottom: 3px solid #0d6efd;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+
+  .accordion-button:focus {
+    box-shadow: none;
+  }
+</style>

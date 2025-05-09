@@ -89,6 +89,19 @@
         <span>{{ "admin.sidebar.buses" | translate }}</span>
       </a>
     </li>
+    <!-- Drivers Management link -->
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/drivers" routerLinkActive="active">
+        <i
+          class="bi bi-person-badge"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.drivers" | translate }}</span>
+      </a>
+    </li>
     <li class="nav-item">
       <a
         class="nav-link"
@@ -103,6 +116,20 @@
           }"
         ></i>
         <span>{{ "admin.sidebar.stations" | translate }}</span>
+      </a>
+    </li>
+
+    <!-- Admins Management link - Only visible for SuperAdmin -->
+    <li class="nav-item" *ngIf="isSuperAdmin()">
+      <a class="nav-link" routerLink="/admin/admins" routerLinkActive="active">
+        <i
+          class="bi bi-people-fill"
+          [ngClass]="{
+            'me-2': !currentLanguage.rtl,
+            'ms-2': currentLanguage.rtl
+          }"
+        ></i>
+        <span>{{ "admin.sidebar.admins" | translate }}</span>
       </a>
     </li>
 

@@ -170,3 +170,34 @@
   background-color: #e57373;
   cursor: not-allowed;
 }
+
+/* RTL specific adjustments */
+:host-context(.rtl) .modal-header,
+:host-context([dir="rtl"]) .modal-header {
+  flex-direction: row-reverse;
+}
+
+:host-context(.rtl) .modal-footer,
+:host-context([dir="rtl"]) .modal-footer {
+  flex-direction: row-reverse;
+}
+
+:host-context(.rtl) .form-group label,
+:host-context([dir="rtl"]) .form-group label {
+  text-align: right;
+}
+
+:host-context(.rtl) .form-control,
+:host-context([dir="rtl"]) .form-control {
+  text-align: right;
+}
+
+:host-context(.rtl) .reason-chips,
+:host-context([dir="rtl"]) .reason-chips {
+  justify-content: flex-start;
+}
+
+:host-context(.rtl) .predefined-reasons h4,
+:host-context([dir="rtl"]) .predefined-reasons h4 {
+  text-align: right;
+}

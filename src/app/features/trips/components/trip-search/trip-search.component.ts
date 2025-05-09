@@ -61,7 +61,7 @@ export class TripSearchComponent implements OnInit {
       const formData = {
         startCityId: Number(this.searchForm.value.startCityId),  // Convert to number
         endCityId: Number(this.searchForm.value.endCityId),      // Convert to number
-        departureDate: new Date(this.searchForm.value.departureDate).toISOString(),
+        departureDate: new Date(this.searchForm.value.departureDate + 1).toISOString(),
         requiredSeats: this.searchForm.value.requiredSeats
       };
 

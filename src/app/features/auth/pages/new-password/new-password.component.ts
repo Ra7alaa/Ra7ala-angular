@@ -62,7 +62,6 @@ export class NewPasswordComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    const password = this.newPasswordForm.get('password')?.value;
 
     // In a real application, this would call the auth service to reset the password
     // For now, we'll simulate a successful password reset and redirect to login

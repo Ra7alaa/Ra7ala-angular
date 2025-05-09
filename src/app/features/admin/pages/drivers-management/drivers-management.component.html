@@ -1,0 +1,385 @@
+<div class="container-fluid py-4" appRtl>
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+      <h2 class="mb-0 fw-bold">
+        <i class="bi bi-person-badge me-2 text-primary"></i>
+        {{ "admin.drivers.title" | translate }}
+      </h2>
+      <p class="text-muted mt-2">
+        {{ "admin.drivers.subtitle" | translate }}
+      </p>
+    </div>
+    <div class="col-md-6 text-md-end">
+      <button
+        class="btn btn-primary btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#addDriverModal"
+      >
+        <i class="bi bi-plus-circle me-1"></i>
+        {{ "admin.drivers.add_driver" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="input-group search-container">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          #searchInput
+          type="text"
+          class="form-control border-start-0 ps-0"
+          [placeholder]="'admin.drivers.search_placeholder' | translate"
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="search(searchTerm)"
+        />
+        <button
+          class="btn btn-primary search-btn"
+          (click)="search(searchInput.value)"
+        >
+          {{ "admin.common.search" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats summary cards -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="card h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+            <i class="bi bi-people-fill text-primary fs-4"></i>
+          </div>
+          <div>
+            <h6 class="text-muted mb-1">
+              {{ "admin.drivers.total_drivers" | translate }}
+            </h6>
+            <h3 class="mb-0 fw-bold">{{ drivers.length }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="card h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+            <i class="bi bi-person-check-fill text-success fs-4"></i>
+          </div>
+          <div>
+            <h6 class="text-muted mb-1">
+              {{ "admin.drivers.available_drivers" | translate }}
+            </h6>
+            <h3 class="mb-0 fw-bold">{{ getAvailableDriversCount() }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3 mb-md-0">
+      <div class="card h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+            <i class="bi bi-calendar-check text-warning fs-4"></i>
+          </div>
+          <div>
+            <h6 class="text-muted mb-1">
+              {{ "admin.drivers.recently_added" | translate }}
+            </h6>
+            <h3 class="mb-0 fw-bold">{{ getRecentlyAddedCount() }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div
+          class="card-header bg-white py-3 d-flex justify-content-between align-items-center"
+        >
+          <h5 class="mb-0 fw-bold">
+            <i class="bi bi-list-check me-2 text-primary"></i>
+            {{ "admin.drivers.company_drivers" | translate }}
+          </h5>
+          <span class="badge bg-primary rounded-pill">
+            {{ filteredDrivers.length }}
+            {{ "admin.drivers.drivers" | translate }}
+          </span>
+        </div>
+        <div class="card-body p-0">
+          <!-- Loading state -->
+          <div *ngIf="loading" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">{{ "admin.common.loading" | translate }}</p>
+          </div>
+
+          <!-- Error state -->
+          <div *ngIf="!loading && error" class="alert alert-danger m-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ error }}
+          </div>
+
+          <!-- Empty state -->
+          <div
+            *ngIf="!loading && !error && drivers.length === 0"
+            class="text-center p-5"
+          >
+            <i class="bi bi-people text-secondary" style="font-size: 3rem"></i>
+            <h5 class="mt-3">
+              {{ "admin.drivers.no_drivers_yet" | translate }}
+            </h5>
+            <p class="text-muted">
+              {{ "admin.drivers.create_first_driver" | translate }}
+            </p>
+            <button
+              class="btn btn-primary mt-3"
+              data-bs-toggle="modal"
+              data-bs-target="#addDriverModal"
+            >
+              <i class="bi bi-plus-circle me-1"></i>
+              {{ "admin.drivers.add_first_driver" | translate }}
+            </button>
+          </div>
+
+          <!-- Drivers table -->
+          <div
+            class="table-responsive"
+            *ngIf="!loading && !error && drivers.length > 0"
+          >
+            <table class="table table-hover mb-0 drivers-table">
+              <thead>
+                <tr>
+                  <th class="driver-name">
+                    <i class="bi bi-person me-2"></i>
+                    {{ "admin.drivers.full_name" | translate }}
+                  </th>
+                  <th class="driver-email">
+                    <i class="bi bi-envelope me-2"></i>
+                    {{ "admin.drivers.email" | translate }}
+                  </th>
+                  <th class="driver-phone">
+                    <i class="bi bi-telephone me-2"></i>
+                    {{ "admin.drivers.phone" | translate }}
+                  </th>
+                  <th class="driver-license d-none d-lg-table-cell">
+                    <i class="bi bi-card-text me-2"></i>
+                    {{ "admin.drivers.license" | translate }}
+                  </th>
+                  <th class="driver-status d-none d-md-table-cell">
+                    <i class="bi bi-circle me-2"></i>
+                    {{ "admin.drivers.status" | translate }}
+                  </th>
+                  <th class="driver-actions text-end">
+                    {{ "admin.common.actions" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let driver of paginatedDrivers">
+                  <td class="driver-name fw-medium">
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="avatar me-2 bg-light rounded-circle p-1"
+                        *ngIf="!driver.profilePictureUrl"
+                      >
+                        <span class="text-primary">{{
+                          driver.fullName.charAt(0)
+                        }}</span>
+                      </div>
+                      <img
+                        *ngIf="driver.profilePictureUrl"
+                        [src]="driver.profilePictureUrl"
+                        class="rounded-circle me-2"
+                        style="width: 32px; height: 32px; object-fit: cover"
+                        alt="Profile"
+                      />
+                      {{ driver.fullName }}
+                    </div>
+                  </td>
+                  <td class="driver-email">
+                    <span *ngIf="driver.email">
+                      <i class="bi bi-envelope-fill me-1 text-muted"></i>
+                      {{ driver.email }}
+                    </span>
+                    <span *ngIf="!driver.email" class="text-muted">
+                      <i class="bi bi-dash-circle me-1"></i>
+                      N/A
+                    </span>
+                  </td>
+                  <td class="driver-phone">
+                    <span *ngIf="driver.phoneNumber">
+                      <i class="bi bi-telephone-fill me-1 text-muted"></i>
+                      {{ driver.phoneNumber }}
+                    </span>
+                    <span *ngIf="!driver.phoneNumber" class="text-muted">
+                      <i class="bi bi-dash-circle me-1"></i>
+                      N/A
+                    </span>
+                  </td>
+                  <td class="driver-license d-none d-lg-table-cell">
+                    <span
+                      *ngIf="driver.licenseNumber"
+                      class="badge bg-light text-dark"
+                    >
+                      <i class="bi bi-card-text me-1"></i>
+                      {{ driver.licenseNumber }}
+                    </span>
+                    <span *ngIf="!driver.licenseNumber" class="text-muted">
+                      <i class="bi bi-dash-circle me-1"></i>
+                      N/A
+                    </span>
+                  </td>
+                  <td class="driver-status d-none d-md-table-cell">
+                    <span
+                      class="status-badge"
+                      [ngClass]="
+                        driver.isAvailable ? 'available' : 'unavailable'
+                      "
+                    >
+                      <i
+                        class="bi"
+                        [ngClass]="
+                          driver.isAvailable
+                            ? 'bi-check-circle-fill'
+                            : 'bi-x-circle-fill'
+                        "
+                      ></i>
+                      {{
+                        driver.isAvailable
+                          ? ("admin.drivers.available" | translate)
+                          : ("admin.drivers.unavailable" | translate)
+                      }}
+                    </span>
+                  </td>
+                  <td class="driver-actions text-end">
+                    <div class="btn-group" role="group">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        (click)="viewDriverDetails(driver.id)"
+                      >
+                        <i class="bi bi-eye"></i>
+                        <span class="d-none d-sm-inline">{{
+                          "admin.common.view" | translate
+                        }}</span>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger"
+                        (click)="deleteDriver(driver.id)"
+                      >
+                        <i class="bi bi-trash"></i>
+                        <span class="d-none d-sm-inline">{{
+                          "admin.common.delete" | translate
+                        }}</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div
+              class="d-flex justify-content-between align-items-center p-3 border-top bg-light"
+            >
+              <div>
+                <span class="text-muted">
+                  {{ "admin.common.showing" | translate }}
+                  {{ (currentPage - 1) * itemsPerPage + 1 }} -
+                  {{
+                    Math.min(currentPage * itemsPerPage, filteredDrivers.length)
+                  }}
+                  {{ "admin.common.of" | translate }}
+                  {{ filteredDrivers.length }}
+                  {{ "admin.drivers.drivers" | translate }}
+                </span>
+              </div>
+              <nav aria-label="Drivers pagination" *ngIf="totalPages > 1">
+                <ul class="pagination mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      (click)="goToPage(currentPage - 1)"
+                    >
+                      <span aria-hidden="true"
+                        ><i class="bi bi-chevron-left"></i
+                      ></span>
+                    </a>
+                  </li>
+                  <li
+                    class="page-item d-none d-sm-block"
+                    *ngFor="let page of pages"
+                    [class.active]="currentPage === page"
+                  >
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      (click)="goToPage(page)"
+                      >{{ page }}</a
+                    >
+                  </li>
+                  <li class="page-item d-block d-sm-none">
+                    <span class="page-link border-0 bg-transparent"
+                      >{{ currentPage }} / {{ totalPages }}</span
+                    >
+                  </li>
+                  <li
+                    class="page-item"
+                    [class.disabled]="currentPage === totalPages"
+                  >
+                    <a
+                      class="page-link"
+                      href="javascript:void(0)"
+                      (click)="goToPage(currentPage + 1)"
+                    >
+                      <span aria-hidden="true"
+                        ><i class="bi bi-chevron-right"></i
+                      ></span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Driver Modal -->
+  <div
+    class="modal fade"
+    id="addDriverModal"
+    tabindex="-1"
+    aria-labelledby="addDriverModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDriverModalLabel">
+            <i class="bi bi-person-plus-fill me-2 text-primary"></i>
+            {{ "admin.drivers.add_driver" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            id="closeAddDriverModal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <app-driver-create
+            (driverCreated)="onDriverCreated($event)"
+          ></app-driver-create>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

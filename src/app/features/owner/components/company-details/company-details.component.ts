@@ -20,6 +20,13 @@ export class CompanyDetailsComponent implements OnInit {
   loading = true;
   error = false;
 
+  // Make CompanyStatus accessible in the template
+  CompanyStatus = CompanyStatus;
+
+  // Properties to store document information
+  hasTaxDocument = false;
+  hasRejectionReason = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -68,6 +75,13 @@ export class CompanyDetailsComponent implements OnInit {
 
           this.company = companyData as Company;
           console.log('Final company data:', this.company);
+
+          // Check if the company has registration documents
+          this.checkForDocuments();
+
+          // Ensure statistics are available or default to zeros
+          this.ensureStatistics();
+
           this.loading = false;
         },
         error: (error) => {
@@ -80,6 +94,78 @@ export class CompanyDetailsComponent implements OnInit {
         },
       });
     }
+  }
+
+  /**
+   * Check if company has any documents (tax docs, etc.)
+   */
+  checkForDocuments(): void {
+    if (!this.company) return;
+
+    // Check for tax document URL
+    this.hasTaxDocument = !!(
+      this.company.taxDocumentUrl && this.company.taxDocumentUrl.trim() !== ''
+    );
+
+    // Check for rejection reason if status is rejected
+    if (
+      (typeof this.company.status === 'number' && this.company.status === 2) ||
+      this.company.status === CompanyStatus.Rejected
+    ) {
+      this.hasRejectionReason = !!(
+        this.company.rejectionReason &&
+        this.company.rejectionReason.trim() !== ''
+      );
+    }
+  }
+
+  /**
+   * Ensure company has statistics object and is properly initialized based on status
+   */
+  ensureStatistics(): void {
+    if (!this.company) return;
+
+    // If company statistics don't exist, create them with zero values
+    if (!this.company.statistics) {
+      this.company.statistics = {
+        totalAdmins: 0,
+        totalDrivers: 0,
+        totalBuses: 0,
+        totalRoutes: 0,
+        totalFeedbacks: 0,
+      };
+    }
+
+    // If company is in pending or rejected state, ensure all statistics are set to zero
+    if (
+      (typeof this.company.status === 'number' &&
+        (this.company.status === 0 || this.company.status === 2)) ||
+      this.company.status === CompanyStatus.Pending ||
+      this.company.status === CompanyStatus.Rejected
+    ) {
+      this.company.statistics.totalAdmins = 0;
+      this.company.statistics.totalDrivers = 0;
+      this.company.statistics.totalBuses = 0;
+      this.company.statistics.totalRoutes = 0;
+      this.company.statistics.totalFeedbacks = 0;
+    }
+  }
+
+  /**
+   * Get the document URL with proper formatting for display
+   */
+  getDocumentUrl(url: string): string {
+    if (!url) return '';
+
+    // If URL already has http/https, return as is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+
+    // If URL is relative (like the one in your example: "/uploads/documents/..."),
+    // add the API base URL
+    const baseUrl = this.companyService.getBaseUrl();
+    return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
   }
 
   /**
@@ -168,6 +254,17 @@ export class CompanyDetailsComponent implements OnInit {
     }
 
     return statusKey;
+  }
+
+  /**
+   * Check if the company status is pending (safely handles both number and enum types)
+   */
+  isPendingStatus(status: CompanyStatus | number): boolean {
+    if (typeof status === 'number') {
+      return status === 0; // 0 is the numeric code for pending
+    } else {
+      return status === CompanyStatus.Pending;
+    }
   }
 
   deleteCompany(companyId: number): void {
