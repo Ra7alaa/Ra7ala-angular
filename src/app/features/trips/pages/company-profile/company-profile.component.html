@@ -1,0 +1,139 @@
+<div class="container py-5">
+  <!-- Loading State -->
+  <div *ngIf="!company && !error" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Company Profile -->
+  <div *ngIf="company" class="row">
+    <!-- Company Info -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-4">
+            <img [src]="company.logoUrl || 'assets/images/default-company.png'" alt="Company Logo"
+              class="company-logo me-3" width="100">
+            <div>
+              <h1 class="h3 mb-2">{{ company.name }}</h1>
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <ng-container *ngFor="let star of getRatingArray()">
+                    <i [class]="'bi ' + getStarClass(star)"></i>
+                  </ng-container>
+                </div>
+                <span class="text-muted">
+                  {{ company.averageRating | number:'1.1-1' }}/5
+                  ({{ company.totalRatings }} {{ 'reviews' | translate }})
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h5>{{ 'about_company' | translate }}</h5>
+            <p>{{ company.description }}</p>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-geo-alt text-primary me-2"></i>
+                <span>{{ company.address }}</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-telephone text-primary me-2"></i>
+                <span>{{ company.phone }}</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-envelope text-primary me-2"></i>
+                <span>{{ company.email }}</span>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="company.website">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-globe text-primary me-2"></i>
+                <a [href]="company.website" target="_blank" class="text-decoration-none">{{ company.website }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Form -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-4">{{ 'leave_feedback' | translate }}</h5>
+
+          <!-- Error Message -->
+          <div *ngIf="error" class="alert alert-danger mb-3">
+            {{ error }}
+          </div>
+
+          <!-- Success Message -->
+          <div *ngIf="submitSuccess" class="alert alert-success mb-3">
+            {{ 'feedback_submitted' | translate }}
+          </div>
+
+          <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+            <!-- Star Rating -->
+            <div class="mb-4">
+              <label class="form-label d-block" id="rating-label" for="star-rating-group">{{ 'rating' | translate
+                }}</label>
+              <div class="star-rating">
+                <div class="d-flex gap-2" id="star-rating-group" role="group" aria-labelledby="rating-label">
+                  <ng-container *ngFor="let star of getRatingArray()">
+                    <button type="button" class="btn btn-outline-warning border-0"
+                      [class.active]="star <= (feedbackForm.get('rating')?.value || 0)" (click)="setRating(star)"
+                      [attr.aria-label]="'Rate ' + star + ' stars'">
+                      <i [class]="'bi ' + getFeedbackStarClass(star)"></i>
+                    </button>
+                  </ng-container>
+                </div>
+              </div>
+              <div *ngIf="feedbackForm.get('rating')?.invalid && feedbackForm.get('rating')?.touched"
+                class="text-danger small mt-1">
+                {{ 'rating_required' | translate }}
+              </div>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-3">
+              <label class="form-label" for="comment-input">{{ 'comment' | translate }}</label>
+              <textarea id="comment-input" class="form-control" rows="4" formControlName="comment"
+                [placeholder]="'comment_placeholder' | translate">
+                            </textarea>
+              <div *ngIf="feedbackForm.get('comment')?.invalid && feedbackForm.get('comment')?.touched"
+                class="text-danger small mt-1">
+                <span *ngIf="feedbackForm.get('comment')?.errors?.['required']">
+                  {{ 'comment_required' | translate }}
+                </span>
+                <span *ngIf="feedbackForm.get('comment')?.errors?.['minlength']">
+                  {{ 'comment_min_length' | translate }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100" [disabled]="feedbackForm.invalid || isSubmitting">
+              <span class="spinner-border spinner-border-sm me-2" *ngIf="isSubmitting"></span>
+              {{ 'submit_feedback' | translate }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

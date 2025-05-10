@@ -11,10 +11,17 @@ const routes: Routes = [
     component: TripsListComponent,
   },
   {
+    path: 'company/:id',
+    loadComponent: () =>
+      import('./pages/company-profile/company-profile.component').then(
+        (m) => m.CompanyProfileComponent
+      ),
+  },
+  {
     path: ':id',
     component: TripDetailsComponent,
-    canActivate: [roleGuard([UserRole.Passenger])], // Using roleGuard instead of authGuard
-  },
+    canActivate: [roleGuard([UserRole.Passenger])],
+  }
 ];
 
 @NgModule({

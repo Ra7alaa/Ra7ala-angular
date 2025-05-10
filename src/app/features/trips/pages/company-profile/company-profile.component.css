@@ -1,0 +1,81 @@
+.company-logo {
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.star-rating .btn-group {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.star-rating .btn {
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.star-rating .btn-outline-warning {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+
+.star-rating .btn-outline-warning:hover {
+    background-color: #fff3cd;
+}
+
+.star-rating .btn-check:checked + .btn-outline-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.star-rating .bi-star-fill {
+    font-size: 1.25rem;
+}
+
+.star-rating button {
+    padding: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.star-rating button:hover {
+    transform: scale(1.1);
+}
+
+.star-rating button.active {
+    color: #ffc107;
+    background-color: transparent;
+}
+
+.star-rating i {
+    font-size: 1.5rem;
+}
+
+.star-rating .bi-star-fill {
+    color: #ffc107;
+}
+
+.star-rating .bi-star {
+    color: #dee2e6;
+}
+
+/* Make text areas resize only vertically */
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Hover effect for website link */
+.card-body a:hover {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .company-logo {
+        width: 80px;
+    }
+}
