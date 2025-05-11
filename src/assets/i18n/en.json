@@ -1101,5 +1101,21 @@
   },
   "shared": {
     "loading": "Loading..."
+  },
+  "company_profile": {
+    "about_company": "About Company",
+    "company_info": "Company Information",
+    "contact_info": "Contact Information",
+    "reviews": "Customer Reviews",
+    "leave_feedback": "Leave Feedback",
+    "rating": "Rating",
+    "rating_required": "Please select a rating",
+    "comment": "Comment",
+    "comment_placeholder": "Share your experience with this company...",
+    "comment_required": "Please enter your comment",
+    "comment_min_length": "Comment must be at least 10 characters long",
+    "submit_feedback": "Submit Feedback",
+    "feedback_submitted": "Thank you for your feedback!",
+    "based_on_reviews": "Based on {{count}} reviews"
   }
 }

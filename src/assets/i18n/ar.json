@@ -1082,5 +1082,21 @@
   },
   "shared": {
     "loading": "جاري التحميل..."
+  },
+  "company_profile": {
+    "about_company": "عن الشركة",
+    "company_info": "معلومات الشركة",
+    "contact_info": "معلومات الاتصال",
+    "reviews": "تقييمات العملاء",
+    "leave_feedback": "اترك تقييمك",
+    "rating": "التقييم",
+    "rating_required": "الرجاء اختيار تقييم",
+    "comment": "التعليق",
+    "comment_placeholder": "شارك تجربتك مع هذه الشركة...",
+    "comment_required": "الرجاء إدخال تعليقك",
+    "comment_min_length": "يجب أن يكون التعليق 10 أحرف على الأقل",
+    "submit_feedback": "إرسال التقييم",
+    "feedback_submitted": "شكراً على تقييمك!",
+    "based_on_reviews": "بناءً على {{count}} تقييم"
   }
 }
