@@ -16,7 +16,7 @@ export class TranslationService {
   public translations$: Observable<TranslationDictionary> =
     this.translationsSubject.asObservable();
 
-  private translationCache: { [langCode: string]: TranslationDictionary } = {};
+  private translationCache: Record<string, TranslationDictionary> = {};
 
   constructor(
     private http: HttpClient,
@@ -93,7 +93,7 @@ export class TranslationService {
 
     // Handle nested keys (e.g., 'navigation.home')
     const segments = key.split('.');
-    let value: any = translations;
+    let value: TranslationDictionary | string = translations;
 
     for (const segment of segments) {
       if (!value || typeof value !== 'object') {
@@ -108,7 +108,10 @@ export class TranslationService {
   /**
    * Helper method to safely get a value by key
    */
-  private getValueByKey(obj: any, key: string): string | undefined {
+  private getValueByKey(
+    obj: TranslationDictionary,
+    key: string
+  ): string | undefined {
     if (!obj || typeof obj !== 'object') return undefined;
     return typeof obj[key] === 'string' ? (obj[key] as string) : undefined;
   }

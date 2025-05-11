@@ -18,10 +18,17 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'company/:id',
+    loadComponent: () =>
+      import('./pages/company-profile/company-profile.component').then(
+        (m) => m.CompanyProfileComponent
+      ),
+  },
+  {
     path: ':id',
     component: TripDetailsComponent,
     canActivate: [roleGuard([UserRole.Passenger])],
-  }
+  },
 ];
 
 @NgModule({

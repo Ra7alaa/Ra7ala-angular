@@ -8,14 +8,19 @@
     "common_trips": "الرحلات الشائعة"
   },
   "search": {
-    "title": "إلى أين تريد السفر؟",
-    "from_to": "من - إلى",
-    "trip_type": {
-      "return": "ذهاب وعودة",
-      "one_way": "ذهاب فقط",
-      "multi_city": "متعدد المدن"
-    },
-    "date_range": "تاريخ الذهاب - العودة",
+    "title": "ابحث عن رحلتك",
+    "search_placeholder": "ابحث عن رحلتك",
+    "departure": "من",
+    "arrival": "الى",
+    "date": "تاريخ",
+    "time": "وقت",
+    "search": "ابحث",
+    "departure_date": "تاريخ الذهاب",
+    "arrival_date": "تاريخ العودة",
+    "Start_city": "مدينة المغادرة",
+    "End_city": "مدينة الوصول",
+    "Required_seats": "عدد المقاعد المطلوبة",
+    "from_to": "من - الى",
     "show_results": "عرض النتائج"
   },
   "home": {
@@ -85,6 +90,8 @@
       "description": "الوصف",
       "description_placeholder": "أدخل وصف الشركة",
       "logo": "شعار الشركة",
+      "tax_document": "المستند الضريبي",
+      "tax_document_hint": "(يرجى تحميل مستند ضريبي صالح)",
       "address": "العنوان",
       "address_placeholder": "أدخل عنوان الشركة",
       "phone": "رقم الهاتف",
@@ -109,6 +116,10 @@
       "login": "تسجيل الدخول"
     }
   },
+  "available_trips" : "الرحلات المتاحة",
+  "no_trips_found": "لا توجد رحلات متاحة",
+  "no_trips_found_description": "عذرًا، لا توجد رحلات متاحة في هذا التاريخ. يرجى التحقق من تاريخ آخر.",
+  "try_different_search": "حاول البحث عن تاريخ مختلف" ,
   "user_menu": {
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",

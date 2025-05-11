@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   activeRoutes = 0;
   totalStations = 0;
   totalRevenue = '$12,865';
+  isLoading = true; // Track loading state
 
   // Trip data
   totalTrips = 4; // Static count
@@ -177,6 +178,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             // Convertir los datos mock a formato Trip para mantener la estructura
             this.createMockTripsIfNeeded();
           }
+          this.isLoading = false; // Set loading to false after data is loaded
         },
         (error) => {
           console.error('Error loading dashboard data:', error);
@@ -184,6 +186,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.totalStations = 0;
           // Usar datos de muestra en caso de error
           this.createMockTripsIfNeeded();
+          this.isLoading = false; // Set loading to false in case of error
         }
       )
     );

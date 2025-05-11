@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<div *ngIf="isLoading" class="loading-container">
+  <div class="loading-content">
+    <div class="spinner"></div>
+    <h2>Ra7ala</h2>
+    <p>Loading...</p>
+  </div>
+</div>
+
+<router-outlet *ngIf="!isLoading"></router-outlet>

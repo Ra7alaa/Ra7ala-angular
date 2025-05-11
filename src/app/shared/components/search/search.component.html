@@ -9,7 +9,7 @@
         <!-- Start City -->
         <div class="form-group flex-fill">
           <label class="form-label" for="startCity">
-            <i class="bi bi-geo-alt-fill me-1"></i> {{ "Start_city" | translate }}
+            <i class="bi bi-geo-alt-fill me-1"></i> {{ "search.Start_city" | translate }}
           </label>
           <select id="startCity" formControlName="startCityId" class="form-select">
             <option value="">{{ "" | translate }}</option>
@@ -20,7 +20,7 @@
         <!-- End City -->
         <div class="form-group flex-fill">
           <label class="form-label" for="endCity">
-            <i class="bi bi-geo-alt-fill me-1"></i> {{ "End_city" | translate }}
+            <i class="bi bi-geo-alt-fill me-1"></i> {{ "search.End_city" | translate }}
           </label>
           <select id="endCity" formControlName="endCityId" class="form-select">
             <option value="">{{ "" | translate }}</option>
@@ -31,7 +31,7 @@
         <!-- Departure Date -->
         <div class="form-group flex-fill">
           <label class="form-label" for="departureDate">
-            <i class="bi bi-calendar-event me-1"></i> {{ "Departure_date" | translate }}
+            <i class="bi bi-calendar-event me-1"></i> {{ "search.departure_date" | translate }}
           </label>
           <p-calendar id="departureDate" formControlName="departureDate" [showIcon]="true" [minDate]="minDate"
             dateFormat="yy-mm-dd" [readonlyInput]="true" styleClass="w-100"></p-calendar>
@@ -40,7 +40,7 @@
         <!-- Required Seats -->
         <div class="form-group flex-fill">
           <label class="form-label" for="requiredSeats">
-            <i class="bi bi-person-plus-fill me-1"></i> {{ "Required_seats" | translate }}
+            <i class="bi bi-person-plus-fill me-1"></i> {{ "search.Required_seats" | translate }}
           </label>
           <p-inputNumber id="requiredSeats" formControlName="requiredSeats" [showButtons]="true" [min]="1" [max]="10"
             buttonLayout="horizontal" spinnerMode="horizontal" [step]="1" inputId="horizontal" styleClass="w-100">
@@ -52,7 +52,7 @@
       <div class="d-flex justify-content-center">
         <button type="submit" class="search-btn" [disabled]="searchForm.invalid || isLoading">
           <i class="bi bi-search"></i>
-          <span *ngIf="!isLoading">{{ "search " | translate }}</span>
+          <span *ngIf="!isLoading">{{ "search.search" | translate }}</span>
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
         </button>
       </div>
