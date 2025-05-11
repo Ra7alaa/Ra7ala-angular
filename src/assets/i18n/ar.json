@@ -116,10 +116,10 @@
       "login": "تسجيل الدخول"
     }
   },
-  "available_trips" : "الرحلات المتاحة",
+  "available_trips": "الرحلات المتاحة",
   "no_trips_found": "لا توجد رحلات متاحة",
   "no_trips_found_description": "عذرًا، لا توجد رحلات متاحة في هذا التاريخ. يرجى التحقق من تاريخ آخر.",
-  "try_different_search": "حاول البحث عن تاريخ مختلف" ,
+  "try_different_search": "حاول البحث عن تاريخ مختلف",
   "user_menu": {
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
@@ -1088,6 +1088,7 @@
     "company_info": "معلومات الشركة",
     "contact_info": "معلومات الاتصال",
     "reviews": "تقييمات العملاء",
+    "reviews_count": "تقييمات",
     "leave_feedback": "اترك تقييمك",
     "rating": "التقييم",
     "rating_required": "الرجاء اختيار تقييم",

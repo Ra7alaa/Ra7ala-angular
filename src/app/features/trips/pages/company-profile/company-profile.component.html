@@ -12,71 +12,147 @@
   </div>
 
   <!-- Company Profile -->
-  <div *ngIf="company" class="row">
+  <div *ngIf="company" class="row g-4">
     <!-- Company Info -->
     <div class="col-lg-8">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <div class="d-flex align-items-center mb-4">
+      <div class="card border-0 shadow-sm overflow-hidden">
+        <div
+          class="p-4 border-bottom"
+          style="background-color: var(--surface-color)"
+        >
+          <div class="d-flex align-items-center">
             <img
               [src]="getFullLogoUrl(company.logoUrl)"
               alt="{{ company.name }}"
-              class="company-logo me-3 rounded"
-              width="100"
-              height="100"
+              class="company-logo me-4 rounded-circle shadow-sm border border-2 border-white"
+              width="120"
+              height="120"
               onerror="this.src='assets/images/default-avatar.svg'"
             />
             <div>
-              <h1 class="h3 mb-2">{{ company.name }}</h1>
-              <div class="d-flex align-items-center">
-                <div class="me-3">
+              <h1 class="h2 mb-2 fw-bold">{{ company.name }}</h1>
+              <div class="d-flex align-items-center mb-2">
+                <div class="stars-container me-3">
                   <ng-container *ngFor="let star of getRatingArray()">
-                    <i [class]="'bi ' + getStarClass(star)"></i>
+                    <i
+                      [class]="'bi ' + getStarClass(star) + ' fs-5'"
+                      style="color: var(--warning-color)"
+                    ></i>
                   </ng-container>
                 </div>
-                <span class="text-muted">
-                  {{ company.averageRating | number : "1.1-1" }}/5 ({{
-                    company.totalRatings
-                  }}
-                  {{ "reviews" | translate }})
+                <span style="color: var(--text-color-secondary)" class="fs-6">
+                  <strong
+                    >{{ company.averageRating | number : "1.1-1" }}/5</strong
+                  >
+                  ({{ company.totalRatings }}
+                  {{ "company_profile.reviews_count" | translate }})
                 </span>
               </div>
             </div>
           </div>
+        </div>
 
+        <div class="card-body p-4">
           <div class="mb-4">
-            <h5>{{ "about_company" | translate }}</h5>
-            <p>{{ company.description }}</p>
+            <h4
+              class="fw-bold mb-3 border-bottom pb-2"
+              style="color: var(--primary-color)"
+            >
+              <i class="bi bi-info-circle me-2"></i>
+              {{ "company_profile.about_company" | translate }}
+            </h4>
+            <p class="mb-4 lead">{{ company.description }}</p>
           </div>
 
+          <h4
+            class="fw-bold mb-3 border-bottom pb-2"
+            style="color: var(--primary-color)"
+          >
+            <i class="bi bi-person-lines-fill me-2"></i>
+            {{ "company_profile.contact_info" | translate }}
+          </h4>
           <div class="row g-3">
             <div class="col-md-6">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-geo-alt text-primary me-2"></i>
-                <span>{{ company.address }}</span>
+              <div
+                class="d-flex align-items-center p-3 rounded"
+                style="background-color: var(--surface-color)"
+              >
+                <i
+                  class="bi bi-geo-alt-fill me-3 fs-4"
+                  style="color: var(--primary-color)"
+                ></i>
+                <div>
+                  <small
+                    style="color: var(--text-color-secondary)"
+                    class="d-block"
+                    >{{ "profile.address" | translate }}</small
+                  >
+                  <span class="fw-medium">{{ company.address }}</span>
+                </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-telephone text-primary me-2"></i>
-                <span>{{ company.phone }}</span>
+              <div
+                class="d-flex align-items-center p-3 rounded"
+                style="background-color: var(--surface-color)"
+              >
+                <i
+                  class="bi bi-telephone-fill me-3 fs-4"
+                  style="color: var(--primary-color)"
+                ></i>
+                <div>
+                  <small
+                    style="color: var(--text-color-secondary)"
+                    class="d-block"
+                    >{{ "profile.phone" | translate }}</small
+                  >
+                  <span class="fw-medium">{{ company.phone }}</span>
+                </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-envelope text-primary me-2"></i>
-                <span>{{ company.email }}</span>
+              <div
+                class="d-flex align-items-center p-3 rounded"
+                style="background-color: var(--surface-color)"
+              >
+                <i
+                  class="bi bi-envelope-fill me-3 fs-4"
+                  style="color: var(--primary-color)"
+                ></i>
+                <div>
+                  <small
+                    style="color: var(--text-color-secondary)"
+                    class="d-block"
+                    >{{ "profile.email" | translate }}</small
+                  >
+                  <span class="fw-medium">{{ company.email }}</span>
+                </div>
               </div>
             </div>
             <div class="col-md-6" *ngIf="company.website">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-globe text-primary me-2"></i>
-                <a
-                  [href]="company.website"
-                  target="_blank"
-                  class="text-decoration-none"
-                  >{{ company.website }}</a
-                >
+              <div
+                class="d-flex align-items-center p-3 rounded"
+                style="background-color: var(--surface-color)"
+              >
+                <i
+                  class="bi bi-globe me-3 fs-4"
+                  style="color: var(--primary-color)"
+                ></i>
+                <div>
+                  <small
+                    style="color: var(--text-color-secondary)"
+                    class="d-block"
+                    >{{ "auth.create_company.website" | translate }}</small
+                  >
+                  <a
+                    [href]="company.website"
+                    target="_blank"
+                    class="text-decoration-none fw-medium"
+                    style="color: var(--primary-color)"
+                  >
+                    {{ company.website }}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -85,11 +161,18 @@
     </div>
 
     <!-- Feedback Form -->
-    <div class="col-lg-4 mt-4 mt-lg-0">
+    <div class="col-lg-4">
       <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title mb-4">{{ "leave_feedback" | translate }}</h5>
-
+        <div
+          class="card-header p-3"
+          style="background-color: var(--primary-color); color: white"
+        >
+          <h5 class="card-title mb-0">
+            <i class="bi bi-chat-square-quote me-2"></i>
+            {{ "company_profile.leave_feedback" | translate }}
+          </h5>
+        </div>
+        <div class="card-body p-4">
           <!-- Error Message -->
           <div *ngIf="error" class="alert alert-danger mb-3">
             {{ error }}
@@ -97,21 +180,25 @@
 
           <!-- Success Message -->
           <div *ngIf="submitSuccess" class="alert alert-success mb-3">
-            {{ "feedback_submitted" | translate }}
+            <i class="bi bi-check-circle me-2"></i>
+            {{ "company_profile.feedback_submitted" | translate }}
           </div>
 
           <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
             <!-- Star Rating -->
             <div class="mb-4">
               <label
-                class="form-label d-block"
+                class="form-label fw-medium"
                 id="rating-label"
                 for="star-rating-group"
-                >{{ "rating" | translate }}</label
+                >{{ "company_profile.rating" | translate }}</label
               >
-              <div class="star-rating">
+              <div
+                class="star-rating text-center p-3 rounded mb-2"
+                style="background-color: var(--surface-color)"
+              >
                 <div
-                  class="d-flex gap-2"
+                  class="d-flex justify-content-center gap-2"
                   id="star-rating-group"
                   role="group"
                   aria-labelledby="rating-label"
@@ -119,14 +206,20 @@
                   <ng-container *ngFor="let star of getRatingArray()">
                     <button
                       type="button"
-                      class="btn btn-outline-warning border-0"
-                      [class.active]="
-                        star <= (feedbackForm.get('rating')?.value || 0)
-                      "
+                      class="btn btn-lg border-0"
+                      style="color: var(--warning-color)"
+                      [ngStyle]="{
+                        'background-color':
+                          star <= (feedbackForm.get('rating')?.value || 0)
+                            ? 'rgba(255, 193, 7, 0.1)'
+                            : 'transparent'
+                      }"
                       (click)="setRating(star)"
                       [attr.aria-label]="'Rate ' + star + ' stars'"
                     >
-                      <i [class]="'bi ' + getFeedbackStarClass(star)"></i>
+                      <i
+                        [class]="'bi ' + getFeedbackStarClass(star) + ' fs-3'"
+                      ></i>
                     </button>
                   </ng-container>
                 </div>
@@ -138,23 +231,25 @@
                 "
                 class="text-danger small mt-1"
               >
-                {{ "rating_required" | translate }}
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                {{ "company_profile.rating_required" | translate }}
               </div>
             </div>
 
             <!-- Comment -->
-            <div class="mb-3">
-              <label class="form-label" for="comment-input">{{
-                "comment" | translate
-              }}</label>
+            <div class="mb-4">
+              <label class="form-label fw-medium" for="comment-input">
+                {{ "company_profile.comment" | translate }}
+              </label>
               <textarea
                 id="comment-input"
-                class="form-control"
+                class="form-control form-control-lg"
                 rows="4"
                 formControlName="comment"
-                [placeholder]="'comment_placeholder' | translate"
-              >
-              </textarea>
+                [placeholder]="
+                  'company_profile.comment_placeholder' | translate
+                "
+              ></textarea>
               <div
                 *ngIf="
                   feedbackForm.get('comment')?.invalid &&
@@ -163,12 +258,14 @@
                 class="text-danger small mt-1"
               >
                 <span *ngIf="feedbackForm.get('comment')?.errors?.['required']">
-                  {{ "comment_required" | translate }}
+                  <i class="bi bi-exclamation-triangle me-1"></i>
+                  {{ "company_profile.comment_required" | translate }}
                 </span>
                 <span
                   *ngIf="feedbackForm.get('comment')?.errors?.['minlength']"
                 >
-                  {{ "comment_min_length" | translate }}
+                  <i class="bi bi-exclamation-triangle me-1"></i>
+                  {{ "company_profile.comment_min_length" | translate }}
                 </span>
               </div>
             </div>
@@ -176,14 +273,16 @@
             <!-- Submit Button -->
             <button
               type="submit"
-              class="btn btn-primary w-100"
+              class="btn btn-lg w-100 d-flex align-items-center justify-content-center"
+              style="background-color: var(--primary-color); color: white"
               [disabled]="feedbackForm.invalid || isSubmitting"
             >
               <span
                 class="spinner-border spinner-border-sm me-2"
                 *ngIf="isSubmitting"
               ></span>
-              {{ "submit_feedback" | translate }}
+              <i class="bi bi-send me-2" *ngIf="!isSubmitting"></i>
+              {{ "company_profile.submit_feedback" | translate }}
             </button>
           </form>
         </div>
