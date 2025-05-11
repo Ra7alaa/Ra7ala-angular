@@ -16,10 +16,7 @@
           <!-- Trip Header -->
           <div class="trip-header">
             <h3 class="route-name">{{ trip.routeName }}</h3>
-            <a
-              [routerLink]="['/company', trip.companyId]"
-              class="company-badge clickable"
-            >
+            <a [routerLink]="['/trips/company', trip.companyId]" class="company-badge clickable">
               <i class="bi bi-building me-1"></i>
               {{ trip.companyName }}
             </a>
@@ -55,17 +52,12 @@
                   {{ "trips.stations" | translate }}
                 </div>
                 <div class="stations-path">
-                  <ng-container
-                    *ngFor="
+                  <ng-container *ngFor="
                       let station of trip.tripStations;
                       let last = last;
                       let first = first
-                    "
-                  >
-                    <div
-                      class="station-point"
-                      [ngClass]="{ first: first, last: last }"
-                    >
+                    ">
+                    <div class="station-point" [ngClass]="{ first: first, last: last }">
                       <div class="station-marker">
                         <i class="bi bi-geo-alt-fill"></i>
                       </div>
@@ -87,9 +79,7 @@
                     <div class="detail-label">{{ "driver" | translate }}</div>
                     <div class="detail-value">
                       {{ trip.driverName }}
-                      <span *ngIf="trip.driverPhoneNumber"
-                        >- {{ trip.driverPhoneNumber }}</span
-                      >
+                      <span *ngIf="trip.driverPhoneNumber">- {{ trip.driverPhoneNumber }}</span>
                     </div>
                   </div>
                 </div>
@@ -111,18 +101,12 @@
                 <div class="price">
                   {{ trip.price | currency : "EGP" : "symbol" : "1.0-0" }}
                 </div>
-                <div
-                  class="seats-info"
-                  [ngClass]="{ 'seats-low': trip.availableSeats < 5 }"
-                >
+                <div class="seats-info" [ngClass]="{ 'seats-low': trip.availableSeats < 5 }">
                   <i class="bi bi-person-seat"></i>
                   {{ "available_seats" | translate }}: {{ trip.availableSeats }}
                 </div>
-                <button
-                  class="book-now-btn"
-                  [disabled]="trip.availableSeats === 0"
-                  [routerLink]="['/booking', trip.id]"
-                >
+                <button class="book-now-btn" [disabled]="trip.availableSeats === 0"
+                  [routerLink]="['/booking', trip.id]">
                   <i class="bi bi-ticket-perforated"></i>
                   {{ "book_now" | translate }}
                 </button>

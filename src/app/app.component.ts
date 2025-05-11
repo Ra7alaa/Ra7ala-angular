@@ -4,6 +4,7 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject, firstValueFrom } from 'rxjs';
 import { LayoutModule } from './layout/layout.module';
+import { CommonModule } from '@angular/common';
 
 // Import our core services
 import { ThemeService } from './core/themes/theme.service';
@@ -14,12 +15,13 @@ import { AuthService } from './features/auth/services/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [GridModule, PagerModule, RouterOutlet, LayoutModule],
+  imports: [GridModule, PagerModule, RouterOutlet, LayoutModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Ra7ala';
+  isLoading = true;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -49,6 +51,27 @@ export class AppComponent implements OnInit, OnDestroy {
           console.log('On 403 error page, checking auth state...');
           this.tryRecoverFromError();
         }
+      });
+
+    // Monitor translation loading
+    this.translationService.translations$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (translations) => {
+          // Check if translations object is not empty
+          if (translations && Object.keys(translations).length > 0) {
+            // Give a small delay to make sure UI gets translations
+            setTimeout(() => {
+              this.isLoading = false;
+              console.log('Translations loaded successfully');
+            }, 500);
+          }
+        },
+        error: () => {
+          // Even if there's an error, we should eventually hide the loading screen
+          this.isLoading = false;
+          console.error('Error loading translations');
+        },
       });
   }
 
@@ -81,7 +104,9 @@ export class AppComponent implements OnInit, OnDestroy {
         // User is authenticated - we don't need to read from localStorage anymore
         // as the BehaviorSubject in AuthService will hold the current user
         console.log(
-          `User authenticated as: ${user.fullName || user.username || 'Unknown'}, role: ${user.userType || 'Unknown'}`
+          `User authenticated as: ${
+            user.fullName || user.username || 'Unknown'
+          }, role: ${user.userType || 'Unknown'}`
         );
         console.log('Full user object:', user); // Log the complete user object to debug
       }
