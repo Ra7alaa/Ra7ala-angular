@@ -1,29 +1,71 @@
 <div class="register-page" appRtl>
-  <div class="register-container">
-    <div class="register-card card shadow">
-      <div class="card-body">
+  <div class="register-container" [class.rtl]="currentLanguage.rtl">
+    <div class="registration-card">
+      <!-- Card Header with Logo -->
+      <div class="card-header">
         <h1 class="logo-text">Ra7ala</h1>
-        <h2 class="text-center mb-4">
+        <p class="card-subtitle">
           {{ "auth.create_company.title" | translate }}
-        </h2>
+        </p>
+      </div>
 
-        <form
-          [formGroup]="companyForm"
-          (ngSubmit)="onSubmit()"
-          class="register-form"
-        >
-          <!-- Company Information Section -->
-          <div class="section-title mb-3 text-start">
-            {{ "auth.create_company.company_info" | translate }}
+      <div class="card-body">
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+          <div class="progress-step active">
+            <span>1</span>
+            <span class="progress-label">{{
+              "auth.create_company.company_info" | translate
+            }}</span>
           </div>
+          <div class="progress-step">
+            <span>2</span>
+            <span class="progress-label">{{
+              "auth.create_company.admin_info" | translate
+            }}</span>
+          </div>
+        </div>
 
-          <!-- Company Name -->
-          <div class="mb-3">
-            <label for="name" class="form-label"
-              >{{ "auth.create_company.name" | translate }} *</label
-            >
-            <div class="input-wrapper">
-              <i class="bi bi-building icon"></i>
+        <!-- Form Tabs -->
+        <div class="form-tabs" role="tablist">
+          <button
+            class="form-tab active"
+            id="company-tab"
+            (click)="switchTab('company')"
+            (keydown.enter)="switchTab('company')"
+            (keydown.space)="switchTab('company')"
+            role="tab"
+            aria-selected="true"
+            aria-controls="company-section"
+            tabindex="0"
+          >
+            {{ "auth.create_company.company_info" | translate }}
+          </button>
+          <button
+            class="form-tab"
+            id="admin-tab"
+            (click)="switchTab('admin')"
+            (keydown.enter)="switchTab('admin')"
+            (keydown.space)="switchTab('admin')"
+            role="tab"
+            aria-selected="false"
+            aria-controls="admin-section"
+            tabindex="0"
+          >
+            {{ "auth.create_company.admin_info" | translate }}
+          </button>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+          <!-- Company Information Section -->
+          <div class="form-section active" id="company-section">
+            <!-- Company Name -->
+            <div class="form-group">
+              <label for="name" class="form-label"
+                >{{ "auth.create_company.name" | translate }} *</label
+              >
+              <i class="bi bi-building form-icon"></i>
               <input
                 type="text"
                 id="name"
@@ -38,125 +80,140 @@
                     companyForm.get('name')?.touched
                 }"
               />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  companyForm.get('name')?.invalid &&
+                  companyForm.get('name')?.touched
+                "
+              >
+                <span *ngIf="companyForm.get('name')?.errors?.['required']">
+                  {{ "auth.create_company.name_required" | translate }}
+                </span>
+                <span *ngIf="companyForm.get('name')?.errors?.['minlength']">
+                  Name must be at least 2 characters long
+                </span>
+                <span *ngIf="companyForm.get('name')?.errors?.['serverError']">
+                  {{ companyForm.get('name')?.errors?.['serverError'] }}
+                </span>
+              </div>
             </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                companyForm.get('name')?.invalid &&
-                companyForm.get('name')?.touched
-              "
-            >
-              <span *ngIf="companyForm.get('name')?.errors?.['required']">
-                {{ "auth.create_company.name_required" | translate }}
-              </span>
-              <span *ngIf="companyForm.get('name')?.errors?.['minlength']">
-                Name must be at least 2 characters long
-              </span>
-              <span *ngIf="companyForm.get('name')?.errors?.['serverError']">
-                {{ companyForm.get('name')?.errors?.['serverError'] }}
-              </span>
-            </div>
-          </div>
 
-          <!-- Company Description -->
-          <div class="mb-3">
-            <label for="description" class="form-label"
-              >{{ "auth.create_company.description" | translate }} *</label
-            >
-            <textarea
-              id="description"
-              formControlName="description"
-              class="form-control"
-              [placeholder]="
-                'auth.create_company.description_placeholder' | translate
-              "
-              rows="3"
-              [ngClass]="{
-                'is-invalid':
-                  companyForm.get('description')?.invalid &&
-                  companyForm.get('description')?.touched
-              }"
-            ></textarea>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                companyForm.get('description')?.invalid &&
-                companyForm.get('description')?.touched
-              "
-            >
-              <span
-                *ngIf="companyForm.get('description')?.errors?.['required']"
+            <!-- Company Description -->
+            <div class="form-group">
+              <label for="description" class="form-label"
+                >{{ "auth.create_company.description" | translate }} *</label
               >
-                Description is required
-              </span>
-              <span
-                *ngIf="companyForm.get('description')?.errors?.['minlength']"
-              >
-                Description must be at least 5 characters long
-              </span>
-              <span
-                *ngIf="companyForm.get('description')?.errors?.['serverError']"
-              >
-                {{ companyForm.get('description')?.errors?.['serverError'] }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Company Logo -->
-          <div class="mb-3">
-            <label for="logo" class="form-label">{{
-              "auth.create_company.logo" | translate
-            }}</label>
-            <div class="input-wrapper">
-              <input
-                type="file"
-                id="logo"
+              <textarea
+                id="description"
+                formControlName="description"
                 class="form-control"
-                accept="image/*"
-                (change)="onLogoChange($event)"
-              />
-            </div>
-          </div>
-
-          <!-- Tax Document -->
-          <div class="mb-3">
-            <label for="taxDocument" class="form-label"
-              >{{ "auth.create_company.tax_document" | translate }} *</label
-            >
-            <div class="input-wrapper">
-              <input
-                type="file"
-                id="taxDocument"
-                class="form-control"
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                (change)="onTaxDocumentChange($event)"
+                [placeholder]="
+                  'auth.create_company.description_placeholder' | translate
+                "
+                rows="3"
                 [ngClass]="{
                   'is-invalid':
-                    !taxDocumentFile &&
-                    errorMessage === 'Tax document is required'
+                    companyForm.get('description')?.invalid &&
+                    companyForm.get('description')?.touched
                 }"
-              />
+              ></textarea>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  companyForm.get('description')?.invalid &&
+                  companyForm.get('description')?.touched
+                "
+              >
+                <span
+                  *ngIf="companyForm.get('description')?.errors?.['required']"
+                >
+                  Description is required
+                </span>
+                <span
+                  *ngIf="companyForm.get('description')?.errors?.['minlength']"
+                >
+                  Description must be at least 5 characters long
+                </span>
+                <span
+                  *ngIf="companyForm.get('description')?.errors?.['serverError']"
+                >
+                  {{ companyForm.get('description')?.errors?.['serverError'] }}
+                </span>
+              </div>
             </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                !taxDocumentFile && errorMessage === 'Tax document is required'
-              "
-            >
-              Tax document is required
-            </div>
-            <small class="form-text text-muted">
-              {{ "auth.create_company.tax_document_hint" | translate }}
-            </small>
-          </div>
 
-          <!-- Company Address -->
-          <div class="mb-3">
-            <label for="address" class="form-label"
-              >{{ "auth.create_company.address" | translate }} *</label
-            >
-            <div class="input-wrapper">
-              <i class="bi bi-geo-alt icon"></i>
+            <!-- Company Logo -->
+            <div class="form-group">
+              <label for="logo" class="form-label">{{
+                "auth.create_company.logo" | translate
+              }}</label>
+              <div class="file-upload" [class.has-file]="logoFile">
+                <input
+                  type="file"
+                  id="logo"
+                  accept="image/*"
+                  (change)="onLogoChange($event)"
+                />
+                <div class="file-upload-label">
+                  <i class="bi bi-cloud-upload"></i>
+                  <span>{{
+                    logoFile
+                      ? logoFile.name
+                      : ("auth.create_company.select_logo" | translate)
+                  }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tax Document -->
+            <div class="form-group">
+              <label for="taxDocument" class="form-label"
+                >{{ "auth.create_company.tax_document" | translate }} *</label
+              >
+              <div
+                class="file-upload"
+                [class.has-file]="taxDocumentFile"
+                [class.is-invalid]="
+                  !taxDocumentFile &&
+                  errorMessage === 'Tax document is required'
+                "
+              >
+                <input
+                  type="file"
+                  id="taxDocument"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  (change)="onTaxDocumentChange($event)"
+                />
+                <div class="file-upload-label">
+                  <i class="bi bi-file-earmark-text"></i>
+                  <span>{{
+                    taxDocumentFile
+                      ? taxDocumentFile.name
+                      : ("auth.create_company.select_tax_document" | translate)
+                  }}</span>
+                </div>
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  !taxDocumentFile &&
+                  errorMessage === 'Tax document is required'
+                "
+              >
+                Tax document is required
+              </div>
+              <div class="form-hint">
+                {{ "auth.create_company.tax_document_hint" | translate }}
+              </div>
+            </div>
+
+            <!-- Company Address -->
+            <div class="form-group">
+              <label for="address" class="form-label"
+                >{{ "auth.create_company.address" | translate }} *</label
+              >
+              <i class="bi bi-geo-alt form-icon"></i>
               <input
                 type="text"
                 id="address"
@@ -171,128 +228,142 @@
                     companyForm.get('address')?.touched
                 }"
               />
-            </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                companyForm.get('address')?.invalid &&
-                companyForm.get('address')?.touched
-              "
-            >
-              <span *ngIf="companyForm.get('address')?.errors?.['required']">
-                Address is required
-              </span>
-              <span *ngIf="companyForm.get('address')?.errors?.['minlength']">
-                Address must be at least 5 characters long
-              </span>
-              <span *ngIf="companyForm.get('address')?.errors?.['serverError']">
-                {{ companyForm.get('address')?.errors?.['serverError'] }}
-              </span>
-            </div>
-          </div>
-
-          <div class="row" [class.flex-row-reverse]="currentLanguage.rtl">
-            <!-- Company Phone -->
-            <div class="col-md-6 mb-3">
-              <label for="phoneNumber" class="form-label"
-                >{{ "auth.create_company.phone" | translate }} *</label
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  companyForm.get('address')?.invalid &&
+                  companyForm.get('address')?.touched
+                "
               >
-              <div class="input-wrapper">
-                <i class="bi bi-telephone icon"></i>
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  formControlName="phoneNumber"
-                  class="form-control"
-                  placeholder="+201234567890"
-                  [ngClass]="{
-                    'is-invalid':
+                <span *ngIf="companyForm.get('address')?.errors?.['required']">
+                  Address is required
+                </span>
+                <span *ngIf="companyForm.get('address')?.errors?.['minlength']">
+                  Address must be at least 5 characters long
+                </span>
+                <span
+                  *ngIf="companyForm.get('address')?.errors?.['serverError']"
+                >
+                  {{ companyForm.get('address')?.errors?.['serverError'] }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Phone and Email in a row -->
+            <div class="form-row">
+              <!-- Company Phone -->
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="phoneNumber" class="form-label"
+                    >{{ "auth.create_company.phone" | translate }} *</label
+                  >
+                  <i class="bi bi-telephone form-icon"></i>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    formControlName="phoneNumber"
+                    class="form-control"
+                    placeholder="+201234567890"
+                    [ngClass]="{
+                      'is-invalid':
+                        companyForm.get('phoneNumber')?.invalid &&
+                        companyForm.get('phoneNumber')?.touched
+                    }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
                       companyForm.get('phoneNumber')?.invalid &&
                       companyForm.get('phoneNumber')?.touched
-                  }"
-                />
+                    "
+                  >
+                    <span
+                      *ngIf="companyForm.get('phoneNumber')?.errors?.['required']"
+                    >
+                      Phone number is required
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('phoneNumber')?.errors?.['pattern']"
+                    >
+                      Please enter a valid phone number format (e.g.,
+                      +201234567890)
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('phoneNumber')?.errors?.['serverError']"
+                    >
+                      {{ companyForm.get('phoneNumber')?.errors?.['serverError'] }}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="
-                  companyForm.get('phoneNumber')?.invalid &&
-                  companyForm.get('phoneNumber')?.touched
-                "
-              >
-                <span
-                  *ngIf="companyForm.get('phoneNumber')?.errors?.['required']"
-                >
-                  Phone number is required
-                </span>
-                <span
-                  *ngIf="companyForm.get('phoneNumber')?.errors?.['pattern']"
-                >
-                  Please enter a valid phone number format (e.g., +201234567890)
-                </span>
-                <span
-                  *ngIf="companyForm.get('phoneNumber')?.errors?.['serverError']"
-                >
-                  {{ companyForm.get('phoneNumber')?.errors?.['serverError'] }}
-                </span>
-              </div>
-            </div>
 
-            <!-- Company Email -->
-            <div class="col-md-6 mb-3">
-              <label for="email" class="form-label"
-                >{{ "auth.create_company.email" | translate }} *</label
-              >
-              <div class="input-wrapper">
-                <i class="bi bi-envelope icon"></i>
-                <input
-                  type="email"
-                  id="email"
-                  formControlName="email"
-                  class="form-control"
-                  [placeholder]="
-                    'auth.create_company.email_placeholder' | translate
-                  "
-                  [ngClass]="{
-                    'is-invalid':
+              <!-- Company Email -->
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="email" class="form-label"
+                    >{{ "auth.create_company.email" | translate }} *</label
+                  >
+                  <i class="bi bi-envelope form-icon"></i>
+                  <input
+                    type="email"
+                    id="email"
+                    formControlName="email"
+                    class="form-control"
+                    [placeholder]="
+                      'auth.create_company.email_placeholder' | translate
+                    "
+                    [ngClass]="{
+                      'is-invalid':
+                        companyForm.get('email')?.invalid &&
+                        companyForm.get('email')?.touched
+                    }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
                       companyForm.get('email')?.invalid &&
                       companyForm.get('email')?.touched
-                  }"
-                />
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="
-                  companyForm.get('email')?.invalid &&
-                  companyForm.get('email')?.touched
-                "
-              >
-                <span *ngIf="companyForm.get('email')?.errors?.['required']">
-                  Email is required
-                </span>
-                <span
-                  *ngIf="companyForm.get('email')?.errors?.['email'] || companyForm.get('email')?.errors?.['pattern']"
-                >
-                  Please enter a valid email address
-                </span>
-                <span *ngIf="companyForm.get('email')?.errors?.['serverError']">
-                  {{ companyForm.get('email')?.errors?.['serverError'] }}
-                </span>
+                    "
+                  >
+                    <span
+                      *ngIf="companyForm.get('email')?.errors?.['required']"
+                    >
+                      Email is required
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('email')?.errors?.['email'] || companyForm.get('email')?.errors?.['pattern']"
+                    >
+                      Please enter a valid email address
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('email')?.errors?.['serverError']"
+                    >
+                      {{ companyForm.get('email')?.errors?.['serverError'] }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Super Admin Information Section -->
-          <div class="section-title mb-3 text-start">
-            {{ "auth.create_company.admin_info" | translate }}
-          </div>
-
-          <!-- Super Admin Name -->
-          <div class="mb-3">
-            <label for="superAdminName" class="form-label"
-              >{{ "auth.create_company.admin_name" | translate }} *</label
+            <!-- Continue Button -->
+            <button
+              type="button"
+              class="btn-submit"
+              (click)="switchTab('admin')"
             >
-            <div class="input-wrapper">
-              <i class="bi bi-person icon"></i>
+              {{ "auth.create_company.continue" | translate }}
+              <i class="bi bi-arrow-right" style="margin-left: 8px"></i>
+            </button>
+          </div>
+
+          <!-- Admin Information Section -->
+          <div class="form-section" id="admin-section">
+            <!-- Super Admin Name -->
+            <div class="form-group">
+              <label for="superAdminName" class="form-label"
+                >{{ "auth.create_company.admin_name" | translate }} *</label
+              >
+              <i class="bi bi-person form-icon"></i>
               <input
                 type="text"
                 id="superAdminName"
@@ -307,177 +378,176 @@
                     companyForm.get('superAdminName')?.touched
                 }"
               />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  companyForm.get('superAdminName')?.invalid &&
+                  companyForm.get('superAdminName')?.touched
+                "
+              >
+                <span
+                  *ngIf="companyForm.get('superAdminName')?.errors?.['required']"
+                >
+                  Super Admin name is required
+                </span>
+                <span
+                  *ngIf="companyForm.get('superAdminName')?.errors?.['minlength']"
+                >
+                  Super Admin name must be at least 3 characters long
+                </span>
+                <span
+                  *ngIf="companyForm.get('superAdminName')?.errors?.['serverError']"
+                >
+                  {{ companyForm.get('superAdminName')?.errors?.['serverError'] }}
+                </span>
+              </div>
             </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                companyForm.get('superAdminName')?.invalid &&
-                companyForm.get('superAdminName')?.touched
-              "
-            >
-              <span
-                *ngIf="companyForm.get('superAdminName')?.errors?.['required']"
-              >
-                Super Admin name is required
-              </span>
-              <span
-                *ngIf="companyForm.get('superAdminName')?.errors?.['minlength']"
-              >
-                Super Admin name must be at least 3 characters long
-              </span>
-              <span
-                *ngIf="companyForm.get('superAdminName')?.errors?.['serverError']"
-              >
-                {{ companyForm.get('superAdminName')?.errors?.['serverError'] }}
-              </span>
-            </div>
-          </div>
 
-          <div class="row" [class.flex-row-reverse]="currentLanguage.rtl">
-            <!-- Super Admin Email -->
-            <div class="col-md-6 mb-3">
-              <label for="superAdminEmail" class="form-label"
-                >{{ "auth.create_company.admin_email" | translate }} *</label
-              >
-              <div class="input-wrapper">
-                <i class="bi bi-envelope icon"></i>
-                <input
-                  type="email"
-                  id="superAdminEmail"
-                  formControlName="superAdminEmail"
-                  class="form-control"
-                  [placeholder]="
-                    'auth.create_company.admin_email_placeholder' | translate
-                  "
-                  [ngClass]="{
-                    'is-invalid':
+            <!-- Super Admin Email and Phone in a row -->
+            <div class="form-row">
+              <!-- Super Admin Email -->
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="superAdminEmail" class="form-label"
+                    >{{
+                      "auth.create_company.admin_email" | translate
+                    }}
+                    *</label
+                  >
+                  <i class="bi bi-envelope form-icon"></i>
+                  <input
+                    type="email"
+                    id="superAdminEmail"
+                    formControlName="superAdminEmail"
+                    class="form-control"
+                    [placeholder]="
+                      'auth.create_company.admin_email_placeholder' | translate
+                    "
+                    [ngClass]="{
+                      'is-invalid':
+                        companyForm.get('superAdminEmail')?.invalid &&
+                        companyForm.get('superAdminEmail')?.touched
+                    }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
                       companyForm.get('superAdminEmail')?.invalid &&
                       companyForm.get('superAdminEmail')?.touched
-                  }"
-                />
+                    "
+                  >
+                    <span
+                      *ngIf="companyForm.get('superAdminEmail')?.errors?.['required']"
+                    >
+                      Super Admin email is required
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('superAdminEmail')?.errors?.['email'] || companyForm.get('superAdminEmail')?.errors?.['pattern']"
+                    >
+                      Please enter a valid email address
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('superAdminEmail')?.errors?.['serverError']"
+                    >
+                      {{ companyForm.get('superAdminEmail')?.errors?.['serverError'] }}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="
-                  companyForm.get('superAdminEmail')?.invalid &&
-                  companyForm.get('superAdminEmail')?.touched
-                "
-              >
-                <span
-                  *ngIf="companyForm.get('superAdminEmail')?.errors?.['required']"
-                >
-                  Super Admin email is required
-                </span>
-                <span
-                  *ngIf="companyForm.get('superAdminEmail')?.errors?.['email'] || companyForm.get('superAdminEmail')?.errors?.['pattern']"
-                >
-                  Please enter a valid email address
-                </span>
-                <span
-                  *ngIf="companyForm.get('superAdminEmail')?.errors?.['serverError']"
-                >
-                  {{ companyForm.get('superAdminEmail')?.errors?.['serverError'] }}
-                </span>
-              </div>
-            </div>
 
-            <!-- Super Admin Phone -->
-            <div class="col-md-6 mb-3">
-              <label for="superAdminPhone" class="form-label"
-                >{{ "auth.create_company.admin_phone" | translate }} *</label
-              >
-              <div class="input-wrapper">
-                <i class="bi bi-telephone icon"></i>
-                <input
-                  type="tel"
-                  id="superAdminPhone"
-                  formControlName="superAdminPhone"
-                  class="form-control"
-                  placeholder="+201234567890"
-                  [ngClass]="{
-                    'is-invalid':
+              <!-- Super Admin Phone -->
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="superAdminPhone" class="form-label"
+                    >{{
+                      "auth.create_company.admin_phone" | translate
+                    }}
+                    *</label
+                  >
+                  <i class="bi bi-telephone form-icon"></i>
+                  <input
+                    type="tel"
+                    id="superAdminPhone"
+                    formControlName="superAdminPhone"
+                    class="form-control"
+                    placeholder="+201234567890"
+                    [ngClass]="{
+                      'is-invalid':
+                        companyForm.get('superAdminPhone')?.invalid &&
+                        companyForm.get('superAdminPhone')?.touched
+                    }"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    *ngIf="
                       companyForm.get('superAdminPhone')?.invalid &&
                       companyForm.get('superAdminPhone')?.touched
-                  }"
-                />
+                    "
+                  >
+                    <span
+                      *ngIf="companyForm.get('superAdminPhone')?.errors?.['required']"
+                    >
+                      Super Admin phone number is required
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('superAdminPhone')?.errors?.['pattern']"
+                    >
+                      Please enter a valid phone number format (e.g.,
+                      +201234567890)
+                    </span>
+                    <span
+                      *ngIf="companyForm.get('superAdminPhone')?.errors?.['serverError']"
+                    >
+                      {{ companyForm.get('superAdminPhone')?.errors?.['serverError'] }}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="
-                  companyForm.get('superAdminPhone')?.invalid &&
-                  companyForm.get('superAdminPhone')?.touched
-                "
-              >
-                <span
-                  *ngIf="companyForm.get('superAdminPhone')?.errors?.['required']"
+            </div>
+
+            <!-- Error Message -->
+            <div
+              *ngIf="errorMessage"
+              class="alert alert-danger"
+              [class.text-end]="currentLanguage.rtl"
+            >
+              {{ errorMessage }}
+            </div>
+
+            <!-- Back Button -->
+            <div class="form-row" style="margin-top: 2rem">
+              <div class="form-col">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary w-100"
+                  (click)="switchTab('company')"
                 >
-                  Super Admin phone number is required
-                </span>
-                <span
-                  *ngIf="companyForm.get('superAdminPhone')?.errors?.['pattern']"
+                  <i class="bi bi-arrow-left" style="margin-right: 8px"></i>
+                  {{ "auth.create_company.back" | translate }}
+                </button>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="form-col">
+                <button
+                  type="submit"
+                  class="btn-submit"
+                  [disabled]="isSubmitting"
                 >
-                  Please enter a valid phone number format (e.g., +201234567890)
-                </span>
-                <span
-                  *ngIf="companyForm.get('superAdminPhone')?.errors?.['serverError']"
-                >
-                  {{ companyForm.get('superAdminPhone')?.errors?.['serverError'] }}
-                </span>
+                  <span *ngIf="isSubmitting">
+                    <i class="bi bi-arrow-repeat spinner"></i>
+                    {{ "auth.create_company.creating" | translate }}
+                  </span>
+                  <span *ngIf="!isSubmitting">
+                    <i class="bi bi-building-add" style="margin-right: 8px"></i>
+                    {{ "auth.create_company.submit" | translate }}
+                  </span>
+                </button>
               </div>
             </div>
           </div>
-
-          <!-- Error Message -->
-          <div
-            *ngIf="errorMessage"
-            class="alert alert-danger"
-            [class.text-end]="currentLanguage.rtl"
-          >
-            {{ errorMessage }}
-          </div>
-
-          <!-- Submit Button -->
-          <button
-            type="submit"
-            class="btn btn-primary w-100 mt-4"
-            [disabled]="isSubmitting"
-          >
-            <span
-              *ngIf="isSubmitting"
-              [class.me-2]="!currentLanguage.rtl"
-              [class.ms-2]="currentLanguage.rtl"
-            >
-              <i class="bi bi-arrow-repeat spinner"></i>
-              {{ "auth.create_company.creating" | translate }}
-            </span>
-            <span *ngIf="!isSubmitting">
-              <i
-                class="bi bi-building-add"
-                [class.me-2]="!currentLanguage.rtl"
-                [class.ms-2]="currentLanguage.rtl"
-              ></i>
-              {{ "auth.create_company.submit" | translate }}
-            </span>
-          </button>
-
-          <!-- Debug button - Only visible in development
-          <button
-            type="button"
-            class="btn btn-outline-secondary w-100 mt-2"
-            (click)="testApiDirectly()"
-          >
-            Test API Directly (Debug)
-          </button> -->
         </form>
       </div>
     </div>
-  </div>
-
-  <!-- Right: Image -->
-  <div class="register-image" [class.order-first]="currentLanguage.rtl">
-    <img
-      src="assets/images/bus.svg"
-      [alt]="'auth.create_company.image_alt' | translate"
-    />
   </div>
 </div>

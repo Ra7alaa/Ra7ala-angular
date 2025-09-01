@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
   [x: string]: any;
   searchForm: FormGroup;
   isLoading = false;
-  minDate = new Date(5/5/2025);
+  minDate = new Date();
   cities: City[] = [];
 
   constructor(

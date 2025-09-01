@@ -83,6 +83,10 @@ export class CompanyDetailsComponent implements OnInit {
           this.ensureStatistics();
 
           this.loading = false;
+
+          // Refresh the pending count after loading company details
+          // This ensures the count is accurate when viewing company details
+          this.companyService.refreshPendingCount();
         },
         error: (error) => {
           console.error('Error loading company details:', error);
@@ -280,6 +284,9 @@ export class CompanyDetailsComponent implements OnInit {
           alert(this.getTranslatedText('owner.company_details.delete_success'));
           // Navigate to companies management page after successful deletion
           this.router.navigate(['/owner/companies']);
+
+          // Refresh the pending count after deleting a company
+          this.companyService.refreshPendingCount();
         },
         error: (error) => {
           console.error('Error deleting company:', error);

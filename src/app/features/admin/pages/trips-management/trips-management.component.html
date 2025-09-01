@@ -4,11 +4,7 @@
     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
   >
     <h1 class="h2">{{ "admin.trips.title" | translate }}</h1>
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#addTripModal"
-    >
+    <button class="btn btn-primary" [routerLink]="['/admin/trips/create']">
       <i class="bi bi-plus-circle me-2"></i
       >{{ "admin.trips.add_trip" | translate }}
     </button>

@@ -233,7 +233,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
     this.companyService.createCompany(companyData).subscribe({
       next: (response) => {
         console.log('Company registration successful:', response);
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['']);
       },
       error: (error: HttpErrorResponse) => {
         console.error('Company registration error:', error);
@@ -286,6 +286,83 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
         alert(`API test failed: ${error.message || 'Unknown error'}`);
       },
     });
+  }
+
+  // Method to switch between tabs (company info and admin info)
+  switchTab(tabName: 'company' | 'admin'): void {
+    // Get tab elements
+    const companyTab = document.getElementById('company-tab');
+    const adminTab = document.getElementById('admin-tab');
+    const companySection = document.getElementById('company-section');
+    const adminSection = document.getElementById('admin-section');
+
+    // Get progress steps
+    const step1 = document.querySelector('.progress-step:nth-child(1)');
+    const step2 = document.querySelector('.progress-step:nth-child(2)');
+
+    if (tabName === 'company') {
+      // Activate company tab and section
+      companyTab?.classList.add('active');
+      companySection?.classList.add('active');
+      adminTab?.classList.remove('active');
+      adminSection?.classList.remove('active');
+
+      // Update progress indicator
+      step1?.classList.add('active');
+      step2?.classList.remove('active');
+      step2?.classList.remove('completed');
+    } else {
+      // If switching to admin tab, first validate company info
+      if (this.validateCompanySection()) {
+        // Activate admin tab and section
+        adminTab?.classList.add('active');
+        adminSection?.classList.add('active');
+        companyTab?.classList.remove('active');
+        companySection?.classList.remove('active');
+
+        // Update progress indicator
+        step1?.classList.remove('active');
+        step1?.classList.add('completed');
+        step2?.classList.add('active');
+      }
+    }
+  }
+
+  // Validate company information before proceeding to admin tab
+  validateCompanySection(): boolean {
+    const nameControl = this.companyForm.get('name');
+    const descriptionControl = this.companyForm.get('description');
+    const addressControl = this.companyForm.get('address');
+    const phoneControl = this.companyForm.get('phoneNumber');
+    const emailControl = this.companyForm.get('email');
+
+    // Mark fields as touched to trigger validation
+    nameControl?.markAsTouched();
+    descriptionControl?.markAsTouched();
+    addressControl?.markAsTouched();
+    phoneControl?.markAsTouched();
+    emailControl?.markAsTouched();
+
+    // Check for tax document
+    if (!this.taxDocumentFile) {
+      this.errorMessage = 'Tax document is required';
+      return false;
+    }
+
+    // Validate required company information
+    if (
+      nameControl?.invalid ||
+      descriptionControl?.invalid ||
+      addressControl?.invalid ||
+      phoneControl?.invalid ||
+      emailControl?.invalid
+    ) {
+      return false;
+    }
+
+    // Clear any previous error messages
+    this.errorMessage = '';
+    return true;
   }
 
   // Helper method to get validation errors

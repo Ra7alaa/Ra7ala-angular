@@ -28,6 +28,11 @@ export class OwnerLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadPendingRequestsCount();
+
+    // Subscribe to real-time updates from the service
+    this.subscription = this.companyService.pendingCount$.subscribe((count) => {
+      this.pendingRequestsCount = count;
+    });
   }
 
   ngOnDestroy(): void {
@@ -37,15 +42,22 @@ export class OwnerLayoutComponent implements OnInit, OnDestroy {
   }
 
   loadPendingRequestsCount(): void {
-    this.subscription = this.companyService
+    // Use a temporary subscription for the initial load
+    const tempSubscription = this.companyService
       .getPendingCompanies(1, 99)
       .subscribe({
         next: (response) => {
-          this.pendingRequestsCount = response.totalCount || 0;
+          const count = response.totalCount || 0;
+          this.pendingRequestsCount = count;
+          // Update the shared count in the service
+          this.companyService.updatePendingCount(count);
         },
         error: (error) => {
           console.error('Error loading pending requests count:', error);
           this.pendingRequestsCount = 0;
+        },
+        complete: () => {
+          tempSubscription.unsubscribe();
         },
       });
   }

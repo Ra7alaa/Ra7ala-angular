@@ -5,9 +5,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TripsManagementComponent } from './trips-management.component';
 import { TripDetailsComponent } from '../trip-details/trip-details.component';
+import { TripCreateComponent } from './components/trip-create/trip-create.component';
 
 const routes: Routes = [
   { path: '', component: TripsManagementComponent },
+  { path: 'create', component: TripCreateComponent },
   { path: ':id', component: TripDetailsComponent },
 ];
 
@@ -19,6 +21,7 @@ const routes: Routes = [
     // Import the standalone components
     TripsManagementComponent,
     TripDetailsComponent,
+    TripCreateComponent,
   ],
 })
 export class TripsModule {}

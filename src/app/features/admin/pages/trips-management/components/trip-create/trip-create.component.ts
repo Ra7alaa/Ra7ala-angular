@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import {
   FormArray,
   FormBuilder,
@@ -30,7 +31,13 @@ interface ApiResponse {
 @Component({
   selector: 'app-trip-create',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslatePipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+    RouterModule,
+  ],
   templateUrl: './trip-create.component.html',
   styleUrls: ['./trip-create.component.css'],
 })
@@ -55,6 +62,9 @@ export class TripCreateComponent implements OnInit {
   // Company ID
   companyId: number | null = null;
 
+  // Flag to identify if component is used as standalone page or embedded in modal
+  isStandalonePage = false;
+
   constructor(
     private fb: FormBuilder,
     private tripsService: TripsService,
@@ -63,9 +73,13 @@ export class TripCreateComponent implements OnInit {
     private driversService: DriversService,
     private authService: AuthService,
     private translationService: TranslationService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private router: Router
   ) {
     this.tripForm = this.createTripForm();
+
+    // Check if we're in a standalone page mode
+    this.isStandalonePage = this.router.url.includes('/trips/create');
   }
 
   ngOnInit(): void {
@@ -398,11 +412,18 @@ export class TripCreateComponent implements OnInit {
     this.tripsService.createTrip(tripData).subscribe({
       next: (response: ApiResponse) => {
         if (response && response.statusCode === 201) {
+          // Emit event for modal usage
           this.tripCreated.emit(true);
-          this.tripForm.reset();
+
+          if (this.isStandalonePage) {
+            // Redirect to trips list if we're in standalone page mode
+            this.router.navigate(['/admin/trips']);
+          } else {
+            // Reset form for modal usage
+            this.tripForm.reset();
+            this.tripForm = this.createTripForm();
+          }
           this.isSubmitting = false;
-          // Reset form with default values
-          this.tripForm = this.createTripForm();
         } else {
           this.errorMessage =
             response?.message ||

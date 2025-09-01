@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://localhost:7111', // Development API URL based on the Swagger UI
+  apiUrl: 'http://ra7ala.runasp.net', // Development API URL based on the Swagger UI
   apiTimeout: 30000, // 30 seconds timeout for API calls
   useErrorInterceptor: true,
   useMockData: false, // Set to true to use mock data during development

@@ -20,7 +20,9 @@
         [class.fa-check-circle]="actionMessageType === 'success'"
         [class.fa-exclamation-circle]="actionMessageType === 'error'"
       ></i>
-      <span>{{ actionMessage | translate }}</span>
+      <span>{{
+        actionMessage | translate : { companyName: currentCompanyName }
+      }}</span>
     </div>
     <button class="close-message" (click)="showActionMessage = false">
       <i class="fas fa-times"></i>

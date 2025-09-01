@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, BehaviorSubject } from 'rxjs';
 import { CompanyResponse } from '../models/company.model';
 import { environment } from '../../../../environments/environment';
 
@@ -9,12 +9,31 @@ import { environment } from '../../../../environments/environment';
 })
 export class CompanyService {
   private baseUrl = environment.apiUrl;
+  private pendingCountSubject = new BehaviorSubject<number>(0);
+  public pendingCount$ = this.pendingCountSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
   // Add method to get base URL for document formatting
   getBaseUrl(): string {
     return this.baseUrl;
+  }
+
+  // Method to update the pending count
+  updatePendingCount(count: number): void {
+    this.pendingCountSubject.next(count);
+  }
+
+  // Method to refresh the pending count from the server
+  refreshPendingCount(): void {
+    this.getPendingCompanies(1, 1).subscribe({
+      next: (response) => {
+        this.updatePendingCount(response.totalCount || 0);
+      },
+      error: (error) => {
+        console.error('Error refreshing pending count:', error);
+      },
+    });
   }
 
   getAllCompanies(pageNumber = 1, pageSize = 10): Observable<CompanyResponse> {

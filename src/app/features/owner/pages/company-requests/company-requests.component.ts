@@ -41,6 +41,7 @@ export class CompanyRequestsComponent implements OnInit {
   actionMessage = '';
   showActionMessage = false;
   actionMessageType: 'success' | 'error' = 'success';
+  currentCompanyName = ''; // Added for translation parameter
 
   constructor(
     private companyService: CompanyService,
@@ -62,6 +63,9 @@ export class CompanyRequestsComponent implements OnInit {
           this.totalItems = response.totalCount;
           this.totalPages = response.totalPages;
           this.loading = false;
+
+          // Update the pending count in the service to keep the badge updated
+          this.companyService.updatePendingCount(response.totalCount);
         },
         error: (error) => {
           console.error('Error loading pending companies:', error);
@@ -84,7 +88,11 @@ export class CompanyRequestsComponent implements OnInit {
 
     this.companyService.reviewCompany(company.id, true).subscribe({
       next: () => {
-        this.showMessage('owner.company_requests.messages.approved', 'success');
+        this.showMessage(
+          'owner.company_requests.messages.approved',
+          'success',
+          company.name
+        );
         this.loadPendingCompanies();
         this.processingAction = false;
         this.selectedCompanyId = null;
@@ -93,7 +101,8 @@ export class CompanyRequestsComponent implements OnInit {
         console.error('Error approving company', error);
         this.showMessage(
           'owner.company_requests.messages.approve_error',
-          'error'
+          'error',
+          company.name
         );
         this.processingAction = false;
         this.selectedCompanyId = null;
@@ -110,6 +119,9 @@ export class CompanyRequestsComponent implements OnInit {
     if (!this.selectedCompanyId || this.processingAction) return;
 
     const companyId = this.selectedCompanyId;
+    // Find the company name from the selected company ID
+    const company = this.pendingCompanies.find((c) => c.id === companyId);
+    const companyName = company ? company.name : '';
 
     this.processingAction = true;
     this.companyService
@@ -118,7 +130,8 @@ export class CompanyRequestsComponent implements OnInit {
         next: () => {
           this.showMessage(
             'owner.company_requests.messages.rejected',
-            'success'
+            'success',
+            companyName
           );
           this.loadPendingCompanies();
           this.processingAction = false;
@@ -129,7 +142,8 @@ export class CompanyRequestsComponent implements OnInit {
           console.error('Error rejecting company', error);
           this.showMessage(
             'owner.company_requests.messages.reject_error',
-            'error'
+            'error',
+            companyName
           );
           this.processingAction = false;
           this.selectedCompanyId = null;
@@ -148,11 +162,15 @@ export class CompanyRequestsComponent implements OnInit {
     this.router.navigate(['/owner/companies', company.id]);
   }
 
-  showMessage(messageKey: string, type: 'success' | 'error'): void {
-    // Get translated message using TranslationService
-    // We'll use the message key directly and let the translate pipe handle the translation in the template
+  // Show success or error message with translatable text
+  showMessage(
+    messageKey: string,
+    type: 'success' | 'error',
+    companyName?: string
+  ): void {
     this.actionMessage = messageKey;
     this.actionMessageType = type;
+    this.currentCompanyName = companyName || '';
     this.showActionMessage = true;
 
     // Auto hide the message after 5 seconds

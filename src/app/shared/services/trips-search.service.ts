@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface SearchRequest {
   startCityId: number;
@@ -41,7 +42,7 @@ export interface SearchResponse {
   providedIn: 'root'
 })
 export class TripsSearchService {
-  private apiUrl = `https://localhost:7111/api/Trips/search`;
+  private apiUrl = `${environment.apiUrl}/api/Trips/search`;
 
   constructor(private http: HttpClient) { }
 

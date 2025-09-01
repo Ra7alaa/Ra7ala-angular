@@ -53,7 +53,6 @@ export const routes: Routes = [
         path: 'about',
         loadChildren: () =>
           import('./features/about/about.module').then((m) => m.AboutModule),
-        canActivate: [roleGuard([UserRole.Passenger])],
       },
       {
         path: 'settings',
@@ -95,7 +94,6 @@ export const routes: Routes = [
       import('./features/trips/pages/book-trips/book-trips.component').then(
         (m) => m.BookTripsComponent
       ),
-    canActivate: [roleGuard([UserRole.Passenger])],
   },
   {
     path: 'booking/:tripId',

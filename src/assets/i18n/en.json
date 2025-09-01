@@ -11,6 +11,7 @@
   "book_now": "Book Now",
   "search": {
     "title": "Where are you Travel?",
+    "search_placeholder": "Search for your trip",
     "departure": "Departure",
     "arrival": "Arrival",
     "date": "Date",
@@ -97,7 +98,9 @@
       "description": "Description",
       "description_placeholder": "Enter company description",
       "logo": "Company Logo",
+      "select_logo": "Select your company logo",
       "tax_document": "Tax Document",
+      "select_tax_document": "Select your tax document",
       "tax_document_hint": "Upload your tax document",
       "address": "Address",
       "address_placeholder": "Enter company address",
@@ -118,7 +121,9 @@
       "admin_phone": "Phone Number",
       "admin_phone_invalid": "Please enter a valid phone number",
       "creating": "Creating...",
-      "submit": "Create Company",
+      "submit": "apply as a company",
+      "continue": "Continue",
+      "back": "Back",
       "have_account": "Already have an account?",
       "login": "Login"
     }
@@ -293,6 +298,8 @@
       "next": "Next",
       "showing": "Showing",
       "of": "of",
+      "no_trips" : "No trips found",
+      "add_first_trip" : "Add your first trip",
       "departure_station": "Departure Station",
       "arrival_station": "Arrival Station",
       "departure_date": "Departure Date",
@@ -832,8 +839,8 @@
       "no_requests_description": "There are no pending company requests to review at the moment.",
       "not_specified": "Not specified",
       "messages": {
-        "approved": "Company \"{{companyName}}\" has been successfully approved",
-        "rejected": "Company \"{{companyName}}\" has been rejected",
+        "approved": "Company {{companyName}} has been successfully approved",
+        "rejected": "Company {{companyName}} has been rejected",
         "approve_error": "Failed to approve company. Please try again.",
         "reject_error": "Failed to reject company. Please try again."
       },

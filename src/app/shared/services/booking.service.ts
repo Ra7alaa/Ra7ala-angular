@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface TripDetailsResponse {
   statusCode: number;
@@ -64,7 +65,7 @@ export interface BookingResponse {
   providedIn: 'root'
 })
 export class BookingService {
-  private apiUrl = 'https://localhost:7111/api';
+  private apiUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 

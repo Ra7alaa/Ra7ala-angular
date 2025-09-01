@@ -21,6 +21,12 @@
     "End_city": "مدينة الوصول",
     "Required_seats": "عدد المقاعد المطلوبة",
     "from_to": "من - الى",
+    "trip_type": {
+      "return": "ذهاب وعودة",
+      "one_way": "ذهاب فقط",
+      "multi_city": "متعدد المدن"
+    },
+    "date_range": "الذهاب - العودة",
     "show_results": "عرض النتائج"
   },
   "home": {
@@ -90,7 +96,9 @@
       "description": "الوصف",
       "description_placeholder": "أدخل وصف الشركة",
       "logo": "شعار الشركة",
+      "select_logo": "اختر شعار الشركة",
       "tax_document": "المستند الضريبي",
+      "select_tax_document": "اختر مستندًا ضريبيًا",
       "tax_document_hint": "(يرجى تحميل مستند ضريبي صالح)",
       "address": "العنوان",
       "address_placeholder": "أدخل عنوان الشركة",
@@ -112,6 +120,8 @@
       "admin_phone_invalid": "يرجى إدخال رقم هاتف صحيح",
       "creating": "جاري الإنشاء...",
       "submit": "إنشاء الشركة",
+      "continue": "متابعة",
+      "back": "العودة",
       "have_account": "لديك حساب بالفعل؟",
       "login": "تسجيل الدخول"
     }
@@ -120,6 +130,7 @@
   "no_trips_found": "لا توجد رحلات متاحة",
   "no_trips_found_description": "عذرًا، لا توجد رحلات متاحة في هذا التاريخ. يرجى التحقق من تاريخ آخر.",
   "try_different_search": "حاول البحث عن تاريخ مختلف",
+  "book_now": "احجز الآن",
   "user_menu": {
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",

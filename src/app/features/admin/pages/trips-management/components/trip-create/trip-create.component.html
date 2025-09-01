@@ -1,3 +1,13 @@
+<!-- Page Header -->
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">{{ "admin.trips.add_trip" | translate }}</h1>
+  <button class="btn btn-outline-secondary" [routerLink]="['/admin/trips']">
+    <i class="bi bi-arrow-left me-2"></i>{{ "common.back" | translate }}
+  </button>
+</div>
+
 <form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
   <!-- Error Message -->
   <div *ngIf="errorMessage" class="alert alert-danger">
@@ -331,6 +341,14 @@
 
   <!-- Form Actions -->
   <div class="d-flex justify-content-end gap-2 mt-4">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [routerLink]="['/admin/trips']"
+    >
+      <i class="bi bi-x-circle me-1"></i>
+      {{ "admin.trips.cancel" | translate }}
+    </button>
     <button type="button" class="btn btn-secondary" (click)="resetForm()">
       <i class="bi bi-arrow-counterclockwise me-1"></i>
       {{ "admin.trips.reset" | translate }}
