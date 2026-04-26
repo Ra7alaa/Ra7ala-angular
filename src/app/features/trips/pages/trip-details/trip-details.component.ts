@@ -5,7 +5,12 @@ import { TripsService } from '../../services/trips.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { TranslatePipe } from "../../../settings/pipes/translate.pipe";
+import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
+import {
+  LanguageService,
+  Language,
+} from '../../../../core/localization/language.service';
+import { ThemeService } from '../../../../core/themes/theme.service';
 
 @Component({
   selector: 'app-trip-details',
@@ -16,16 +21,31 @@ import { TranslatePipe } from "../../../settings/pipes/translate.pipe";
 })
 export class TripDetailsComponent implements OnInit {
   trip: Trip | undefined;
-  selectedTravelers: number = 1;
+  selectedTravelers = 1;
+  currentLanguage!: Language;
 
   constructor(
     private route: ActivatedRoute,
     private tripsService: TripsService,
-    private sanitizer: DomSanitizer
-  ) {}
+    private sanitizer: DomSanitizer,
+    private languageService: LanguageService,
+    private themeService: ThemeService
+  ) {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+  }
 
   ngOnInit(): void {
     this.getTrip();
+
+    // Subscribe to language changes
+    this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+    });
+  }
+
+  // Helper method to check if the current theme is dark
+  isDarkTheme(): boolean {
+    return this.themeService.isDarkTheme();
   }
 
   getTrip(): void {
@@ -37,7 +57,7 @@ export class TripDetailsComponent implements OnInit {
           imageUrl: this.getImagePath(trip.imageUrl),
           imageUrl1: this.getImagePath(trip.imageUrl1),
           imageUrl2: this.getImagePath(trip.imageUrl2),
-          imageUrl3: this.getImagePath(trip.imageUrl3)
+          imageUrl3: this.getImagePath(trip.imageUrl3),
         };
       }
     });

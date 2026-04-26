@@ -27,6 +27,7 @@ export interface CompanyCreateRequest {
   Website?: string;
   SuperAdminName: string;
   SuperAdminEmail: string;
+  SuperAdminUserName: string;
   SuperAdminPhone: string;
   Logo?: File;
   TaxDocument?: File; // Added field for tax document file

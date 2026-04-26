@@ -105,13 +105,13 @@
           </thead>
           <tbody>
             <tr *ngFor="let trip of filteredTrips">
-              <td>#TRP-{{ trip.id }}</td>
-              <td>{{ trip.routeName }}</td>
-              <td>{{ trip.departureTime | date : "MMM d, y hh:mm a" }}</td>
-              <td>{{ trip.arrivalTime | date : "MMM d, y hh:mm a" }}</td>
-              <td>{{ trip.busRegistrationNumber }}</td>
-              <td>{{ trip.price }} EGP</td>
-              <td>
+              <td [attr.data-label]="'admin.trips.trip_id' | translate">#TRP-{{ trip.id }}</td>
+              <td [attr.data-label]="'admin.trips.route' | translate">{{ trip.routeName }}</td>
+              <td [attr.data-label]="'admin.trips.departure_time' | translate">{{ trip.departureTime | date : "MMM d, y hh:mm a" }}</td>
+              <td [attr.data-label]="'admin.trips.arrival_time' | translate">{{ trip.arrivalTime | date : "MMM d, y hh:mm a" }}</td>
+              <td [attr.data-label]="'admin.trips.bus' | translate">{{ trip.busRegistrationNumber }}</td>
+              <td [attr.data-label]="'admin.trips.price' | translate">{{ trip.price }} EGP</td>
+              <td [attr.data-label]="'admin.trips.status' | translate">
                 <span
                   class="badge"
                   [ngClass]="{
@@ -126,7 +126,7 @@
                   }}
                 </span>
               </td>
-              <td>
+              <td [attr.data-label]="'admin.trips.actions' | translate">
                 <div class="d-flex gap-1">
                   <button
                     class="btn btn-sm btn-outline-secondary"
@@ -150,6 +150,7 @@
                 </div>
               </td>
             </tr>
+
           </tbody>
         </table>
       </div>

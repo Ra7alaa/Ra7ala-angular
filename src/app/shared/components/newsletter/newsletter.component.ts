@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./newsletter.component.css'],
 })
 export class NewsletterComponent {
-  email: string = '';
+  email = '';
 
   onSubmit() {
     if (this.email) {

@@ -1,3 +1,10 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
 .header {
   background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
@@ -24,24 +31,34 @@
 
 }
 
+.dark-theme .navbar {
+  background-color: #1a1a1a;
+}
+
 /* Logo styling */
 .logo {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   background: linear-gradient(
     to right,
-    var(--primary-color-light),
+    #ffb74d,
     var(--primary-color)
   );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: "Satisfy", cursive;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .logo {
+  transform: scale(1.05);
 }
 
 .navbar-brand {
-  padding-left: 15px; /* Add spacing before the logo */
+  text-decoration: none;
+  padding-left: 15px;
 }
 
 /* Navigation links */
@@ -179,36 +196,26 @@
   text-decoration: none;
 }
 
-/* Settings button */
-.btn-settings {
-  background-color: var(--secondary-color, #6c757d);
-  color: white;
-  text-decoration: none;
-  border-radius: 20px;
-  padding: 6px 12px;
-  font-size: var(--font-size-sm);
-  transition: background-color var(--transition-speed-fast)
-    var(--transition-timing);
-  margin-left: 10px;
-}
-
-.btn-settings:hover {
-  background-color: var(--secondary-color-light, #5a6268);
-  color: white;
-  text-decoration: none;
-}
-
 .btn-logout {
-  background-color: #f44336;
+  background-color: #dc3545;
   color: white;
   border: none;
   border-radius: 20px;
-  padding: 6px 12px;
+  padding: 6px 15px;
   font-size: var(--font-size-sm);
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color var(--transition-speed-fast)
+  transition: all var(--transition-speed-fast)
     var(--transition-timing);
   margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+  color: white;
+  transform: scale(1.05);
 }
 
 /* RTL support */

@@ -8,7 +8,8 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class CompanyService {
-  private baseUrl = environment.apiUrl;
+  private apiBaseUrl = environment.apiUrl;
+  private siteBaseUrl = environment.apiUrl.replace(/\/api$/, '');
   private pendingCountSubject = new BehaviorSubject<number>(0);
   public pendingCount$ = this.pendingCountSubject.asObservable();
 
@@ -16,7 +17,7 @@ export class CompanyService {
 
   // Add method to get base URL for document formatting
   getBaseUrl(): string {
-    return this.baseUrl;
+    return this.siteBaseUrl;
   }
 
   // Method to update the pending count
@@ -43,60 +44,60 @@ export class CompanyService {
 
     return this.http
       .get<CompanyResponse>(
-        `${this.baseUrl}/api/Company/all-companies-details`,
-        { params }
+        `${this.apiBaseUrl}/Company/all-companies-details`,
+        { params },
       )
       .pipe(
         catchError((error) => {
           console.error('Failed to fetch companies', error);
           return throwError(() => error);
-        })
+        }),
       );
   }
 
   getActiveCompanies(
     pageNumber = 1,
-    pageSize = 10
+    pageSize = 10,
   ): Observable<CompanyResponse> {
     const params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
     return this.http
-      .get<CompanyResponse>(`${this.baseUrl}/api/Company/approved`, { params })
+      .get<CompanyResponse>(`${this.apiBaseUrl}/Company/approved`, { params })
       .pipe(
         catchError((error) => {
           console.error('Failed to fetch active companies', error);
           return throwError(() => error);
-        })
+        }),
       );
   }
 
   getPendingCompanies(
     pageNumber = 1,
-    pageSize = 10
+    pageSize = 10,
   ): Observable<CompanyResponse> {
     const params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
     return this.http
-      .get<CompanyResponse>(`${this.baseUrl}/api/Company/pending`, { params })
+      .get<CompanyResponse>(`${this.apiBaseUrl}/Company/pending`, { params })
       .pipe(
         catchError((error) => {
           console.error('Failed to fetch pending companies', error);
           return throwError(() => error);
-        })
+        }),
       );
   }
 
   getCompanyById(id: number): Observable<unknown> {
     console.log(
-      `Making API request to: ${this.baseUrl}/api/Company/${id}/Company-Owner-profile`
+      `Making API request to: ${this.apiBaseUrl}/Company/${id}/Company-Owner-profile`,
     );
 
     return this.http
-      .get(`${this.baseUrl}/api/Company/${id}/Company-Owner-profile`, {
+      .get(`${this.apiBaseUrl}/Company/${id}/Company-Owner-profile`, {
         responseType: 'json',
       })
       .pipe(
@@ -104,27 +105,27 @@ export class CompanyService {
           console.error(`Failed to fetch company with ID ${id}`, error);
           // Try fallback endpoint
           console.log(
-            `Attempting fallback endpoint: ${this.baseUrl}/api/Company/${id}`
+            `Attempting fallback endpoint: ${this.apiBaseUrl}/Company/${id}`,
           );
           return this.http
-            .get(`${this.baseUrl}/api/Company/${id}`, { responseType: 'json' })
+            .get(`${this.apiBaseUrl}/Company/${id}`, { responseType: 'json' })
             .pipe(
               catchError((fallbackError) => {
                 console.error(
                   `Fallback also failed for company ID ${id}`,
-                  fallbackError
+                  fallbackError,
                 );
                 return throwError(() => fallbackError);
-              })
+              }),
             );
-        })
+        }),
       );
   }
 
   reviewCompany(
     companyId: number,
     isApproved: boolean,
-    rejectionReason?: string
+    rejectionReason?: string,
   ): Observable<unknown> {
     const reviewData = {
       companyId: companyId,
@@ -132,22 +133,20 @@ export class CompanyService {
       rejectionReason: rejectionReason || '',
     };
 
-    return this.http
-      .post(`${this.baseUrl}/api/Company/review`, reviewData)
-      .pipe(
-        catchError((error) => {
-          console.error('Failed to review company', error);
-          return throwError(() => error);
-        })
-      );
+    return this.http.post(`${this.apiBaseUrl}/Company/review`, reviewData).pipe(
+      catchError((error) => {
+        console.error('Failed to review company', error);
+        return throwError(() => error);
+      }),
+    );
   }
 
   deleteCompany(id: number): Observable<unknown> {
-    return this.http.delete(`${this.baseUrl}/api/Company/${id}`).pipe(
+    return this.http.delete(`${this.apiBaseUrl}/Company/${id}`).pipe(
       catchError((error) => {
         console.error(`Failed to delete company with ID ${id}`, error);
         return throwError(() => error);
-      })
+      }),
     );
   }
 }

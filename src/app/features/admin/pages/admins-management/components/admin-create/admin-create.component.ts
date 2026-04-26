@@ -50,6 +50,7 @@ export class AdminCreateComponent implements OnInit {
     this.adminForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
       phoneNumber: [
         '',
         [Validators.required, Validators.pattern(/^\+?[0-9]{10,14}$/)],
@@ -121,6 +122,7 @@ export class AdminCreateComponent implements OnInit {
     const adminData: AdminRegisterRequest = {
       FullName: String(formValues.fullName || '').trim(),
       Email: String(formValues.email || '').trim(),
+      UserName: String(formValues.userName || '').trim(),
       PhoneNumber: String(formValues.phoneNumber || '').trim(),
       DateOfBirth: dateOfBirth,
       Department: formValues.department?.trim(),

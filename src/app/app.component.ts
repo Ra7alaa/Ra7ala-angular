@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { GridModule, PagerModule } from '@syncfusion/ej2-angular-grids';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject, firstValueFrom } from 'rxjs';
@@ -15,7 +14,7 @@ import { AuthService } from './features/auth/services/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [GridModule, PagerModule, RouterOutlet, LayoutModule, CommonModule],
+  imports: [RouterOutlet, LayoutModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

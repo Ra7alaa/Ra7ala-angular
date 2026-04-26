@@ -55,7 +55,7 @@ export interface StationResponse {
   providedIn: 'root',
 })
 export class CitiesService {
-  private apiUrl = `${environment.apiUrl}/api`;
+  private apiUrl = environment.apiUrl;
 
   // Define a fallback list of Egyptian cities in case the API fails
   private fallbackCities: City[] = [
@@ -73,7 +73,10 @@ export class CitiesService {
     { id: 12, name: 'El Santa', countryId: 1 },
   ];
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   // Get HTTP options with headers
   private getHttpOptions() {
@@ -127,19 +130,19 @@ export class CitiesService {
           }
 
           return throwError(() => new Error('Failed to load cities from API'));
-        })
+        }),
       );
   }
 
   // Get city with stations by city ID
   getCityWithStations(
     cityId: number,
-    userCompanyId?: number
+    userCompanyId?: number,
   ): Observable<City> {
     return this.http
       .get<unknown>(
         `${this.apiUrl}/City/${cityId}/with-stations`,
-        this.getHttpOptions()
+        this.getHttpOptions(),
       )
       .pipe(
         map((response) => {
@@ -179,7 +182,7 @@ export class CitiesService {
             stations = stations.filter(
               (station) =>
                 station.companyName === null ||
-                station.companyId === userCompanyId
+                station.companyId === userCompanyId,
             );
           }
 
@@ -196,22 +199,22 @@ export class CitiesService {
         catchError((error) => {
           console.error(
             `Error retrieving city ${cityId} with stations from API:`,
-            error
+            error,
           );
           return throwError(
-            () => new Error('Failed to load city with stations from API')
+            () => new Error('Failed to load city with stations from API'),
           );
-        })
+        }),
       );
   }
 
   // Get stations by city ID with filtering - Using getCityWithStations internally
   getStationsByCityId(
     cityId: number,
-    userCompanyId?: number
+    userCompanyId?: number,
   ): Observable<Station[]> {
     return this.getCityWithStations(cityId, userCompanyId).pipe(
-      map((city) => city.stations || [])
+      map((city) => city.stations || []),
     );
   }
 }

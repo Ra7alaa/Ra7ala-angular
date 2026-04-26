@@ -65,6 +65,36 @@
       </div>
     </div>
 
+    <!-- User Name -->
+    <div class="col-md-6 mb-3">
+      <label for="userName" class="form-label">
+        {{ "admin.profile.username" | translate }} *
+      </label>
+      <input
+        type="text"
+        class="form-control"
+        id="userName"
+        formControlName="userName"
+        [ngClass]="{
+          'is-invalid':
+            driverForm.get('userName')?.invalid &&
+            driverForm.get('userName')?.touched
+        }"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="driverForm.get('userName')?.errors?.['required']"
+      >
+        {{ "admin.profile.username_required" | translate }}
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="driverForm.get('userName')?.errors?.['minlength']"
+      >
+        Username must be at least 3 characters
+      </div>
+    </div>
+
     <!-- Phone Number -->
     <div class="col-md-6 mb-3">
       <label for="phoneNumber" class="form-label">

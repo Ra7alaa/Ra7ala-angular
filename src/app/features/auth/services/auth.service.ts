@@ -6,14 +6,16 @@ import { map, catchError } from 'rxjs/operators';
 import { User, UserRole } from '../models/user.model';
 import { environment } from '../../../../environments/environment';
 import { RegisterResponse } from '../pages/register/register.component';
-
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private api = `${environment.apiUrl}/api/Auth`;
+  private api = `${environment.apiUrl}/Auth`;
   private user$ = new BehaviorSubject<User | null>(null);
   currentUser$ = this.user$.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
     const stored = localStorage.getItem('user');
     if (stored) this.user$.next(JSON.parse(stored));
   }
@@ -24,10 +26,10 @@ export class AuthService {
     rememberMe?: boolean;
   }): Observable<User> {
     return this.http
-      .post<{ statusCode: number; data: { token: string } }>(
-        `${this.api}/login`,
-        creds
-      )
+      .post<{
+        statusCode: number;
+        data: { token: string };
+      }>(`${this.api}/login`, creds)
       .pipe(
         map((res) => res.data.token),
         switchMap((token) => this.fetchProfile(token)),
@@ -37,7 +39,7 @@ export class AuthService {
           this.redirect(user.userType);
           return user;
         }),
-        catchError((e) => throwError(() => e))
+        catchError((e) => throwError(() => e)),
       );
   }
 
@@ -60,6 +62,24 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     return this.user$.value;
+  }
+
+  hasRole(roles: UserRole | readonly UserRole[]): boolean {
+    const currentUser = this.user$.value;
+    if (!currentUser) {
+      return false;
+    }
+
+    const allowedRoles = Array.isArray(roles) ? roles : [roles];
+    return allowedRoles.includes(currentUser.userType);
+  }
+
+  isAdminOrHigher(): boolean {
+    return this.hasRole([
+      UserRole.SystemOwner,
+      UserRole.SuperAdmin,
+      UserRole.Admin,
+    ]);
   }
 
   /**
@@ -98,7 +118,7 @@ export class AuthService {
 
           return newUser;
         }),
-        catchError((error) => throwError(() => error))
+        catchError((error) => throwError(() => error)),
       );
   }
 
@@ -110,8 +130,8 @@ export class AuthService {
   }
 
   /**
-   * Get the company ID of the current user
-   * @returns An Observable with the company ID
+   * Get the company ID of the current user from stored profile data.
+   * Returns an error if the user is not authenticated or has no companyId.
    */
   getCompanyId(): Observable<number> {
     const currentUser = this.getCurrentUser();
@@ -120,27 +140,11 @@ export class AuthService {
       return throwError(() => new Error('User not authenticated'));
     }
 
-    // If companyId is already in the user data, return it
     if (currentUser.companyId) {
       return of(Number(currentUser.companyId));
     }
 
-    // Otherwise, try to fetch it from profile (if your API supports this)
-    const token = currentUser.token;
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http
-      .get<{ companyId: number }>(`${this.api}/company-profile`, { headers })
-      .pipe(
-        map((response) => {
-          // Update user data with companyId
-          const updatedUser = { ...currentUser, companyId: response.companyId };
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-          this.user$.next(updatedUser);
-          return response.companyId;
-        }),
-        catchError((error) => throwError(() => error))
-      );
+    return throwError(() => new Error('Company ID not found in user profile'));
   }
 
   /**
@@ -148,27 +152,7 @@ export class AuthService {
    */
   redirectBasedOnRole(user: User): void {
     if (!user) return;
-
-    switch (user.userType) {
-      case UserRole.SystemOwner:
-        this.router.navigate(['/owner/dashboard']);
-        break;
-      case UserRole.SuperAdmin:
-        this.router.navigate(['/admin/dashboard']);
-        break;
-      case UserRole.Admin:
-        this.router.navigate(['/admin/dashboard']);
-        break;
-      case UserRole.Driver:
-        this.router.navigate(['/driver/dashboard']);
-        break;
-      case UserRole.Passenger:
-        this.router.navigate(['/']);
-        break;
-      default:
-        this.router.navigate(['/']);
-        break;
-    }
+    this.redirect(user.userType);
   }
 
   private redirect(role: UserRole) {
@@ -177,14 +161,11 @@ export class AuthService {
         this.router.navigate(['/owner/dashboard']);
         break;
       case UserRole.SuperAdmin:
-        this.router.navigate(['/admin/dashboard']);
-        break;
       case UserRole.Admin:
         this.router.navigate(['/admin/dashboard']);
         break;
       case UserRole.Driver:
-        this.router.navigate(['/driver/dashboard']);
-        break;
+      case UserRole.Passenger:
       default:
         this.router.navigate(['/']);
         break;

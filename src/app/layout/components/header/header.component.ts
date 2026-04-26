@@ -30,13 +30,13 @@ export class HeaderComponent implements OnInit {
   translations: TranslationDictionary = {};
 
   // Base URL for images
-  private apiBaseUrl = environment.apiUrl;
+  private siteBaseUrl = environment.apiUrl.replace(/\/api$/, '');
 
   constructor(
     private authService: AuthService,
     private languageService: LanguageService,
     private themeService: ThemeService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {
     this.currentLanguage = this.languageService.getCurrentLanguage();
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -76,6 +76,10 @@ export class HeaderComponent implements OnInit {
     );
   }
 
+  isPassengerUser(): boolean {
+    return this.currentUser?.userType === UserRole.Passenger;
+  }
+
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
@@ -86,14 +90,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  scrollToCommonTrips(event: Event): void {
-    event.preventDefault();
-    const element = document.getElementById('common-trips');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      this.closeMobileMenuIfOpen();
-    }
-  }
+
 
   // Function to get full URL for profile image
   getFullProfileImageUrl(imageUrl: string | null | undefined): string {
@@ -108,7 +105,7 @@ export class HeaderComponent implements OnInit {
 
     // If URL starts with "/", it's a relative path from the server
     if (imageUrl.startsWith('/')) {
-      return `${this.apiBaseUrl}${imageUrl}`;
+      return `${this.siteBaseUrl}${imageUrl}`;
     }
 
     // If URL starts with "assets/", it's a local path
@@ -117,6 +114,12 @@ export class HeaderComponent implements OnInit {
     }
 
     // By default, assume it's a relative path from the server
-    return `${this.apiBaseUrl}/${imageUrl}`;
+    return `${this.siteBaseUrl}/${imageUrl}`;
+  }
+  // تسجيل الخروج
+  logout(): void {
+    this.authService.logout();
+    this.closeMobileMenuIfOpen();
+    window.location.href = '/auth/login';
   }
 }

@@ -12,14 +12,29 @@
 }
 
 .modal-container {
-  width: 100%;
+  width: 95%;
   max-width: 550px;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   animation: modalFadeIn 0.3s ease-out;
 }
+
+@media (max-width: 576px) {
+  .modal-container {
+    margin: 10px;
+  }
+  
+  .modal-header, .modal-body, .modal-footer {
+    padding: 15px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.1rem;
+  }
+}
+
 
 @keyframes modalFadeIn {
   from {

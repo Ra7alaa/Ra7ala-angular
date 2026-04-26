@@ -6,21 +6,24 @@
 
 .stat-card {
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-top: 4px solid var(--primary-color);
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
+
 
 .stat-card.secondary {
   border-top-color: #6c757d;
@@ -197,3 +200,82 @@
   padding: 0.75rem;
   border-color: #f2f2f2;
 }
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 15px;
+  }
+
+  .d-flex.justify-content-between.align-items-center .btn {
+    width: 100%;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .timeline {
+    padding-left: 25px;
+  }
+
+  .card-header .d-flex {
+    flex-direction: row;
+    align-items: center !important;
+    gap: 0;
+  }
+  
+  .card-header .btn-sm {
+    width: auto;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: white;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 12px 15px;
+    border-top: 1px solid #f8f9fa;
+  }
+
+  .table tbody td:first-child {
+    border-top: none;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: #999;
+    text-align: left;
+    margin-right: 15px;
+  }
+}
+

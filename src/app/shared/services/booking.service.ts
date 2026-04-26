@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export interface TripDetailsResponse {
@@ -49,7 +48,8 @@ export interface BookingResponse {
   statusCode: number;
   message: string;
   data: {
-    bookingId: number;
+    id?: number;
+    bookingId?: number;
     tripId: number;
     userId: string;
     startStationId: number;
@@ -61,59 +61,161 @@ export interface BookingResponse {
   };
 }
 
+export interface ProcessPaymentResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    clientSecret: string;
+    paymentIntentId: string;
+    bookingId: number;
+    totalPrice: number;
+  };
+}
+
+export interface ConfirmPaymentResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    isSuccess: boolean;
+    ticketIds: number[];
+  };
+}
+
+export interface StripeConfigResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    publishableKey: string;
+  };
+}
+
+export interface ApiResponse<T> {
+  statusCode: number;
+  message: string;
+  data: T;
+}
+
+export interface PassengerTicket {
+  id: number;
+  tripId: number;
+  bookingId?: number;
+  passengerId: string;
+  passengerName: string;
+  seatNumber?: number;
+  price: number;
+  purchaseDate: string;
+  isUsed: boolean;
+  ticketCode: string;
+}
+
+export interface PassengerBooking {
+  id: number;
+  passengerId: string;
+  passengerName: string;
+  tripId: number;
+  startStationId: number;
+  startStationName: string;
+  startCityId: number;
+  startCityName: string;
+  endStationId: number;
+  endStationName: string;
+  endCityId: number;
+  endCityName: string;
+  bookingDate: string;
+  totalPrice: number;
+  status: string;
+  isPaid: boolean;
+  numberOfTickets: number;
+  paymentIntentId?: string;
+  tickets: PassengerTicket[];
+}
+
+export interface PassengerBookingsPayload {
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  bookings: PassengerBooking[];
+}
+
+export interface PassengerTicketsPayload {
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  tickets: PassengerTicket[];
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookingService {
-  private apiUrl = `${environment.apiUrl}/api`;
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getTripDetails(tripId: number): Observable<TripDetailsResponse> {
-    console.log('Getting trip details for tripId:', tripId);
-    const url = `${this.apiUrl}/Trips/${tripId}`;
-    console.log('GET request to:', url);
-
-    return this.http.get<TripDetailsResponse>(url).pipe(
-      tap({
-        next: response => console.log('Trip details response:', response),
-        error: error => console.error('Error fetching trip details:', error)
-      })
-    );
+    return this.http.get<TripDetailsResponse>(`${this.apiUrl}/Trips/${tripId}`);
   }
 
   bookTrip(bookingData: BookingRequest): Observable<BookingResponse> {
-    // Validate the booking data before sending
     if (!this.isValidBookingRequest(bookingData)) {
-      console.error('Invalid booking request data:', bookingData);
       throw new Error('Invalid booking request data');
     }
+    return this.http.post<BookingResponse>(`${this.apiUrl}/Booking`, bookingData);
+  }
 
-    const url = `${this.apiUrl}/Booking`;
-    console.log('POST request to:', url);
-    console.log('Request body:', bookingData);
+  getStripeConfig(): Observable<StripeConfigResponse> {
+    return this.http.get<StripeConfigResponse>(
+      `${this.apiUrl}/Payments/config`,
+    );
+  }
 
-    return this.http.post<BookingResponse>(url, bookingData).pipe(
-      tap({
-        next: (response) => {
-          console.log('Booking API response:', response);
-          console.log('Response status:', response.statusCode);
-          console.log('Response data:', response.data);
-        },
-        error: (error) => {
-          console.error('Booking API error:', error);
-          console.error('Error details:', {
-            status: error.status,
-            message: error.error?.message,
-            error: error.error
-          });
-        }
-      })
+  processPayment(bookingId: number): Observable<ProcessPaymentResponse> {
+    return this.http.post<ProcessPaymentResponse>(
+      `${this.apiUrl}/Booking/payment`,
+      { bookingId },
+    );
+  }
+
+  confirmPayment(
+    paymentIntentId: string,
+    bookingId: number,
+  ): Observable<ConfirmPaymentResponse> {
+    return this.http.post<ConfirmPaymentResponse>(
+      `${this.apiUrl}/Payments/confirm-payment`,
+      {
+        paymentIntentId,
+        bookingId,
+      },
+    );
+  }
+
+  getMyBookings(
+    pageNumber = 1,
+    pageSize = 10,
+  ): Observable<ApiResponse<PassengerBookingsPayload>> {
+    return this.http.get<ApiResponse<PassengerBookingsPayload>>(
+      `${this.apiUrl}/Booking/my-bookings?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    );
+  }
+
+  getMyTickets(
+    pageNumber = 1,
+    pageSize = 10,
+  ): Observable<ApiResponse<PassengerTicketsPayload>> {
+    return this.http.get<ApiResponse<PassengerTicketsPayload>>(
+      `${this.apiUrl}/Booking/my-tickets?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    );
+  }
+
+  cancelBooking(bookingId: number): Observable<ApiResponse<null>> {
+    return this.http.post<ApiResponse<null>>(
+      `${this.apiUrl}/Booking/cancel/${bookingId}`,
+      {},
     );
   }
 
   private isValidBookingRequest(booking: BookingRequest): boolean {
-    const isValid = !!(
+    return !!(
       booking.tripId &&
       booking.startStationId &&
       booking.endStationId &&
@@ -121,19 +223,5 @@ export class BookingService {
       booking.numberOfTickets > 0 &&
       booking.startStationId !== booking.endStationId
     );
-
-    console.log('Booking request validation:', {
-      booking,
-      isValid,
-      checks: {
-        hasTripId: !!booking.tripId,
-        hasStartStation: !!booking.startStationId,
-        hasEndStation: !!booking.endStationId,
-        hasValidTickets: booking.numberOfTickets > 0,
-        hasDifferentStations: booking.startStationId !== booking.endStationId
-      }
-    });
-
-    return isValid;
   }
 }

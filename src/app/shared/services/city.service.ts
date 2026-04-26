@@ -7,14 +7,14 @@ export interface City {
   id: number;
   name: string;
   governorate: string;
-  stations: any[];
+  stations: unknown[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class CityService {
-  private apiUrl = `${environment.apiUrl}/api/City`;
+  private apiUrl = `${environment.apiUrl}/City`;
 
   constructor(private http: HttpClient) {}
 

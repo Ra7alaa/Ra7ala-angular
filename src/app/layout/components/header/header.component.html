@@ -37,15 +37,7 @@
             (click)="closeMobileMenuIfOpen()"
             >{{ "navigation.home" | translate }}</a
           >
-
-          <a
-            href="#common-trips"
-            class="nav-link"
-            (click)="scrollToCommonTrips($event)"
-          >
-            {{ "navigation.destinations" | translate }}</a
-          >
-
+          
           <a
             routerLink="/about"
             routerLinkActive="active"
@@ -53,6 +45,18 @@
             (click)="closeMobileMenuIfOpen()"
             >{{ "navigation.about" | translate }}</a
           >
+          
+          <ng-container *ngIf="isPassengerUser()">
+            <a
+              routerLink="/profile/bookings"
+              routerLinkActive="active"
+              class="nav-link"
+              (click)="closeMobileMenuIfOpen()"
+            >
+              {{ "profile.my_bookings_tickets" | translate }}</a
+            >
+          </ng-container>
+
         </div>
 
         <!-- Auth Buttons -->
@@ -95,13 +99,13 @@
                 </div>
               </a>
               <a
-                routerLink="/settings"
-                class="btn-settings"
-                (click)="closeMobileMenuIfOpen()"
+                href="javascript:void(0)"
+                class="btn-logout"
+                (click)="logout()"
               >
-                <i class="bi bi-gear me-1"></i>
+                <i class="bi bi-box-arrow-right me-1"></i>
                 <span class="d-none d-sm-inline">{{
-                  "settings" | translate
+                  "auth.logout" | translate
                 }}</span>
               </a>
             </div>

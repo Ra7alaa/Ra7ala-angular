@@ -138,7 +138,17 @@
   justify-content: center;
   border-radius: 50%;
   font-size: 24px;
+  flex-shrink: 0;
 }
+
+@media (max-width: 576px) {
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
+
 
 .bg-light-primary {
   background-color: rgba(255, 152, 0, 0.15);
@@ -398,3 +408,52 @@
 }
 
 /* Existing dashboard styles below */
+@media (max-width: 768px) {
+  .admin-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    text-align: left;
+    padding-bottom: 1rem !important;
+  }
+
+  [dir="rtl"] .admin-dashboard-header {
+    text-align: right;
+  }
+
+  .stat-card .card-body {
+    padding: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+
+  .section-header .btn {
+    width: 100%;
+  }
+
+  .action-buttons-container {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .stat-card .d-flex {
+    align-items: flex-start !important;
+  }
+  
+  .stat-card .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

@@ -40,3 +40,25 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# ============================================================
+# Ra7ala-specific additions
+# ============================================================
+
+# Environment files — may contain API keys or secrets
+src/environments/environment.prod.ts
+.env
+.env.*
+!.env.example
+
+# Test & coverage reports
+/coverage
+*.lcov
+
+# Package manager lock files (keep package-lock.json, ignore yarn.lock if not used)
+yarn.lock
+
+# Editor directories
+.idea/
+*.swp
+*.swo

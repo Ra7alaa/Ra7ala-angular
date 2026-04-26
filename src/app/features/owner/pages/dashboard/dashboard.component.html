@@ -1,15 +1,16 @@
 <div class="dashboard-container" appRtl>
   <div class="row mb-4">
-    <div class="col-md-12 d-flex justify-content-between align-items-center">
+    <div class="col-md-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
         <h2>{{ "owner.dashboard.title" | translate }}</h2>
         <p class="text-muted">{{ "owner.dashboard.welcome" | translate }}</p>
       </div>
-      <button class="btn btn-primary" (click)="refresh()">
+      <button class="btn btn-primary shadow-sm" (click)="refresh()">
         <i class="fas fa-sync-alt me-2"></i>
         {{ "owner.dashboard.refresh" | translate }}
       </button>
     </div>
+
   </div>
 
   <div *ngIf="isLoading" class="row mb-4">
@@ -228,18 +229,17 @@
               </thead>
               <tbody>
                 <tr *ngFor="let company of recentCompanies">
-                  <td>
+                  <td [attr.data-label]="'owner.dashboard.table.company' | translate">
                     <div class="d-flex align-items-center">
-                      
                       <div>
                         <strong>{{ company.name }}</strong>
                       </div>
                     </div>
                   </td>
-                  <td>{{ company.email }}</td>
-                  <td>{{ company.phone }}</td>
-                  <td>{{ company.address }}</td>
-                  <td>
+                  <td [attr.data-label]="'owner.dashboard.table.email' | translate">{{ company.email }}</td>
+                  <td [attr.data-label]="'owner.dashboard.table.phone' | translate">{{ company.phone }}</td>
+                  <td [attr.data-label]="'owner.dashboard.table.address' | translate">{{ company.address }}</td>
+                  <td [attr.data-label]="'owner.dashboard.table.status' | translate">
                     <span
                       [ngClass]="{
                         'badge rounded-pill': true,
@@ -253,8 +253,8 @@
                       }}</span
                     >
                   </td>
-                  <td>{{ formatDate(company.createdDate) }}</td>
-                  <td>
+                  <td [attr.data-label]="'owner.dashboard.table.registration_date' | translate">{{ formatDate(company.createdDate) }}</td>
+                  <td [attr.data-label]="'owner.dashboard.table.approved_date' | translate">
                     {{
                       company.approvedDate
                         ? formatDate(company.approvedDate)
@@ -262,6 +262,7 @@
                     }}
                   </td>
                 </tr>
+
               </tbody>
             </table>
           </div>

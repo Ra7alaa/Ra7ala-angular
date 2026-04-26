@@ -3,57 +3,126 @@
 
   <div class="search-form-wrapper">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-
       <!-- Row 1: Inputs only -->
       <div class="d-flex flex-wrap justify-content-between gap-3 mb-3">
         <!-- Start City -->
         <div class="form-group flex-fill">
           <label class="form-label" for="startCity">
-            <i class="bi bi-geo-alt-fill me-1"></i> {{ "search.Start_city" | translate }}
+            <i class="bi bi-geo-alt-fill me-1"></i>
+            {{ "search.Start_city" | translate }}
           </label>
-          <select id="startCity" formControlName="startCityId" class="form-select">
-            <option value="">{{ "" | translate }}</option>
-            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
-          </select>
+          <p-dropdown
+            id="startCity"
+            formControlName="startCityId"
+            [options]="cities"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            [placeholder]="'search.Start_city' | translate"
+            styleClass="w-100 search-dropdown"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="city-item city-item-value" *ngIf="searchForm.get('startCityId')?.value">
+                <div>{{ getCityName(searchForm.get('startCityId')?.value) }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-city pTemplate="item">
+              <div class="city-item">
+                <i class="bi bi-geo-alt me-2 text-muted"></i>
+                <div>{{ city.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
 
         <!-- End City -->
         <div class="form-group flex-fill">
           <label class="form-label" for="endCity">
-            <i class="bi bi-geo-alt-fill me-1"></i> {{ "search.End_city" | translate }}
+            <i class="bi bi-geo-alt-fill me-1"></i>
+            {{ "search.End_city" | translate }}
           </label>
-          <select id="endCity" formControlName="endCityId" class="form-select">
-            <option value="">{{ "" | translate }}</option>
-            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
-          </select>
+          <p-dropdown
+            id="endCity"
+            formControlName="endCityId"
+            [options]="cities"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            [placeholder]="'search.End_city' | translate"
+            styleClass="w-100 search-dropdown"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="city-item city-item-value" *ngIf="searchForm.get('endCityId')?.value">
+                <div>{{ getCityName(searchForm.get('endCityId')?.value) }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-city pTemplate="item">
+              <div class="city-item">
+                <i class="bi bi-geo-alt me-2 text-muted"></i>
+                <div>{{ city.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
 
         <!-- Departure Date -->
         <div class="form-group flex-fill">
           <label class="form-label" for="departureDate">
-            <i class="bi bi-calendar-event me-1"></i> {{ "search.departure_date" | translate }}
+            <i class="bi bi-calendar-event me-1"></i>
+            {{ "search.departure_date" | translate }}
           </label>
-          <p-calendar id="departureDate" formControlName="departureDate" [showIcon]="true" [minDate]="minDate"
-            dateFormat="yy-mm-dd" [readonlyInput]="true" styleClass="w-100"></p-calendar>
+          <p-calendar
+            id="departureDate"
+            formControlName="departureDate"
+            [showIcon]="true"
+            [minDate]="minDate"
+            dateFormat="yy-mm-dd"
+            [readonlyInput]="true"
+            styleClass="w-100 search-date-picker"
+            inputStyleClass="search-date-input"
+          ></p-calendar>
         </div>
 
         <!-- Required Seats -->
         <div class="form-group flex-fill">
           <label class="form-label" for="requiredSeats">
-            <i class="bi bi-person-plus-fill me-1"></i> {{ "search.Required_seats" | translate }}
+            <i class="bi bi-person-plus-fill me-1"></i>
+            {{ "search.Required_seats" | translate }}
           </label>
-          <p-inputNumber id="requiredSeats" formControlName="requiredSeats" [showButtons]="true" [min]="1" [max]="10"
-            buttonLayout="horizontal" spinnerMode="horizontal" [step]="1" inputId="horizontal" styleClass="w-100">
+          <p-inputNumber
+            id="requiredSeats"
+            formControlName="requiredSeats"
+            [showButtons]="true"
+            [min]="1"
+            [max]="10"
+            buttonLayout="horizontal"
+            spinnerMode="horizontal"
+            [step]="1"
+            inputId="horizontal"
+            styleClass="w-100 search-seat-picker"
+            inputStyleClass="search-seat-input"
+          >
           </p-inputNumber>
         </div>
       </div>
 
       <!-- Row 2: Search Button -->
       <div class="d-flex justify-content-center">
-        <button type="submit" class="search-btn" [disabled]="searchForm.invalid || isLoading">
+        <button
+          type="submit"
+          class="search-btn"
+          [disabled]="searchForm.invalid || isLoading"
+        >
           <i class="bi bi-search"></i>
           <span *ngIf="!isLoading">{{ "search.search" | translate }}</span>
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm"
+          ></span>
         </button>
       </div>
     </form>

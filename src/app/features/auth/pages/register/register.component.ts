@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { HeaderComponent } from '../../../../layout/components/header/header.component';
+import { FooterComponent } from '../../../../layout/components/footer/footer.component';
 
 // إضافة واجهة لاستجابة التسجيل
 export interface RegisterResponse {
@@ -28,7 +30,7 @@ export interface RegisterResponse {
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent],
   standalone: true,
 })
 export class RegisterComponent {

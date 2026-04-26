@@ -29,7 +29,7 @@
           <!-- Email Address -->
           <div class="form-group mb-4">
             <label for="emailOrUsername" class="form-label"
-              >Email Address</label
+              >{{ 'auth.email_or_username' | translate }}</label
             >
             <div class="input-wrapper">
               <input
@@ -37,7 +37,7 @@
                 id="emailOrUsername"
                 formControlName="emailOrUsername"
                 class="form-control"
-                placeholder="Enter your Email"
+                [placeholder]="'auth.enter_email_or_username' | translate"
               />
               <span class="input-icon">
                 <i class="fa fa-envelope"></i>
@@ -47,14 +47,14 @@
 
           <!-- Password -->
           <div class="form-group mb-4">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">{{ 'auth.password' | translate }}</label>
             <div class="input-wrapper">
               <input
                 [type]="showPassword ? 'text' : 'password'"
                 id="password"
                 formControlName="password"
                 class="form-control"
-                placeholder="Password"
+                [placeholder]="'auth.password' | translate"
               />
               <span class="input-icon">
                 <i class="fa fa-lock"></i>
@@ -72,11 +72,11 @@
                 formControlName="rememberMe"
               />
               <label class="form-check-label" for="rememberMe"
-                >Remember Me</label
+                >{{ 'auth.remember_me' | translate }}</label
               >
             </div>
             <a routerLink="/auth/forgot-password" class="forgot-link"
-              >Forgot Password?</a
+              >{{ 'auth.forgot_password' | translate }}</a
             >
           </div>
 
@@ -86,15 +86,40 @@
             [disabled]="loginForm.invalid || isSubmitting"
             class="btn btn-login w-100"
           >
-            Log In
+            {{ (isSubmitting ? 'auth.logging_in' : 'auth.login') | translate }}
           </button>
 
           <!-- Register link -->
           <div class="text-center mt-3 signup-text">
-            <span>Not member yet? </span>
+            <span>{{ 'auth.not_member_yet' | translate }} </span>
             <a routerLink="/auth/register" class="create-account"
-              >Create an account</a
+              >{{ 'auth.create_account' | translate }}</a
             >
+          </div>
+
+          <!-- Quick Demo Login Section -->
+          <div class="quick-login-section mt-5">
+            <div class="divider-container">
+              <span class="divider-text">{{ 'auth.quick_demo_login' | translate }}</span>
+            </div>
+            
+            <div class="demo-buttons-grid">
+              <button type="button" class="demo-btn admin-btn" (click)="quickLogin('superadmin')">
+                <i class="fa fa-user-shield"></i>
+                <span>{{ 'auth.super_admin' | translate }}</span>
+              </button>
+              
+              <button type="button" class="demo-btn owner-btn" (click)="quickLogin('owner')">
+                <i class="fa fa-building"></i>
+                <span>{{ 'auth.owner' | translate }}</span>
+              </button>
+              
+              <button type="button" class="demo-btn passenger-btn" (click)="quickLogin('passenger')">
+                <i class="fa fa-user"></i>
+                <span>{{ 'auth.passenger' | translate }}</span>
+              </button>
+            </div>
+            <p class="demo-hint">{{ 'auth.click_to_login' | translate }}</p>
           </div>
         </form>
       </div>

@@ -16,11 +16,7 @@ const routes: Routes = [
       { path: 'company-requests', component: CompanyRequestsComponent },
       { path: 'companies', component: CompaniesManagementComponent },
       { path: 'companies/:id', component: CompanyDetailsComponent },
-      {
-        path: 'settings',
-        loadChildren: () =>
-          import('../settings/settings.module').then((m) => m.SettingsModule),
-      },
+
     ],
   },
 ];

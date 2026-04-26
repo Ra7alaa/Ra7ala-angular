@@ -30,13 +30,13 @@ export class CompanyProfileComponent implements OnInit {
   error: string | null = null;
   submitSuccess = false;
   selectedRating = 0;
-  private apiBaseUrl = environment.apiUrl;
+  private siteBaseUrl = environment.apiUrl.replace(/\/api$/, '');
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private companyService: CompanyService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.feedbackForm = this.fb.group({
       rating: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
@@ -148,7 +148,7 @@ export class CompanyProfileComponent implements OnInit {
 
     // If URL starts with "/", it's a relative path from the server
     if (logoUrl.startsWith('/')) {
-      return `${this.apiBaseUrl}${logoUrl}`;
+      return `${this.siteBaseUrl}${logoUrl}`;
     }
 
     // If URL starts with "assets/", it's a local path
@@ -157,6 +157,6 @@ export class CompanyProfileComponent implements OnInit {
     }
 
     // By default, assume it's a relative path from the server
-    return `${this.apiBaseUrl}/${logoUrl}`;
+    return `${this.siteBaseUrl}/${logoUrl}`;
   }
 }

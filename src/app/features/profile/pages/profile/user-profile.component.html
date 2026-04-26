@@ -19,7 +19,7 @@
               alt="{{ 'profile.profile_picture' | translate }}"
               class="rounded-circle img-thumbnail"
               style="width: 150px; height: 150px; object-fit: cover"
-              onerror="this.src='assets/images/default-avatar.svg'"
+              onerror="this.src = 'assets/images/default-avatar.svg'"
             />
             <button
               type="button"
@@ -43,6 +43,14 @@
           <p class="text-muted">
             {{ profileForm.get("email")?.value || "user@example.com" }}
           </p>
+
+          <a
+            class="btn btn-outline-primary mt-2"
+            routerLink="/profile/bookings"
+          >
+            <i class="bi bi-ticket-perforated me-1"></i>
+            {{ "profile.my_bookings_tickets" | translate }}
+          </a>
 
           <!-- Display upload button only when an image is selected -->
           <div class="d-flex justify-content-center mt-3" *ngIf="selectedImage">
@@ -223,3 +231,4 @@
       </div>
     </div>
   </div>
+</div>

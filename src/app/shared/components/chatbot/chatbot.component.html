@@ -21,7 +21,8 @@
            [class.user-message]="message.isUser"
            [class.bot-message]="!message.isUser">
         <div class="message-content">
-          <div class="message-text">{{ message.text }}</div>
+          <div class="message-text" *ngIf="message.isUser">{{ message.text }}</div>
+          <div class="message-text markdown-content" *ngIf="!message.isUser" [innerHTML]="message.safeHtml"></div>
           <div class="message-time">{{ message.timestamp | date:'shortTime' }}</div>
           
           <!-- Quick Reply Options -->

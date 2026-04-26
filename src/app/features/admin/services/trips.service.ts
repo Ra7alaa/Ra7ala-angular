@@ -19,7 +19,7 @@ export interface ApiResponse<T = unknown> {
   providedIn: 'root',
 })
 export class TripsService {
-  private apiUrl = `${environment.apiUrl}/api/Trips`;
+  private apiUrl = `${environment.apiUrl}/Trips`;
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +37,7 @@ export class TripsService {
     return this.http
       .get<PaginatedTripsResponse>(
         `${this.apiUrl}/paginated?pageNumber=${page}&pageSize=${pageSize}`,
-        this.getHttpOptions()
+        this.getHttpOptions(),
       )
       .pipe(catchError((error) => throwError(() => error)));
   }
@@ -46,12 +46,12 @@ export class TripsService {
   getTripsByCompanyId(
     companyId: number,
     page = 1,
-    pageSize = 10
+    pageSize = 10,
   ): Observable<PaginatedTripsResponse> {
     return this.http
       .get<PaginatedTripsResponse>(
         `${this.apiUrl}/paginated?companyId=${companyId}&pageNumber=${page}&pageSize=${pageSize}`,
-        this.getHttpOptions()
+        this.getHttpOptions(),
       )
       .pipe(catchError((error) => throwError(() => error)));
   }
@@ -73,14 +73,12 @@ export class TripsService {
   // Update trip
   updateTrip(
     id: number,
-    trip: TripUpdateRequest
+    trip: TripUpdateRequest,
   ): Observable<ApiResponse<Trip>> {
     return this.http
-      .put<ApiResponse<Trip>>(
-        `${this.apiUrl}/${id}`,
-        trip,
-        this.getHttpOptions()
-      )
+      .put<
+        ApiResponse<Trip>
+      >(`${this.apiUrl}/${id}`, trip, this.getHttpOptions())
       .pipe(catchError((error) => throwError(() => error)));
   }
 

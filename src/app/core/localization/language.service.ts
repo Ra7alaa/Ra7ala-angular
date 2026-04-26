@@ -52,11 +52,8 @@ export class LanguageService {
   }
 
   getCurrentLanguage(): Language {
-    const savedLanguageCode = localStorage.getItem(this.storageKey) || 'en';
-    return (
-      this.languages.find((lang) => lang.code === savedLanguageCode) ||
-      this.languages[0]
-    );
+    // Forced to English as per user request
+    return this.languages[0]; // 'en'
   }
 
   private applyLanguage(language: Language): void {

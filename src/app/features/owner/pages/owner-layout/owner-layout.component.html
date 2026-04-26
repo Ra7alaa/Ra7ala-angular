@@ -1,4 +1,15 @@
 <div class="owner-layout" appRtl>
+  <!-- Mobile Overlay -->
+  <div 
+    class="sidebar-overlay" 
+    *ngIf="isSidebarVisible" 
+    (click)="toggleSidebar()"
+    (keydown.enter)="toggleSidebar()"
+    role="button"
+    tabindex="0"
+    aria-label="Close sidebar"
+  ></div>
+
   <!-- Navbar -->
   <nav
     class="navbar navbar-expand-lg navbar-dark"
@@ -12,10 +23,7 @@
       <button
         class="navbar-toggler"
         type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
+        (click)="toggleSidebar()"
         aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon"></span>
@@ -26,13 +34,14 @@
     </div>
   </nav>
 
-  <div class="d-flex">
+  <div class="d-flex main-wrapper">
     <!-- Sidebar -->
-    <div class="owner-sidebar d-none d-lg-block">
+    <div class="owner-sidebar" [class.show]="isSidebarVisible">
       <div class="list-group list-group-flush mt-3">
         <a
           routerLink="/owner/dashboard"
           routerLinkActive="active"
+          (click)="isSidebarVisible = false"
           class="list-group-item list-group-item-action border-0"
         >
           <i class="fas fa-tachometer-alt me-2 text-primary"></i>
@@ -41,6 +50,7 @@
         <a
           routerLink="/owner/company-requests"
           routerLinkActive="active"
+          (click)="isSidebarVisible = false"
           class="list-group-item list-group-item-action border-0"
         >
           <i class="fas fa-clipboard-list me-2 text-primary"></i>
@@ -54,6 +64,7 @@
         <a
           routerLink="/owner/companies"
           routerLinkActive="active"
+          (click)="isSidebarVisible = false"
           class="list-group-item list-group-item-action border-0"
         >
           <i class="fas fa-building me-2 text-primary"></i>
@@ -61,12 +72,12 @@
         </a>
         <hr />
         <a
-          routerLink="/owner/settings"
-          routerLinkActive="active"
-          class="list-group-item list-group-item-action border-0"
+          href="javascript:void(0)"
+          (click)="logout()"
+          class="list-group-item list-group-item-action border-0 logout-link"
         >
-          <i class="fas fa-cog me-2 text-primary"></i>
-          {{ "owner.sidebar.settings" | translate }}
+          <i class="fas fa-sign-out-alt me-2 text-danger"></i>
+          {{ "auth.logout" | translate }}
         </a>
       </div>
     </div>

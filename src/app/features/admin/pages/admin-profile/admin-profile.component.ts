@@ -43,7 +43,7 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
   selectedProfileImagePreview: string | null = null;
 
   // Base URL for images
-  private apiBaseUrl = environment.apiUrl;
+  private siteBaseUrl = environment.apiUrl.replace(/\/api$/, '');
 
   private subscriptions: Subscription[] = [];
 
@@ -51,7 +51,7 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private themeService: ThemeService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
   ) {
     // Initialize with current settings
     this.currentLanguage = this.languageService.getCurrentLanguage();
@@ -75,14 +75,14 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.languageService.language$.subscribe((language) => {
         this.currentLanguage = language;
-      })
+      }),
     );
 
     // Subscribe to theme changes
     this.subscriptions.push(
       this.themeService.theme$.subscribe((theme) => {
         this.currentTheme = theme;
-      })
+      }),
     );
   }
 
@@ -122,7 +122,7 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
             companyName: user.companyName,
           });
         }
-      })
+      }),
     );
   }
 
@@ -302,7 +302,7 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
 
     // If URL starts with "/", it's a relative path from the server
     if (imageUrl.startsWith('/')) {
-      return `${this.apiBaseUrl}${imageUrl}`;
+      return `${this.siteBaseUrl}${imageUrl}`;
     }
 
     // If URL starts with "assets/", it's a local path
@@ -311,7 +311,7 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
     }
 
     // By default, assume it's a relative path from the server
-    return `${this.apiBaseUrl}/${imageUrl}`;
+    return `${this.siteBaseUrl}/${imageUrl}`;
   }
 
   // This function helps with conditional CSS classes based on the theme

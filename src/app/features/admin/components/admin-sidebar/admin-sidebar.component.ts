@@ -84,14 +84,24 @@ export class AdminSidebarComponent implements OnInit, OnDestroy {
     return this.themeService.isDarkTheme();
   }
 
-  // إغلاق الـ sidebar عندما يتم النقر على زر الإغلاق
+  // إغلاق الـ sidebar عندما يتم النقر على زر الإغلاق (فقط في الموبايل)
   closeSidebar(): void {
-    this.isHidden = true;
-    this.sidebarClosed.emit();
+    if (window.innerWidth < 800) {
+      this.isHidden = true;
+      this.sidebarClosed.emit();
+    }
   }
+
 
   // التحقق إذا كان المستخدم هو SuperAdmin
   isSuperAdmin(): boolean {
     return this.currentUser?.userType === UserRole.SuperAdmin;
+  }
+
+  // تسجيل الخروج
+  logout(): void {
+    this.authService.logout();
+    this.closeSidebar();
+    window.location.href = '/auth/login';
   }
 }

@@ -20,6 +20,7 @@
     <!-- Sidebar with responsive behavior -->
     <app-admin-sidebar
       [isHidden]="isSidebarHidden"
+      [class.sidebar-hidden]="isSidebarHidden"
       (sidebarClosed)="isSidebarHidden = true"
       class="d-block"
     ></app-admin-sidebar>
@@ -30,11 +31,12 @@
       <div class="mobile-toggle-container">
         <button
           class="toggle-sidebar-btn"
-          (click)="toggleSidebar()"
+          (click)="toggleSidebar(); $event.stopPropagation()"
           aria-label="Toggle sidebar"
         >
           <i class="bi bi-list"></i>
         </button>
+
       </div>
 
       <!-- Admin content -->

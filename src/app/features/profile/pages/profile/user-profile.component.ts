@@ -18,14 +18,19 @@ import {
   LanguageService,
   Language,
 } from '../../../../core/localization/language.service';
+import {
+  TranslationDictionary,
+  TranslationService,
+} from '../../../../core/localization/translation.service';
 import { Subscription } from 'rxjs';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 import { environment } from '../../../../../environments/environment';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, RouterModule],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
 })
@@ -37,13 +42,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   submitError: string | null = null;
   currentLanguage!: Language;
   currentTheme!: ThemeOption;
+  translations: TranslationDictionary = {};
 
   // Variables to handle image loading
   selectedImage: File | null = null;
   selectedImagePreview: string | null = null;
 
   // Base URL for profile images
-  private apiBaseUrl = environment.apiUrl;
+  private siteBaseUrl = environment.apiUrl.replace(/\/api$/, '');
 
   private subscriptions: Subscription[] = [];
   private formatDatePipe: FormatDatePipe;
@@ -52,7 +58,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private themeService: ThemeService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private translationService: TranslationService,
   ) {
     // Initialize with current settings
     this.currentLanguage = this.languageService.getCurrentLanguage();
@@ -72,18 +79,26 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     this.loadUserProfile();
 
+    this.subscriptions.push(
+      this.translationService.translations$.subscribe((translations) => {
+        this.translations = translations;
+      }),
+    );
+
+    this.translationService.reloadTranslations();
+
     // Subscribe to language changes
     this.subscriptions.push(
       this.languageService.language$.subscribe((language) => {
         this.currentLanguage = language;
-      })
+      }),
     );
 
     // Subscribe to theme changes
     this.subscriptions.push(
       this.themeService.theme$.subscribe((theme) => {
         this.currentTheme = theme;
-      })
+      }),
     );
   }
 
@@ -110,7 +125,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           } else {
             console.error(
               'Invalid date format in user data:',
-              this.currentUser.dateOfBirth
+              this.currentUser.dateOfBirth,
             );
           }
         } catch (error) {
@@ -160,7 +175,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             profilePictureUrl: user.profilePictureUrl,
           });
         }
-      })
+      }),
     );
   }
 
@@ -193,7 +208,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     formData.append(
       'profilePicture',
       this.selectedImage,
-      this.selectedImage.name
+      this.selectedImage.name,
     );
 
     // Add current data from the form to maintain it
@@ -273,7 +288,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       formData.append(
         'profilePicture',
         this.selectedImage,
-        this.selectedImage.name
+        this.selectedImage.name,
       );
 
       // Send to service
@@ -386,7 +401,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     // If the URL starts with a "/", it's a relative path from the server
     if (imageUrl.startsWith('/')) {
-      return `${this.apiBaseUrl}${imageUrl}`;
+      return `${this.siteBaseUrl}${imageUrl}`;
     }
 
     // If the URL starts with "assets/", it's a local path
@@ -395,6 +410,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
 
     // By default, we assume it's a relative path from the server
-    return `${this.apiBaseUrl}/${imageUrl}`;
+    return `${this.siteBaseUrl}/${imageUrl}`;
   }
 }

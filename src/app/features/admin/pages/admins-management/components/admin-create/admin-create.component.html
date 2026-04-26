@@ -107,6 +107,44 @@
         </div>
       </div>
 
+      <!-- User Name -->
+      <div
+        class="form-group"
+        [class.has-error]="
+          adminForm.get('userName')?.invalid && adminForm.get('userName')?.touched
+        "
+      >
+        <label for="userName" class="form-label required-field">
+          {{ "admin.admins.create_admin.username_label" | translate }}
+        </label>
+        <div class="input-group has-icon">
+          <i class="bi bi-person-badge input-icon"></i>
+          <input
+            type="text"
+            class="form-control"
+            id="userName"
+            formControlName="userName"
+            placeholder="{{
+              'admin.admins.create_admin.username_placeholder' | translate
+            }}"
+          />
+        </div>
+        <div
+          *ngIf="
+            adminForm.get('userName')?.invalid &&
+            adminForm.get('userName')?.touched
+          "
+          class="text-danger mt-1 small"
+        >
+          <span *ngIf="adminForm.get('userName')?.errors?.['required']">
+            {{ "admin.admins.create_admin.username_required" | translate }}
+          </span>
+          <span *ngIf="adminForm.get('userName')?.errors?.['minlength']">
+            {{ "admin.admins.create_admin.username_min_length" | translate }}
+          </span>
+        </div>
+      </div>
+
       <!-- Phone Number -->
       <div
         class="form-group"

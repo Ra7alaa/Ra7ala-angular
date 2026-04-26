@@ -22,6 +22,8 @@ import { TranslationService } from '../../../../core/localization/translation.se
 import { RtlDirective } from '../../../settings/directives/rtl.directive';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { HeaderComponent } from '../../../../layout/components/header/header.component';
+import { FooterComponent } from '../../../../layout/components/footer/footer.component';
 
 // Define the CompanyCreateRequest interface to include Website and TaxDocument
 interface CompanyCreateRequest {
@@ -34,6 +36,7 @@ interface CompanyCreateRequest {
   Website: string; // Should be string to match the backend API expectation
   SuperAdminName: string;
   SuperAdminEmail: string;
+  SuperAdminUserName: string;
   SuperAdminPhone: string;
   TaxDocument?: File; // Added field for tax document
 }
@@ -49,6 +52,8 @@ interface CompanyCreateRequest {
     RouterModule,
     TranslatePipe,
     RtlDirective,
+    HeaderComponent,
+    FooterComponent,
   ],
   providers: [TranslationService],
 })
@@ -107,6 +112,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
           ),
         ],
       ],
+      superAdminUserName: ['', [Validators.required, Validators.minLength(3)]],
       superAdminPhone: [
         '',
         [Validators.required, Validators.pattern(/^\+?[0-9]{10,14}$/)],
@@ -207,6 +213,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
       Website: this.companyForm.get('website')?.value || '',
       SuperAdminName: this.companyForm.get('superAdminName')?.value,
       SuperAdminEmail: this.companyForm.get('superAdminEmail')?.value,
+      SuperAdminUserName: this.companyForm.get('superAdminUserName')?.value,
       SuperAdminPhone: this.companyForm.get('superAdminPhone')?.value,
     };
 
@@ -269,21 +276,6 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
       },
       complete: () => {
         this.isSubmitting = false;
-      },
-    });
-  }
-
-  // Debug function to directly test the API
-  testApiDirectly() {
-    console.log('Running direct API test...');
-    this.companyService.testCompanyCreation().subscribe({
-      next: (response) => {
-        console.log('TEST API SUCCESS:', response);
-        alert('API test successful! See console for details.');
-      },
-      error: (error) => {
-        console.error('TEST API ERROR:', error);
-        alert(`API test failed: ${error.message || 'Unknown error'}`);
       },
     });
   }
@@ -387,6 +379,7 @@ export class CompanyRegisterComponent implements OnInit, OnDestroy {
       Description: 'description',
       SuperAdminName: 'superAdminName',
       SuperAdminEmail: 'superAdminEmail',
+      SuperAdminUserName: 'superAdminUserName',
       SuperAdminPhone: 'superAdminPhone',
       TaxDocument: 'taxDocumentUrl',
     };

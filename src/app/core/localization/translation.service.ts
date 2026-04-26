@@ -17,10 +17,11 @@ export class TranslationService {
     this.translationsSubject.asObservable();
 
   private translationCache: Record<string, TranslationDictionary> = {};
+  private loadVersion = 0;
 
   constructor(
     private http: HttpClient,
-    private languageService: LanguageService
+    private languageService: LanguageService,
   ) {
     // Initialize with the current language
     this.loadTranslations(this.languageService.getCurrentLanguage().code);
@@ -46,11 +47,13 @@ export class TranslationService {
     }
 
     console.log(
-      `Loading translations for ${lang} from assets/i18n/${lang}.json`
+      `Loading translations for ${lang} from assets/i18n/${lang}.json`,
     );
 
+    const cacheBuster = `v=${new Date().getTime()}`;
+
     this.http
-      .get<TranslationDictionary>(`assets/i18n/${lang}.json`)
+      .get<TranslationDictionary>(`assets/i18n/${lang}.json?${cacheBuster}`)
       .pipe(
         tap((translations) => {
           // Cache the translations
@@ -60,10 +63,12 @@ export class TranslationService {
           console.error(`Failed to load translations for ${lang}:`, error);
           // Fallback to English if there's an error
           if (lang !== 'en') {
-            return this.http.get<TranslationDictionary>('assets/i18n/en.json');
+            return this.http.get<TranslationDictionary>(
+              `assets/i18n/en.json?v=${this.loadVersion++}`,
+            );
           }
           return of({});
-        })
+        }),
       )
       .subscribe({
         next: (translations) => {
@@ -110,7 +115,7 @@ export class TranslationService {
    */
   private getValueByKey(
     obj: TranslationDictionary,
-    key: string
+    key: string,
   ): string | undefined {
     if (!obj || typeof obj !== 'object') return undefined;
     return typeof obj[key] === 'string' ? (obj[key] as string) : undefined;

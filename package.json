@@ -26,6 +26,7 @@
     "@ngx-translate/http-loader": "^16.0.1",
     "@popperjs/core": "^2.11.8",
     "@primeng/themes": "^19.1.0",
+    "@stripe/stripe-js": "^9.2.0",
     "@syncfusion/ej2-angular-grids": "^29.1.38",
     "@syncfusion/ej2-material-theme": "~29.1.38",
     "bootstrap": "^5.3.5",

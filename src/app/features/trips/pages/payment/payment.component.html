@@ -1,0 +1,162 @@
+<div class="payment-page">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <!-- Loading Spinner -->
+        <div *ngIf="loading" class="text-center py-5">
+          <div
+            class="spinner-border text-primary"
+            style="width: 3rem; height: 3rem"
+            role="status"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 text-muted">{{ t("payment_page.loading") }}</p>
+        </div>
+
+        <!-- Payment Success -->
+        <div *ngIf="paymentSuccess" class="text-center py-5">
+          <div class="success-icon mb-4">
+            <i
+              class="bi bi-check-circle-fill text-success"
+              style="font-size: 5rem"
+            ></i>
+          </div>
+          <h2 class="text-success mb-3">
+            {{ t("payment_page.success_title") }}
+          </h2>
+          <p class="text-muted mb-4">
+            {{ t("payment_page.success_message") }}
+          </p>
+          <div
+            class="spinner-border spinner-border-sm text-primary"
+            role="status"
+          ></div>
+        </div>
+
+        <!-- Payment Form -->
+        <div *ngIf="!loading && !paymentSuccess">
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white text-center py-3">
+              <h4 class="mb-0">
+                <i class="bi bi-credit-card me-2"></i>
+                {{ t("payment_page.title") }}
+              </h4>
+            </div>
+
+            <div class="card-body p-4">
+              <!-- Booking Summary -->
+              <div class="booking-summary mb-4 p-3 bg-light rounded">
+                <h6 class="text-muted mb-2">
+                  {{ t("payment_page.summary.title") }}
+                </h6>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>{{ t("payment_page.summary.booking_no") }}</span>
+                  <strong>#{{ bookingId }}</strong>
+                </div>
+                <div
+                  class="d-flex justify-content-between align-items-center mt-2"
+                >
+                  <span>{{ t("payment_page.summary.amount_due") }}</span>
+                  <strong class="text-primary fs-5">{{
+                    totalPrice | currency: "EGP" : "symbol" : "1.2-2"
+                  }}</strong>
+                </div>
+              </div>
+
+              <!-- Global Error -->
+              <div
+                *ngIf="error"
+                class="alert alert-danger d-flex align-items-center mb-4"
+                role="alert"
+              >
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span>{{ error }}</span>
+              </div>
+
+              <!-- Stripe Card Element -->
+              <div class="mb-4">
+                <span class="form-label fw-semibold d-block">{{
+                  t("payment_page.card_details")
+                }}</span>
+                <div
+                  id="card-element"
+                  class="card-element-container form-control p-3"
+                >
+                  <!-- Stripe Card Element mounts here -->
+                </div>
+                <div *ngIf="cardError" class="text-danger mt-1 small">
+                  <i class="bi bi-exclamation-circle me-1"></i>{{ cardError }}
+                </div>
+              </div>
+
+              <!-- Stripe Badge -->
+              <div class="text-center mb-4">
+                <small class="text-muted">
+                  <i class="bi bi-lock-fill me-1"></i>
+                  {{ t("payment_page.secure_by") }}
+                  <span class="fw-bold">Stripe</span>
+                </small>
+              </div>
+
+              <!-- Actions -->
+              <div class="d-grid gap-2">
+                <button
+                  class="btn btn-primary btn-lg"
+                  (click)="submitPayment()"
+                  [disabled]="processingPayment || !!cardError"
+                >
+                  <span
+                    *ngIf="processingPayment"
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                  <i
+                    *ngIf="!processingPayment"
+                    class="bi bi-credit-card me-2"
+                  ></i>
+                  {{
+                    processingPayment
+                      ? t("payment_page.processing")
+                      : t("payment_page.pay_now") +
+                        " " +
+                        (totalPrice | currency: "EGP" : "symbol" : "1.2-2")
+                  }}
+                </button>
+
+                <button
+                  class="btn btn-outline-secondary"
+                  (click)="cancelPayment()"
+                  [disabled]="processingPayment"
+                >
+                  <i class="bi bi-arrow-right me-1"></i>
+                  {{ t("payment_page.cancel_and_back") }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Test Card Info (Development Only) -->
+          <div class="card mt-3 border-warning">
+            <div class="card-body py-2 px-3">
+              <small class="text-warning fw-bold">
+                <i class="bi bi-info-circle me-1"></i>
+                {{ t("payment_page.test_data.title") }}
+              </small>
+              <small class="d-block text-muted mt-1">
+                {{ t("payment_page.test_data.card_no") }}:
+                <code>4242 4242 4242 4242</code> &nbsp;|&nbsp;
+                {{ t("payment_page.test_data.expiry") }}:
+                <code>12/34</code> &nbsp;|&nbsp; CVV:
+                <code>123</code>
+              </small>
+              <small class="d-block text-muted mt-1">
+                {{ t("payment_page.test_data.postal_optional") }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

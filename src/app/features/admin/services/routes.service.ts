@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class RoutesService {
-  private apiUrl = `${environment.apiUrl}/api/Routes`;
+  private apiUrl = `${environment.apiUrl}/Routes`;
 
   constructor(private http: HttpClient) {}
 
@@ -29,7 +29,7 @@ export class RoutesService {
 
   // Get all routes for system owners
   getAllRoutes(companyId?: number): Observable<RoutesResponse> {
-    let url = `${environment.apiUrl}/api/Routes`;
+    let url = `${environment.apiUrl}/Routes`;
 
     // Add companyId filter if provided
     if (companyId) {
@@ -69,7 +69,7 @@ export class RoutesService {
       catchError((error) => {
         console.error('Error fetching routes:', error);
         return throwError(() => new Error('Failed to load routes'));
-      })
+      }),
     );
   }
 
@@ -77,9 +77,9 @@ export class RoutesService {
   getRoutesByCompanyId(
     companyId: number,
     page = 1,
-    pageSize = 10
+    pageSize = 10,
   ): Observable<PaginatedRoutesResponse> {
-    const url = `${environment.apiUrl}/api/Routes/paginated?companyId=${companyId}&pageNumber=${page}&pageSize=${pageSize}`;
+    const url = `${environment.apiUrl}/Routes/paginated?companyId=${companyId}&pageNumber=${page}&pageSize=${pageSize}`;
 
     console.log(`Fetching routes for company ID ${companyId}`);
 
@@ -126,7 +126,7 @@ export class RoutesService {
         catchError((error) => {
           console.error('Error fetching routes:', error);
           return throwError(() => new Error('Failed to load routes'));
-        })
+        }),
       );
   }
 
@@ -141,7 +141,7 @@ export class RoutesService {
       catchError((error) => {
         console.error('Error fetching active routes:', error);
         return throwError(() => new Error('Failed to load active routes'));
-      })
+      }),
     );
   }
 
@@ -159,7 +159,7 @@ export class RoutesService {
         catchError((error) => {
           console.error('Error creating route:', error);
           return throwError(() => new Error('Failed to create route'));
-        })
+        }),
       );
   }
 
@@ -172,7 +172,7 @@ export class RoutesService {
         catchError((error) => {
           console.error(`Error deleting route ID ${id}:`, error);
           return throwError(() => new Error('Failed to delete route'));
-        })
+        }),
       );
   }
 }

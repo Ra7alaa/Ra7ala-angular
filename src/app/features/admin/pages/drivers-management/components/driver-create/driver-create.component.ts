@@ -48,6 +48,7 @@ export class DriverCreateComponent implements OnInit {
     this.driverForm = this.fb.group({
       fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
       phoneNumber: ['', [Validators.required]],
       licenseNumber: ['', [Validators.required]],
       licenseExpiryDate: ['', [Validators.required]],
@@ -122,6 +123,7 @@ export class DriverCreateComponent implements OnInit {
     const driverData: DriverRegistrationRequest = {
       FullName: String(formValues.fullName || '').trim(),
       Email: String(formValues.email || '').trim(),
+      UserName: String(formValues.userName || '').trim(),
       PhoneNumber: String(formValues.phoneNumber || '').trim(),
       LicenseNumber: String(formValues.licenseNumber || '').trim(),
       LicenseExpiryDate: licenseExpiryDate,

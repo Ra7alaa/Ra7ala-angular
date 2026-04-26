@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CompanyService } from '../../services/company.service';
 import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 import { RtlDirective } from '../../../settings/directives/rtl.directive';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-owner-layout',
@@ -22,9 +23,13 @@ import { RtlDirective } from '../../../settings/directives/rtl.directive';
 })
 export class OwnerLayoutComponent implements OnInit, OnDestroy {
   pendingRequestsCount = 0;
+  isSidebarVisible = false;
   private subscription: Subscription | null = null;
 
-  constructor(private companyService: CompanyService) {}
+  constructor(
+    private companyService: CompanyService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadPendingRequestsCount();
@@ -39,6 +44,10 @@ export class OwnerLayoutComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarVisible = !this.isSidebarVisible;
   }
 
   loadPendingRequestsCount(): void {
@@ -60,5 +69,11 @@ export class OwnerLayoutComponent implements OnInit, OnDestroy {
           tempSubscription.unsubscribe();
         },
       });
+  }
+  // تسجيل الخروج
+  logout(): void {
+    this.authService.logout();
+    this.isSidebarVisible = false;
+    window.location.href = '/auth/login';
   }
 }

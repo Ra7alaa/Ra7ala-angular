@@ -20,6 +20,7 @@ export interface Driver {
 export interface DriverRegistrationRequest {
   FullName: string;
   Email: string;
+  UserName: string;
   PhoneNumber: string;
   LicenseNumber: string;
   LicenseExpiryDate: string;

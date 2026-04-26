@@ -1,0 +1,311 @@
+<section class="shell">
+
+  <!-- ══════════ HERO ══════════ -->
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow">{{ "bookings_page.eyebrow" | translate }}</span>
+      <h1>{{ "bookings_page.title" | translate }}</h1>
+      <p class="hero-sub">{{ "bookings_page.subtitle" | translate }}</p>
+      <div class="hero-ctas">
+        <a class="cta-ghost" routerLink="/trips/search">
+          {{ "bookings_page.actions.new_trip" | translate }}
+        </a>
+        <a class="cta-solid" routerLink="/profile">
+          {{ "bookings_page.actions.back_profile" | translate }}
+        </a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-circle c1"></div>
+      <div class="art-circle c2"></div>
+      <div class="art-circle c3"></div>
+    </div>
+  </header>
+
+  <!-- ══════════ STATS ROW ══════════ -->
+  <div class="stats-row">
+    <div class="stat-pill">
+      <span class="stat-num">{{ bookingsTotal }}</span>
+      <span class="stat-lbl">{{ "bookings_page.tabs.bookings" | translate }}</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-pill">
+      <span class="stat-num">{{ ticketsTotal }}</span>
+      <span class="stat-lbl">{{ "bookings_page.tabs.tickets" | translate }}</span>
+    </div>
+  </div>
+
+  <!-- ══════════ TABS ══════════ -->
+  <div class="tabs">
+    <button
+      type="button"
+      class="tab"
+      [class.active]="activeTab === 'bookings'"
+      (click)="switchTab('bookings')"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      {{ "bookings_page.tabs.bookings" | translate }}
+      <span class="tab-count">{{ bookingsTotal }}</span>
+    </button>
+    <button
+      type="button"
+      class="tab"
+      [class.active]="activeTab === 'tickets'"
+      (click)="switchTab('tickets')"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><line x1="9" y1="12" x2="9.01" y2="12"/><line x1="15" y1="12" x2="15.01" y2="12"/></svg>
+      {{ "bookings_page.tabs.tickets" | translate }}
+      <span class="tab-count">{{ ticketsTotal }}</span>
+    </button>
+  </div>
+
+  <!-- ══════════ BOOKINGS PANEL ══════════ -->
+  <div class="panel" *ngIf="activeTab === 'bookings'">
+
+    <div class="state-msg" *ngIf="loadingBookings">
+      <span class="spinner"></span>
+      {{ "bookings_page.loading_bookings" | translate }}
+    </div>
+
+    <div class="state-msg state-error" *ngIf="!loadingBookings && bookingsError">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      {{ bookingsError }}
+    </div>
+
+    <div class="state-msg" *ngIf="!loadingBookings && !bookingsError && !bookings.length">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.35"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <br>{{ "bookings_page.empty_bookings" | translate }}
+    </div>
+
+    <div class="booking-list" *ngIf="!loadingBookings && bookings.length">
+      <article class="bcard" *ngFor="let booking of bookings" [class.bcard--cancelled]="isCancelled(booking.status)">
+
+        <!-- ── Card header ── -->
+        <div class="bcard-head">
+          <div class="bcard-ref">
+            <span class="bcard-id">#{{ booking.id }}</span>
+            <span class="bcard-date">{{ booking.bookingDate | date:"d MMM yyyy · h:mm a" }}</span>
+          </div>
+          <span class="status-badge" [ngClass]="getStatusClass(booking.status)">
+            {{ getStatusLabel(booking.status) }}
+          </span>
+        </div>
+
+        <!-- ── Route ── -->
+        <div class="bcard-route">
+          <div class="route-point">
+            <span class="route-dot dot-from"></span>
+            <div>
+              <p class="route-city">{{ getBookingStartLabel(booking) }}</p>
+              <p class="route-meta">{{ "bookings_page.meta.departure_station" | translate }}</p>
+            </div>
+          </div>
+          <div class="route-line-wrap">
+            <div class="route-track">
+              <svg class="route-plane" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+            </div>
+          </div>
+          <div class="route-point route-point--end">
+            <span class="route-dot dot-to"></span>
+            <div>
+              <p class="route-city">{{ getBookingEndLabel(booking) }}</p>
+              <p class="route-meta">{{ "bookings_page.meta.arrival_station" | translate }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Meta grid ── -->
+        <div class="bcard-meta">
+          <div class="meta-item">
+            <span class="meta-lbl">{{ "bookings_page.meta.ticket_count" | translate }}</span>
+            <span class="meta-val">{{ booking.numberOfTickets }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">{{ "bookings_page.meta.total_price" | translate }}</span>
+            <span class="meta-val meta-price">{{ booking.totalPrice | currency:"EGP":"symbol":"1.2-2" }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">{{ "bookings_page.meta.payment" | translate }}</span>
+            <span class="meta-val" [class.meta-paid]="booking.isPaid" [class.meta-unpaid]="!booking.isPaid">
+              {{ booking.isPaid ? ("bookings_page.payment.paid" | translate) : ("bookings_page.payment.unpaid" | translate) }}
+            </span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">{{ "bookings_page.meta.trip_no" | translate }}</span>
+            <span class="meta-val">#{{ booking.tripId }}</span>
+          </div>
+        </div>
+
+        <!-- ── Tickets drawer ── -->
+        <div class="tickets-section" *ngIf="booking.tickets && booking.tickets.length">
+          <button
+            type="button"
+            class="tickets-toggle"
+            (click)="toggleTickets(booking.id)"
+            [attr.aria-expanded]="isExpanded(booking.id)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+            {{ "bookings_page.tabs.tickets" | translate }}
+            <span class="tickets-count-badge">{{ booking.tickets.length }}</span>
+            <svg class="chevron" [class.chevron--open]="isExpanded(booking.id)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <div class="tickets-drawer" [class.tickets-drawer--open]="isExpanded(booking.id)">
+            <div class="tickets-inner">
+              <div class="tcard" *ngFor="let ticket of booking.tickets">
+                <div class="tcard-top">
+                  <div>
+                    <p class="tcard-code">{{ ticket.ticketCode }}</p>
+                    <p class="tcard-sub">{{ "bookings_page.meta.ticket_label" | translate }}</p>
+                  </div>
+                  <span class="tbadge" [ngClass]="getTicketUsageClass(ticket.isUsed)">
+                    {{ getTicketUsageLabel(ticket.isUsed) }}
+                  </span>
+                </div>
+                <div class="tcard-details">
+                  <div class="tcard-row">
+                    <span>{{ "bookings_page.seat" | translate }}</span>
+                    <strong>{{ ticket.seatNumber || '—' }}</strong>
+                  </div>
+                  <div class="tcard-row">
+                    <span>{{ "bookings_page.meta.price" | translate }}</span>
+                    <strong>{{ ticket.price | currency:"EGP":"symbol":"1.2-2" }}</strong>
+                  </div>
+                  <div class="tcard-row tcard-row--full">
+                    <span>{{ "bookings_page.meta.purchase_date" | translate }}</span>
+                    <strong>{{ ticket.purchaseDate | date:"d MMM yyyy · h:mm a" }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actions ── -->
+        <div class="bcard-foot" *ngIf="!isCancelled(booking.status)">
+          <button
+            type="button"
+            class="btn-cancel"
+            [disabled]="cancellingBookingId === booking.id"
+            (click)="cancelBooking(booking)"
+          >
+            <svg *ngIf="cancellingBookingId !== booking.id" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span class="spinner-sm" *ngIf="cancellingBookingId === booking.id"></span>
+            {{
+              cancellingBookingId === booking.id
+                ? ("bookings_page.actions.cancelling" | translate)
+                : ("bookings_page.actions.cancel_booking" | translate)
+            }}
+          </button>
+        </div>
+
+      </article>
+    </div>
+
+    <!-- Pager -->
+    <div class="pager" *ngIf="!loadingBookings && bookingPages > 1">
+      <button type="button" class="pager-btn" [disabled]="bookingsPage === 1" (click)="changeBookingsPage(bookingsPage - 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button
+        type="button"
+        class="pager-page"
+        *ngFor="let p of bookingPageNumbers"
+        [class.pager-page--active]="p === bookingsPage"
+        (click)="changeBookingsPage(p)"
+      >{{ p }}</button>
+      <button type="button" class="pager-btn" [disabled]="bookingsPage === bookingPages" (click)="changeBookingsPage(bookingsPage + 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════ TICKETS PANEL ══════════ -->
+  <div class="panel" *ngIf="activeTab === 'tickets'">
+
+    <div class="state-msg" *ngIf="loadingTickets">
+      <span class="spinner"></span>
+      {{ "bookings_page.loading_tickets" | translate }}
+    </div>
+
+    <div class="state-msg state-error" *ngIf="!loadingTickets && ticketsError">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      {{ ticketsError }}
+    </div>
+
+    <div class="state-msg" *ngIf="!loadingTickets && !ticketsError && !tickets.length">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.35"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+      <br>{{ "bookings_page.empty_tickets" | translate }}
+    </div>
+
+    <div class="tickets-grid" *ngIf="!loadingTickets && tickets.length">
+      <article class="tcard-standalone" *ngFor="let ticket of tickets" [class.tcard-standalone--used]="ticket.isUsed">
+
+        <!-- Barcode visual -->
+        <div class="barcode-strip" aria-hidden="true">
+          <div class="barcode-lines">
+            <span *ngFor="let _ of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"></span>
+          </div>
+          <p class="barcode-code">{{ ticket.ticketCode }}</p>
+        </div>
+
+        <!-- Ticket content -->
+        <div class="tcard-body">
+          <div class="tcard-body-top">
+            <div>
+              <p class="ts-code">{{ ticket.ticketCode }}</p>
+              <p class="ts-trip">{{ "bookings_page.meta.trip_no" | translate }} #{{ ticket.tripId }}</p>
+            </div>
+            <span class="tbadge" [ngClass]="getTicketUsageClass(ticket.isUsed)">
+              {{ getTicketUsageLabel(ticket.isUsed) }}
+            </span>
+          </div>
+
+          <div class="ts-divider">
+            <div class="ts-notch ts-notch--left"></div>
+            <div class="ts-dash"></div>
+            <div class="ts-notch ts-notch--right"></div>
+          </div>
+
+          <div class="ts-details">
+            <div class="ts-row">
+              <span>{{ "bookings_page.meta.booking_no" | translate }}</span>
+              <strong>#{{ ticket.bookingId || '—' }}</strong>
+            </div>
+            <div class="ts-row">
+              <span>{{ "bookings_page.seat" | translate }}</span>
+              <strong>{{ ticket.seatNumber || '—' }}</strong>
+            </div>
+            <div class="ts-row">
+              <span>{{ "bookings_page.meta.price" | translate }}</span>
+              <strong class="ts-price">{{ ticket.price | currency:"EGP":"symbol":"1.2-2" }}</strong>
+            </div>
+            <div class="ts-row ts-row--full">
+              <span>{{ "bookings_page.meta.purchase_date" | translate }}</span>
+              <strong>{{ ticket.purchaseDate | date:"d MMM yyyy · h:mm a" }}</strong>
+            </div>
+          </div>
+        </div>
+
+      </article>
+    </div>
+
+    <!-- Pager -->
+    <div class="pager" *ngIf="!loadingTickets && ticketPages > 1">
+      <button type="button" class="pager-btn" [disabled]="ticketsPage === 1" (click)="changeTicketsPage(ticketsPage - 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button
+        type="button"
+        class="pager-page"
+        *ngFor="let p of ticketPageNumbers"
+        [class.pager-page--active]="p === ticketsPage"
+        (click)="changeTicketsPage(p)"
+      >{{ p }}</button>
+      <button type="button" class="pager-btn" [disabled]="ticketsPage === ticketPages" (click)="changeTicketsPage(ticketsPage + 1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+</section>

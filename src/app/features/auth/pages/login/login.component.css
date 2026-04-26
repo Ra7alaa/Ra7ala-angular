@@ -8,12 +8,12 @@ html {
 
 .login-page {
   min-height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* Left side with bus image */
 .bus-container {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   overflow: hidden;
   background-color: #fff7e3;
@@ -30,11 +30,11 @@ html {
 
 /* Right side with form */
 .form-container {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 40px;
+  padding: 40px;
 }
 
 .form-content {
@@ -48,7 +48,7 @@ html {
   font-size: 3.2rem;
   font-weight: 400;
   font-family: "Praise", "Arial", sans-serif;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   background: linear-gradient(to right, #f0e869, #f3c084);
   -webkit-background-clip: text;
   background-clip: text;
@@ -151,7 +151,7 @@ html {
 .signup-text {
   color: #333;
   font-size: 0.95rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .create-account {
@@ -185,11 +185,109 @@ html {
   }
 
   .bus-container {
+    min-height: 300px;
     height: 40vh;
   }
 
   .form-container {
-    height: auto;
-    padding: 40px 20px;
+    min-height: auto;
+    padding: 30px 20px;
+  }
+}
+
+/* Quick Demo Login Section */
+.quick-login-section {
+  padding-top: 10px;
+}
+
+.divider-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.divider-container::before,
+.divider-container::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.divider-text {
+  margin: 0 15px;
+  color: #888888;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.demo-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.demo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 8px;
+}
+
+.demo-btn i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.demo-btn span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.demo-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #ffc452;
+}
+
+.demo-btn:hover i {
+  transform: scale(1.1);
+}
+
+.admin-btn i { color: #5c6bc0; }
+.owner-btn i { color: #66bb6a; }
+.passenger-btn i { color: #ffa726; }
+
+.demo-btn:active {
+  transform: translateY(0);
+}
+
+.demo-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #aaa;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+@media (max-width: 480px) {
+  .demo-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .demo-btn {
+    flex-direction: row;
+    padding: 10px 20px;
+    justify-content: flex-start;
   }
 }

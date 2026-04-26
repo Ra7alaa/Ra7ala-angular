@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../features/auth/services/auth.service';
-import { UserRole } from '../../features/auth/models/user.model';
+import { User, UserRole } from '../../features/auth/models/user.model';
 
 /**
- * Permission service for checking permissions across the application
- * This provides a centralized way to check if users can perform certain actions
+ * Centralized, role-aware permission checks used by UI guards/directives.
  */
 @Injectable({
   providedIn: 'root',
@@ -12,129 +11,134 @@ import { UserRole } from '../../features/auth/models/user.model';
 export class PermissionService {
   constructor(private authService: AuthService) {}
 
-  // General permission checks
+  private get currentUser(): User | null {
+    return this.authService.getCurrentUser();
+  }
+
+  private isSystemOwner(user: User | null): boolean {
+    return user?.userType === UserRole.SystemOwner;
+  }
+
+  private isSuperAdmin(user: User | null): boolean {
+    return user?.userType === UserRole.SuperAdmin;
+  }
+
+  private isCompanyAdmin(user: User | null): boolean {
+    return user?.userType === UserRole.Admin;
+  }
+
+  private sameCompany(user: User | null, companyId?: number): boolean {
+    return !!user?.companyId && !!companyId && user.companyId === companyId;
+  }
+
   canAccessAdminDashboard(): boolean {
     return this.authService.isAdminOrHigher();
   }
 
-  // Company permissions
   canCreateCompany(): boolean {
     return this.authService.hasRole(UserRole.SystemOwner);
   }
 
   canUpdateCompany(companyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
+    const user = this.currentUser;
 
-    // System owner can update any company
-    if (user?.isSystemOwner) return true;
-
-    // SuperAdmin can only update their own company
-    if (user?.isSuperAdmin && companyId && user.companyId === companyId)
+    if (this.isSystemOwner(user)) {
       return true;
+    }
 
-    return false;
+    return this.isSuperAdmin(user) && this.sameCompany(user, companyId);
   }
 
   canDeleteCompany(): boolean {
     return this.authService.hasRole(UserRole.SystemOwner);
   }
 
-  // User management permissions
   canCreateSuperAdmin(): boolean {
     return this.authService.hasRole(UserRole.SystemOwner);
   }
 
   canCreateAdmin(companyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
+    const user = this.currentUser;
 
-    // System owner can create admin for any company
-    if (user?.isSystemOwner) return true;
-
-    // SuperAdmin can only create admin for their own company
-    if (user?.isSuperAdmin && companyId && user.companyId === companyId)
+    if (this.isSystemOwner(user)) {
       return true;
+    }
 
-    return false;
+    return this.isSuperAdmin(user) && this.sameCompany(user, companyId);
   }
 
   canCreateDriver(companyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
+    const user = this.currentUser;
 
-    // SuperAdmin or Admin can only create drivers for their own company
-    if (
-      (user?.isSuperAdmin || user?.isCompanyAdmin) &&
-      companyId &&
-      user.companyId === companyId
-    ) {
+    if (this.isSystemOwner(user)) {
       return true;
     }
 
-    // System owner can create driver for any company
-    if (user?.isSystemOwner) return true;
-
-    return false;
+    return (
+      (this.isSuperAdmin(user) || this.isCompanyAdmin(user)) &&
+      this.sameCompany(user, companyId)
+    );
   }
 
   canUpdateUser(
-    userId: number,
+    userId: string,
     userRole: UserRole,
-    userCompanyId?: number
+    userCompanyId?: number,
   ): boolean {
-    const currentUser = this.authService.getCurrentUser();
-    if (!currentUser) return false;
+    const currentUser = this.currentUser;
+    if (!currentUser) {
+      return false;
+    }
 
-    // System owner can update any user
-    if (currentUser.isSystemOwner) return true;
+    if (this.isSystemOwner(currentUser)) {
+      return true;
+    }
 
-    // SuperAdmin can update any user in their company except other SuperAdmins
     if (
-      currentUser.isSuperAdmin &&
-      userCompanyId === currentUser.companyId &&
+      this.isSuperAdmin(currentUser) &&
+      this.sameCompany(currentUser, userCompanyId) &&
       userRole !== UserRole.SuperAdmin
     ) {
       return true;
     }
 
-    // Admin can update drivers in their company
     if (
-      currentUser.isCompanyAdmin &&
-      userCompanyId === currentUser.companyId &&
+      this.isCompanyAdmin(currentUser) &&
+      this.sameCompany(currentUser, userCompanyId) &&
       userRole === UserRole.Driver
     ) {
       return true;
     }
 
-    // Users can update their own profile
-    if (currentUser.id === userId) return true;
-
-    return false;
+    return currentUser.id === userId;
   }
 
   canDeleteUser(
-    userId: number,
+    userId: string,
     userRole: UserRole,
-    userCompanyId?: number
+    userCompanyId?: number,
   ): boolean {
-    const currentUser = this.authService.getCurrentUser();
-    if (!currentUser) return false;
+    const currentUser = this.currentUser;
+    if (!currentUser) {
+      return false;
+    }
 
-    // System owner can delete any user except themselves
-    if (currentUser.isSystemOwner && currentUser.id !== userId) return true;
+    if (this.isSystemOwner(currentUser) && currentUser.id !== userId) {
+      return true;
+    }
 
-    // SuperAdmin can delete any user in their company except other SuperAdmins and themselves
     if (
-      currentUser.isSuperAdmin &&
+      this.isSuperAdmin(currentUser) &&
       currentUser.id !== userId &&
-      userCompanyId === currentUser.companyId &&
+      this.sameCompany(currentUser, userCompanyId) &&
       userRole !== UserRole.SuperAdmin
     ) {
       return true;
     }
 
-    // Admin can delete drivers in their company
     if (
-      currentUser.isCompanyAdmin &&
-      userCompanyId === currentUser.companyId &&
+      this.isCompanyAdmin(currentUser) &&
+      this.sameCompany(currentUser, userCompanyId) &&
       userRole === UserRole.Driver
     ) {
       return true;
@@ -143,7 +147,6 @@ export class PermissionService {
     return false;
   }
 
-  // Station permissions
   canCreateSystemStation(): boolean {
     return this.authService.hasRole([
       UserRole.SystemOwner,
@@ -156,27 +159,26 @@ export class PermissionService {
   }
 
   canUpdateStation(isSystemOwned: boolean, stationCompanyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
-    if (!user) return false;
+    const user = this.currentUser;
+    if (!user) {
+      return false;
+    }
 
-    // System owner can update any station
-    if (user.isSystemOwner) return true;
+    if (this.isSystemOwner(user)) {
+      return true;
+    }
 
-    // SuperAdmin can update system stations and their company stations
     if (
-      user.isSuperAdmin &&
-      (isSystemOwned ||
-        (stationCompanyId && user.companyId === stationCompanyId))
+      this.isSuperAdmin(user) &&
+      (isSystemOwned || this.sameCompany(user, stationCompanyId))
     ) {
       return true;
     }
 
-    // Admin can only update their company stations
     if (
-      user.isCompanyAdmin &&
+      this.isCompanyAdmin(user) &&
       !isSystemOwned &&
-      stationCompanyId &&
-      user.companyId === stationCompanyId
+      this.sameCompany(user, stationCompanyId)
     ) {
       return true;
     }
@@ -185,84 +187,37 @@ export class PermissionService {
   }
 
   canDeleteStation(isSystemOwned: boolean, stationCompanyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
-    if (!user) return false;
-
-    // System owner can delete any station
-    if (user.isSystemOwner) return true;
-
-    // SuperAdmin can delete system stations and their company stations
-    if (
-      user.isSuperAdmin &&
-      (isSystemOwned ||
-        (stationCompanyId && user.companyId === stationCompanyId))
-    ) {
-      return true;
-    }
-
-    // Admin can only delete their company stations
-    if (
-      user.isCompanyAdmin &&
-      !isSystemOwned &&
-      stationCompanyId &&
-      user.companyId === stationCompanyId
-    ) {
-      return true;
-    }
-
-    return false;
+    return this.canUpdateStation(isSystemOwned, stationCompanyId);
   }
 
-  // Trip permissions
   canCreateTrip(): boolean {
     return this.authService.isAdminOrHigher();
   }
 
   canUpdateTrip(tripCompanyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
-    if (!user) return false;
+    const user = this.currentUser;
+    if (!user) {
+      return false;
+    }
 
-    // System owner can update any trip
-    if (user.isSystemOwner) return true;
-
-    // SuperAdmin and Admin can only update their company trips
-    if (
-      (user.isSuperAdmin || user.isCompanyAdmin) &&
-      tripCompanyId &&
-      user.companyId === tripCompanyId
-    ) {
+    if (this.isSystemOwner(user)) {
       return true;
     }
 
-    return false;
+    return (
+      (this.isSuperAdmin(user) || this.isCompanyAdmin(user)) &&
+      this.sameCompany(user, tripCompanyId)
+    );
   }
 
   canDeleteTrip(tripCompanyId?: number): boolean {
-    const user = this.authService.getCurrentUser();
-    if (!user) return false;
-
-    // System owner can delete any trip
-    if (user.isSystemOwner) return true;
-
-    // SuperAdmin and Admin can only delete their company trips
-    if (
-      (user.isSuperAdmin || user.isCompanyAdmin) &&
-      tripCompanyId &&
-      user.companyId === tripCompanyId
-    ) {
-      return true;
-    }
-
-    return false;
+    return this.canUpdateTrip(tripCompanyId);
   }
 
-  // City permissions
   canManageCities(): boolean {
     return this.authService.hasRole([
       UserRole.SystemOwner,
       UserRole.SuperAdmin,
     ]);
   }
-
-  // Add more permission checks as needed...
 }

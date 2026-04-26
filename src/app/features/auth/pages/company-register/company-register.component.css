@@ -164,7 +164,7 @@ input[type="file"].form-control {
 .form-icon {
   position: absolute;
   left: 1rem;
-  top: 18px;
+  top: 48px; /* Adjusted to account for the label above the input */
   color: var(--primary-color);
   font-size: 1.2rem;
 }
@@ -522,4 +522,82 @@ input[type="file"].form-control {
   .logo-text {
     font-size: 2rem;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DARK THEME OVERRIDES
+───────────────────────────────────────────────────────────── */
+:host-context(.dark-theme) .register-page {
+  background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+}
+
+:host-context(.dark-theme) .registration-card {
+  background: #2a2a2a;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+:host-context(.dark-theme) .card-header::after {
+  background: #2a2a2a;
+}
+
+:host-context(.dark-theme) .form-control {
+  background-color: #333;
+  border-color: #444;
+  color: #f8f9fa;
+}
+
+:host-context(.dark-theme) .form-control:focus {
+  background-color: #222;
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+:host-context(.dark-theme) .file-upload {
+  background-color: #333;
+  border-color: #555;
+}
+
+:host-context(.dark-theme) .file-upload-label {
+  color: #ccc;
+}
+
+:host-context(.dark-theme) .form-tab {
+  color: #888;
+}
+
+:host-context(.dark-theme) .form-tab.active {
+  color: var(--primary-color);
+}
+
+:host-context(.dark-theme) .progress-step {
+  background-color: #444;
+  color: #aaa;
+}
+
+:host-context(.dark-theme) .progress-step.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+:host-context(.dark-theme) .progress-indicator::before {
+  background-color: #444;
+}
+
+:host-context(.dark-theme) .form-label {
+  color: #f8f9fa;
+}
+
+:host-context(.dark-theme) .animated-label {
+  background: transparent;
+  color: #aaa;
+}
+
+:host-context(.dark-theme) .form-control:focus ~ .animated-label,
+:host-context(.dark-theme) .form-control:not(:placeholder-shown) ~ .animated-label {
+  background: #2a2a2a;
+  color: var(--primary-color);
+}
+
+:host-context(.dark-theme) .form-tabs {
+  border-bottom-color: #444;
 }

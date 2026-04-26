@@ -1,6 +1,5 @@
 import {
   HttpClient,
-  HttpHeaders,
   HttpErrorResponse,
   HttpParams,
 } from '@angular/common/http';
@@ -13,6 +12,7 @@ import { User } from '../../../features/auth/models/user.model';
 export interface AdminRegisterRequest {
   FullName: string;
   Email: string;
+  UserName: string;
   PhoneNumber: string;
   DateOfBirth?: string;
   Department?: string;
@@ -25,27 +25,17 @@ export interface AdminRegisterRequest {
   providedIn: 'root',
 })
 export class AdminsService {
-  private apiUrl = `${environment.apiUrl}/api/Auth`;
-  private adminApiUrl = `${environment.apiUrl}/api/Auth/admins/company`;
+  private apiUrl = `${environment.apiUrl}/Auth`;
+  private adminApiUrl = `${environment.apiUrl}/Auth/admins/company`;
 
   constructor(private http: HttpClient) {}
-
-  // Get HTTP options with headers
-  private getHttpOptions() {
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      }),
-    };
-  }
 
   /**
    * Get all admins for the current company
    */
   getCompanyAdmins(): Observable<User[]> {
     return this.http
-      .get<User[]>(this.adminApiUrl, this.getHttpOptions())
+      .get<User[]>(this.adminApiUrl)
       .pipe(catchError(this.handleError));
   }
 
@@ -53,64 +43,32 @@ export class AdminsService {
    * Register a new admin for company using multipart/form-data
    */
   registerAdmin(adminData: AdminRegisterRequest): Observable<User> {
-    // Get token from localStorage
-    let token: string | null = null;
-    try {
-      const userString = localStorage.getItem('user');
-      if (userString) {
-        const user = JSON.parse(userString);
-        token = user.token;
-      }
-    } catch (error) {
-      console.error('Error retrieving token from localStorage:', error);
-    }
-
-    // Create headers with the token
-    const headers = new HttpHeaders({
-      Authorization: token ? `Bearer ${token}` : '',
-      // Don't set Content-Type for multipart/form-data as the browser will set it with the boundary
-    });
-
-    // Create FormData object
     const formData = new FormData();
 
-    // Add ProfilePicture to FormData if it exists
     if (adminData.ProfilePicture) {
       formData.append('ProfilePicture', adminData.ProfilePicture);
     }
 
-    // Build URL with query parameters as done for drivers
     const url = `${this.apiUrl}/register-admin`;
     let params = new HttpParams()
       .set('FullName', adminData.FullName)
       .set('Email', adminData.Email)
+      .set('UserName', adminData.UserName)
       .set('PhoneNumber', adminData.PhoneNumber)
       .set('CompanyId', adminData.CompanyId.toString());
 
-    // Add optional parameters if they exist
     if (adminData.DateOfBirth) {
       params = params.set('DateOfBirth', adminData.DateOfBirth);
     }
-
     if (adminData.Department) {
       params = params.set('Department', adminData.Department);
     }
-
     if (adminData.Address) {
       params = params.set('Address', adminData.Address);
     }
 
-    console.log(
-      'Admin registration URL with params:',
-      url + '?' + params.toString()
-    );
-
-    // Make POST request with FormData
     return this.http
-      .post<User>(url, formData, {
-        headers: headers,
-        params: params,
-      })
+      .post<User>(url, formData, { params })
       .pipe(catchError(this.handleError));
   }
 
@@ -134,8 +92,8 @@ export class AdminsService {
       return throwError(
         () =>
           new Error(
-            'Cannot connect to server. Please check your internet connection.'
-          )
+            'Cannot connect to server. Please check your internet connection.',
+          ),
       );
     }
 

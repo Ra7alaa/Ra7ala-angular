@@ -108,7 +108,7 @@
 
 .trips-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 24px;
   margin-bottom: 2rem;
 }
@@ -120,6 +120,8 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .trip-card:hover {
@@ -181,6 +183,16 @@
   line-height: 1.5;
 }
 
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body .btn-primary {
+  margin-top: auto;
+}
+
 .trip-info {
   border-top: 1px solid #eee;
   padding-top: 1rem;
@@ -205,11 +217,11 @@
 
 .input-group-text {
   background: transparent;
-  border-right: none;
+  border-inline-end: none;
 }
 
 .input-group .form-control {
-  border-left: none;
+  border-inline-start: none;
 }
 
 .form-select {
@@ -260,4 +272,81 @@
   .trips-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DARK THEME OVERRIDES
+───────────────────────────────────────────────────────────── */
+:host-context(.dark-theme) .filters-section {
+  background: #2a2a2a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+:host-context(.dark-theme) .input-group-text {
+  color: #f8f9fa;
+  border-color: #444;
+  background-color: #333;
+}
+
+:host-context(.dark-theme) .form-control,
+:host-context(.dark-theme) .form-select {
+  background-color: #333;
+  border-color: #444;
+  color: #f8f9fa;
+}
+
+:host-context(.dark-theme) .form-control::placeholder {
+  color: #aaa;
+}
+
+:host-context(.dark-theme) .form-control:focus,
+:host-context(.dark-theme) .form-select:focus {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+:host-context(.dark-theme) .trip-card {
+  background: #2a2a2a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:host-context(.dark-theme) .card-title {
+  color: #f8f9fa;
+}
+
+:host-context(.dark-theme) .trip-description {
+  color: #aaa;
+}
+
+:host-context(.dark-theme) .trip-location-badge {
+  background: rgba(42, 42, 42, 0.9);
+  color: var(--primary-color);
+}
+
+:host-context(.dark-theme) .trip-info {
+  border-top-color: #444;
+}
+
+:host-context(.dark-theme) .page-link {
+  background: #2a2a2a;
+  color: #ccc;
+  border-color: #444;
+}
+
+:host-context(.dark-theme) .page-link:hover:not(.disabled) {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+:host-context(.dark-theme) .page-item.active .page-link {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+:host-context(.dark-theme) .page-item.disabled .page-link {
+  background: #1a1a1a;
+  color: #666;
+  border-color: #333;
 }

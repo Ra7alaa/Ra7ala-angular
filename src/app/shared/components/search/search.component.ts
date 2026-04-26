@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '../../../features/settings/pipes/translate.pipe';
 import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import {
   TripsSearchService,
@@ -29,6 +30,7 @@ import {
     ReactiveFormsModule,
     CalendarModule,
     InputNumberModule,
+    DropdownModule,
     FloatLabelModule,
     TranslatePipe,
   ],
@@ -61,6 +63,12 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCities();
+  }
+
+  getCityName(id: number | null): string {
+    if (!id) return '';
+    const city = this.cities.find((c) => c.id === id);
+    return city ? city.name : '';
   }
 
   loadCities(): void {

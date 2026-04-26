@@ -18,7 +18,53 @@
     </div>
   </section>
 
-  <img src="assets/images/home2.svg" class="home2 img-fluid" alt="" />
+  <!-- Easy Booking Features Section -->
+  <section class="easy-booking-section py-5 position-relative">
+    <div class="bg-illustration position-absolute w-100 h-100" style="top: 0; left: 0; pointer-events: none;">
+      <!-- Subtle dotted line simulating travel path -->
+      <div class="dotted-path"></div>
+    </div>
+    
+    <div class="container position-relative z-1">
+      <div class="row text-center features-grid-custom mt-4">
+        
+        <!-- Feature 1: Availability -->
+        <div class="col-md-4 feature-box">
+          <div class="feature-icon-wrapper mb-4">
+            <div class="icon-container luggage-icon">
+              <i class="bi bi-briefcase-fill"></i>
+              <i class="bi bi-geo-alt-fill pin-badge"></i>
+            </div>
+          </div>
+          <h3 class="feature-title">{{ "home.easyBooking.features.availability.title" | translate }}</h3>
+          <p class="feature-desc text-muted">{{ "home.easyBooking.features.availability.description" | translate }}</p>
+        </div>
+
+        <!-- Feature 2: Easy to Book -->
+        <div class="col-md-4 feature-box featured-middle">
+          <div class="feature-icon-wrapper mb-4">
+            <div class="icon-container card-icon">
+              <i class="bi bi-credit-card-fill"></i>
+            </div>
+          </div>
+          <h3 class="feature-title">{{ "home.easyBooking.title" | translate }}</h3>
+          <p class="feature-desc text-muted">{{ "home.easyBooking.subtitle" | translate }}</p>
+        </div>
+
+        <!-- Feature 3: Safety & Comfort -->
+        <div class="col-md-4 feature-box">
+          <div class="feature-icon-wrapper mb-4">
+            <div class="icon-container plane-icon">
+              <i class="bi bi-send-fill"></i>
+            </div>
+          </div>
+          <h3 class="feature-title">{{ "home.easyBooking.features.safety.title" | translate }}</h3>
+          <p class="feature-desc text-muted">{{ "home.easyBooking.features.safety.description" | translate }}</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- Plan Your Trip Section -->
   <section class="plan-trip-section py-5">

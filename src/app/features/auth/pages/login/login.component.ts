@@ -8,13 +8,14 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '../../../settings/pipes/translate.pipe';
 
 @Component({
   selector: 'app-login',
   styleUrls: ['./login.component.css'],
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, TranslatePipe],
 })
 export class LoginComponent implements OnInit {
   errorMessage = '';
@@ -61,5 +62,36 @@ export class LoginComponent implements OnInit {
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+
+  quickLogin(role: string) {
+    const credentials = {
+      emailOrUsername: '',
+      password: '',
+      rememberMe: true,
+    };
+
+    switch (role) {
+      case 'superadmin':
+        credentials.emailOrUsername = 'karim@cairotransit.com';
+        credentials.password = 'SuperAdmin123!';
+        break;
+      case 'owner':
+        credentials.emailOrUsername = 'owner@ra7ala.com';
+        credentials.password = 'Owner123!';
+        break;
+      case 'passenger':
+        credentials.emailOrUsername = 'sara@example.com';
+        credentials.password = 'Passenger123!';
+        break;
+    }
+
+    this.loginForm.patchValue({
+      emailOrUsername: credentials.emailOrUsername,
+      password: credentials.password,
+      rememberMe: true,
+    });
+
+    this.onSubmit();
   }
 }

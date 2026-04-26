@@ -10,7 +10,7 @@ import { Company, CompanyCreateRequest } from '../models/company.model';
 })
 export class CompanyService {
   // Use the correct API URL from environment
-  private apiUrl = `${environment.apiUrl}/api/Company`;
+  private apiUrl = `${environment.apiUrl}/Company`;
 
   constructor(private http: HttpClient) {}
 
@@ -69,6 +69,7 @@ export class CompanyService {
       formData.append('Email', company.Email);
       formData.append('SuperAdminName', company.SuperAdminName);
       formData.append('SuperAdminEmail', company.SuperAdminEmail);
+      formData.append('SuperAdminUserName', company.SuperAdminUserName);
       formData.append('SuperAdminPhone', company.SuperAdminPhone);
 
       // Add optional Website field if provided
@@ -90,7 +91,7 @@ export class CompanyService {
         formData.append(
           'TaxDocument',
           this.taxDocumentFile,
-          this.taxDocumentFile.name
+          this.taxDocumentFile.name,
         );
       }
 
@@ -101,7 +102,7 @@ export class CompanyService {
         catchError((error) => {
           console.error('Company creation failed:', error);
           return this.handleError(error);
-        })
+        }),
       );
     } catch (validationError) {
       console.error('Validation failed:', validationError);
@@ -139,6 +140,7 @@ export class CompanyService {
       Description: 'Description',
       SuperAdminName: 'Super Admin name',
       SuperAdminEmail: 'Super Admin email',
+      SuperAdminUserName: 'Super Admin username',
       SuperAdminPhone: 'Super Admin phone',
     };
 
@@ -158,8 +160,8 @@ export class CompanyService {
     if (missingFields.length > 0) {
       throw new Error(
         `Please provide the following required fields: ${missingFields.join(
-          ', '
-        )}`
+          ', ',
+        )}`,
       );
     }
   }
@@ -171,26 +173,21 @@ export class CompanyService {
     console.error('API error:', error);
 
     if (error.status === 0) {
-      // Network error
       return throwError(
         () =>
           new Error(
-            'Cannot connect to server. Please check your internet connection.'
-          )
+            'Cannot connect to server. Please check your internet connection.',
+          ),
       );
     }
 
-    // Handle 400 validation errors
     if (error.status === 400 && error.error?.errors) {
       let validationMessages: string[] = [];
-
-      // Extract validation messages from the error object
       for (const [, messages] of Object.entries(error.error.errors)) {
         if (Array.isArray(messages)) {
           validationMessages = validationMessages.concat(messages as string[]);
         }
       }
-
       if (validationMessages.length > 0) {
         return throwError(() => new Error(validationMessages.join('\n')));
       }
@@ -199,50 +196,5 @@ export class CompanyService {
     const errorMessage =
       error.error?.message || error.message || 'An unknown error occurred';
     return throwError(() => new Error(errorMessage));
-  }
-
-  /**
-   * Diagnostic test method to directly test the API with known good data
-   */
-  testCompanyCreation(): Observable<Company> {
-    console.log('Running diagnostic test for company creation API');
-
-    // Create FormData object
-    const formData = new FormData();
-
-    // Add test data that matches the expected format exactly
-    formData.append('Name', 'Test Company');
-    formData.append(
-      'Description',
-      'This is a test company for diagnostic purposes'
-    );
-    formData.append('Address', 'Test Address, City, Country');
-    formData.append('Phone', '+201012345678');
-    formData.append('Email', 'test@example.com');
-    formData.append('SuperAdminName', 'Test Admin');
-    formData.append('SuperAdminEmail', 'admin@example.com');
-    formData.append('SuperAdminPhone', '+201012345679');
-
-    // Note: Test is missing required TaxDocument
-    console.log('Note: Test is missing required TaxDocument');
-
-    console.log('Test FormData created with all required fields');
-
-    // Log what we're sending
-    formData.forEach((value, key) => {
-      console.log(`- ${key}: ${value}`);
-    });
-
-    // Send direct test request to the API
-    return this.http.post<Company>(this.apiUrl, formData).pipe(
-      catchError((error) => {
-        console.error(
-          'Test company creation failed with status:',
-          error.status
-        );
-        console.error('Error details:', error);
-        return throwError(() => error);
-      })
-    );
   }
 }

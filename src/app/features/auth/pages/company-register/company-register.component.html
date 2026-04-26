@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="register-page" appRtl>
   <div class="register-container" [class.rtl]="currentLanguage.rtl">
     <div class="registration-card">
@@ -395,10 +396,45 @@
                 >
                   Super Admin name must be at least 3 characters long
                 </span>
+              </div>
+            </div>
+
+            <!-- Super Admin User Name -->
+            <div class="form-group">
+              <label for="superAdminUserName" class="form-label"
+                >{{ "admin.profile.username" | translate }} *</label
+              >
+              <i class="bi bi-person-badge form-icon"></i>
+              <input
+                type="text"
+                id="superAdminUserName"
+                formControlName="superAdminUserName"
+                class="form-control"
+                [placeholder]="
+                  'auth.create_company.admin_username_placeholder' | translate
+                "
+                [ngClass]="{
+                  'is-invalid':
+                    companyForm.get('superAdminUserName')?.invalid &&
+                    companyForm.get('superAdminUserName')?.touched
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  companyForm.get('superAdminUserName')?.invalid &&
+                  companyForm.get('superAdminUserName')?.touched
+                "
+              >
                 <span
-                  *ngIf="companyForm.get('superAdminName')?.errors?.['serverError']"
+                  *ngIf="companyForm.get('superAdminUserName')?.errors?.['required']"
                 >
-                  {{ companyForm.get('superAdminName')?.errors?.['serverError'] }}
+                  Username is required
+                </span>
+                <span
+                  *ngIf="companyForm.get('superAdminUserName')?.errors?.['minlength']"
+                >
+                  Username must be at least 3 characters long
                 </span>
               </div>
             </div>
@@ -551,3 +587,4 @@
     </div>
   </div>
 </div>
+<app-footer></app-footer>

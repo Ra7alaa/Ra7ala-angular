@@ -30,4 +30,37 @@
       <p>{{ "about.paragraph3" | translate }}</p>
     </div>
   </div>
+
+  <div class="team-section">
+    <div class="team-header">
+      <h2>{{ "about.team.title" | translate }}</h2>
+      <div class="team-underline"></div>
+      <p>{{ "about.team.subtitle" | translate }}</p>
+    </div>
+
+    <div class="team-grid">
+      <div
+        *ngFor="let member of teamMembers"
+        class="team-card"
+        [style.border-top-color]="member.color"
+      >
+        <div class="member-avatar" [style.background-color]="member.color + '15'">
+          <i [class]="member.icon" [style.color]="member.color"></i>
+        </div>
+        <div class="member-info">
+          <h3>{{ member.name }}</h3>
+          <span class="member-role">{{ member.role | translate }}</span>
+        </div>
+        <div class="member-contact">
+          <a [href]="'tel:' + member.phone" class="phone-link">
+            <i class="fa-solid fa-phone"></i>
+            <span>{{ member.phone }}</span>
+          </a>
+          <a [href]="'https://wa.me/' + member.phone" class="whatsapp-btn" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

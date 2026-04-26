@@ -36,7 +36,7 @@ export class BookingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private bookingService: BookingService
+    private bookingService: BookingService,
   ) {
     const id = this.route.snapshot.paramMap.get('tripId');
     console.log('Trip ID from route:', id);
@@ -149,13 +149,8 @@ export class BookingComponent implements OnInit {
           console.log('Booking successful:', response.data);
 
           setTimeout(() => {
-            this.router.navigate(['/profile/bookings'], {
-              queryParams: {
-                bookingId: response.data.bookingId,
-                totalPrice: response.data.totalPrice,
-              },
-            });
-          }, 2000);
+            this.goToPayment();
+          }, 1500);
         } else {
           this.error = response?.message || 'Booking failed. Please try again.';
           console.log('Booking failed with message:', this.error);
@@ -174,6 +169,32 @@ export class BookingComponent implements OnInit {
     this.error = null;
   }
 
+  getResolvedBookingId(): number | null {
+    const data = this.bookingResponse?.data;
+    const bookingId = data?.bookingId ?? data?.id;
+    return bookingId && bookingId > 0 ? bookingId : null;
+  }
+
+  goToPayment(): void {
+    const bookingId = this.getResolvedBookingId();
+    if (!bookingId) {
+      this.error = 'Booking completed, but payment reference is missing.';
+      return;
+    }
+
+    void this.router
+      .navigate(['/payment', bookingId], {
+        state: {
+          totalPrice: this.bookingResponse?.data?.totalPrice,
+        },
+      })
+      .catch((err) => {
+        console.error('Navigation to payment failed:', err);
+        this.error =
+          'Booking succeeded. Please use "Complete Payment" button again.';
+      });
+  }
+
   private isValidStationSequence(): boolean {
     if (!this.stations || !this.stations.length) {
       console.log('No stations available');
@@ -187,7 +208,7 @@ export class BookingComponent implements OnInit {
         stationId: s.stationId,
         name: s.stationName,
         sequenceNumber: s.sequenceNumber,
-      }))
+      })),
     );
 
     const startStationId = Number(this.bookingData.startStationId);
@@ -200,7 +221,7 @@ export class BookingComponent implements OnInit {
     });
 
     const startStation = this.stations.find(
-      (s) => s.stationId === startStationId
+      (s) => s.stationId === startStationId,
     );
     const endStation = this.stations.find((s) => s.stationId === endStationId);
 

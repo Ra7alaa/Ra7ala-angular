@@ -26,6 +26,11 @@
   position: relative;
 }
 
+.hero-content {
+  padding-bottom: 140px;
+}
+
+
 .hero-content h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
@@ -40,7 +45,7 @@
 
 .search-box {
   position: absolute;
-  bottom: -80px;
+  bottom: -180px;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -48,10 +53,162 @@
   z-index: 10;
 }
 
-.home2 {
-  padding-top: 128px;
-  width: 100%;
+/* Easy Booking Features Section */
+.easy-booking-section {
+  background-color: transparent;
+  padding-top: 180px !important; /* Fixed padding for desktop */
+  padding-bottom: 3rem !important;
+  overflow: hidden;
 }
+
+@media (max-width: 992px) {
+  .easy-booking-section {
+    padding-top: 220px !important;
+  }
+}
+
+
+.features-grid-custom .feature-box {
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.features-grid-custom .feature-box:hover {
+  transform: translateY(-10px);
+}
+
+.feature-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.icon-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  background: white;
+}
+
+/* Luggage Icon Styling (Orange/Yellow theme) */
+.luggage-icon {
+  color: #ff9d4d;
+  background: linear-gradient(135deg, #fff9f2 0%, #ffe9d6 100%);
+}
+.luggage-icon .pin-badge {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.1rem;
+  color: #e63946;
+}
+
+/* Card Icon Styling (Blue theme) */
+.card-icon {
+  color: #4da8da;
+  background: linear-gradient(135deg, #f0f8ff 0%, #d6eeff 100%);
+  transform: rotate(-15deg);
+}
+
+/* Plane Icon Styling (Yellow theme) */
+.plane-icon {
+  color: #ffca28;
+  background: linear-gradient(135deg, #fffdf2 0%, #fff6d6 100%);
+  transform: rotate(45deg);
+  padding-right: 5px; /* Adjust optical alignment for plane */
+  padding-bottom: 5px;
+}
+
+.feature-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #252525;
+  margin-bottom: 1rem;
+}
+
+.home-container.dark-theme .feature-title {
+  color: #ffffff;
+}
+
+.feature-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* Decorative dotted path for background */
+.dotted-path {
+  position: absolute;
+  top: 65%;
+  left: 15%;
+  right: 15%;
+  height: 250px;
+  border-top: 2px dashed rgba(200, 200, 200, 0.5);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.dark-theme .dotted-path {
+  border-top: 2px dashed rgba(100, 100, 100, 0.3);
+}
+
+/* Adjust layout for mobile */
+@media (max-width: 768px) {
+  .hero-section {
+    height: auto;
+    min-height: 80vh;
+    padding-top: 60px;
+    padding-bottom: 180px;
+  }
+
+  .hero-content {
+    padding-bottom: 0;
+  }
+
+  .search-box {
+    position: absolute;
+    bottom: -140px;
+    width: 95%;
+    padding: 0 10px;
+  }
+
+  .dotted-path {
+    display: none;
+  }
+  .featured-middle {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .easy-booking-section {
+    padding-top: 160px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .search-box {
+    bottom: -160px;
+  }
+  .easy-booking-section {
+    padding-top: 180px !important;
+  }
+}
+
 
 /* Plan Your Trip Section */
 .plan-trip-section {
@@ -217,10 +374,7 @@
 @media (max-width: 768px) {
   .search-box {
     position: absolute;
-    bottom: -180px;
-  }
-  .home2 {
-    padding-top: 200px;
+    bottom: -140px;
   }
 
   .hero-content h1 {
@@ -232,21 +386,47 @@
   }
 
   .trip-step {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    background: rgba(var(--primary-rgb, 0, 123, 255), 0.03);
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .rtl .trip-step {
+    text-align: right;
   }
 
   .step-icon {
-    margin-bottom: 15px;
+    margin-bottom: 0;
+    margin-right: 15px;
+    flex-shrink: 0;
+    width: 60px;
+  }
+
+  .rtl .step-icon {
     margin-right: 0;
+    margin-left: 15px;
   }
 
   .trip-image-container {
-    height: 300px;
+    height: 350px;
+    margin-top: 30px;
   }
 
   .yellow-circle {
-    width: 280px;
-    height: 280px;
+    width: 250px;
+    height: 250px;
+  }
+
+  .bus-image {
+    max-width: 300px;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    font-size: 0.75rem;
   }
 
   .features-grid {
@@ -254,6 +434,7 @@
     gap: 1rem;
   }
 }
+
 
 @media (max-width: 992px) {
   .trip-image-container {

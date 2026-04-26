@@ -43,19 +43,19 @@ export class CompanyService {
   getCompanyProfile(id: number): Observable<CompanyProfile> {
     return this.http
       .get<CompanyProfile>(
-        `${this.apiBaseUrl}/api/Company/${id}/Company-User-profile`
+        `${this.apiBaseUrl}/Company/${id}/Company-User-profile`,
       )
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Error fetching company profile:', error);
           return throwError(() => new Error('Failed to load company profile'));
-        })
+        }),
       );
   }
 
   submitFeedback(
     companyId: number,
-    feedback: FeedbackRequest
+    feedback: FeedbackRequest,
   ): Observable<FeedbackResponse> {
     if (!this.isValidFeedback(feedback)) {
       return throwError(() => new Error('Invalid feedback data'));
@@ -63,15 +63,15 @@ export class CompanyService {
 
     return this.http
       .post<FeedbackResponse>(
-        `${this.apiBaseUrl}/api/Company/${companyId}/Feedback`,
-        feedback
+        `${this.apiBaseUrl}/Company/${companyId}/Feedback`,
+        feedback,
       )
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Error submitting feedback:', error);
           const message = error.error?.message || 'Failed to submit feedback';
           return throwError(() => new Error(message));
-        })
+        }),
       );
   }
 

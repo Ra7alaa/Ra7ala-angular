@@ -27,6 +27,7 @@
         class="nav-link"
         routerLink="/admin/dashboard"
         routerLinkActive="active"
+        (click)="closeSidebar()"
       >
         <i
           class="bi bi-speedometer2"
@@ -41,7 +42,12 @@
 
     <!-- Profile link -->
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/profile" routerLinkActive="active">
+      <a 
+        class="nav-link" 
+        routerLink="/admin/profile" 
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i
           class="bi bi-person"
           [ngClass]="{
@@ -54,7 +60,12 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/trips" routerLinkActive="active">
+      <a 
+        class="nav-link" 
+        routerLink="/admin/trips" 
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i
           class="bi bi-bus-front"
           [ngClass]="{
@@ -66,7 +77,12 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/routes" routerLinkActive="active">
+      <a 
+        class="nav-link" 
+        routerLink="/admin/routes" 
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i
           class="bi bi-map"
           [ngClass]="{
@@ -78,7 +94,12 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/buses" routerLinkActive="active">
+      <a 
+        class="nav-link" 
+        routerLink="/admin/buses" 
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i
           class="bi bi-truck-front"
           [ngClass]="{
@@ -91,7 +112,12 @@
     </li>
     <!-- Drivers Management link -->
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/drivers" routerLinkActive="active">
+      <a 
+        class="nav-link" 
+        routerLink="/admin/drivers" 
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i
           class="bi bi-person-badge"
           [ngClass]="{
@@ -107,6 +133,7 @@
         class="nav-link"
         routerLink="/admin/stations"
         routerLinkActive="active"
+        (click)="closeSidebar()"
       >
         <i
           class="bi bi-geo-alt-fill"
@@ -121,7 +148,12 @@
 
     <!-- Admins Management link - Only visible for SuperAdmin -->
     <li class="nav-item" *ngIf="isSuperAdmin()">
-      <a class="nav-link" routerLink="/admin/admins" routerLinkActive="active">
+      <a 
+        class="nav-link" 
+        routerLink="/admin/admins" 
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+      >
         <i
           class="bi bi-people-fill"
           [ngClass]="{
@@ -133,21 +165,21 @@
       </a>
     </li>
 
-    <!-- Settings for themes and languages -->
+    <!-- Logout Button -->
     <li class="nav-item">
       <a
-        class="nav-link"
-        routerLink="/admin/settings"
-        routerLinkActive="active"
+        class="nav-link logout-link"
+        href="javascript:void(0)"
+        (click)="logout()"
       >
         <i
-          class="bi bi-gear"
+          class="bi bi-box-arrow-right"
           [ngClass]="{
             'me-2': !currentLanguage.rtl,
             'ms-2': currentLanguage.rtl
           }"
         ></i>
-        <span>{{ "admin.sidebar.settings" | translate }}</span>
+        <span>{{ "auth.logout" | translate }}</span>
       </a>
     </li>
   </ul>

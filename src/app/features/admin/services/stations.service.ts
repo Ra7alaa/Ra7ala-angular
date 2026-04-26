@@ -17,9 +17,12 @@ import { AuthService } from '../../auth/services/auth.service';
   providedIn: 'root',
 })
 export class StationsService {
-  private apiUrl = `${environment.apiUrl}/api/Station`;
+  private apiUrl = `${environment.apiUrl}/Station`;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   private getHttpOptions() {
     const currentUser = this.authService.getCurrentUser();
@@ -49,7 +52,7 @@ export class StationsService {
       catchError((error: HttpErrorResponse) => {
         console.error('Error fetching stations', error);
         return throwError(() => new Error('Failed to load stations'));
-      })
+      }),
     );
   }
 
@@ -60,7 +63,7 @@ export class StationsService {
         catchError((error) => {
           console.error(`Error fetching station`, error);
           return throwError(() => new Error('Failed to load station details'));
-        })
+        }),
       );
   }
 
@@ -69,13 +72,13 @@ export class StationsService {
 
     if (!currentUser?.companyId) {
       return throwError(
-        () => new Error('Company ID is required to create a station')
+        () => new Error('Company ID is required to create a station'),
       );
     }
 
     if (!station.cityName) {
       return throwError(
-        () => new Error('City name is required to create a station')
+        () => new Error('City name is required to create a station'),
       );
     }
 
@@ -93,11 +96,9 @@ export class StationsService {
     console.log('Creating station using batch endpoint:', batchRequest);
 
     return this.http
-      .post<Station[]>(
-        `${this.apiUrl}/company/batch`,
-        batchRequest,
-        this.getHttpOptions()
-      )
+      .post<
+        Station[]
+      >(`${this.apiUrl}/company/batch`, batchRequest, this.getHttpOptions())
       .pipe(
         map((stations) => {
           if (stations && stations.length > 0) {
@@ -119,7 +120,7 @@ export class StationsService {
           }
 
           return throwError(() => new Error(errorMessage));
-        })
+        }),
       );
   }
 
@@ -132,13 +133,13 @@ export class StationsService {
       .put<Station>(
         `${this.apiUrl}/${station.id}`,
         station,
-        this.getHttpOptions()
+        this.getHttpOptions(),
       )
       .pipe(
         catchError((error) => {
           console.error(`Error updating station`, error);
           return throwError(() => new Error('Failed to update station'));
-        })
+        }),
       );
   }
 
@@ -150,7 +151,7 @@ export class StationsService {
         catchError((error) => {
           console.error(`Error deleting station`, error);
           return throwError(() => new Error('Failed to delete station'));
-        })
+        }),
       );
   }
 
@@ -160,7 +161,7 @@ export class StationsService {
       catchError((error) => {
         console.error(`Error fetching stations by ownership`, error);
         return throwError(() => new Error('Failed to load stations'));
-      })
+      }),
     );
   }
 }

@@ -4,12 +4,22 @@ import {
   TemplateRef,
   ViewContainerRef,
   OnInit,
+  OnChanges,
   OnDestroy,
+  SimpleChanges,
+  inject,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { UserRole } from '../../features/auth/models/user.model';
+
+type PermissionInput =
+  | string
+  | readonly string[]
+  | readonly [string, ...unknown[]];
+
+type RenderState = 'none' | 'then' | 'else';
 
 /**
  * Directive to conditionally show UI elements based on user roles/permissions
@@ -17,34 +27,34 @@ import { UserRole } from '../../features/auth/models/user.model';
  * Usage examples:
  *
  * Basic role check:
- * <div *hasPermission="'SystemOwner'">Only system owners can see this</div>
- * <div *hasPermission="['Admin', 'SuperAdmin']">Only admins can see this</div>
+ * <div *appHasPermission="'SystemOwner'">Only system owners can see this</div>
+ * <div *appHasPermission="['Admin', 'SuperAdmin']">Only admins can see this</div>
  *
  * Permission function check:
- * <div *hasPermission="'canCreateCompany'">Only users who can create companies see this</div>
+ * <div *appHasPermission="'canCreateCompany'">Only users who can create companies see this</div>
  *
  * Complex permission check:
- * <div *hasPermission="['canUpdateTrip', trip.companyId]">Only users who can update this trip see this</div>
+ * <div *appHasPermission="['canUpdateTrip', trip.companyId]">Only users who can update this trip see this</div>
  */
 @Directive({
-  selector: '[hasPermission]',
+  selector: '[appHasPermission]',
   standalone: true,
 })
-export class HasPermissionDirective implements OnInit, OnDestroy {
+export class HasPermissionDirective implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
-  private hasView = false;
+  private renderState: RenderState = 'none';
+  private authService = inject(AuthService);
+  private permissionService = inject(PermissionService);
 
   // The permission to check, can be a role, array of roles, or permission function name
-  @Input('hasPermission') permission!: string | string[] | any[];
+  @Input() appHasPermission!: PermissionInput;
 
   // If specified, shows the element when the user does NOT have the permission
-  @Input('hasPermissionElse') else?: TemplateRef<any>;
+  @Input() appHasPermissionElse?: TemplateRef<unknown>;
 
   constructor(
-    private templateRef: TemplateRef<any>,
+    private templateRef: TemplateRef<unknown>,
     private viewContainer: ViewContainerRef,
-    private authService: AuthService,
-    private permissionService: PermissionService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +67,12 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
     this.updateView();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['appHasPermission'] || changes['appHasPermissionElse']) {
+      this.updateView();
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -64,74 +80,86 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
 
   private updateView(): void {
     const hasPermission = this.checkPermission();
+    const nextState: RenderState = hasPermission
+      ? 'then'
+      : this.appHasPermissionElse
+        ? 'else'
+        : 'none';
 
-    if (hasPermission && !this.hasView) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-      this.hasView = true;
-    } else if (!hasPermission && this.hasView) {
-      this.viewContainer.clear();
-      this.hasView = false;
-
-      if (this.else) {
-        this.viewContainer.createEmbeddedView(this.else);
-      }
-    } else if (!hasPermission && !this.hasView && this.else) {
-      this.viewContainer.createEmbeddedView(this.else);
+    if (nextState === this.renderState) {
+      return;
     }
+
+    this.viewContainer.clear();
+
+    if (nextState === 'then') {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+    } else if (nextState === 'else' && this.appHasPermissionElse) {
+      this.viewContainer.createEmbeddedView(this.appHasPermissionElse);
+    }
+
+    this.renderState = nextState;
+  }
+
+  private isUserRole(value: string): value is UserRole {
+    return (Object.values(UserRole) as string[]).includes(value);
+  }
+
+  private isUserRoleArray(
+    values: readonly string[],
+  ): values is readonly UserRole[] {
+    return values.length > 0 && values.every((value) => this.isUserRole(value));
+  }
+
+  private invokePermissionFunction(
+    functionName: string,
+    args: readonly unknown[],
+  ): boolean {
+    const methodCandidate = (
+      this.permissionService as unknown as Record<string, unknown>
+    )[functionName];
+
+    if (typeof methodCandidate !== 'function') {
+      return false;
+    }
+
+    const result = (
+      methodCandidate as (...permissionArgs: readonly unknown[]) => unknown
+    ).apply(this.permissionService, [...args]);
+
+    return typeof result === 'boolean' ? result : false;
   }
 
   private checkPermission(): boolean {
-    if (!this.permission) {
+    if (!this.appHasPermission) {
       return false;
     }
 
-    // Check if it's a role-based permission
-    if (typeof this.permission === 'string') {
-      // Check if this is a UserRole enum value
-      if (Object.values(UserRole).includes(this.permission as UserRole)) {
-        return this.authService.hasRole(this.permission as UserRole);
+    if (typeof this.appHasPermission === 'string') {
+      if (this.isUserRole(this.appHasPermission)) {
+        return this.authService.hasRole(this.appHasPermission);
       }
 
-      // Otherwise, it's a permission function name
-      const permissionFunctionName = this.permission as keyof PermissionService;
-      const permissionFunction = this.permissionService[permissionFunctionName];
-      if (typeof permissionFunction === 'function') {
-        // TypeScript doesn't like direct function calls here due to 'this' binding
-        // Using a type assertion as a workaround
-        return (permissionFunction as Function).call(this.permissionService);
-      }
-
-      return false;
+      return this.invokePermissionFunction(this.appHasPermission, []);
     }
 
-    // Check if it's multiple roles
-    if (
-      Array.isArray(this.permission) &&
-      this.permission.every((item) => typeof item === 'string') &&
-      this.permission.every((item) =>
-        Object.values(UserRole).includes(item as UserRole)
-      )
-    ) {
-      return this.authService.hasRole(this.permission as UserRole[]);
+    const hasOnlyStringValues = this.appHasPermission.every(
+      (item) => typeof item === 'string',
+    );
+
+    if (hasOnlyStringValues) {
+      const roleCandidates = this.appHasPermission as readonly string[];
+      if (this.isUserRoleArray(roleCandidates)) {
+        return this.authService.hasRole([...roleCandidates]);
+      }
     }
 
-    // Check if it's a permission function with parameters
     if (
-      Array.isArray(this.permission) &&
-      typeof this.permission[0] === 'string'
+      this.appHasPermission.length > 0 &&
+      typeof this.appHasPermission[0] === 'string'
     ) {
-      const [functionName, ...args] = this.permission;
-      const permissionFunctionName = functionName as keyof PermissionService;
-      const permissionFunction = this.permissionService[permissionFunctionName];
-
-      if (typeof permissionFunction === 'function') {
-        // TypeScript doesn't like direct function calls here due to 'this' binding
-        // Using a type assertion as a workaround
-        return (permissionFunction as Function).apply(
-          this.permissionService,
-          args
-        );
-      }
+      const [functionName, ...args] = this.appHasPermission;
+      return this.invokePermissionFunction(functionName, args);
     }
 
     return false;

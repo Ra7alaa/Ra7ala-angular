@@ -5,10 +5,19 @@
     "destinations": "Destinations",
     "packages": "Packages",
     "contact_us": "Contact Us",
-    "common_trips": "Common Trips"
+    "common_trips": "Common Trips",
+    "settings": "Settings"
   },
   "available_trips": "Available Trips",
   "book_now": "Book Now",
+  "departure": "Departure",
+  "arrival": "Arrival",
+  "driver": "Driver",
+  "bus": "Bus",
+  "stations": "Stations",
+  "available_seats": "Available Seats",
+  "no_trips_found": "No trips found",
+  "try_different_search": "Try adjusting your search criteria or explore other destinations",
   "search": {
     "title": "Where are you Travel?",
     "search_placeholder": "Search for your trip",
@@ -55,6 +64,24 @@
       "topBus": "Top Bus",
       "topPlaces": "Top Places"
     },
+    "easyBooking": {
+      "title": "Easy to book",
+      "subtitle": "Simple steps to book your bus trip anytime, anywhere",
+      "features": {
+        "availability": {
+          "title": "Immediate availability",
+          "description": "Bus trips are available throughout the week and at times to suit everyone."
+        },
+        "safety": {
+          "title": "Safety and comfort",
+          "description": "Comfortable buses equipped with everything you need for a unique travel experience."
+        },
+        "destinations": {
+          "title": "Wide destinations",
+          "description": "Multiple destinations available to explore the most beautiful places."
+        }
+      }
+    },
     "company_section": {
       "description": "Join our platform and start managing your transportation business efficiently. Create your company profile and get access to powerful management tools.",
       "features": {
@@ -72,7 +99,21 @@
         }
       }
     },
-    "discover": "Discover Your Next Destination"
+    "discover": "Discover Your Next Destination",
+    "tripLocation": "Trip Location",
+    "altTexts": {
+      "chooseDestination": "Choose Destination",
+      "determineTiming": "Determine Timing",
+      "bookTrip": "Book Trip",
+      "busImage": "Bus Image",
+      "topBus": "Top Bus",
+      "topPlaces": "Top Places"
+    }
+  },
+  "commonTrips": {
+    "viewDetails": "View Details",
+    "noTripsFound": "No trips found",
+    "tryAdjustingCriteria": "Try adjusting your search criteria"
   },
   "auth": {
     "login": "Log In",
@@ -89,6 +130,11 @@
     "email_username_required": "Please enter your email or username",
     "password_required": "Password is required",
     "login_image_alt": "Login Image",
+    "quick_demo_login": "Quick Demo Login",
+    "super_admin": "Super Admin",
+    "owner": "System Owner",
+    "passenger": "Passenger",
+    "click_to_login": "Click any role to login instantly",
     "create_company": {
       "title": "Create Your Transportation Company",
       "company_info": "Company Information",
@@ -120,6 +166,7 @@
       "admin_email_invalid": "Please enter a valid email address",
       "admin_phone": "Phone Number",
       "admin_phone_invalid": "Please enter a valid phone number",
+      "admin_username_placeholder": "Enter super admin username",
       "creating": "Creating...",
       "submit": "apply as a company",
       "continue": "Continue",
@@ -142,7 +189,8 @@
     "dark_mode": "Dark Mode",
     "system_mode": "System",
     "english": "English",
-    "arabic": "العربية"
+    "arabic": "العربية",
+    "rtl_support": "Right-to-Left Support"
   },
   "general": {
     "save": "Save Changes",
@@ -173,7 +221,8 @@
     "change_photo": "Change Photo",
     "profile_updated": "Profile updated successfully",
     "save": "Save Changes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "my_bookings_tickets": "My Bookings & Tickets"
   },
   "about": {
     "title": "About Ra7ala",
@@ -181,7 +230,15 @@
     "places": "Destinations",
     "paragraph1": "Ra7ala is a premier bus booking platform in Egypt, dedicated to providing comfortable, reliable, and affordable transportation services across the country. Founded in 2020, we've quickly grown to become one of the most trusted names in intercity travel.",
     "paragraph2": "Our modern fleet of buses is equipped with all the amenities you need for a pleasant journey, including comfortable seating, air conditioning, Wi-Fi, and entertainment systems. We serve more than 10 major destinations across Egypt, connecting people and places with safety and punctuality.",
-    "paragraph3": "At Ra7ala, we believe in making travel hassle-free. Our easy-to-use online booking system allows you to book your tickets in minutes. Our dedicated customer service team is available 24/7 to assist you with any queries or concerns. Choose Ra7ala for your next journey and experience the difference!"
+    "paragraph3": "At Ra7ala, we believe in making travel hassle-free. Our easy-to-use online booking system allows you to book your tickets in minutes. Our dedicated customer service team is available 24/7 to assist you with any queries or concerns. Choose Ra7ala for your next journey and experience the difference!",
+    "team": {
+      "title": "Meet Our Team",
+      "subtitle": "The talented people behind Ra7ala",
+      "call": "Call",
+      "roles": {
+        "fullstack": "Full Stack Developer"
+      }
+    }
   },
   "footer": {
     "description": "Comfortable buses equipped with everything you need for a unique travel experience.",
@@ -195,7 +252,7 @@
     },
     "contact": {
       "title": "Contact Us",
-      "address": "374 FA Tower, Egypt"
+      "address": "Cairo, Egypt"
     },
     "copyright": "All rights reserved for Ra7ala"
   },
@@ -281,6 +338,7 @@
       "status": "Status",
       "actions": "Actions",
       "route": "Route",
+      "stations": "Stations",
       "loading_trips": "Loading trips...",
       "departure_time": "Departure Time",
       "arrival_time": "Arrival Time",
@@ -298,13 +356,15 @@
       "next": "Next",
       "showing": "Showing",
       "of": "of",
-      "no_trips" : "No trips found",
-      "add_first_trip" : "Add your first trip",
+      "no_trips": "No trips found",
+      "add_first_trip": "Add your first trip",
       "departure_station": "Departure Station",
       "arrival_station": "Arrival Station",
       "departure_date": "Departure Date",
       "arrival_date": "Arrival Date",
       "available_seats": "Available Seats",
+      "no_trips_found": "No trips found",
+      "try_different_search": "Try adjusting your search criteria or explore other destinations",
       "notes": "Notes",
       "save": "Save Trip",
       "update": "Update Trip",
@@ -545,12 +605,10 @@
       "localization": "Localization",
       "notifications": "Notifications",
       "backup": "Backup & Restore",
-
       "basic_settings": "Basic Settings",
       "site_name": "Site Name",
       "site_description": "Site Description",
       "admin_email": "Admin Email",
-
       "advanced_options": "Advanced Options",
       "maintenance_mode": "Maintenance Mode",
       "enable_caching": "Enable Caching",
@@ -560,19 +618,16 @@
       "log_warning": "Warning & Errors",
       "log_info": "Info",
       "log_debug": "Debug (Verbose)",
-
       "theme": "Theme",
       "system_colors": "System Colors",
       "primary_color": "Primary Color",
       "secondary_color": "Secondary Color",
       "custom_fonts": "Enable Custom Fonts",
-
       "language": "Language",
       "regional_settings": "Regional Settings",
       "timezone": "Timezone",
       "date_format": "Date Format",
       "currency": "Currency",
-
       "notification_settings": "Notification Settings",
       "email_notifications": "Email Notifications",
       "sms_notifications": "SMS Notifications",
@@ -681,6 +736,10 @@
         "email_placeholder": "Enter email address",
         "email_required": "Email address is required",
         "email_invalid": "Please enter a valid email address",
+        "username_label": "Username",
+        "username_placeholder": "Enter unique username",
+        "username_required": "Username is required",
+        "username_min_length": "Username must be at least 3 characters long",
         "phone_label": "Phone Number",
         "phone_placeholder": "Enter phone number",
         "phone_invalid": "Please enter a valid phone number",
@@ -936,7 +995,6 @@
       "registration_documents": "Registration Documents",
       "tax_document": "Tax Document",
       "view": "View",
-      "status": "Status",
       "pending_stats_notice": "Company is pending, all statistics are zero until approval",
       "email": "Email",
       "phone": "Phone",
@@ -977,6 +1035,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
+    "view": "View",
     "search": "Search",
     "filter": "Filter",
     "yes": "Yes",
@@ -1125,5 +1184,171 @@
     "submit_feedback": "Submit Feedback",
     "feedback_submitted": "Thank you for your feedback!",
     "based_on_reviews": "Based on {{count}} reviews"
+  },
+  "tripDetails": {
+    "overview": "Trip Overview",
+    "historicalBackground": "Historical Background:",
+    "majorAttractions": "Major Attractions:",
+    "modernCity": "Modern",
+    "tripPhotos": "Trip Photos",
+    "location": "Location",
+    "loading": "Loading...",
+    "loadingDetails": "Loading trip details...",
+    "backToTrips": "Back to Trips",
+    "population": "Population:",
+    "economy": "Economy:",
+    "climate": "Climate:",
+    "viewAlt": "view",
+    "cities": {
+      "alexandria": {
+        "historicalDesc": "Founded by Alexander the Great in 331 BCE, Alexandria quickly became a major center of Greek culture and learning.",
+        "attractions": {
+          "0": "Bibliotheca Alexandrina - Modern library built near the site of the ancient Library of Alexandria",
+          "1": "Citadel of Qaitbay - 15th-century fortress built on the site of the ancient Lighthouse",
+          "2": "Roman Amphitheater - The only known Roman theater in Egypt",
+          "3": "Montaza Palace - Royal palace with beautiful gardens along the Mediterranean coast"
+        },
+        "population": "~5.2 million",
+        "economy": "Major port city, tourism, and cultural center",
+        "climate": "Mediterranean, with mild winters and warm summers"
+      },
+      "cairo": {
+        "historicalDesc": "Founded in 969 CE, Cairo has been Egypt's capital for over a millennium.",
+        "attractions": {
+          "0": "The Pyramids of Giza - Last surviving wonder of the ancient world",
+          "1": "Egyptian Museum - Home to thousands of ancient artifacts",
+          "2": "Khan el-Khalili - Historic bazaar and cultural site",
+          "3": "Al-Azhar Mosque - One of the oldest and most prestigious Islamic institutions"
+        },
+        "population": "~20 million (metropolitan area)",
+        "economy": "Egypt's primary commercial and cultural hub",
+        "climate": "Hot desert climate with mild winters"
+      },
+      "luxor": {
+        "historicalDesc": "Ancient Thebes, capital of Egypt during the New Kingdom period (16th-11th centuries BCE).",
+        "attractions": {
+          "0": "Valley of the Kings - Burial ground of pharaohs including Tutankhamun",
+          "1": "Karnak Temple - Largest religious building ever constructed",
+          "2": "Luxor Temple - Stunning example of ancient Egyptian architecture",
+          "3": "Deir el-Bahari - Temple of Queen Hatshepsut"
+        },
+        "population": "~500,000",
+        "economy": "Tourism and agriculture",
+        "climate": "Hot desert climate with very little rainfall"
+      }
+    }
+  },
+  "chatbot": {
+    "title": "Ra7ala Assistant",
+    "placeholder": "Type your message here...",
+    "welcome": "Hello! Welcome to Ra7ala Assistant! How can I help you today?",
+    "typing": "Bot is typing...",
+    "send": "Send",
+    "close": "Close chat",
+    "open": "Open chat",
+    "quickReplies": {
+      "nextTrip": "When will the next trip be?",
+      "cairoAlex": "Give me trips from Cairo to Alexandria",
+      "tomorrowTrips": "I want all trips available tomorrow",
+      "help": "Help",
+      "bookTrip": "How to book a trip?",
+      "pricing": "What are your prices?",
+      "support": "Contact support"
+    },
+    "responses": {
+      "greeting": "Welcome to Ra7ala! I'm here to help you with your travel needs.",
+      "help": "I can help you with booking trips, checking schedules, and answering your travel questions.",
+      "bookingInfo": "To book a trip, simply search for your destination, select your preferred time, and complete the booking process.",
+      "defaultResponse": "Thank you for your message. Our team will get back to you soon!"
+    }
+  },
+  "bookings_page": {
+    "eyebrow": "RA7ALA PASSENGER HUB",
+    "title": "My Bookings and Tickets",
+    "subtitle": "A complete dashboard for your bookings, tickets, trip status, and fast management in one place.",
+    "actions": {
+      "new_trip": "Book a New Trip",
+      "back_profile": "Back to Profile",
+      "cancel_booking": "Cancel Booking",
+      "cancelling": "Cancelling..."
+    },
+    "tabs": {
+      "bookings": "Bookings",
+      "tickets": "Tickets"
+    },
+    "loading_bookings": "Loading bookings...",
+    "loading_tickets": "Loading tickets...",
+    "empty_bookings": "No bookings yet.",
+    "empty_tickets": "No tickets available yet.",
+    "booking_id": "Booking",
+    "tickets_preview": "Tickets linked to this booking:",
+    "seat": "Seat",
+    "page": "Page",
+    "of": "of",
+    "confirm_cancel": "Are you sure you want to cancel this booking?",
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled",
+      "unknown": "Unknown"
+    },
+    "ticket_status": {
+      "used": "Used",
+      "valid": "Valid"
+    },
+    "payment": {
+      "paid": "Paid",
+      "unpaid": "Unpaid"
+    },
+    "meta": {
+      "ticket_count": "Tickets",
+      "total_price": "Total Price",
+      "payment": "Payment",
+      "booking_no": "Booking No.",
+      "trip_no": "Trip",
+      "price": "Price",
+      "purchase_date": "Purchase Date",
+      "departure_station": "Departure Station",
+      "arrival_station": "Arrival Station",
+      "ticket_label": "Ticket"
+    },
+    "errors": {
+      "load_bookings": "Failed to load bookings. Please try again.",
+      "load_tickets": "Failed to load tickets. Please try again.",
+      "cancel_booking": "Unable to cancel booking right now."
+    }
+  },
+  "payment_page": {
+    "loading": "Loading payment data...",
+    "title": "Complete Payment",
+    "success_title": "Payment Successful!",
+    "success_message": "Your booking has been confirmed and tickets were issued. Redirecting you to your bookings and tickets...",
+    "card_details": "Card Details",
+    "secure_by": "Secure encrypted payments by",
+    "processing": "Processing payment...",
+    "pay_now": "Pay Now",
+    "cancel_and_back": "Cancel and return to bookings",
+    "summary": {
+      "title": "Booking Summary",
+      "booking_no": "Booking No:",
+      "amount_due": "Amount Due:"
+    },
+    "test_data": {
+      "title": "Stripe Test Data:",
+      "card_no": "Card Number",
+      "expiry": "Expiry",
+      "postal_optional": "Postal code is not required on this page."
+    },
+    "errors": {
+      "invalid_booking_id": "Invalid booking ID.",
+      "config_failed": "Failed to load payment configuration. Please try again.",
+      "init_failed": "Failed to initialize payment. Please try again.",
+      "load_stripe_failed": "Failed to load Stripe. Please refresh and try again.",
+      "postal_optional": "Postal code is optional. You can proceed after entering card number, expiry, and CVV only.",
+      "payment_failed": "Payment failed. Please try again.",
+      "confirm_update_failed": "Payment confirmed but booking update failed. Please contact support.",
+      "confirm_failed": "Payment succeeded but confirmation failed. Please contact support.",
+      "not_completed": "Payment was not completed. Please try again."
+    }
   }
 }

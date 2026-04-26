@@ -1,43 +1,52 @@
 .search-container {
+  --search-input-bg: #ffffff;
+  --search-input-color: #1c1b1f;
+  --search-input-border: #ced4da;
+  --search-input-placeholder: #6c757d;
+  --search-addon-bg: #f8f9fa;
+  --search-addon-color: #495057;
+  --p-inputtext-background: var(--search-input-bg);
+  --p-inputtext-color: var(--search-input-color);
+  --p-inputtext-border-color: var(--search-input-border);
+  --p-inputtext-placeholder-color: var(--search-input-placeholder);
+  --p-inputtext-hover-border-color: var(--search-input-border);
+  --p-inputtext-focus-border-color: #ff8c00;
+
   background-color: rgba(255, 255, 255, 0.97);
   border-radius: 12px;
   padding: 2rem 2.5rem;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
   margin: 2rem auto;
   max-width: 1100px;
-
- color: #1C1B1F;
+  color: #1c1b1f;
+  color-scheme: light;
 }
 
-input{
-  font-size: 1rem;
-  padding: 0.6rem;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  background-color: #fff;
-  width: 50%;
+@media (max-width: 768px) {
+  .search-container {
+    padding: 1.5rem 1rem;
+    margin: 1rem auto;
+  }
+  
+  .search-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
 }
 
 
-.d-flex.flex-wrap.gap-3>.form-group {
+.d-flex.flex-wrap.gap-3 > .form-group {
   min-width: 200px;
-  flex: 1 1 20%;
+  flex: 1 1 calc(50% - 1rem);
 }
 
-.search-btn {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  background-color: #007bff;
-  border: none;
-  color: white;
-  font-weight: 600;
-  transition: 0.3s ease;
+@media (max-width: 576px) {
+  .d-flex.flex-wrap.gap-3 > .form-group {
+    flex: 1 1 100%;
+  }
 }
 
-.search-btn:hover:not(:disabled) {
-  background-color: #0056b3;
-}
+
 .search-title {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -60,9 +69,10 @@ input{
 .form-select {
   width: 100%;
   padding: 0.6rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--search-input-border);
   border-radius: 6px;
-  background-color: #fff;
+  background-color: var(--search-input-bg);
+  color: var(--search-input-color);
   font-size: 1rem;
 }
 
@@ -73,11 +83,11 @@ input{
 }
 
 .search-btn {
-  background-color: #007bff;
+  padding: 0.75rem 2rem;
+  background-color: var(--primary-color, #ff8c00);
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 0.75rem;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -85,7 +95,7 @@ input{
 }
 
 .search-btn:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: var(--primary-color-dark, #e27900);
 }
 
 .search-btn:disabled {
@@ -94,22 +104,246 @@ input{
 }
 
 /* PrimeNG Calendar and InputNumber */
-:host ::ng-deep {
+:host ::ng-deep .search-date-picker,
+:host ::ng-deep .search-seat-picker,
+:host ::ng-deep .search-date-picker .p-calendar,
+:host ::ng-deep .search-seat-picker .p-inputnumber {
+  width: 100%;
+}
 
-  .p-calendar,
-  .p-inputnumber {
+:host ::ng-deep .search-container .p-inputtext,
+:host ::ng-deep .search-container .p-inputnumber-input {
+  background: var(--search-input-bg) !important;
+  color: var(--search-input-color) !important;
+  border-color: var(--search-input-border) !important;
+}
+
+:host ::ng-deep .search-container .p-inputnumber-button,
+:host ::ng-deep .search-container .p-datepicker-trigger {
+  background: var(--search-addon-bg) !important;
+  color: var(--search-addon-color) !important;
+  border-color: var(--search-input-border) !important;
+}
+
+:host ::ng-deep .search-date-picker .search-date-input,
+:host ::ng-deep .search-seat-picker .search-seat-input,
+:host ::ng-deep .search-seat-picker .p-inputnumber-input,
+:host ::ng-deep .search-seat-picker input.p-inputtext,
+:host ::ng-deep .search-seat-picker input {
+  width: 100% !important;
+  font-size: 1rem;
+  padding: 0.6rem;
+  text-align: center;
+  background-color: var(--search-input-bg) !important;
+  color: var(--search-input-color) !important;
+  border: 1px solid var(--search-input-border) !important;
+  border-radius: 6px;
+  caret-color: var(--search-input-color);
+  -webkit-text-fill-color: var(--search-input-color) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--search-input-bg) inset !important;
+  color-scheme: light !important;
+}
+
+:host ::ng-deep .search-date-picker .search-date-input::placeholder,
+:host ::ng-deep .search-seat-picker .search-seat-input::placeholder {
+  color: var(--search-input-placeholder) !important;
+}
+
+:host ::ng-deep .search-seat-picker .p-inputnumber-button,
+:host ::ng-deep .search-date-picker .p-datepicker-trigger {
+  background-color: var(--search-addon-bg) !important;
+  border: 1px solid var(--search-input-border) !important;
+  color: var(--search-addon-color) !important;
+  -webkit-text-fill-color: var(--search-addon-color) !important;
+}
+
+:host ::ng-deep .search-date-picker .search-date-input:focus,
+:host ::ng-deep .search-seat-picker .search-seat-input:focus {
+  border-color: #ff8c00 !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 140, 0, 0.15) !important;
+}
+
+:host ::ng-deep .search-date-picker .search-date-input:-webkit-autofill,
+:host ::ng-deep .search-date-picker .search-date-input:-webkit-autofill:hover,
+:host ::ng-deep .search-date-picker .search-date-input:-webkit-autofill:focus,
+:host ::ng-deep .search-seat-picker .search-seat-input:-webkit-autofill,
+:host ::ng-deep .search-seat-picker .search-seat-input:-webkit-autofill:hover,
+:host ::ng-deep .search-seat-picker .search-seat-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--search-input-color) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--search-input-bg) inset !important;
+  transition: background-color 9999s ease-out 0s;
+}
+
+:host ::ng-deep .search-seat-picker .p-inputnumber-button {
+  min-width: 1rem;
+}
+
+/* Dark mode */
+:host-context(.dark-theme) .search-container {
+  --search-input-bg: #3a3a3a;
+  --search-input-color: #f5f5f5;
+  --search-input-border: #555555;
+  --search-input-placeholder: #b0b0b0;
+  --search-addon-bg: #3a3a3a;
+  --search-addon-color: #f5f5f5;
+
+  background-color: rgba(58, 58, 58, 0.97) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid var(--search-input-border);
+  color: var(--search-input-color) !important;
+  color-scheme: dark;
+}
+
+:host-context(.dark-theme) .search-title,
+:host-context(.dark-theme) .form-label {
+  color: var(--search-input-color) !important;
+}
+
+:host-context(.dark-theme) .form-select {
+  background-color: var(--search-input-bg) !important;
+  border-color: var(--search-input-border) !important;
+  color: var(--search-input-color) !important;
+}
+
+:host-context(.dark-theme) .form-select option {
+  background-color: var(--search-input-bg) !important;
+  color: var(--search-input-color) !important;
+}
+
+:host-context(.dark-theme) .search-btn {
+  background-color: var(--primary-color, #ff8c00) !important;
+  color: #fff !important;
+}
+
+:host-context(.dark-theme) .search-btn:hover:not(:disabled) {
+  background-color: var(--primary-color-dark, #e27900) !important;
+}
+
+:host-context(.dark-theme) .search-btn:disabled {
+  background-color: #8a8a8a !important;
+}
+
+:host-context(.dark-theme) .form-error {
+  color: #ff6b6b !important;
+}
+
+/* PrimeNG popup in dark mode */
+:host-context(.dark-theme) ::ng-deep .p-datepicker {
+  background-color: #3a3a3a !important;
+  border-color: #555555 !important;
+  color: #f5f5f5 !important;
+}
+
+:host-context(.dark-theme) ::ng-deep .p-datepicker .p-datepicker-header {
+  background-color: #444444 !important;
+  border-color: #555555 !important;
+  color: #f5f5f5 !important;
+}
+
+:host-context(.dark-theme) ::ng-deep .p-datepicker table td > span {
+  color: #f5f5f5 !important;
+}
+
+:host-context(.dark-theme) ::ng-deep .p-datepicker table td > span:hover,
+:host-context(.dark-theme) ::ng-deep .p-datepicker table td > span.p-highlight {
+  background-color: var(--primary-color, #ff8c00) !important;
+  color: #fff !important;
+}
+
+/* Custom Dropdown Styling */
+:host ::ng-deep .search-dropdown {
+  height: 48px;
+  background: var(--search-input-bg) !important;
+  border: 1px solid var(--search-input-border) !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .search-dropdown:not(.p-disabled).p-focus {
+  border-color: #ffc452 !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 196, 82, 0.2) !important;
+}
+
+:host ::ng-deep .search-dropdown .p-dropdown-label {
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--search-input-color) !important;
+}
+
+:host ::ng-deep .search-dropdown .p-dropdown-trigger {
+  width: 3rem;
+  color: var(--search-addon-color) !important;
+}
+
+:host ::ng-deep .p-dropdown-panel {
+  background: var(--search-input-bg) !important;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--search-input-border) !important;
+  margin-top: 5px;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+  padding: 8px;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 2px;
+  transition: background 0.2s;
+  color: var(--search-input-color) !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: rgba(255, 196, 82, 0.15) !important;
+  color: #d4a017 !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+:host-context(.dark-theme) ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-header {
+  padding: 12px;
+  background: var(--search-input-bg) !important;
+  border-bottom: 1px solid var(--search-input-border) !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-filter-container {
+  width: 100%;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-filter {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--search-input-border) !important;
+  background: var(--search-input-bg) !important;
+  color: var(--search-input-color) !important;
+}
+
+.city-item {
+  display: flex;
+  align-items: center;
+}
+
+.city-item i {
+  font-size: 1.1rem;
+}
+
+.city-item-value {
+  font-weight: 500;
+  color: var(--search-input-color);
+}
+@media (max-width: 576px) {
+  .search-btn {
     width: 100%;
-  }
-
-  .p-calendar input,
-  .p-inputnumber-input {
-    width: 100% !important;
-    font-size: 1rem;
-    padding: 0.1rem;
-    text-align: center;
-  }
-
-  .p-inputnumber-button {
-    min-width: 1rem;
+    padding: 12px;
   }
 }

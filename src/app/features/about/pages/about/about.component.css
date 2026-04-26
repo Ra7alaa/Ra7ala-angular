@@ -140,32 +140,215 @@
 @media (max-width: 992px) {
   .about-content {
     flex-direction: column;
+    gap: 2.5rem;
   }
 
   .image-section {
-    min-height: 300px;
+    min-height: 250px;
+    width: 100%;
   }
 
   .yellow-circle {
-    width: 280px;
-    height: 280px;
+    width: min(280px, 80vw);
+    height: min(280px, 80vw);
+  }
+  
+  .bus-image {
+    max-width: 80%;
+  }
+  
+  .places-badge {
+    top: 5%;
+    right: 5%;
+    padding: 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .about-container {
-    padding: 3rem 1.5rem;
+    padding: 2rem 1rem;
   }
 
   .about-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .about-header p {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .text-section p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+/* Team Section Styles */
+.team-section {
+  margin-top: 5rem;
+  width: 100%;
+}
+
+.team-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.team-header h2 {
+  font-size: 2.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.team-underline {
+  width: 60px;
+  height: 4px;
+  background: var(--primary-color);
+  margin: 0.5rem auto 1.5rem;
+  border-radius: 2px;
+}
+
+.team-header p {
+  color: var(--text-color-secondary);
+  font-size: 1.1rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.team-card {
+  background: var(--surface-color, #fff);
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 5px solid;
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.member-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover .member-avatar {
+  transform: scale(1.1);
+}
+
+.member-info h3 {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+}
+
+.member-role {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.member-contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-top: auto;
+}
+
+.phone-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.phone-link:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.whatsapp-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Dark Theme Adjustments */
+.dark-theme .team-card {
+  background: var(--card-bg, #1e1e1e);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .phone-link {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+}
+
+.dark-theme .phone-link:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* RTL Support */
+[dir="rtl"] .team-header {
+  direction: rtl;
+}
+
+[dir="rtl"] .member-contact {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  .team-section {
+    margin-top: 3rem;
+  }
+  
+  .team-header h2 {
+    font-size: 1.8rem;
   }
 }

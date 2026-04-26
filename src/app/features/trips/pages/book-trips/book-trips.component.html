@@ -1,135 +1,174 @@
-<div class="container py-5">
-  <div class="row mb-4">
-    <div class="col-12">
-      <h2 class="trip-title text-primary">
-        {{ "available_trips" | translate }}
-      </h2>
-      <div class="divider"></div>
-    </div>
-  </div>
+<!-- book-trips.component.html -->
+<div class="trips-page">
+  <div class="container">
 
-  <div class="row g-4">
-    <!-- Trip Cards -->
-    <div *ngFor="let trip of trips" class="col-12">
-      <div class="trip-card">
-        <div class="card-content">
-          <!-- Trip Header -->
-          <div class="trip-header">
-            <h3 class="route-name">{{ trip.routeName }}</h3>
-            <a [routerLink]="['/trips/company', trip.companyId]" class="company-badge clickable">
-              <i class="bi bi-building me-1"></i>
-              {{ trip.companyName }}
+    <!-- ══ Header ══ -->
+    <div class="page-header">
+      <div class="page-header__text">
+        <div class="page-header__eyebrow">
+          <i class="bi bi-bus-front"></i>
+          {{ 'available_trips' | translate }}
+        </div>
+        <h1 class="page-header__title">
+          {{ 'available_trips' | translate }}
+        </h1>
+        <p class="page-header__count" *ngIf="trips.length > 0">
+          <strong>{{ trips.length }}</strong>&nbsp;{{ 'admin.trips.no_trips' | translate }}
+        </p>
+      </div>
+
+      <button class="back-btn" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+        {{ 'common.back' | translate }}
+      </button>
+    </div>
+
+
+    <!-- ══ List ══ -->
+    <div class="trips-list" *ngIf="trips.length > 0">
+
+      <div class="trip-card" *ngFor="let trip of trips">
+        <div class="trip-card__body">
+
+          <!-- ═ Main Info ═ -->
+          <div class="trip-card__main">
+
+            <!-- Route + Company -->
+            <div class="trip-card__row-top">
+              <h3 class="trip-card__route">{{ trip.routeName }}</h3>
+              <a
+                [routerLink]="['/trips/company', trip.companyId]"
+                class="trip-card__company-link"
+              >
+                <i class="bi bi-building"></i>
+                {{ trip.companyName }}
+              </a>
+            </div>
+
+            <!-- Times -->
+            <div class="trip-card__times">
+              <div class="time-block">
+                <span class="time-block__label">{{ 'departure' | translate }}</span>
+                <span class="time-block__value">{{ trip.departureTime | date:'HH:mm' }}</span>
+                <span class="time-block__date">{{ trip.departureTime | date:'MMM d, y' }}</span>
+              </div>
+
+              <div class="time-arrow">
+                <div class="time-arrow__line"></div>
+                <i class="bi bi-arrow-right time-arrow__icon"></i>
+                <div class="time-arrow__line"></div>
+              </div>
+
+              <div class="time-block">
+                <span class="time-block__label">{{ 'arrival' | translate }}</span>
+                <span class="time-block__value">{{ trip.arrivalTime | date:'HH:mm' }}</span>
+                <span class="time-block__date">{{ trip.arrivalTime | date:'MMM d, y' }}</span>
+              </div>
+            </div>
+
+            <!-- Stations -->
+            <div class="trip-card__stations" *ngIf="trip.tripStations?.length">
+              <span class="stations-label">
+                <i class="bi bi-signpost-2-fill"></i>
+                {{ 'stations' | translate }}
+              </span>
+              <div class="stations-chips">
+                <ng-container
+                  *ngFor="let st of trip.tripStations; let first = first; let last = last"
+                >
+                  <span
+                    class="station-chip"
+                    [class.station-chip--first]="first"
+                    [class.station-chip--last]="last"
+                  >
+                    <i
+                      class="bi"
+                      [class.bi-flag-fill]="first"
+                      [class.bi-geo-alt-fill]="last"
+                      [class.bi-circle-fill]="!first && !last"
+                      style="font-size:0.55rem"
+                    ></i>
+                    {{ st.stationName }}
+                    <span style="opacity:0.6">({{ st.cityName }})</span>
+                  </span>
+                  <span class="station-sep" *ngIf="!last">›</span>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Driver + Bus -->
+            <div class="trip-card__meta">
+              <div class="meta-item">
+                <i class="bi bi-person-badge"></i>
+                <span>
+                  {{ 'driver' | translate }}:&nbsp;
+                  <strong>{{ trip.driverName }}</strong>
+                  <span *ngIf="trip.driverPhoneNumber" style="opacity:0.6">
+                    &nbsp;·&nbsp;{{ trip.driverPhoneNumber }}
+                  </span>
+                </span>
+              </div>
+              <div class="meta-item">
+                <i class="bi bi-bus-front"></i>
+                <span>
+                  {{ 'bus' | translate }}:&nbsp;
+                  <strong>{{ trip.busRegistrationNumber }}</strong>
+                </span>
+              </div>
+            </div>
+
+          </div><!-- /main -->
+
+
+          <!-- ═ Booking Panel ═ -->
+          <div class="trip-card__booking">
+
+            <!-- Price -->
+            <div class="price-block">
+              <span class="price-block__label">{{ 'search.trip_type.one_way' | translate }}</span>
+              <span class="price-block__value">{{ trip.price | number:'1.0-0' }}</span>
+              <span class="price-block__currency">EGP</span>
+            </div>
+
+            <!-- Seats -->
+            <span
+              class="seats-badge"
+              [class.seats-badge--ok]="trip.availableSeats >= 5"
+              [class.seats-badge--low]="trip.availableSeats > 0 && trip.availableSeats < 5"
+              [class.seats-badge--none]="trip.availableSeats === 0"
+            >
+              <i class="bi bi-person-seat"></i>
+              {{ trip.availableSeats }} {{ 'available_seats' | translate }}
+            </span>
+
+            <!-- Button -->
+            <a
+              class="book-btn"
+              [class.book-btn--disabled]="trip.availableSeats === 0"
+              [routerLink]="trip.availableSeats > 0 ? ['/booking', trip.id] : null"
+            >
+              <i class="bi bi-ticket-perforated"></i>
+              {{ 'book_now' | translate }}
             </a>
-          </div>
 
-          <div class="row">
-            <!-- Trip Info -->
-            <div class="col-md-8">
-              <!-- Departure & Arrival Times -->
-              <div class="time-info">
-                <div class="departure">
-                  <div class="time-label">{{ "departure" | translate }}</div>
-                  <div class="time-value">
-                    {{ trip.departureTime | date : "MMM d, y, h:mm a" }}
-                  </div>
-                </div>
-                <div class="time-divider">
-                  <div class="line"></div>
-                  <i class="bi bi-arrow-right"></i>
-                  <div class="line"></div>
-                </div>
-                <div class="arrival">
-                  <div class="time-label">{{ "arrival" | translate }}</div>
-                  <div class="time-value">
-                    {{ trip.arrivalTime | date : "MMM d, y, h:mm a" }}
-                  </div>
-                </div>
-              </div>
+          </div><!-- /booking -->
 
-              <!-- Stations -->
-              <div class="stations-container">
-                <div class="stations-label">
-                  {{ "trips.stations" | translate }}
-                </div>
-                <div class="stations-path">
-                  <ng-container *ngFor="
-                      let station of trip.tripStations;
-                      let last = last;
-                      let first = first
-                    ">
-                    <div class="station-point" [ngClass]="{ first: first, last: last }">
-                      <div class="station-marker">
-                        <i class="bi bi-geo-alt-fill"></i>
-                      </div>
-                      <div class="station-name">
-                        {{ station.stationName }}
-                        <span class="city-name">({{ station.cityName }})</span>
-                      </div>
-                    </div>
-                    <div *ngIf="!last" class="station-connector"></div>
-                  </ng-container>
-                </div>
-              </div>
+        </div><!-- /body -->
+      </div><!-- /trip-card -->
 
-              <!-- Driver & Bus Info -->
-              <div class="trip-details">
-                <div class="detail-item">
-                  <i class="bi bi-person-badge"></i>
-                  <div>
-                    <div class="detail-label">{{ "driver" | translate }}</div>
-                    <div class="detail-value">
-                      {{ trip.driverName }}
-                      <span *ngIf="trip.driverPhoneNumber">- {{ trip.driverPhoneNumber }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="detail-item">
-                  <i class="bi bi-bus-front"></i>
-                  <div>
-                    <div class="detail-label">{{ "bus" | translate }}</div>
-                    <div class="detail-value">
-                      {{ trip.busRegistrationNumber }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    </div><!-- /trips-list -->
 
-            <!-- Price and Booking -->
-            <div class="col-md-4">
-              <div class="booking-panel">
-                <div class="price">
-                  {{ trip.price | currency : "EGP" : "symbol" : "1.0-0" }}
-                </div>
-                <div class="seats-info" [ngClass]="{ 'seats-low': trip.availableSeats < 5 }">
-                  <i class="bi bi-person-seat"></i>
-                  {{ "available_seats" | translate }}: {{ trip.availableSeats }}
-                </div>
-                <button class="book-now-btn" [disabled]="trip.availableSeats === 0"
-                  [routerLink]="['/booking', trip.id]">
-                  <i class="bi bi-ticket-perforated"></i>
-                  {{ "book_now" | translate }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <!-- ══ No Results ══ -->
+    <div class="no-trips" *ngIf="trips.length === 0">
+      <i class="bi bi-search no-trips__icon"></i>
+      <h3 class="no-trips__title">{{ 'no_trips_found' | translate }}</h3>
+      <p class="no-trips__desc">{{ 'try_different_search' | translate }}</p>
+      <button class="back-btn" style="margin: 0 auto;" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+        {{ 'common.back' | translate }}
+      </button>
     </div>
 
-    <!-- No Results -->
-    <div *ngIf="trips.length === 0" class="col-12">
-      <div class="no-trips-container">
-        <div class="no-trips-icon">
-          <i class="bi bi-emoji-frown"></i>
-        </div>
-        <h3 class="no-trips-title">{{ "no_trips_found" | translate }}</h3>
-        <p class="no-trips-message">{{ "try_different_search" | translate }}</p>
-        <button class="back-btn" (click)="goBack()">
-          <i class="bi bi-arrow-left"></i>
-          {{ "common.back" | translate }}
-        </button>
-      </div>
-    </div>
   </div>
 </div>

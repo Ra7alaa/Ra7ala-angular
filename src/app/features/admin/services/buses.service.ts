@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class BusesService {
-  private apiUrl = `${environment.apiUrl}/api/Bus`;
+  private apiUrl = `${environment.apiUrl}/Bus`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +26,7 @@ export class BusesService {
       catchError((error) => {
         console.error('Error fetching buses:', error);
         return throwError(() => new Error('Failed to load buses'));
-      })
+      }),
     );
   }
 
@@ -72,7 +72,7 @@ export class BusesService {
           }
           // Return an error observable with a meaningful message
           return throwError(() => new Error(errorMessage));
-        })
+        }),
       );
   }
 
@@ -87,7 +87,7 @@ export class BusesService {
         catchError((error) => {
           console.error(`Error deleting bus ID ${id}:`, error);
           return throwError(() => new Error('Failed to delete bus'));
-        })
+        }),
       );
   }
 }

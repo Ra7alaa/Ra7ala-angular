@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeSettingsComponent } from '../../components/theme-settings/theme-settings.component';
-import { LanguageSettingsComponent } from '../../components/language-settings/language-settings.component';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import {
   LanguageService,
@@ -20,8 +18,6 @@ import { AuthService } from '../../../auth/services/auth.service';
   standalone: true,
   imports: [
     CommonModule,
-    ThemeSettingsComponent,
-    LanguageSettingsComponent,
     TranslatePipe,
   ],
   templateUrl: './settings.component.html',

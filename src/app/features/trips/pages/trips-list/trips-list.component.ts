@@ -20,13 +20,13 @@ interface TripResponse {
 export class TripsListComponent implements OnInit {
   trips: Trip[] = [];
   filteredTrips: Trip[] = [];
-  searchTerm: string = '';
-  
+  searchTerm = '';
+
   // Pagination
-  currentPage: number = 1;
-  pageSize: number = 6;
-  totalTrips: number = 0;
-  
+  currentPage = 1;
+  pageSize = 6;
+  totalTrips = 0;
+
   constructor(private tripsService: TripsService) {}
 
   ngOnInit(): void {
@@ -34,11 +34,13 @@ export class TripsListComponent implements OnInit {
   }
 
   loadTrips(): void {
-    this.tripsService.getAllTrips(this.currentPage, this.pageSize).subscribe(({trips, total}: TripResponse) => {
-      this.trips = trips;
-      this.filteredTrips = trips;
-      this.totalTrips = total;
-    });
+    this.tripsService
+      .getAllTrips(this.currentPage, this.pageSize)
+      .subscribe(({ trips, total }: TripResponse) => {
+        this.trips = trips;
+        this.filteredTrips = trips;
+        this.totalTrips = total;
+      });
   }
 
   onSearch(event: Event): void {
@@ -47,8 +49,9 @@ export class TripsListComponent implements OnInit {
     this.currentPage = 1; // Reset to first page when searching
 
     if (this.searchTerm.trim()) {
-      this.tripsService.searchTrips(this.searchTerm, this.currentPage, this.pageSize)
-        .subscribe(({trips, total}: TripResponse) => {
+      this.tripsService
+        .searchTrips(this.searchTerm, this.currentPage, this.pageSize)
+        .subscribe(({ trips, total }: TripResponse) => {
           this.filteredTrips = trips;
           this.totalTrips = total;
         });
@@ -60,8 +63,9 @@ export class TripsListComponent implements OnInit {
   onPageChange(page: number): void {
     this.currentPage = page;
     if (this.searchTerm.trim()) {
-      this.tripsService.searchTrips(this.searchTerm, this.currentPage, this.pageSize)
-        .subscribe(({trips, total}: TripResponse) => {
+      this.tripsService
+        .searchTrips(this.searchTerm, this.currentPage, this.pageSize)
+        .subscribe(({ trips, total }: TripResponse) => {
           this.filteredTrips = trips;
           this.totalTrips = total;
         });
@@ -75,6 +79,6 @@ export class TripsListComponent implements OnInit {
   }
 
   get pages(): number[] {
-    return Array.from({length: this.totalPages}, (_, i) => i + 1);
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 }

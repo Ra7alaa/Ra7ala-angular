@@ -19,7 +19,6 @@ export class ThemeSettingsComponent implements OnInit {
   themes: { value: ThemeOption; label: string }[] = [
     { value: 'light', label: 'theme_language.light_mode' },
     { value: 'dark', label: 'theme_language.dark_mode' },
-    { value: 'system', label: 'theme_language.system_mode' },
   ];
 
   constructor(private themeService: ThemeService) {

@@ -2,10 +2,34 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
+type GoogleMapInstance = unknown;
+
+interface GoogleMarkerLike {
+  addListener(eventName: string, handler: () => void): void;
+}
+
+interface GoogleInfoWindowLike {
+  open(map: unknown, anchor?: unknown): void;
+}
+
+interface GoogleMapsNamespace {
+  Map: new (
+    element: HTMLElement,
+    options: Record<string, unknown>,
+  ) => GoogleMapInstance;
+  Marker: new (options: Record<string, unknown>) => GoogleMarkerLike;
+  InfoWindow: new (options: { content: string }) => GoogleInfoWindowLike;
+  Animation: {
+    DROP: unknown;
+  };
+}
+
 // إعلان نوع للكائن window ليسمح بالوصول الديناميكي
 declare global {
   interface Window {
-    google: any;
+    google?: {
+      maps?: GoogleMapsNamespace;
+    };
     initGoogleMap?: () => void;
   }
 }
@@ -17,15 +41,13 @@ export class MapService {
   private apiLoaded = new BehaviorSubject<boolean>(false);
   private apiKey = environment.apiKeys.googleMaps; // الحصول على مفتاح API من ملف البيئة
 
-  constructor() {}
-
   /**
    * تحميل Google Maps API إن لم تكن محملة بالفعل
    * @returns Observable<boolean> تشير إلى جاهزية Google Maps API
    */
   loadGoogleMapsApi(): Observable<boolean> {
     // إذا كانت API محملة بالفعل، أعد قيمة حالية بـ true
-    if (window.google && window.google.maps) {
+    if (window.google?.maps) {
       console.log('[MapService] Google Maps API already loaded');
       this.apiLoaded.next(true);
       return this.apiLoaded.asObservable();
@@ -34,13 +56,14 @@ export class MapService {
     // إذا كان هناك script موجود بالفعل، انتظر حتى يتم تحميله
     if (document.getElementById('google-maps-api')) {
       console.log(
-        '[MapService] Google Maps API script already exists in DOM, waiting for it to load'
+        '[MapService] Google Maps API script already exists in DOM, waiting for it to load',
       );
       return this.apiLoaded.asObservable();
     }
 
     console.log(
-      '[MapService] Loading Google Maps API with key: ' + this.getMaskedApiKey()
+      '[MapService] Loading Google Maps API with key: ' +
+        this.getMaskedApiKey(),
     );
 
     // أضف script Google Maps API
@@ -61,11 +84,8 @@ export class MapService {
     };
 
     // عند حدوث خطأ في تحميل script
-    script.onerror = (error: any) => {
-      console.error(
-        '[MapService] Failed to load Google Maps API script',
-        error
-      );
+    script.onerror = () => {
+      console.error('[MapService] Failed to load Google Maps API script');
       window.removeEventListener('error', this.handleMapScriptError);
       this.apiLoaded.next(false);
       this.checkApiKeyAndLogError();
@@ -103,18 +123,18 @@ export class MapService {
 
     if (!this.apiKey || this.apiKey.trim() === '') {
       console.error(
-        '🔑 ERROR: API Key is empty! You must provide a valid Google Maps API key.'
+        '🔑 ERROR: API Key is empty! You must provide a valid Google Maps API key.',
       );
     } else if (this.apiKey === 'AIzaSyA4KWFc0F76RtQwNGZW9RrPb-zAqxsyDXU') {
       console.error(
-        '🔑 WARNING: You are using the default API key from the code example.'
+        '🔑 WARNING: You are using the default API key from the code example.',
       );
       console.error(
-        '    This key may not work. Replace it with your own API key from Google Cloud Console.'
+        '    This key may not work. Replace it with your own API key from Google Cloud Console.',
       );
     } else if (this.apiKey.length < 20) {
       console.error(
-        "🔑 ERROR: API Key is too short! This doesn't look like a valid Google Maps API key."
+        "🔑 ERROR: API Key is too short! This doesn't look like a valid Google Maps API key.",
       );
     }
 
@@ -122,10 +142,10 @@ export class MapService {
     console.error('  1. The API key is invalid or incorrectly formatted');
     console.error('  2. Billing is not enabled on your Google Cloud account');
     console.error(
-      '  3. Maps JavaScript API is not enabled in your Google Cloud Console'
+      '  3. Maps JavaScript API is not enabled in your Google Cloud Console',
     );
     console.error(
-      '  4. The API key has restrictions that prevent its use from your domain/IP'
+      '  4. The API key has restrictions that prevent its use from your domain/IP',
     );
 
     console.error('🛠️ How to fix:');
@@ -135,7 +155,7 @@ export class MapService {
     console.error('  4. Create an API key from Credentials page');
     console.error('  5. Setup billing if required');
     console.error(
-      '  6. Update the apiKey value in map.service.ts with your new key'
+      '  6. Update the apiKey value in map.service.ts with your new key',
     );
 
     console.error('=======================================');
@@ -166,25 +186,26 @@ export class MapService {
     elementId: string,
     latitude: number,
     longitude: number,
-    zoom: number = 15,
-    title: string = ''
-  ): { map: any; marker: any } | null {
-    if (!window.google || !window.google.maps) {
+    zoom = 15,
+    title = '',
+  ): { map: GoogleMapInstance; marker: GoogleMarkerLike } | null {
+    if (!window.google?.maps) {
       console.error(
-        '[MapService] ERROR: Google Maps API is not loaded. Cannot create map.'
+        '[MapService] ERROR: Google Maps API is not loaded. Cannot create map.',
       );
       return null;
     }
 
-    if (!document.getElementById(elementId)) {
+    const mapElement = document.getElementById(elementId);
+    if (!(mapElement instanceof HTMLElement)) {
       console.error(
-        `[MapService] ERROR: Element with ID "${elementId}" does not exist in the DOM.`
+        `[MapService] ERROR: Element with ID "${elementId}" does not exist in the DOM.`,
       );
       return null;
     }
 
     console.log(
-      `[MapService] Creating map at coordinates [${latitude}, ${longitude}] with zoom ${zoom}`
+      `[MapService] Creating map at coordinates [${latitude}, ${longitude}] with zoom ${zoom}`,
     );
 
     try {
@@ -192,9 +213,9 @@ export class MapService {
       const googleMaps = window.google.maps;
 
       // إنشاء خريطة جديدة
-      const map = new googleMaps.Map(document.getElementById(elementId), {
+      const map = new googleMaps.Map(mapElement, {
         center: position,
-        zoom: zoom,
+        zoom,
         mapTypeControl: false,
         fullscreenControl: true,
         streetViewControl: false,
@@ -203,9 +224,9 @@ export class MapService {
 
       // إضافة علامة (ماركر)
       const marker = new googleMaps.Marker({
-        position: position,
-        map: map,
-        title: title,
+        position,
+        map,
+        title,
         animation: googleMaps.Animation.DROP,
       });
 

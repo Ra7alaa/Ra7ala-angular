@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -25,13 +25,13 @@ interface Trip {
   templateUrl: './common-trips.component.html',
   styleUrl: './common-trips.component.css',
 })
-export class CommonTripsComponent {
+export class CommonTripsComponent implements OnInit, OnChanges {
   @Input() trips: Trip[] = [];
   currentPage = 0;
   itemsPerPage = 3;
   filteredTrips: Trip[] = [];
-  searchTerm: string = '';
-  selectedCity: string = '';
+  searchTerm = '';
+  selectedCity = '';
   cities: string[] = [];
 
   ngOnInit() {

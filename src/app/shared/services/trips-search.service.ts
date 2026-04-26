@@ -39,17 +39,17 @@ export interface SearchResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TripsSearchService {
-  private apiUrl = `${environment.apiUrl}/api/Trips/search`;
+  private apiUrl = `${environment.apiUrl}/Trips/search`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   searchTrips(request: SearchRequest): Observable<SearchResponse> {
     console.log('Search Request:', request);
-    return this.http.post<SearchResponse>(`${this.apiUrl}`, request).pipe(
-      tap(response => console.log('Search Response:', response))
-    );
+    return this.http
+      .post<SearchResponse>(`${this.apiUrl}`, request)
+      .pipe(tap((response) => console.log('Search Response:', response)));
   }
 }

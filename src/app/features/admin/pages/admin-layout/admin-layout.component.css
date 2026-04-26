@@ -105,20 +105,25 @@
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 1030;
+  z-index: 1100;
   width: 85%;
   max-width: 280px;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  display: none !important; /* Hide completely on mobile until shown */
+  display: block !important; /* Always block, controlled by transform and hidden class */
 }
 
-.mobile-view app-admin-sidebar:not([ishidden="true"]) {
+
+.mobile-view app-admin-sidebar:not(.sidebar-hidden) {
   transform: translateX(0);
-  display: block !important;
 }
+
+.mobile-view app-admin-sidebar.sidebar-hidden {
+  transform: translateX(-100%);
+}
+
 
 [dir="rtl"] .mobile-view app-admin-sidebar {
   left: auto;
@@ -126,9 +131,14 @@
   transform: translateX(100%);
 }
 
-[dir="rtl"] .mobile-view app-admin-sidebar:not([ishidden="true"]) {
+[dir="rtl"] .mobile-view app-admin-sidebar:not(.sidebar-hidden) {
   transform: translateX(0);
 }
+
+[dir="rtl"] .mobile-view app-admin-sidebar.sidebar-hidden {
+  transform: translateX(100%);
+}
+
 
 /* Dark Theme Specific Styles */
 .dark-theme .mobile-toggle-container {
@@ -245,9 +255,10 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1025;
+    z-index: 1090;
     animation: none; /* إزالة التأثير الحركي */
   }
+
 
   /* Menu button prominence */
   .toggle-sidebar-btn {

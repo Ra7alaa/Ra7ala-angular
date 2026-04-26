@@ -24,7 +24,8 @@ const rootRedirectGuard = () => {
   ) {
     return { redirectTo: '/admin/dashboard' };
   } else if (user?.userType === UserRole.Driver) {
-    return { redirectTo: '/driver/dashboard' };
+    // Driver has no dedicated dashboard — redirect to home
+    return true;
   }
 
   return true; // راكب أو ضيف
@@ -40,12 +41,12 @@ export const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./features/home/home.module').then((m) => m.HomeModule),
-        },
+      },
       {
         path: 'trips',
         loadChildren: () =>
           import('./features/trips/trips-routing.module').then(
-            (m) => m.TripsRoutingModule
+            (m) => m.TripsRoutingModule,
           ),
         canActivate: [roleGuard([UserRole.Passenger])],
       },
@@ -54,18 +55,35 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/about/about.module').then((m) => m.AboutModule),
       },
-      {
-        path: 'settings',
-        loadChildren: () =>
-          import('./features/settings/settings.module').then(
-            (m) => m.SettingsModule
-          ),
-      },
+
       {
         path: 'profile',
         loadChildren: () =>
           import('./features/profile/profile.module').then(
-            (m) => m.ProfileModule
+            (m) => m.ProfileModule,
+          ),
+        canActivate: [roleGuard([UserRole.Passenger])],
+      },
+      {
+        path: 'book-trips',
+        loadComponent: () =>
+          import('./features/trips/pages/book-trips/book-trips.component').then(
+            (m) => m.BookTripsComponent,
+          ),
+      },
+      {
+        path: 'booking/:tripId',
+        loadComponent: () =>
+          import('./features/trips/pages/booking/booking.component').then(
+            (m) => m.BookingComponent,
+          ),
+        canActivate: [roleGuard([UserRole.Passenger])],
+      },
+      {
+        path: 'payment/:bookingId',
+        loadComponent: () =>
+          import('./features/trips/pages/payment/payment.component').then(
+            (m) => m.PaymentComponent,
           ),
         canActivate: [roleGuard([UserRole.Passenger])],
       },
@@ -87,21 +105,6 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/owner/owner.module').then((m) => m.OwnerModule),
     canActivate: [roleGuard([UserRole.SystemOwner])],
-  },
-  {
-    path: 'book-trips',
-    loadComponent: () =>
-      import('./features/trips/pages/book-trips/book-trips.component').then(
-        (m) => m.BookTripsComponent
-      ),
-  },
-  {
-    path: 'booking/:tripId',
-    loadComponent: () =>
-      import('./features/trips/pages/booking/booking.component').then(
-        (m) => m.BookingComponent
-      ),
-    canActivate: [roleGuard([UserRole.Passenger])],
   },
   // Error routes
   {
